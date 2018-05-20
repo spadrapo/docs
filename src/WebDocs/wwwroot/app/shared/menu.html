@@ -1,0 +1,12 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-parent="/app/shared/layout.html" d-parentSector="menu">
+    <div>
+        <!--Data-->
+        <div d-dataKey="menuItems" d-dataUrlGet="/api/Menu/GetItems"></div>
+        <!--Layout-->
+        <ul class="dMenu">
+            <li d-for="item in menuItems" d-model="{{item.Name}}" d-on-click="{{item.Action}}"></li>
+        </ul>
+    </div>
+</div>
