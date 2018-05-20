@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <title>Power Planning</title>
+</head>
+<body>
+    <!--Data-->
+    <div d-dataKey="errors" d-dataType="array"></div>
+    <div d-dataKey="systemClipboard" d-dataType="value"></div>
+    <!--Windows-->
+    <div d-id="windows" d-childSector="windows" class="ppSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
+    <!--Header-->
+    <div d-childSector="header" d-route="false" d-child="/app/shared/header.html" class="ppSectorHeader"></div>
+    <!--Content-->
+    <div d-childSector="content" d-child="/index.html" class="ppSectorContent"></div>
+    <!--Footer-->
+    <div d-childSector="footer" d-route="false" d-child="/app/shared/footer.html" class="ppSectorFooter"></div>
+    <!--Startup-->
+    <script src="/js/bootstrap.min.js"></script>
+</body>
+</html>

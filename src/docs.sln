@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2037
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebDocs", "WebDocs\WebDocs.csproj", "{8E8FE954-7998-4552-9695-64A5FA4C40FD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8E8FE954-7998-4552-9695-64A5FA4C40FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8E8FE954-7998-4552-9695-64A5FA4C40FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8E8FE954-7998-4552-9695-64A5FA4C40FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8E8FE954-7998-4552-9695-64A5FA4C40FD}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E150DFA8-E1E1-481A-A9B7-29DA4B8DA859}
+	EndGlobalSection
+EndGlobal

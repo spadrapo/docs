@@ -1,0 +1,36 @@
+body {
+  color: black;
+  background-color: lightgray;
+  font: 14px 'Open Sans', sans-serif;
+  text-rendering: optimizeLegibility;
+  text-rendering: geometricPrecision;
+  font-smooth: always;
+  -moz-osx-font-smoothing: grayscale;
+  font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  -webkit-font-smoothing: antialiased;
+  -webkit-font-smoothing: subpixel-antialiased;
+}
+.ppSectorWindows {
+  position: relative;
+  z-index: 9999;
+}
+.ppSectorHeader {
+  position: relative;
+  z-index: 1;
+}
+.ppSectorRainbow {
+  position: relative;
+}
+.ppSectorPanel {
+  position: relative;
+}
+.ppSectorContent {
+  position: relative;
+}
+.ppSectorFooter {
+  position: relative;
+}
+.ppCloak {
+  display: none;
+}
