@@ -10,6 +10,8 @@ namespace WebDocs.Models
         public string Name { set; get; }
         public string Action { set; get; }
         public List<MenuItemVM> Items { set; get; }
+        public bool IsExpandable { set; get; }
+        public bool IsExpanded { set; get; }
         public MenuItemVM()
         {
             this.Items = new List<MenuItemVM>();

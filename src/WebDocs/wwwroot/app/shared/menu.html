@@ -5,8 +5,15 @@
         <!--Data-->
         <div d-dataKey="menuItems" d-dataUrlGet="/api/Menu/GetItems"></div>
         <!--Layout-->
-        <ul class="dMenu">
-            <li d-for="item in menuItems" d-model="{{item.Name}}" d-on-click="{{item.Action}}"></li>
-        </ul>
+        <div class="dMenu">
+            <div d-for="item in menuItems" d-on-click="{{item.Action}}">
+                <div style="float:left">
+                    <span d-for="level in (0..{{item._Level}})"></span>
+                </div>
+                <span d-class="{dMenuGroupExpanded:{{item.IsExpandable}}&&{{item.IsExpanded}},dMenuGroupCollapsed:{{item.IsExpandable}}&&!{{item.IsExpanded}}}"></span>
+                <span d-model="{{item.Name}}"></span>
+                <div d-for="item in item.Items" d-if="{{item.IsExpanded}}"></div>
+            </div>
+        </div>
     </div>
 </div>
