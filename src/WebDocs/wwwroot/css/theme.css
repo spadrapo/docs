@@ -4,11 +4,17 @@
   border: none;
   cursor: pointer;
 }
+.dMenuTab > span {
+  padding-left: 15px;
+}
 .dMenuGroupExpanded::before {
   content: "-";
 }
 .dMenuGroupCollapsed::before {
   content: "+";
+}
+.dMenuGroupNone::before {
+  content: ">";
 }
 body {
   color: black;

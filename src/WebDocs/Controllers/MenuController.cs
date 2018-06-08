@@ -48,7 +48,7 @@ namespace WebDocs.Controllers
                 if (Directory.Exists(pathEntry))
                     item = await CreateMenuItemGroup(entry);
                 else
-                    items.Add(this.CreateMenuItemLink(pathEntry));
+                    item = this.CreateMenuItemLink(pathEntry);
                 items.Add(item);
             }
             return (items);
