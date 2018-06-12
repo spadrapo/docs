@@ -14,19 +14,19 @@
     <div d-dataKey="errors" d-dataType="array"></div>
     <div d-dataKey="systemClipboard" d-dataType="value"></div>
     <!--Windows-->
-    <div d-id="windows" d-childSector="windows" class="dSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
+    <div d-id="windows" d-sector="windows" class="dSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
     <!--Header-->
-    <div d-childSector="header" d-route="false" d-child="/app/shared/header.html" class="dSectorHeader"></div>
+    <div d-sector="header" d-route="false" d-sector-url="/app/shared/header.html" class="dSectorHeader"></div>
     <div class="container-fluid">
         <div class="row">
             <!--Menu-->
-            <div d-childSector="menu" d-child="/app/shared/menu.html" class="col-sm-2 dSectorMenu"></div>
+            <div d-sector="menu" d-sector-url="/app/shared/menu.html" class="col-sm-2 dSectorMenu"></div>
             <!--Content-->
-            <div d-childSector="content" d-child="/index.html" class="col-sm-10 dSectorContent"></div>
+            <div d-sector="content" d-sector-url="/index.html" class="col-sm-10 dSectorContent"></div>
         </div>
     </div>
     <!--Footer-->
-    <div d-childSector="footer" d-route="false" d-child="/app/shared/footer.html" class="dSectorFooter"></div>
+    <div d-sector="footer" d-route="false" d-sector-url="/app/shared/footer.html" class="dSectorFooter"></div>
     <!--Startup-->
     <script src="/js/bootstrap.min.js"></script>
 </body>
