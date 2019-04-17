@@ -64,7 +64,7 @@ namespace WebDocs.Controllers
             MenuItemVM menuItem = new MenuItemVM();
             menuItem.IsExpandable = true;
             menuItem.Name = this.GetFriendlyName(Path.GetFileName(fullPath));
-            menuItem.Action = "ToggleItemField({{item.IsExpanded}})";
+            menuItem.Action = "ToggleItemField({{item.IsExpanded}});Notify(menuItems)";
             menuItem.Items.AddRange(await this.GetItems(fullPath));
             return (menuItem);
         }
