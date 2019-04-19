@@ -5,21 +5,21 @@
         <h2>parent</h2>
         <p>The data type parent can be used to read an element in the hierarchy of the page. The attribute d-dataValue will be used to search the first parent with attributes begining with its value. If the d-dataValue is not present, the first parent will be used.</p>
         <p>Simple Example:</p>
-        <pre>
-            &lt;div class=&quot;state&quot; dc-levels=&quot;0&quot; dc-children=&quot;1&quot;&gt; 
-                &lt;div d-dataKey=&quot;internal&quot; d-dataType=&quot;parent&quot; d-dataValue=&quot;dc-&quot;&gt;&lt;/div&gt;
-            &lt;/div&gt;
-        </pre>
+        <d-code>
+            <div class="state" dc-levels="0" dc-children="1">
+                <div d-dataKey="internal" d-dataType="parent" d-dataValue="dc-"></div>
+            </div>
+        </d-code>
         <p>In this case the storage item internal will be created as an object with 2 properties inside it. That is levels with value of 0 and children with the value 1</p>
         <br />
         <p>You can use d-dataLoadType equals to reference when you need that all mustaches must be evaluated recursively.</p>
         <p>Recursive Example:</p>
-        <pre>
-            &lt;div d-dataKey=&quot;source&quot; d-dataType=&quot;object&quot; d-dataProperty-levels=&quot;2&quot; d-dataProperty-children=&quot;5&quot;&gt;&lt;/div&gt; 
-            &lt;div class=&quot;state&quot; dc-levels=&quot;{{source.levels}}&quot; dc-children=&quot;{{source.children}}&quot;&gt; 
-                &lt;div d-dataKey=&quot;internal&quot; d-dataType=&quot;parent&quot; d-dataLoadType=&quot;reference&quot; d-dataValue=&quot;dc-&quot;&gt;&lt;/div&gt; 
-            &lt;/div&gt;
-        </pre>
+        <d-code>
+            <div d-dataKey="source" d-dataType="object" d-dataProperty-levels="2" d-dataProperty-children="5"></div>
+            <div class="state" dc-levels="{{source.levels}}" dc-children="{{source.children}}">
+                <div d-dataKey="internal" d-dataType="parent" d-dataLoadType="reference" d-dataValue="dc-"></div>
+            </div>
+        </d-code>
         <p>In this case the storage item internal will be created as an object with 2 properties inside it. That is levels with value of 2 and children with the value 5</p>
     </div>
 </div>

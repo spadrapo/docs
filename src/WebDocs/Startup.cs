@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using Swashbuckle.AspNetCore.Swagger;
 using Sysphera.Middleware.Drapo;
 using Microsoft.Net.Http.Headers;
+using System.IO;
 
 namespace WebDocs
 {
@@ -69,6 +70,7 @@ namespace WebDocs
             options.Config.CreateTheme("Dark", "dark");
             options.Config.StorageErrors = "errors";
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
+            options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
         }
     }
 }

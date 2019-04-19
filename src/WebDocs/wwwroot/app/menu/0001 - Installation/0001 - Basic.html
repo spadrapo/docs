@@ -5,23 +5,19 @@
         <h2>Basic Installation</h2>
         <p>The first step is to add a reference to drapo. You can just add the package from nuget.</p>
         <p>Your csproj will be like this below:</p>
-        <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
-            <pre style="margin: 0; line-height: 125%">
-&lt;ItemGroup&gt;
-    &lt;PackageReference Include=<span style="color: #a31515">&quot;Drapo&quot;</span> Version=<span style="color: #a31515">&quot;2018.6.12.1&quot;</span> /&gt;
-&lt;/ItemGroup&gt;
-            </pre>
-        </div>
+        <d-code>
+            <ItemGroup>
+                <PackageReference Include="Drapo" Version="2018.6.12.1" />
+            </ItemGroup>
+        </d-code>
         <br>
         <p>After that you will need to update your Startup.cs. First you need to add the service. To do that you will need to include this line of code in your ConfigureServices method. Like this:</p>
-        <div style="background: #ffffff; overflow:auto;width:auto;border:solid gray;border-width:.1em .1em .1em .8em;padding:.2em .6em;">
-            <pre style="margin: 0; line-height: 125%">        
-<span style="color: #0000ff">public</span> <span style="color: #0000ff">void</span> ConfigureServices(IServiceCollection services)
-{
-    services.AddDrapo();
-}
-            </pre>
-        </div>
+        <d-code>
+            public void ConfigureServices(IServiceCollection services)
+            {
+                services.AddDrapo();
+            }
+        </d-code>
         <br>
         <p>And that's it. </p>
     </div>
