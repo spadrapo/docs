@@ -1,0 +1,18 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>Content</h2>
+        <p>You can use the inner html of you component element inside your component.</p>
+        <p>Inside your component you must have a child element with the attribute d-content="internal".</p>
+        <p>So, when drapo is creating the component element he will inject the inner html of your component below the component that have the d-content="internal".</p>
+        <p>Example of component using content:</p>
+        <d-code>
+            <div class="code">
+                <div style="display:none" d-content="internal"></div>
+                <pre></pre>
+            </div>
+        </d-code>
+        <p>This is the code of the d-code component used here at the drapo docs. You can find the source code of this component <a href="https://github.com/spadrapo/docs/tree/master/src/WebDocs/wwwroot/components/code">here</a></p>
+    </div>
+</div>
