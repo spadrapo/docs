@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>compare</h2>
+        <p>The compare validation type can be used to compare if 2 values are equal. You must fill the attribute d-validation-value and the attribute d-validation-valuetocompare.</p>
+        <p>Simple Example:</p>
+        <d-code>
+            <div>
+                <!--Data-->
+                <div d-datakey="data" d-datatype="object" d-dataproperty-text="value" d-dataproperty-text2="valu"></div>
+            </div>
+            <div>
+                <!--Validation-->
+                <div d-validation-id="compare" d-validation-type="compare" d-validation-value="{{data.text2}}" d-validation-valuetocompare="{{data.text}}"></div>
+            </div>
+        </d-code>
+    </div>
+</div>
