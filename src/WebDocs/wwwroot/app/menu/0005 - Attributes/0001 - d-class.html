@@ -14,5 +14,11 @@
         <d-code>
             d-class="{classToBeUsed1:Conditional1:classToBeUsedIfConditionalFails1,classToBeUsed2:Conditional2:classToBeUsedIfConditionalFails2}"
         </d-code>
+        <d-sample>
+            <div d-dataKey="values" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+            <ul>
+                <li d-for="value in values" d-class="{dSampleGreen:{{value.selected}}:dSampleRed}" d-on-click="ToggleItemField({{value.selected}})">{{value.name}}</li>
+            </ul>
+        </d-sample>
     </div>
 </div>
