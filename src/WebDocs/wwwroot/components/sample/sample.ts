@@ -9,7 +9,6 @@ class Sample {
     //Field
     private _el: HTMLElement = null;
     private _app: any;
-    private _sector: string = null;
     //Properties
     //Constructors
     constructor(el: HTMLElement, app: any) {
@@ -18,15 +17,19 @@ class Sample {
     }
 
     public async Initalize(): Promise<void> {
-        this._sector = this._app._document.GetSector(this._el);
         const elContent: HTMLDivElement = this.GetElementContent();
+        const elCode: HTMLPreElement = this.GetElementCode();
         const content: string = $(elContent).html();
-        await this._app._functionHandler.ResolveFunctionWithoutContext(this._sector, 'UpdateDataField(sample,data,' + content +')');
-        $(elContent).remove();
+        const contentEncoded: string = $('<textarea/>').text(content).html();
+        $(elCode).html(contentEncoded);
+    }
+
+    private GetElementCode(): HTMLPreElement {
+        return (<HTMLPreElement>this._el.children[1]);
     }
 
     private GetElementContent(): HTMLDivElement {
-        return (<HTMLDivElement>this._el.children[2]);
+        return (<HTMLDivElement>this._el.children[3]);
     }
 }
 

@@ -1,2 +1,9 @@
-﻿.sandbox {
+﻿.sample {
 }
+
+    .sample > div {
+        width: 100%;
+        border: 1px solid #ccc;
+        background-color: #f5f5f5;
+        padding: 20px;
+    }

@@ -51,30 +51,27 @@ function sampleConstructor(el, app) {
 var Sample = (function () {
     function Sample(el, app) {
         this._el = null;
-        this._sector = null;
         this._el = el;
         this._app = app;
     }
     Sample.prototype.Initalize = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var elContent, content;
+            var elContent, elCode, content, contentEncoded;
             return __generator(this, function (_a) {
-                switch (_a.label) {
-                    case 0:
-                        this._sector = this._app._document.GetSector(this._el);
-                        elContent = this.GetElementContent();
-                        content = $(elContent).html();
-                        return [4, this._app._functionHandler.ResolveFunctionWithoutContext(this._sector, 'UpdateDataField(sample,data,' + content + ')')];
-                    case 1:
-                        _a.sent();
-                        $(elContent).remove();
-                        return [2];
-                }
+                elContent = this.GetElementContent();
+                elCode = this.GetElementCode();
+                content = $(elContent).html();
+                contentEncoded = $('<textarea/>').text(content).html();
+                $(elCode).html(contentEncoded);
+                return [2];
             });
         });
     };
+    Sample.prototype.GetElementCode = function () {
+        return this._el.children[1];
+    };
     Sample.prototype.GetElementContent = function () {
-        return this._el.children[2];
+        return this._el.children[3];
     };
     return Sample;
 }());
