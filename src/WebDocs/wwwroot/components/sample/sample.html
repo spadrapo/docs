@@ -1,0 +1,15 @@
+﻿<div d-sector="@" class="sample">
+    <!--Data-->
+    <div>
+        <div d-dataKey="sample" d-dataType="object" d-dataProperty-data="" d-dataProperty-show="false"></div>
+    </div>
+    <!--Layout-->
+    <div>
+        <textarea d-if="{{sample.show}}" d-model="{{sample.data}}"></textarea>
+        <div>
+
+        </div>
+        <pre></pre>
+    </div>
+    <div style="display:none" d-content="internal"></div>
+</div>

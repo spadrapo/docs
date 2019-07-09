@@ -1,11 +1,11 @@
-﻿async function sandboxConstructor(el: HTMLElement, app: any): Promise<Sandbox> {
+﻿async function sampleConstructor(el: HTMLElement, app: any): Promise<Sample> {
     //Initialize
-    let instance: Sandbox = new Sandbox(el, app);
+    let instance: Sample = new Sample(el, app);
     await instance.Initalize();
     return (instance);
 }
 
-class Sandbox {
+class Sample {
     //Field
     private _el: HTMLElement = null;
     private _app: any;
@@ -21,7 +21,7 @@ class Sandbox {
         this._sector = this._app._document.GetSector(this._el);
         const elContent: HTMLDivElement = this.GetElementContent();
         const content: string = $(elContent).html();
-        await this._app._functionHandler.ResolveFunctionWithoutContext(this._sector, 'UpdateData(html,' + content +')');
+        await this._app._functionHandler.ResolveFunctionWithoutContext(this._sector, 'UpdateDataField(sample,data,' + content +')');
         $(elContent).remove();
     }
 

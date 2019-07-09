@@ -33,13 +33,13 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
         if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
     }
 };
-function codeConstructor(el, app) {
+function sampleConstructor(el, app) {
     return __awaiter(this, void 0, void 0, function () {
         var instance;
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0:
-                    instance = new Code(el, app);
+                    instance = new Sample(el, app);
                     return [4, instance.Initalize()];
                 case 1:
                     _a.sent();
@@ -48,31 +48,33 @@ function codeConstructor(el, app) {
         });
     });
 }
-var Code = (function () {
-    function Code(el, app) {
+var Sample = (function () {
+    function Sample(el, app) {
         this._el = null;
+        this._sector = null;
         this._el = el;
         this._app = app;
     }
-    Code.prototype.Initalize = function () {
+    Sample.prototype.Initalize = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var elContent, elCode, content, contentEncoded;
+            var elContent, content;
             return __generator(this, function (_a) {
-                elContent = this.GetElementContent();
-                elCode = this.GetElementCode();
-                content = $(elContent).html();
-                contentEncoded = $('<textarea/>').text(content).html();
-                $(elContent).remove();
-                $(elCode).html(contentEncoded);
-                return [2];
+                switch (_a.label) {
+                    case 0:
+                        this._sector = this._app._document.GetSector(this._el);
+                        elContent = this.GetElementContent();
+                        content = $(elContent).html();
+                        return [4, this._app._functionHandler.ResolveFunctionWithoutContext(this._sector, 'UpdateDataField(sample,data,' + content + ')')];
+                    case 1:
+                        _a.sent();
+                        $(elContent).remove();
+                        return [2];
+                }
             });
         });
     };
-    Code.prototype.GetElementContent = function () {
-        return this._el.children[0];
+    Sample.prototype.GetElementContent = function () {
+        return this._el.children[2];
     };
-    Code.prototype.GetElementCode = function () {
-        return this._el.children[1];
-    };
-    return Code;
+    return Sample;
 }());

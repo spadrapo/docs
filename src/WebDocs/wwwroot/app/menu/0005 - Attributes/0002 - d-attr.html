@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-attr</h2>
+        <p>You can use d-attr to dynamically set a attribute of a element.</p>
+        <p>Syntax:</p>
+        <d-code>
+            d-attr-[attributeName]="[value]"
+        </d-code>
+        <p>Sample</p>
+        <d-sample>
+            <div d-dataKey="attribute" d-dataType="object" d-dataProperty-placeholder="Name here" d-dataProperty-tooltip-name="Tooltip" d-dataProperty-tooltip-value="I am a tip !"></div>
+            <input d-attr-placeholder="{{attribute.placeholder}}" type="text" d-attr-title="{{attribute.Tooltip}}">
+        </d-sample>
+    </div>
+</div>

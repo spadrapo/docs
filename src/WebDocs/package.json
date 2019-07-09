@@ -3,6 +3,7 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
+    "@types/jquery": "3.2.1",
     "gulp": "3.9.1",
     "gulp-watch": "4.3.11",
     "gulp-uglify": "2.1.2",
