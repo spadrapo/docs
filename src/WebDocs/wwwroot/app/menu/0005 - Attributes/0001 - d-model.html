@@ -1,0 +1,34 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-model</h2>
+        <p>You can use d-model as a two way data binding to html elements. If the element does not have a way to iteract with the user it will be a one way data binding.</p>
+        <p>So, when the data at the storage is changed the html element will be changed too. If you change the value of the element the storage will be updated and all the elements that are observed by that data will be updated too.</p>
+        <p>Syntax:</p>
+        <d-code>
+            <span d-model="{{user.name}}"></span>
+        </d-code>
+        <p>In this example you will get the name of the user inside the span element</p>
+        <d-sample>
+            <div d-dataKey="user" d-dataType="object" d-dataProperty-name="John Doe"></div>
+            <span d-model="{{user.name}}"></span>
+        </d-sample>
+        <br />
+        <p>This will be a one way data binding. Because is a read only element</p>
+        <p>Below a sample using a two way data binding:</p>
+        <d-sample>
+            <div d-dataKey="user" d-dataType="object" d-dataProperty-name="John Doe"></div>
+            <span d-model="{{user.name}}"></span>
+            <br />
+            <input type="text" d-model="{{user.name}}" />
+        </d-sample>
+        <p>In this case, after you leave the input text you will get the span updated. Because the input text will update the storage and the storage will update the span element.</p>
+        <p>You can use expressions inside d-model attribute. Expressions are only allowed in one way data binding. </p>
+        <p>A sample using expression:</p>
+        <d-sample>
+            <div d-dataKey="user" d-dataType="object" d-dataProperty-firstname="John" d-dataProperty-lastname="Doe"></div>
+            <span d-model="{{user.firstname}} {{user.lastname}}"></span>
+        </d-sample>
+    </div>
+</div>
