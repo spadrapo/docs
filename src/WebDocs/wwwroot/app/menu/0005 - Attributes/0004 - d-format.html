@@ -3,7 +3,28 @@
 <div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
     <div>
         <h2>d-format</h2>
+        <h3>Number</h3>
         <p>You can use d-format to format the ouput of your one way data binding.</p>
-        <p></p>
+        <p>Numbers can be formatted in: Decimal (D), Number (N) or Percent (P)</p>
+        <d-sample>
+            <div d-dataKey="numbers" d-dataType="array" d-dataValue='[{"value":"123.12345","format":"D3"},{"value":"123.12345","format":"N"},{"value":"123.12345","format":"P2"}]'></div>
+            <div d-for="number in numbers">
+                <span d-model="{{number.value}}"></span><br />
+                <span d-model="{{number.format}}"></span><br />
+                <span d-model="{{number.value}}" d-format="{{number.format}}"></span><br />
+                <br />
+            </div>
+        </d-sample>
+        <br />
+        <h3>Date</h3>
+        <p>Dates can be formatted in: Short date pattern (d), Long date pattern (D), Short time pattern (t), Long time pattern (T), General date/time with short time (g), General date/time with long time (G), RFC1123 pattern (r), Custom (YYYY) </p>
+        <d-sample>
+            <div d-dataKey="dates" d-dataType="array" d-dataValue='[{"value":"1980-06-03T11:57:24Z","format":"d"},{"value":"1980-06-03T11:57:24Z","format":"D"},{"value":"1980-06-03T11:57:24Z","format":"t"},{"value":"1980-06-03T11:57:24Z","format":"T"},{"value":"1980-06-03T11:57:24Z","format":"g"},{"value":"1980-06-03T11:57:24Z","format":"G"},{"value":"1980-06-03T11:57:24Z","format":"r"},{"value":"1980-06-03T11:57:24Z","format":"YYYY"}]'></div>
+            <div d-for="date in dates">
+                <span d-model="{{date.format}}"></span><br />
+                <span d-model="{{date.value}}" d-format="{{date.format}}"></span><br />
+                <br />
+            </div>
+        </d-sample>
     </div>
 </div>
