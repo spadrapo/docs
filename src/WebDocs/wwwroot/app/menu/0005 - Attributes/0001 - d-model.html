@@ -23,12 +23,22 @@
             <br />
             <input type="text" d-model="{{user.name}}" />
         </d-sample>
+        <br />
         <p>In this case, after you leave the input text you will get the span updated. Because the input text will update the storage and the storage will update the span element.</p>
         <p>You can use expressions inside d-model attribute. Expressions are only allowed in one way data binding. </p>
         <p>A sample using expression:</p>
         <d-sample>
             <div d-dataKey="user" d-dataType="object" d-dataProperty-firstname="John" d-dataProperty-lastname="Doe"></div>
             <span d-model="{{user.firstname}} {{user.lastname}}"></span>
+        </d-sample>
+        <br />
+        <p>You can use functions inside expressions too.</p>
+        <p>Sample using functions inside expression:</p>
+        <d-sample>
+            <div d-dataKey="product" d-dataType="object" d-dataProperty-price="4" d-dataProperty-quantity="8"></div>
+            <span>Price:</span><input type="text" d-model="{{product.price}}" /><br /><br />
+            <span>Quantity:</span><input type="text" d-model="{{product.quantity}}" /><br /><br />
+            <span>Total:</span><span d-model="CAST({{product.price}} * {{product.quantity}},number)"></span><br />
         </d-sample>
     </div>
 </div>
