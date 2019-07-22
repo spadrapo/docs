@@ -12,5 +12,19 @@
             <div d-dataKey="attribute" d-dataType="object" d-dataProperty-placeholder="Name here" d-dataProperty-tooltip-name="Tooltip" d-dataProperty-tooltip-value="I am a tip !"></div>
             <input d-attr-placeholder="{{attribute.placeholder}}" type="text" d-attr-title="{{attribute.Tooltip}}">
         </d-sample>
+        <br />
+        <p>You can use expressions too.</p>
+        <d-sample>
+            <div style="height:300px;width:100%;">
+                <div d-dataKey="object" d-dataType="object" d-dataProperty-width="90" d-dataProperty-color="red" d-dataProperty-color2="green"></div>
+                <div>
+                    <input type="text" d-model="{{object.width}}">
+                    <div style="position:relative;float:left;width:100%">
+                        <div d-attr-style="position:relative;float:left;height:200px;background-color:{{object.color}};width:{{object.width}}%"></div>
+                        <div d-attr-style="position:relative;float:left;height:200px;background-color:{{object.color2}};width:Cast(100 - {{object.width}},number)%"></div>
+                    </div>
+                </div>
+            </div>
+        </d-sample>
     </div>
 </div>
