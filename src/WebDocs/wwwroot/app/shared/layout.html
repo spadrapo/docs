@@ -21,6 +21,8 @@
     <!--Data-->
     <div d-dataKey="errors" d-dataType="array"></div>
     <div d-dataKey="systemClipboard" d-dataType="value"></div>
+    <div d-dataKey="querystring" d-dataType="querystring"></div>
+    <div d-dataKey="menuItems" d-dataUrlGet="/api/Menu/GetItems"></div>
     <!--Windows-->
     <div d-id="windows" d-sector="windows" class="dSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
     <!--Header-->
@@ -28,13 +30,15 @@
     <div class="container-fluid">
         <div class="row">
             <!--Menu-->
-            <div d-sector="menu" d-sector-url="/app/shared/menu.html" class="col-sm-2 dSectorMenu"></div>
+            <div d-sector="menu" d-route="false" d-sector-url="/app/shared/menu.html" class="col-sm-2 dSectorMenu"></div>
             <!--Content-->
             <div d-sector="content" d-sector-url="/index.html" class="col-sm-10 dSectorContent"></div>
         </div>
     </div>
     <!--Footer-->
     <div d-sector="footer" d-route="false" d-sector-url="/app/shared/footer.html" class="dSectorFooter"></div>
+    <!--Initialize-->
+    <div d-dataKey="initialize" d-dataType="function" d-dataLoadType="startup" d-dataValue="IF({{querystring.w}},ExecuteDataItem({{item.Action}},item in menuItems,{{item.Name}}={{querystring.w}},false,item in item.Items))"></div>
     <!--Startup-->
     <script src="/js/bootstrap.min.js"></script>
 </body>

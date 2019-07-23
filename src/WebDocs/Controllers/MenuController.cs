@@ -73,7 +73,7 @@ namespace WebDocs.Controllers
         {
             MenuItemVM menuItem = new MenuItemVM();
             menuItem.Name = this.GetFriendlyName(Path.GetFileNameWithoutExtension(fullPath));
-            menuItem.Action = string.Format("UpdateSector(content,{0},false,false)", GetFullPathUrl(fullPath));
+            menuItem.Action = $"UpdateUrl(~?w={menuItem.Name});UpdateSector(content,{GetFullPathUrl(fullPath)},false,false)";
             return (menuItem);
         }
 
