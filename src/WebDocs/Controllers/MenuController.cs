@@ -25,14 +25,19 @@ namespace WebDocs.Controllers
         {
             try
             {
-                string path = Path.Combine(_env.WebRootPath, "app", "menu");
-                List<MenuItemVM> items = await this.GetItems(path);
-                return (Ok(await Task.FromResult<List<MenuItemVM>>(items)));
+                return (Ok(await Task.FromResult<List<MenuItemVM>>(await this.GetItemsInternal())));
             }
             catch (Exception e)
             {
                 return (StatusCode((int)HttpStatusCode.InternalServerError, e));
             }
+        }
+
+        public async Task<List<MenuItemVM>> GetItemsInternal()
+        {
+            string path = Path.Combine(_env.WebRootPath, "app", "menu");
+            List<MenuItemVM> items = await this.GetItems(path);
+            return (items);
         }
 
         private async Task<List<MenuItemVM>> GetItems(string path)

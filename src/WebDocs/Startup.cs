@@ -11,6 +11,9 @@ using Swashbuckle.AspNetCore.Swagger;
 using Sysphera.Middleware.Drapo;
 using Microsoft.Net.Http.Headers;
 using System.IO;
+using WebDocs.Controllers;
+using System.Text.RegularExpressions;
+using WebDocs.Models;
 
 namespace WebDocs
 {
@@ -24,6 +27,7 @@ namespace WebDocs
                   {
                       options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                   });
+            services.AddSingleton<MenuController, MenuController>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info
@@ -36,13 +40,13 @@ namespace WebDocs
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, MenuController menu)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseDrapo(o => { ConfigureDrapo(env, o); });
+            app.UseDrapo(o => { ConfigureDrapo(env, o, menu); });
             app.UseDefaultFiles();
             app.UseStaticFiles(new StaticFileOptions()
             {
@@ -61,7 +65,7 @@ namespace WebDocs
             });
         }
 
-        private void ConfigureDrapo(IHostingEnvironment env, DrapoMiddlewareOptions options)
+        private void ConfigureDrapo(IHostingEnvironment env, DrapoMiddlewareOptions options, MenuController menu)
         {
             if (env.IsDevelopment())
                 options.Debug = true;
@@ -71,6 +75,36 @@ namespace WebDocs
             options.Config.StorageErrors = "errors";
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
+            options.Config.HandlerCustom = h => HandlerCustom(h, menu);
+        }
+
+        private async Task<DrapoDynamic> HandlerCustom(DrapoDynamic dynamic, MenuController menu)
+        {
+            List<MenuItemVM> items = await menu.GetItemsInternal();
+            foreach (Match match in Regex.Matches(dynamic.ContentData, @"\[(?<label>(\w|\s|\-)+)\]\((?<item>(\w|\s|\-)+)\)"))
+            {
+                string label = match.Groups["label"].Value;
+                string item = match.Groups["item"].Value;
+                MenuItemVM menuItem = this.GetItem(items, item);
+                if (menuItem == null)
+                    continue;
+                string content = $"<span class='dContentLink' d-on-click='{menuItem.Action}'>{label}</span>";
+                dynamic.ContentData = dynamic.ContentData.Replace(match.Value, content);
+            }
+            return (await Task.FromResult<DrapoDynamic>(dynamic));
+        }
+
+        private MenuItemVM GetItem(List<MenuItemVM> items, string name)
+        {
+            foreach (MenuItemVM item in items)
+            {
+                if (item.Name == name)
+                    return (item);
+                MenuItemVM itemChild = GetItem(item.Items, name);
+                if (itemChild != null)
+                    return (itemChild);
+            }
+            return (null);
         }
     }
 }

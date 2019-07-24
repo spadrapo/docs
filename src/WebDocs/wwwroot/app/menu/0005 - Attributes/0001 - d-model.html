@@ -40,5 +40,7 @@
             <span>Quantity:</span><input type="text" d-model="{{product.quantity}}" /><br /><br />
             <span>Total:</span><span d-model="CAST({{product.price}} * {{product.quantity}},number)"></span><br />
         </d-sample>
+        <br />
+        <p>You can also [format](d-format) the value of your d-model.</p>
     </div>
 </div>
