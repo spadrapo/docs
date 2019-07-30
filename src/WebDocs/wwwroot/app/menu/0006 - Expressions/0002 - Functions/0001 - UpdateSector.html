@@ -11,10 +11,17 @@
         <p>3 - CanRoute - Can the router be used</p>
         <p>4 - CanLoadDefaultSectors - Can the default sector be loaded</p>
         <p>5 - ContainerCode - The container code to be used to store the data when we switch the secto container</p>
-        <h3>Samples</h3>
+        <h3>Example</h3>
         <d-code>
             UpdateSector(content,~/MyPage.html)
         </d-code>
         <p>In this case the sector 'content' will be updated with the content of the page MyPage.html</p>
+        <h3>Sample</h3>
+        <d-sample>
+            <input type="button" value="Green" d-on-click="UpdateSector(updatesectorsample,~/app/data/GreenSector.html)" />
+            <input type="button" value="Red" d-on-click="UpdateSector(updatesectorsample,~/app/data/RedSector.html)"/>
+            <div d-sector="updatesectorsample">
+            </div>
+        </d-sample>
     </div>
 </div>
