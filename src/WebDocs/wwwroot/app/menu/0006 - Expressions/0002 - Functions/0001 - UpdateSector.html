@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>UpdateSector</h2>
+        <p>The UpdateSector can be used to update a sector or switch the container of a sector</p>
+        <h3>Parameters:</h3>
+        <p>0 - SectorName - The sector that will be updated</p>
+        <p>1 - Url - The url that will be used to replace the sector</p>
+        <p>2 - Title - The title to be used</p>
+        <p>3 - CanRoute - Can the router be used</p>
+        <p>4 - CanLoadDefaultSectors - Can the default sector be loaded</p>
+        <p>5 - ContainerCode - The container code to be used to store the data when we switch the secto container</p>
+        <h3>Samples</h3>
+        <d-code>
+            UpdateSector(content,~/MyPage.html)
+        </d-code>
+        <p>In this case the sector 'content' will be updated with the content of the page MyPage.html</p>
+    </div>
+</div>
