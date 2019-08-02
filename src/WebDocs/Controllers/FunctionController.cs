@@ -117,7 +117,7 @@ namespace WebDocs.Controllers
                 for (int i = 0; i < parameters.Count; i++)
                 {
                     FunctionParameterVM parameter = parameters[i];
-                    content.AppendLine($"<p>{parameter.Name} - {parameter.Description} - Optional: {(parameter.Optional ? "true" : "false")}</p>");
+                    content.AppendLine($"<p>{parameter.Name} - {GetTypes(parameter.Types)} - {parameter.Description} - Optional: {(parameter.Optional ? "true" : "false")}</p>");
                 }
                 content.AppendLine("<br>");
             }
@@ -159,6 +159,18 @@ namespace WebDocs.Controllers
                 return (await Task.FromResult<List<FunctionParameterVM>>(new List<FunctionParameterVM>()));
             string fileContent = await System.IO.File.ReadAllTextAsync(path);
             return (JsonConvert.DeserializeObject<List<FunctionParameterVM>>(fileContent));
+        }
+
+        private string GetTypes(List<string> types)
+        {
+            StringBuilder content = new StringBuilder();
+            for (int i = 0; i < types.Count; i++)
+            {
+                if (i > 0)
+                    content.Append(", ");
+                content.AppendFormat("{0}", types[i]);
+            }
+            return (content.ToString());
         }
     }
 }
