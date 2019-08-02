@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Property",
+    "Description": "The property that will be switched",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true
+  }
+]

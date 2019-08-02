@@ -1,0 +1,4 @@
+<div d-dataKey="values" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+<ul>
+    <li d-for="value in values" d-class="{dSampleGreen:{{value.selected}}:dSampleRed}" d-on-click="ToggleItemField({{value.selected}})">{{value.name}}</li>
+</ul>

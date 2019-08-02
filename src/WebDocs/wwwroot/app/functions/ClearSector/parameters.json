@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "Sector",
+    "Description": "The sector that will be cleaned",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  }
+]

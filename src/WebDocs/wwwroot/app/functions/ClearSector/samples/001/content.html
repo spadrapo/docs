@@ -1,0 +1,6 @@
+<div d-datakey="LoadSector" d-datatype="value" d-dataloadtype="startup" d-datavalue="UpdateSector(updatesectorsample,~/app/data/GreenSector.html)"></div>
+<div d-datakey="loader" d-datatype="function" d-dataloadtype="startup" d-datavalue="{{LoadSector}}"></div>
+<input type="button" value="Load" d-on-click="{{LoadSector}}" />
+<input type="button" value="Clear" d-on-click="ClearSector(updatesectorsample)" />
+<div d-sector="updatesectorsample">
+</div>
