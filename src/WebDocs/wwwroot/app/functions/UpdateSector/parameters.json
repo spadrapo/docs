@@ -15,24 +15,28 @@
     "Name": "Title",
     "Description": "The title to be used",
     "Types": [ "text" ],
-    "Optional": true
+    "Optional": true,
+    "DefaultValue": "null"
   },
   {
     "Name": "CanRoute",
     "Description": "Can the router be used",
     "Types": [ "boolean" ],
-    "Optional": true
+    "Optional": true,
+    "DefaultValue": "true"
   },
   {
     "Name": "CanLoadDefaultSectors",
     "Description": "Can the default sector be loaded",
     "Types": [ "boolean" ],
-    "Optional": true
+    "Optional": true,
+    "DefaultValue": "false"
   },
   {
     "Name": "ContainerCode",
     "Description": "The container code to be used to store the data when we switch the sector container",
     "Types": [ "mustache", "text" ],
-    "Optional": true
+    "Optional": true,
+    "DefaultValue": "null"
   }
 ]

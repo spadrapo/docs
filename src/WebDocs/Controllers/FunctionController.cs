@@ -114,11 +114,26 @@ namespace WebDocs.Controllers
             if (parameters.Count > 0)
             {
                 content.AppendLine($"<h3>Parameters</h3>");
+                content.AppendLine("<table class='dFunctionParametersTable'>");
+                content.AppendLine("<tr>");
+                content.AppendLine("<th>Name</th>");
+                content.AppendLine("<th>Types</th>");
+                content.AppendLine("<th>Optional</th>");
+                content.AppendLine("<th>Default Value</th>");
+                content.AppendLine("<th>Description</th>");
+                content.AppendLine("</tr>");
                 for (int i = 0; i < parameters.Count; i++)
                 {
                     FunctionParameterVM parameter = parameters[i];
-                    content.AppendLine($"<p>{parameter.Name} - {GetTypes(parameter.Types)} - {parameter.Description} - Optional: {(parameter.Optional ? "true" : "false")}</p>");
+                    content.AppendLine("<tr>");
+                    content.AppendLine($"<td>{parameter.Name}</td>");
+                    content.AppendLine($"<td>{GetTypes(parameter.Types)}</td>");
+                    content.AppendLine($"<td>{(parameter.Optional ? "true" : "false")}</td>");
+                    content.AppendLine($"<td>{parameter.DefaultValue}</td>");
+                    content.AppendLine($"<td>{parameter.Description}</td>");
+                    content.AppendLine("</tr>");
                 }
+                content.AppendLine("</table>");
                 content.AppendLine("<br>");
             }
             //Samples

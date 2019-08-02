@@ -9,6 +9,7 @@
     "Name": "Notify",
     "Description": "You can choose if you want no notify the change to the observer",
     "Types": [ "boolean" ],
-    "Optional": true
+    "Optional": true,
+    "DefaultValue" : "true"
   }
 ]

@@ -11,5 +11,6 @@ namespace WebDocs.Models
         public string Description { set; get; }
         public List<string> Types { set; get; }
         public bool Optional { set; get; }
+        public string DefaultValue { set; get; }
     }
 }
