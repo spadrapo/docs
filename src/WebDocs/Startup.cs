@@ -28,6 +28,7 @@ namespace WebDocs
                       options.SerializerSettings.ContractResolver = new DefaultContractResolver();
                   });
             services.AddSingleton<MenuController, MenuController>();
+            services.AddSingleton<FunctionController, FunctionController>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new Info

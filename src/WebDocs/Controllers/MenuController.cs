@@ -14,9 +14,11 @@ namespace WebDocs.Controllers
     public class MenuController : Controller
     {
         IHostingEnvironment _env;
-        public MenuController(IHostingEnvironment env)
+        FunctionController _function;
+        public MenuController(IHostingEnvironment env, FunctionController function)
         {
             _env = env;
+            _function = function;
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MenuItemVM>), (int)HttpStatusCode.OK)]
@@ -37,6 +39,12 @@ namespace WebDocs.Controllers
         {
             string path = Path.Combine(_env.WebRootPath, "app", "menu");
             List<MenuItemVM> items = await this.GetItems(path);
+            //Inject Functions
+            MenuItemVM itemFunctions = FindByName(items, "Functions");
+            itemFunctions.Items.Clear();
+            List<string> functionNames = await this._function.GetNames();
+            foreach (string functionName in functionNames)
+                itemFunctions.Items.Add(CreateMenuItemFunction(functionName));
             return (items);
         }
 
@@ -74,6 +82,14 @@ namespace WebDocs.Controllers
             return (menuItem);
         }
 
+        private MenuItemVM CreateMenuItemFunction(string functionName)
+        {
+            MenuItemVM menuItem = new MenuItemVM();
+            menuItem.Name = functionName;
+            menuItem.Action = $"UpdateUrl(~?w={menuItem.Name});UpdateSector(content,~/api/Function/GetContent?name={functionName},,false,false)";
+            return (menuItem);
+        }
+
         private MenuItemVM CreateMenuItemLink(string fullPath)
         {
             MenuItemVM menuItem = new MenuItemVM();
@@ -96,6 +112,19 @@ namespace WebDocs.Controllers
             string relative = fullPath.Replace(_env.WebRootPath, string.Empty);
             string relativeRightSlash = relative.Replace(@"\","/");
             return (string.Format("~{0}", relativeRightSlash));
+        }
+
+        private MenuItemVM FindByName(List<MenuItemVM> items, string name)
+        {
+            foreach (MenuItemVM item in items)
+            {
+                if (item.Name == name)
+                    return (item);
+                MenuItemVM itemChild = FindByName(item.Items, name);
+                if (itemChild != null)
+                    return(itemChild);
+            }
+            return (null);
         }
     }
 }

@@ -1,0 +1,38 @@
+[
+  {
+    "Name": "SectorName",
+    "Description": "The sector that will be updated",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Url",
+    "Description": "The url that will be used to replace the sector",
+    "Types": [ "url" ],
+    "Optional": false
+  },
+  {
+    "Name": "Title",
+    "Description": "The title to be used",
+    "Types": [ "text" ],
+    "Optional": true
+  },
+  {
+    "Name": "CanRoute",
+    "Description": "Can the router be used",
+    "Types": [ "boolean" ],
+    "Optional": true
+  },
+  {
+    "Name": "CanLoadDefaultSectors",
+    "Description": "Can the default sector be loaded",
+    "Types": [ "boolean" ],
+    "Optional": true
+  },
+  {
+    "Name": "ContainerCode",
+    "Description": "The container code to be used to store the data when we switch the sector container",
+    "Types": [ "mustache", "text" ],
+    "Optional": true
+  }
+]
