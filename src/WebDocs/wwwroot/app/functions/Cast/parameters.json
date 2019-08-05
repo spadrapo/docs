@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "expression",
+    "Description": "The expression that will be resolved",
+    "Types": [ "expression" ],
+    "Optional": false
+  },
+  {
+    "Name": "Type",
+    "Description": "The result type",
+    "Types": [ "type" ],
+    "Optional": false
+  }
+]
