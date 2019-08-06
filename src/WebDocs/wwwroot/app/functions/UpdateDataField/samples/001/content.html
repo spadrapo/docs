@@ -1,0 +1,6 @@
+<div d-datakey="object" d-datatype="object" d-dataproperty-v1="1" d-dataproperty-v2="2"></div>
+<div>
+    <span>v1: </span><input type="text" d-model="{{object.v1}}" /><br />
+    <span>v2: </span><input type="text" d-model="{{object.v2}}" /><br />
+    <input type="button" value="Execute" d-on-click="UpdateDataField(object,v1,{{object.v2}})" /><br />
+</div>

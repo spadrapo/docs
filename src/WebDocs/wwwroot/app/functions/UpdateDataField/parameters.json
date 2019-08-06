@@ -1,0 +1,34 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identificaiton of a storage item",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataFields",
+    "Description": "The path of the data",
+    "Types": [ "text", "datafields" ],
+    "Optional": false
+  },
+  {
+    "Name": "Value",
+    "Description": "The new value that will be updated",
+    "Types": [ "text", "mustache", "function" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  },
+  {
+    "Name": "Recursive",
+    "Description": "Resolve the value mustaches until exist a mustache inside it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
