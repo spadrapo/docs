@@ -1,0 +1,9 @@
+<div d-datakey="object" d-datatype="object" d-dataproperty-v1="1" d-dataproperty-v2="2" d-dataproperty-v3="3" d-dataproperty-v4="4" d-dataproperty-v5=""></div>
+<div>
+    <span>v1: </span><input type="text" d-model="{{object.v1}}" /><br />
+    <span>v2: </span><input type="text" d-model="{{object.v2}}" /><br />
+    <span>v3: </span><input type="text" d-model="{{object.v3}}" /><br />
+    <span>v4: </span><input type="text" d-model="{{object.v4}}" /><br />
+    <input type="button" value="Execute" d-on-click="IF({{object.v1}}={{object.v2}},UpdateDataField(object,v5,{{object.v3}}),UpdateDataField(object,v5,{{object.v4}}))" /><br />
+    <span>v5: </span><input type="text" d-model="{{object.v5}}" /><br />
+</div>

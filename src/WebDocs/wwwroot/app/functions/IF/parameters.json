@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Conditinal",
+    "Description": "The conditional to be evaluated",
+    "Types": [ "conditional" ],
+    "Optional": false
+  },
+  {
+    "Name": "TrueExpression",
+    "Description": "The expression that will be executed if the conditional is true",
+    "Types": [ "expression" ],
+    "Optional": false
+  },
+  {
+    "Name": "FalseExpression",
+    "Description": "The expression that will be executed if the conditional is false",
+    "Types": [ "expression" ],
+    "Optional": true
+  }
+]
