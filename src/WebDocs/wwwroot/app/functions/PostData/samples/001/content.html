@@ -1,0 +1,12 @@
+<div>
+    <div>
+        <div d-dataKey="value" d-dataType="value" d-dataValue="OldValue"></div>
+        <div d-dataKey="mapping" d-dataType="mapping" d-dataValue="value"></div>
+    </div>
+    <div>
+        <span d-model="{{value}}"></span>
+        <br />
+        <span d-model="{{mapping}}"></span>
+    </div>
+    <input type="button" value="Post" d-on-click="UpdateData(mapping,Newvalue);PostData(mapping)" />
+</div>
