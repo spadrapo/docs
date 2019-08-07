@@ -1,0 +1,6 @@
+<div>
+    <div d-dataKey="object" d-dataUrlGet="~/api/Sample/GetValue" d-dataUrlSet="~/api/Sample/SetValue" ></div>
+    <input type="text" d-model="{{object.Value}}" /><br />
+    <span>Last Update: </span><span d-model="{{object.Date}}"></span>
+    <input type="button" value="Post" d-on-click="PostDataItem(object)" />
+</div>
