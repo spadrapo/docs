@@ -1,0 +1,28 @@
+[
+  {
+    "Name": "Expression",
+    "Description": "The expression that you want to execute",
+    "Types": [ "expression" ],
+    "Optional": false
+  },
+  {
+    "Name": "d-for",
+    "Description": "The d-for expression that wil be used",
+    "Types": [ "dfor" ],
+    "Optional": false
+  },
+  {
+    "Name": "d-if",
+    "Description": "The conditional that will be used to check if we will apply the expressions to the item in d-for",
+    "Types": [ "conditional" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  },
+  {
+    "Name": "All",
+    "Description": "If enabled will apply the expression to every object that matchs the conditional otherwise only the first match",
+    "Types": [ "conditional" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]

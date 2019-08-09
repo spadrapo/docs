@@ -1,0 +1,6 @@
+<div d-dataKey="values" d-dataType="array" d-dataValue='[{"name":"v1","selected":true},{"name":"v2"},{"name":"v3","selected":true}]'></div>
+<div d-dataKey="toggle" d-dataType="value" d-dataLoadType="startup" d-dataValue="ToggleItemField({{value.selected}})"></div>
+<ul>
+    <li d-for="value in values" d-class="{dSampleGreen:{{value.selected}}:dSampleRed}" d-on-click="{{toggle}}">{{value.name}}</li>
+</ul>
+<input type="button" value="Toggle All" d-on-click="ExecuteDataItem({{toggle}},value in values[^1],true,false)" />
