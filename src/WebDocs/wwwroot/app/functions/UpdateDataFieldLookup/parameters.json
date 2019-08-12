@@ -1,0 +1,39 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage item",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "dataFieldSeek",
+    "Description": "The field that you want to compare to a value",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "valueSeek",
+    "Description": "The value that you want to compare",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "dataField",
+    "Description": "The field that you want to update the value",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "value",
+    "Description": "The new value that you want to update",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
