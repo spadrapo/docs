@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The path to the place that you want to update",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Value",
+    "Description": "The new value that will be updated",
+    "Types": [ "text", "mustache"],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
