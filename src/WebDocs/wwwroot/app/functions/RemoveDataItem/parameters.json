@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage item",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataPath",
+    "Description": "The path to the item that you want to remove",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]

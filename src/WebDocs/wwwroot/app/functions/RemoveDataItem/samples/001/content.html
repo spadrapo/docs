@@ -1,0 +1,4 @@
+<div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+<div d-for="object in objects">
+    <span d-model="{{object.name}}" d-on-click="RemoveDataItem(objects,{{object}})"></span>
+</div>
