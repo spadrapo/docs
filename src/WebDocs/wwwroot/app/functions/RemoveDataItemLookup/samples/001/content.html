@@ -1,0 +1,8 @@
+<div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"v1","value":true},{"name":"v2"},{"name":"v3","value":true}]'></div>
+<div d-dataKey="search" d-dataType="object" d-dataProperty-key="name" d-dataProperty-value="v2"></div>
+<ul>
+    <li d-for="item in objects">{{item.name}}</li>
+</ul>
+<br />
+<span>Key:</span><input type="text" d-model="{{search.key}}" /><span>Value:</span><input type="text" d-model="{{search.value}}" />
+<input type="button" value="Remove" d-on-click="RemoveDataItemLookup(objects,{{search.key}},{{search.value}})" />
