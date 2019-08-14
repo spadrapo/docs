@@ -14,7 +14,7 @@
   {
     "Name": "Value",
     "Description": "The new value that will be updated",
-    "Types": [ "text", "mustache", "function" ],
+    "Types": [ "text", "mustache", "functionValue" ],
     "Optional": false
   },
   {

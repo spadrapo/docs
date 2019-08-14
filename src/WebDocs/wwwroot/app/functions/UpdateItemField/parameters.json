@@ -8,7 +8,7 @@
   {
     "Name": "Value",
     "Description": "The new value that will be updated",
-    "Types": [ "text", "mustache"],
+    "Types": [ "text", "mustache","functionValue"],
     "Optional": false
   },
   {
@@ -17,5 +17,12 @@
     "Types": [ "boolean" ],
     "Optional": true,
     "DefaultValue": "true"
+  },
+  {
+    "Name": "Recursive",
+    "Description": "Resolve the value mustaches until exist a mustache inside it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
   }
 ]

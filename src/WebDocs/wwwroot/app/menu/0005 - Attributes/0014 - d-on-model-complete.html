@@ -1,0 +1,14 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-on-model-complete</h2>
+        <p>You can use d-on-model-complete to execute an expression when the model event is fired. Event when the value is equal.</p>
+        <d-sample>
+            <div d-dataKey="item" d-dataType="object" d-dataProperty-name="Name" d-dataProperty-last="Last" d-dataProperty-changed=""></div>
+            <input type="text" d-id="name" d-model="{{item.name}}" d-model-event="blur,keyup-enter" d-on-model-change="UpdateDataField(item,changed,{{item.name}})" d-on-model-complete="Focus(last)"><span d-model="{{item.name}}"></span>
+            <input type="text" d-id="last" d-model="{{item.last}}" d-model-event="blur,keyup-enter" d-on-model-change="UpdateDataField(item,changed,{{item.last}})" d-on-model-complete="Focus(name)"><span d-model="{{item.last}}"></span>
+            <span d-model="{{item.changed}}"></span>
+        </d-sample>
+    </div>
+</div>
