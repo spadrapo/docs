@@ -4,7 +4,7 @@
     <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Drapo" Version="2019.8.14.2" />
+    <PackageReference Include="Drapo" Version="2019.8.14.3" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
