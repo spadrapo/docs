@@ -1,0 +1,14 @@
+<div d-datakey="objectTemplate" d-datatype="object" d-dataproperty-name="John Doe"></div>
+<div d-datakey="objects" d-datatype="array"></div>
+<div>
+    <span>name: </span><input type="text" d-model="{{objectTemplate.name}}" /><br />
+    <br />
+    <input type="button" value="Add" d-on-click="AddDataItem(objects,{{objectTemplate}},false)" />
+    <input type="button" value="Notify" d-on-click="Notify(objects)" />
+    <br />
+    <br />
+    <div d-for="object in objects">
+        <span d-model="{{object.name}}"></span>
+        <br />
+    </div>
+</div>
