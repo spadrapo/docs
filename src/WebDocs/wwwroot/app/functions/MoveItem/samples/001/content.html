@@ -1,0 +1,4 @@
+<div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+<div d-for="object in objects">
+    <span d-model="{{object.name}}" d-on-click="MoveItem({{object}},^1)" d-on-dblclick="MoveItem({{object}},0)"></span>
+</div>

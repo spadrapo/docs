@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "Key",
+    "Description": "The mustache of the object that you want to move",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Index",
+    "Description": "The new index of the object",
+    "Types": [ "index" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
