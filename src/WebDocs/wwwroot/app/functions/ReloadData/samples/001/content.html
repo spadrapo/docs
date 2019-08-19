@@ -1,0 +1,4 @@
+<div d-dataKey="object" d-dataUrlGet="~/api/Sample/GetValue" d-dataUrlSet="~/api/Sample/SetValue"></div>
+<input type="text" d-model="{{object.Value}}" /><br /><br />
+<span d-model="{{object.Value}}"></span><br /><br />
+<input type="button" value="Reload" d-on-click="ReloadData(object)" />
