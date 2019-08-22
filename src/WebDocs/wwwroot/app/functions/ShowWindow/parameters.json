@@ -1,0 +1,31 @@
+[
+  {
+    "Name": "windowNameOrUri",
+    "Description": "The sector that will be cleaned",
+    "Types": [
+      "url",
+      "windowName"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "did",
+    "Description": "The location where you want to open the window",
+    "Types": [ "did" ],
+    "Optional": false
+  },
+  {
+    "Name": "ParameterKey",
+    "Description": "The parameter key that you want to pass to the window",
+    "Types": [ "text" ],
+    "Optional": true,
+    "DefaultValue": ""
+  },
+  {
+    "Name": "ParameterValue",
+    "Description": "The parameter value that you want to pass to the window. ParameterKey and ParameterValue can be used several times",
+    "Types": [ "text" ],
+    "Optional": true,
+    "DefaultValue": ""
+  }
+]
