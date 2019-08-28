@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "did",
+    "Description": "The location where you want to close a window. If did is not informed, the last did used will be assigned ",
+    "Types": [ "did" ],
+    "Optional": true
+  },
+  {
+    "Name": "all",
+    "Description": "You want to close all windows",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  },
+  {
+    "Name": "type",
+    "Description": "The type of window. The only value supported right now is 'hidden'",
+    "Types": [ "text" ],
+    "Optional": true,
+    "DefaultValue": ""
+  }
+]

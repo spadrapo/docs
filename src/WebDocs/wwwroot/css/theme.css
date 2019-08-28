@@ -12,7 +12,7 @@ body {
   -webkit-font-smoothing: subpixel-antialiased;
 }
 .dSectorWindows {
-  position: relative;
+  position: absolute;
   z-index: 9999;
 }
 .dSectorHeader {
