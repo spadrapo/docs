@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>conditional</h2>
+        <p>The conditional validation type can be used to validate a conditional expression.</p>
+        <p>Simple example where the check must be checked to add an object:</p>
+        <d-sample>
+            <!--Data-->
+            <div d-dataKey="validator" d-dataType="object" d-dataProperty-agree="false"></div>
+            <div d-dataKey="objects" d-dataType="array"></div>
+            <div d-datakey="object" d-datatype="object" d-dataproperty-value=""></div>
+            <!--Validation-->
+            <div d-validation-id="agree" d-validation-type="conditional" d-validation-value="{{validator.agree}}"></div>
+            <div>
+                <!--UI-->
+                <span>Name:</span><input d-model="{{object.value}}" type="text" />
+                <br />
+                <br />
+                <input type="button" value="Add" d-on-click="AddDataItem(objects,{{object}})" d-validation-on-click="agree" />
+                <br />
+                <br />
+                <input type="checkbox" d-model="{{validator.agree}}" /><span> Agree to add</span>
+                <div d-validation="agree">
+                    <span>You must check the agree checkbox to add</span>
+                </div>
+                <br />
+                <br />
+                <div>
+                    <div d-for="current in objects">
+                        <span d-model="{{current.value}}"></span>
+                        <br />
+                    </div>
+                </div>
+            </div>
+        </d-sample>
+    </div>
+</div>

@@ -74,6 +74,9 @@ namespace WebDocs
             options.Config.CreateTheme("", "");
             options.Config.CreateTheme("Dark", "dark");
             options.Config.StorageErrors = "errors";
+            options.Config.ValidatorUncheckedClass = "ppValidationUnchecked";
+            options.Config.ValidatorValidClass = "ppValidatorValid";
+            options.Config.ValidatorInvalidClass = "ppValidatorInvalid";
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
