@@ -5,13 +5,21 @@
         <h2>d-format</h2>
         <h3>Number</h3>
         <p>You can use d-format to format the ouput of your one way data binding.</p>
-        <p>Numbers can be formatted in: Decimal (D), Number (N) or Percent (P)</p>
+        <p>Numbers can be formatted in: Decimal (D), Number (N) , Percent (P), Timespan (T)</p>
         <d-sample>
             <div d-dataKey="numbers" d-dataType="array" d-dataValue='[{"value":"123.12345","format":"D3"},{"value":"123.12345","format":"N"},{"value":"123.12345","format":"P2"}]'></div>
             <div d-for="number in numbers">
                 <span d-model="{{number.value}}"></span><br />
                 <span d-model="{{number.format}}"></span><br />
                 <span d-model="{{number.value}}" d-format="{{number.format}}"></span><br />
+                <br />
+            </div>
+        </d-sample>
+        <p>Here a sample using timespan</p>
+        <d-sample>
+            <div d-dataKey="datesCompare" d-dataType="array" d-dataValue='[{"start":"1980-06-03T11:57:24","end":"1980-06-03T12:52:24"}]'></div>
+            <div d-for="dateCompare in datesCompare">
+                <span d-model="Cast({{dateCompare.end}} - {{dateCompare.start}},number)" d-format="T"></span>
                 <br />
             </div>
         </d-sample>
