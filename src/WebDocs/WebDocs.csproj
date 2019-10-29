@@ -4,7 +4,7 @@
     <TypeScriptToolsVersion>3.3</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Drapo" Version="2019.9.18.4" />
+    <PackageReference Include="Drapo" Version="2019.10.28.1" />
     <PackageReference Include="Microsoft.AspNetCore.App" Version="2.1" />
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.0.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="2.5.0" />
@@ -33,5 +33,7 @@
       <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
     </Content>
   </ItemGroup>
-
+  <Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
+    <Copy SourceFiles="%(Content.Identity)" DestinationFiles="%(Content.Link)" SkipUnchangedFiles="false" OverwriteReadOnlyFiles="true" Condition="'%(Content.Link)' != ''" />
+  </Target>
 </Project>

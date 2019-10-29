@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Sector",
+    "Description": "The sector that identifies the instance. If you leave if in blank it will assumes that the function is inside the instance",
+    "Types": ["mustache","text"],
+    "Optional": true
+  },
+  {
+    "Name": "function",
+    "Description": "The function that will be called in the instance",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Return",
+    "Description": "The mustache that will be updated with the result of the function",
+    "Types": [ "mustache" ],
+    "Optional": true
+  },
+  {
+    "Name": "Parameters",
+    "Description": "The parameters that will be passed to the function",
+    "Types": [ "mustache" ],
+    "Optional": true
+  }
+]
