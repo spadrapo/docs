@@ -22,6 +22,7 @@ class Sample {
         const content: string = $(elContent).html();
         const contentEncoded: string = $('<textarea/>').text(content).html();
         $(elCode).html(contentEncoded);
+        $(elCode).attr('d-pre', 'true');
     }
 
     private GetElementCode(): HTMLPreElement {

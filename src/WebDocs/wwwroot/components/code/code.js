@@ -64,6 +64,7 @@ var Code = (function () {
                 contentEncoded = $('<textarea/>').text(content).html();
                 $(elContent).remove();
                 $(elCode).html(contentEncoded);
+                $(elCode).attr('d-pre', 'true');
                 return [2];
             });
         });

@@ -23,6 +23,7 @@ class Code {
         const contentEncoded: string = $('<textarea/>').text(content).html();
         $(elContent).remove();
         $(elCode).html(contentEncoded);
+        $(elCode).attr('d-pre', 'true');
     }
 
     private GetElementContent(): HTMLDivElement {

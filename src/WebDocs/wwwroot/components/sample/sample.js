@@ -63,6 +63,7 @@ var Sample = (function () {
                 content = $(elContent).html();
                 contentEncoded = $('<textarea/>').text(content).html();
                 $(elCode).html(contentEncoded);
+                $(elCode).attr('d-pre', 'true');
                 return [2];
             });
         });
