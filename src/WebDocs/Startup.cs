@@ -14,34 +14,38 @@ using System.IO;
 using WebDocs.Controllers;
 using System.Text.RegularExpressions;
 using WebDocs.Models;
+using Microsoft.OpenApi.Models;
+using Microsoft.Extensions.Hosting;
+using Sysphera.Middleware.Drapo.Pipe;
 
 namespace WebDocs
 {
     public class Startup
     {
+        DrapoMiddlewareOptions _options = null;
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSignalR().AddJsonProtocol(options => options.PayloadSerializerOptions.PropertyNamingPolicy = null);
             services.AddDrapo();
             services.AddMvc()
                   .AddJsonOptions(options =>
                   {
-                      options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                      options.JsonSerializerOptions.PropertyNamingPolicy = null;
                   });
             services.AddSingleton<MenuController, MenuController>();
             services.AddSingleton<FunctionController, FunctionController>();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Title = "Drapo Docs API",
                     Version = "v1",
                     Description = "API to be used in the drapo docs",
-                    TermsOfService = "None"
                 });
             });
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, MenuController menu)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MenuController menu)
         {
             if (env.IsDevelopment())
             {
@@ -57,8 +61,13 @@ namespace WebDocs
                     headers.CacheControl = new CacheControlHeaderValue() { NoCache = true };
                 }
             });
+            app.UseRouting();
             app.UseAuthentication();
-            app.UseMvcWithDefaultRoute();
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+                endpoints.MapHub<DrapoPlumberHub>(string.Format("/{0}", _options.Config.PipeHubName));
+            });
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
@@ -66,7 +75,7 @@ namespace WebDocs
             });
         }
 
-        private void ConfigureDrapo(IHostingEnvironment env, DrapoMiddlewareOptions options, MenuController menu)
+        private void ConfigureDrapo(IWebHostEnvironment env, DrapoMiddlewareOptions options, MenuController menu)
         {
             if (env.IsDevelopment())
                 options.Debug = true;
@@ -80,6 +89,7 @@ namespace WebDocs
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
+            this._options = options;
         }
 
         private async Task<DrapoDynamic> HandlerCustom(DrapoDynamic dynamic, MenuController menu)

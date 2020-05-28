@@ -30,5 +30,19 @@ namespace WebDocs.Controllers
             _valueDate.Date = DateTime.Now;
             return (_valueDate);
         }
+
+        [HttpGet]
+        public List<NodeVM> CreateNodes(int length = 5) 
+        {
+            List<NodeVM> nodes = new List<NodeVM>();
+            for (int i = 0; i < length; i++) 
+            {
+                NodeVM node = new NodeVM();
+                node.Key = $"K{i}";
+                node.Value = $"V{i}";
+                nodes.Add(node);
+            }
+            return (nodes);
+        }
     }
 }
