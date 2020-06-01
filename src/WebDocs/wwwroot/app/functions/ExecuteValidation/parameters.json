@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "validation",
+    "Description": "The expression that will be executed",
+    "Types": [ "validation" ],
+    "Optional": false
+  }
+]
