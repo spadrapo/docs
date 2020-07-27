@@ -25,6 +25,7 @@ namespace WebDocs
         DrapoMiddlewareOptions _options = null;
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddHttpContextAccessor();
             services.AddSignalR().AddJsonProtocol(options => options.PayloadSerializerOptions.PropertyNamingPolicy = null);
             services.AddDrapo();
             services.AddMvc()
