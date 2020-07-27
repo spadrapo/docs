@@ -1,6 +1,7 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "checkJs": false,
     "noImplicitAny": true,
     "noEmitOnError": true,
     "removeComments": true,
