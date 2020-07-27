@@ -13,9 +13,9 @@ namespace WebDocs.Controllers
     [Route("api/[controller]/[action]")]
     public class MenuController : Controller
     {
-        IHostingEnvironment _env;
+        IWebHostEnvironment _env;
         FunctionController _function;
-        public MenuController(IHostingEnvironment env, FunctionController function)
+        public MenuController(IWebHostEnvironment env, FunctionController function)
         {
             _env = env;
             _function = function;
