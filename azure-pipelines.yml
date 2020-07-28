@@ -27,9 +27,7 @@ stages:
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: latest
-    - task: Docker@2
+    - task: PowerShell@2
       inputs:
-        containerRegistry: 'docker'
-        repository: 'drapo/docs'
-        command: 'push'
-        tags: latest
+        targetType: 'inline'
+        script: 'docker push drapo/docs'
