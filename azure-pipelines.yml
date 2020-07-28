@@ -27,3 +27,8 @@ stages:
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'drapo'
+        repository: 'drapo/docs'
+        command: 'push'
