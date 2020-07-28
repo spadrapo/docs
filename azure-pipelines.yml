@@ -22,13 +22,13 @@ stages:
     - task: Docker@2
       displayName: Build an image
       inputs:
-        containerRegistry: 'drapo'
+        containerRegistry: 'docker'
         repository: 'drapo/docs'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
     - task: Docker@2
       inputs:
-        containerRegistry: 'drapo'
+        containerRegistry: 'docker'
         repository: 'drapo/docs'
         command: 'push'
