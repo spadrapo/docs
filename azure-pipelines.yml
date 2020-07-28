@@ -13,18 +13,17 @@ variables:
 
 stages:
 - stage: Build
-  displayName: Build image
+  displayName: Build and Push Docker
+  pool: Azure
   jobs:  
   - job: Build
     displayName: Build
-    pool:
-      vmImage: 'ubuntu-latest'
     steps:
     - task: Docker@2
       displayName: Build an image
       inputs:
         containerRegistry: 'drapo'
+        repository: 'drapo/docs'
         command: 'build'
         Dockerfile: '**/Dockerfile'
         tags: '$(tag)'
-        arguments: '-t drapo/docs'
