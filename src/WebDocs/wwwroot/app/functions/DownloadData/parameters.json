@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The datakey of type file that will be downloaded",
+    "Types": [ "datakey" ],
+    "Optional": false
+  }
+]

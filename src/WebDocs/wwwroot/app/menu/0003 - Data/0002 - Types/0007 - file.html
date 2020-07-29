@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>file</h2>
+        <p>The data type file is used to storage a file infomration. You can use it to extract the file length, data, and other properties/p>
+        <p>Here is a example of using the data file:</p>
+        <d-sample>
+            <div d-dataKey="dataFile" d-dataType="file" d-dataUrlGet="~/index.html"></div>
+            <span d-model="{{dataFile.contenttype}}"></span>
+            <br />
+            <span d-model="{{dataFile.length}}"></span>
+            <br />
+            <input type="button" value="Download" d-on-click="DownloadData(dataFile)" />
+        </d-sample>
+        <p>You can use the function [DownloadData](DownloadData) to download the file. In this case, the file is download to the storage when someone requests any information of the file. And the DownloadData just creates a blob to the user.</p>
+    </div>
+</div>
