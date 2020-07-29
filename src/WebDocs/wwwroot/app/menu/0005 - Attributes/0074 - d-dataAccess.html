@@ -1,0 +1,25 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataAccess</h2>
+        <p>You can use d-dataAccess to control how the sectors will see a storage item.</p>
+        <p>There is 2 options for this attribute:</p>
+        <ul>
+            <li><b>public</b>. Every sector that is friend or child will see this storage item. Its the <b>default value</b></li>
+            <li>private. Only the current sector will see this storage item.</li>
+        </ul>
+        <p>Example: </p>
+        <d-sample>
+            <div d-dataKey="valuePublic" d-dataType="value" d-dataValue="John"></div>
+            <div d-dataKey="valuePrivate" d-dataType="value" d-dataAccess="private" d-dataValue="Mary"></div>
+            <span d-model="{{valuePublic}}"></span>
+            <span d-model="{{valuePrivate}}"></span>
+            <div d-sector="internal">
+                <span d-model="{{valuePublic}}"></span>
+                <span d-model="{{valuePrivate}}"></span>
+            </div>
+        </d-sample>
+        <p>In this sample we cant see the storage item valuePrivate in the sector internal because it is private</p>
+    </div>
+</div>

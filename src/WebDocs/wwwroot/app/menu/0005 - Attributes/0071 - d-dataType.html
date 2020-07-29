@@ -1,0 +1,22 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataType</h2>
+        <p>You can use d-dataType to identify the type of the storage item.</p>
+        <p>The possible values are:</p>
+        <ul>
+            <li>[value](value)</li>
+            <li>[object](object)</li>
+            <li>[array](array)</li>
+            <li>[function](function)</li>
+            <li>[querystring](querystring)</li>
+            <li>[file](file)</li>
+            <li>[mapping](mapping)</li>
+        </ul>
+        <d-code>
+            <div d-dataKey="obj1" d-dataType="object"></div>
+        </d-code>
+        <p>In this case, the storage item has the name obj1 and his type is [object](object)</p>
+    </div>
+</div>
