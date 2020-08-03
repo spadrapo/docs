@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>querystring</h2>
+        <p>The type querystring can be used to access some information in the querystring.</p>
+        <p>An object will be created with the same key and values that you have in querstring as properties of an object.</p>
+        <p>Here a sample: </p>
+        <d-sample>
+            <div d-dataKey="qs" d-dataType="querystring"></div>
+            <div d-datakey="functionReloadWithQuerystring" d-dataType="value" d-dataLoadType="startup" d-dataValue="UpdateUrl(~/?w=querystring&name=john&last=doe);ReloadData(qs)"></div>
+            <div d-if="!{{qs.name}}">
+                <input type="button" value="Click here to append some info in the querystring" d-on-click="{{functionReloadWithQuerystring}}" />
+            </div>
+            <div d-if="{{qs.name}}">
+                <span>name: </span>
+                <span d-model="{{qs.name}}"></span>
+                <br />
+                <span>last: </span>
+                <span d-model="{{qs.last}}"></span>
+            </div>
+            <span d-model="{{valueToBeUpdated}}"></span>
+        </d-sample>
+    </div>
+</div>
