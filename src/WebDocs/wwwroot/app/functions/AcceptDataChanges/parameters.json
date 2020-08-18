@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Sector",
+    "Description": "The sector that the storage belongs",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "DataKey",
+    "Description": "The storage item that will be marked as unchanged",
+    "Types": [
+      "datakey",
+      "dataGroup"
+    ],
+    "Optional": false
+  }
+]
