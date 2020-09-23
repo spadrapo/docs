@@ -17,5 +17,19 @@
     "Types": [ "boolean" ],
     "Optional": true,
     "DefaultValue": "true"
+  },
+  {
+    "Name": "Recursive",
+    "Description": "Resolve the value mustaches until exist a mustache inside it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  },
+  {
+    "Name": "Resolve",
+    "Description": "Resolve the value mustaches or functions",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
   }
 ]
