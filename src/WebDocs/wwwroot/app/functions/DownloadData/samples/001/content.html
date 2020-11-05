@@ -1,0 +1,6 @@
+<div d-dataKey="dataFile" d-dataType="file" d-dataUrlGet="~/index.html"></div>
+<span d-model="{{dataFile.contenttype}}"></span>
+<br />
+<span d-model="{{dataFile.length}}"></span>
+<br />
+<input type="button" value="Download" d-on-click="DownloadData(dataFile)" />

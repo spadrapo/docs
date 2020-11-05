@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataUrlParameters</h2>
+        <p>You can use d-dataUrlParameters to control how drapo will deal with parameters in a data querystring.</p>
+        <p>There is 2 options for this attribute:</p>
+        <ul>
+            <li>required. This mean that all parameters in querystring will be required for the request.</li>
+            <li><b>optional</b>. Every request will be made without check the parameters.Its the <b>default value</b></li>
+        </ul>
+        <p>Syntax:</p>
+        <d-sample>
+            <div d-dataKey="object" d-dataType="object" d-dataProperty-length=""></div>
+            <div d-dataKey="itemsRequired" d-dataUrlGet="~/api/Sample/CreateNodes?length={{object.length}}"></div>
+            <div d-dataKey="itemsOptional" d-dataUrlParameters="optional" d-dataUrlGet="~/api/Sample/CreateNodes?length={{object.length}}"></div>
+            <div>
+                <span>Required</span><br />
+                <div d-for="item in itemsRequired">
+                    <span>Key: {{item.Key}}</span>
+                    <span>Value: {{item.Value}}</span><br>
+                </div>
+            </div>
+            <div>
+                <span>Optional</span><br />
+                <div d-for="itemOptional in itemsOptional">
+                    <span>Key: {{itemOptional.Key}}</span>
+                    <span>Value: {{itemOptional.Value}}</span><br>
+                </div>
+            </div>
+        </d-sample>
+    </div>
+</div>

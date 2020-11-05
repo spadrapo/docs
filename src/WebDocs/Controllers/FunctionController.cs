@@ -15,8 +15,8 @@ namespace WebDocs.Controllers
     [Route("api/[controller]/[action]")]
     public class FunctionController : Controller
     {
-        IHostingEnvironment _env;
-        public FunctionController(IHostingEnvironment env)
+        IWebHostEnvironment _env;
+        public FunctionController(IWebHostEnvironment env)
         {
             _env = env;
         }

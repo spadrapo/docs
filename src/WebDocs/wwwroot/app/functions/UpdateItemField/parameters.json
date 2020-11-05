@@ -24,5 +24,12 @@
     "Types": [ "boolean" ],
     "Optional": true,
     "DefaultValue": "false"
+  },
+  {
+    "Name": "Resolve",
+    "Description": "Resolve the value mustaches or functions",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
   }
 ]

@@ -1,0 +1,14 @@
+<div d-dataKey="data" d-dataUrlGet="~/api/Sample/CreateNodes?length=5"></div>
+<div d-dataKey="object" d-dataType="object" d-dataProperty-changed="false"></div>
+<div d-dataKey="functionUpdate" d-dataType="value" d-dataLoadType="startup" d-dataValue="IF(HasDataChanges(=,data),UpdateItemField({{object.changed}},true),UpdateItemField({{object.changed}},false))"></div>
+<div d-class="{dSampleRed:{{object.changed}}:dSampleGreen}">
+    <div d-for="item in data">
+        <span d-model="{{item.Key}}"></span>
+        <input type="text" d-model="{{item.Value}}" d-on-model-change="{{functionUpdate}}" />
+        <br />
+    </div>
+</div>
+<br /><span>Changed:</span><span d-model="{{object.changed}}"></span>
+<br />
+<br />
+<input type="button" value="AcceptDataChanges" d-on-click="AcceptDataChanges(=,data);Execute({{functionUpdate}})" />

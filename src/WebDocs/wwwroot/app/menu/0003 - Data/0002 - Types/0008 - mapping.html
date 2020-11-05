@@ -1,0 +1,36 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>mapping</h2>
+        <p>The type mapping can be used to transfer a copy of an object to another sector.</p>
+        <p>You can use it in cases where you have principal/details. Or you need to open a panel/popup with more info in another sector</p>
+        <p>Here a simple sample: </p>
+        <d-sample>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"name": "john"},{"name": "mary"}]'></div>
+            <div d-dataKey="personName" d-dataType="value"></div>
+            <div d-dataKey="personDetail" d-dataType="mapping" d-dataValue="persons" d-dataMappingSearchField="name" d-dataMappingSearchValue="{{personName}}"></div>
+            <span>Click in a person to edit</span>
+            <br />
+            <br />
+            <div>
+                <div d-for="person in persons">
+                    <span d-model="{{person.name}}" style="cursor:pointer" d-on-click="UpdateDataField(personName,,{{person.name}});ReloadData(personDetail);"></span>
+                </div>
+            </div>
+            <div d-if="{{personName}}">
+                <br />
+                <span>Details:</span>
+                <br />
+                <br />
+                <span>name: </span>
+                <input type="text" d-model="{{personDetail.name}}" />
+                <br />
+                <br />
+                <input type="button" value="Update" d-on-click="PostData(personDetail);UpdateDataField(personName,,)" />
+                <input type="button" value="Cancel" d-on-click="UpdateDataField(personName,,)" />
+            </div>
+        </d-sample>
+        <p>As you can see in this sample, you can use the function [PostData](PostData) to send the mapping object back to his origin</p>
+    </div>
+</div>

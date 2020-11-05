@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>function</h2>
+        <p>The type function can be used to store a [expression](expression).</p>
+        <p>Here a simple sample of a function: </p>
+        <d-sample>
+            <div d-dataKey="valueToBeUpdated" d-dataType="value"></div>
+            <div d-datakey="functionStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="UpdateItemField({{valueToBeUpdated}},John)"></div>
+            <span d-model="{{valueToBeUpdated}}"></span>
+        </d-sample>
+        <p>You can use the attribute [d-dataLoadType](d-dataLoadType) to define when the function will be loaded.</p>
+        <p>Here a sample using a function in an [event](event):</p>
+        <d-sample>
+            <div d-dataKey="valueToBeUpdated" d-dataType="value" d-dataValue="John"></div>
+            <div d-datakey="functionUpdate" d-dataType="function" d-dataValue="UpdateItemField({{valueToBeUpdated}},Mary)"></div>
+            <span d-model="{{valueToBeUpdated}}"></span>
+            <br />
+            <br />
+            <input type="button" value="Update!" d-on-click="{{functionUpdate}}" />
+        </d-sample>
+    </div>
+</div>

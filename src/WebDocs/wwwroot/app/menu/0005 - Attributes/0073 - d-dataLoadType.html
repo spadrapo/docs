@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataLoadType</h2>
+        <p>You can use d-dataLoadType to inform how the storage item will be loaded.</p>
+        <p>There is 2 options for this attribute:</p>
+        <ul>
+            <li><b>ondemand</b>. The storage item will be loaded when needed. Its the <b>default value</b></li>
+            <li>startup. The storage will be loaded when the drapo reads the storage item in the render phase.</li>
+        </ul>
+        <d-sample>
+            <div d-dataKey="valueOnDemand" d-dataType="value" d-dataValue="John Doe"></div>
+            <span d-model="{{valueOnDemand}}"></span>
+        </d-sample>
+        <p>This storage item will be loaded when the storage is used. In this case, when the d-model need to fill the value inside the span</p>
+        <d-sample>
+            <div d-dataKey="valueOnStartup" d-dataType="value" d-dataLoadType="startup" d-dataValue="John Doe"></div>
+        </d-sample>
+        <p>In this case, the storagem item is not used yeat. But its already loaded. You can check that using the [debugger](debugger) (ctrl + F2)</p>
+        <p>When you use the startup load type and the type of the storage item is a [function](function). The function will be executed in the render phase at the time that the storage item is loaded.</p>
+        <p>A sample of a function executed at the render phase</p>
+        <d-sample>
+            <div d-dataKey="valueChange" d-dataType="value" d-dataValue="John Doe"></div>
+            <div d-datakey="functionStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="UpdateItemField({{valueChange}},Mary)"></div>
+            <span d-model="{{valueChange}}"></span>
+        </d-sample>
+    </div>
+</div>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>object</h2>
+        <p>The type object can be used to store complex objets. You can use the attribute [d-dataProperty-](d-dataProperty-) to initialize the properties of an object.</p>
+        <p>Here a sample object person</p>
+        <d-sample>
+            <div d-dataKey="person" d-dataType="object" d-dataProperty-name="John" d-dataProperty-last="Doe"></div>
+            <span d-model="{{person.name}}"></span>
+            <br />
+            <span d-model="{{person.last}}"></span>
+        </d-sample>
+    </div>
+</div>
