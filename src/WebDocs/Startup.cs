@@ -80,7 +80,7 @@ namespace WebDocs
         {
             if (env.IsDevelopment())
                 options.Debug = true;
-            options.Config.UsePipes = false;
+            options.Config.UsePipes = true;
             options.Config.CreateTheme("", "");
             options.Config.CreateTheme("Dark", "dark");
             options.Config.StorageErrors = "errors";
