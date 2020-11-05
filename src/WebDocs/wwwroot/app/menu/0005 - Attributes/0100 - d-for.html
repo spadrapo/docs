@@ -1,0 +1,60 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-for</h2>
+        <p>We can use the d-for attribute to render a list of items based on an array.The syntax used inside the d-for is: {item} in {iterator}. Where {item} can be any name that you want and {iterator} must be a datakey.</p>
+        <p>Here a basic sample rendering an array:</p>
+        <d-sample>
+            <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes?length=5"></div>
+            <ul>
+                <li d-for="node in nodes">{{node.Key}}</li>
+            </ul>
+        </d-sample>
+        <br />
+        <p>The d-for will control when is needed to render again. You can check this behavior below:</p>
+        <d-sample>
+            <div d-dataKey="count" d-dataType="value" d-dataValue="3"></div>
+            <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes?length={{count}}"></div>
+            <span>Change the value </span><input type="text" d-model="{{count}}" /><span> to see what happens</span>
+            <br />
+            <ul>
+                <li d-for="node in nodes">{{node.Key}}</li>
+            </ul>
+        </d-sample>
+        <br />
+        <h4>Conditional</h4>
+        <p>You can control when d-for is active using the attribute [d-for-if](d-for-if)</p>
+        <p>You can also control when an item will be rendered or not. To do that, use the attibute [d-if](d-if)</p>
+        <br />
+        <h4>Object</h4>
+        <p>If the object inside {iterator} is an object. The d-for will transform this object into a dictionary of Key and Value.</p>
+        <p>Check this example of that bellow:</p>
+        <d-sample>
+            <div d-dataKey="person" d-dataType="object" d-dataProperty-name="John" d-dataProperty-last="Doe"></div>
+            <ul>
+                <li d-for="prop in person">{{prop.Key}} - {{prop.Value}}</li>
+            </ul>
+        </d-sample>
+        <br />
+        <h4>Range</h4>
+        <p>There an option to use the <a href="https://docs.microsoft.com/en-us/dotnet/csharp/language-reference/proposals/csharp-8.0/ranges">range</a> operator like in C# 8</p>
+        <p>Below a sample using the hat (^) operator to create a reverse list</p>
+        <d-sample>
+            <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes?length=5"></div>
+            <ul>
+                <li d-for="node in nodes[^0..0]">{{node.Key}}</li>
+            </ul>
+        </d-sample>
+        <br />
+        <p>Or maybe just remove the first and the last</p>
+        <d-sample>
+            <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes?length=5"></div>
+            <ul>
+                <li d-for="node in nodes[1..^1]">{{node.Key}}</li>
+            </ul>
+        </d-sample>
+        <br />
+        <h4>Recursivity</h4>
+    </div>
+</div>
