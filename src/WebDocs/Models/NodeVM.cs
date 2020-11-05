@@ -9,5 +9,10 @@ namespace WebDocs.Models
     {
         public string Key { set; get; }
         public string Value { set; get; }
+        public List<NodeVM> Nodes { set; get; }
+
+        public NodeVM() {
+            this.Nodes = new List<NodeVM>();
+        }
     }
 }

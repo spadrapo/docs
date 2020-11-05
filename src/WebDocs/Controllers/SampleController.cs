@@ -32,17 +32,26 @@ namespace WebDocs.Controllers
         }
 
         [HttpGet]
-        public List<NodeVM> CreateNodes(int length = 5) 
+        public List<NodeVM> CreateNodes(int length = 5, int levels = 0) 
         {
             List<NodeVM> nodes = new List<NodeVM>();
-            for (int i = 0; i < length; i++) 
+            this.Append(nodes, length, 0, levels);
+            return (nodes);
+        }
+
+        private void Append(List<NodeVM> buffer, int length, int currentLevel, int levels) 
+        {
+            if (currentLevel > levels)
+                return;
+            string prefix = (currentLevel == 0) && (levels == 0) ? string.Empty : "L" + currentLevel.ToString();
+            for (int i = 0; i < length; i++)
             {
                 NodeVM node = new NodeVM();
-                node.Key = $"K{i}";
-                node.Value = $"V{i}";
-                nodes.Add(node);
+                node.Key = $"{prefix}K{i}";
+                node.Value = $"{prefix}V{i}";
+                this.Append(node.Nodes, length, currentLevel + 1, levels);
+                buffer.Add(node);
             }
-            return (nodes);
         }
     }
 }
