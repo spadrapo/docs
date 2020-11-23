@@ -1,0 +1,5 @@
+<div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+<input type="button" value="Clear" d-on-click="ClearData(objects)" /><br /><br />
+<div d-for="object in objects">
+    <span d-model="{{object.name}}"></span>
+</div>

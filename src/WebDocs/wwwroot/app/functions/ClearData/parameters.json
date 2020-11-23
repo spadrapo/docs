@@ -1,0 +1,22 @@
+[
+    {
+        "Name": "DataKey",
+        "Description": "The identification of a storage item to be cleaned",
+        "Types": ["datakey"],
+        "Optional": false
+    },
+    {
+        "Name": "Sector",
+        "Description": "The sector that will be cleaned",
+        "Types": ["mustache","text"],
+        "Optional": true,
+        "DefaultValue": "actual sector"
+    },
+    {
+        "Name": "Notify",
+        "Description": "You can choose if you want no notify the change to the observer",
+        "Types": ["boolean"],
+        "Optional": true,
+        "DefaultValue": "true"
+    }
+]
