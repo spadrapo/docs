@@ -1,0 +1,54 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>query</h2>
+        <p>The type query can be used to join one or more storage in a single one chossing the columns that you want.</p>
+        <p>The syntax is a subset of SQL</p>
+        <p>Here a simple sample: </p>
+        <d-sample>
+            <p>Sample with a simple projection</p>
+            <div d-dataKey="objects" d-dataUrlGet="~/api/Sample/CreateNodes?length=5"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT Key FROM objects"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object.Key}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <p>As you can see in this sample, you can use the query type to create an array based on another array</p>
+        <br />
+        <p>Here is another sample where you can join 2 arrays:</p>
+        <d-sample>
+            <span>Inner Join</span>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/CreateNodes?length=5&prefix=O1"></div>
+            <div d-dataKey="objects2" d-dataUrlGet="~/api/Sample/CreateNodes?length=5&prefix=O2"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT O1.Key AS Key1, O2.Key as Key2, O1.Value FROM objects1 AS O1 INNER JOIN objects2 AS O2 ON O1.Value = O2.Value"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object.Key1}}</span>
+                    <span>{{object.Key2}}</span>
+                    <span>{{object.Value}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>Another one where you can use a mustache against a datakey:</p>
+        <d-sample>
+            <span>Mustache</span>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/CreateNodes?levels=2&length=5&prefix=O1"></div>
+            <div d-dataKey="objects2" d-dataUrlGet="~/api/Sample/CreateNodes?levels=2&length=5&prefix=O2"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT O1.Key AS Key1, O2.Key as Key2, O1.Value FROM {{objects1.[1].Nodes}} AS O1 INNER JOIN {{objects2.[1].Nodes}} AS O2 ON O1.Value = O2.Value"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object.Key1}}</span>
+                    <span>{{object.Key2}}</span>
+                    <span>{{object.Value}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+    </div>
+</div>
