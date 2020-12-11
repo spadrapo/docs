@@ -50,5 +50,20 @@
                 </div>
             </div>
         </d-sample>
+        <br />
+        <p>Here another sample using one of the sources as an array:</p>
+        <d-sample>
+            <span>Array</span>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/CreateNodes?levels=2&length=5&prefix=O1"></div>
+            <div d-datakey="objects2" d-dataurlget="~/api/Sample/GetArray?prefix=L0V&amp;divisor=2"></div>
+            <div d-datakey="objectsQuery" d-datatype="query" d-datavalue="SELECT O1.Key AS Key, O2 AS Value FROM objects1 AS O1 INNER JOIN objects2 AS O2 ON O1.Value = O2"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object.Key}}</span>
+                    <span>{{object.Value}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
     </div>
 </div>

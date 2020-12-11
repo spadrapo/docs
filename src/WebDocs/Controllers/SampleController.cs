@@ -53,5 +53,19 @@ namespace WebDocs.Controllers
                 buffer.Add(node);
             }
         }
+
+        [HttpGet]
+        public List<string> GetArray(int start = 0, int length = 10, string prefix = null, int? divisor = null)
+        {
+            List<string> array = new List<string>();
+            for (int i = start; i < length; i++)
+            {
+                if ((divisor.HasValue) && ((i % divisor.Value) != 0))
+                    continue;
+                string value = $"{prefix}{i.ToString()}";
+                array.Add(value);
+            }
+            return (array);
+        }
     }
 }
