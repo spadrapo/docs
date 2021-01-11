@@ -32,5 +32,42 @@
             </div>
         </d-sample>
         <p>As you can see in this sample, you can use the function [PostData](PostData) to send the mapping object back to his origin</p>
+        <br />
+        <br />
+        <p>You can use mapping to load a storageitem reference.</p>
+        <p>Here is a basic sample using mapping to edit an item inside an array in an object.</p>
+        <br />
+        <d-sample>
+            <div>
+                <div d-dataKey="transfer" d-dataType="value" d-dataValue=""></div>
+            </div>
+            <div d-sector="show">
+                <div>
+                    <div d-datakey="persons" d-datatype="array" d-datavalue="[{&quot;name&quot;: &quot;John&quot;},{&quot;name&quot;: &quot;Mary&quot;},{&quot;name&quot;: &quot;Thiago&quot;}]"></div>
+                </div>
+                <div>
+                    <ul>
+                        <li d-for="person in persons" d-model="{{person.name}}" d-on-click="CloseWindow(,true);UpdateDataField(transfer,,CreateReference({{person}}));ShowWindow(~/app/Data/DataMappingReferenceEdit.html,edit)"></li>
+                    </ul>
+                </div>
+            </div>
+            <div d-id="edit" d-sector="edit"></div>
+        </d-sample>
+        <br />
+        <p>We can see the html for the DataMappingReferenceEdit.html below:</p>
+        <d-code>
+            <div d-sector="@">
+                <span>Edit</span>
+                <div d-datakey="personDetail" d-datatype="mapping" d-dataloadtype="reference" d-datavalue="{{transfer}}"></div>
+                <span>Name:</span>
+                <input type="text" d-model="{{personDetail.name}}" />
+                <br />
+                <br />
+                <input type="button" value="Update" d-on-click="PostData(personDetail);CloseWindow()">
+                <input type="button" value="Cancel" d-on-click="CloseWindow()">
+            </div>
+        </d-code>
+        <p>We can see that we are using the mapping with reference to load the data. And to save the save we are just using the PostData</p>
+        <p>The mapping will store the reference of his source to use the same reference to save the data.</p>
     </div>
 </div>
