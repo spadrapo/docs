@@ -2,7 +2,7 @@
   {
     "Name": "DataKey",
     "Description": "The identification of a storage what will receive the object",
-    "Types": [ "datakey" ],
+    "Types": [ "datakey", "mustache" ],
     "Optional": false
   },
   {
