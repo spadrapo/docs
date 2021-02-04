@@ -82,5 +82,30 @@
                 <span d-model="{{selection}}"></span><br />
             </div>
         </d-sample>
+        <br />
+        <p>Basic sample using WHERE</p>
+        <d-sample>
+            <div d-dataKey="selectionsWhere" d-dataType="array" d-dataValue="[1,2,4]"></div>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsSelected2" d-dataType="query" d-dataValue="SELECT S AS Selected, P.Code AS Code, P.Name as Name FROM persons AS P LEFT JOIN selectionsWhere AS S ON P.Code = S WHERE P.Code = 2"></div>
+            <div d-dataKey="personsSelected3" d-dataType="query" d-dataValue="SELECT S AS Selected, P.Code AS Code, P.Name as Name FROM persons AS P LEFT JOIN selectionsWhere AS S ON P.Code = S WHERE P.Code = 3"></div>
+            <div>
+                <div d-for="personSelected in personsSelected2">
+                    <input type="checkbox" d-model="{{personSelected.Selected}}" d-on-model-change="ToggleData({{selectionsWhere}},{{personSelected.Code}})" />
+                    <span>{{personSelected.Name}}</span>
+                    <br />
+                </div>
+            </div>
+            <div>
+                <div d-for="personSelected in personsSelected3">
+                    <input type="checkbox" d-model="{{personSelected.Selected}}" d-on-model-change="ToggleData({{selectionsWhere}},{{personSelected.Code}})" />
+                    <span>{{personSelected.Name}}</span>
+                    <br />
+                </div>
+            </div>
+            <div d-for="selection in selectionsWhere">
+                <span d-model="{{selection}}"></span><br />
+            </div>
+        </d-sample>
     </div>
 </div>
