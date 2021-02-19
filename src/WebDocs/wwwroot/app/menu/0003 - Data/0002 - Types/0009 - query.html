@@ -107,5 +107,15 @@
                 <span d-model="{{selection}}"></span><br />
             </div>
         </d-sample>
+        <br />
+        <p>Using a simple aggregation function</p>
+        <d-sample>
+            <span>Count</span>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/CreateNodes?levels=2&length=5&prefix=O1"></div>
+            <div d-datakey="objectsQuery" d-datatype="query" d-datavalue="SELECT Count(O1.Key) AS Count FROM objects1 AS O1"></div>
+            <div>
+                <span>{{objectsQuery.Count}}</span>
+            </div>
+        </d-sample>
     </div>
 </div>
