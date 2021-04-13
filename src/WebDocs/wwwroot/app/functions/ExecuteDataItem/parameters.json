@@ -24,5 +24,11 @@
     "Types": [ "conditional" ],
     "Optional": true,
     "DefaultValue": "true"
+  },
+  {
+    "Name": "Hierarchy",
+    "Description": "The expression used to allow recursion",
+    "Types": [ "dfor" ],
+    "Optional": true
   }
 ]

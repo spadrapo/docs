@@ -1,0 +1,19 @@
+<div>
+    <style>
+        .selectedExecuteDataItemHierarchy {
+            color: white;
+            background-color: red;
+        }
+    </style>
+    <span d-on-click="{{functionToggleAll}}">Click here to toggle All</span>
+    <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes?levels=1&length=2&prefix=O1"></div>
+    <div d-dataKey="functionToggle" d-dataType="value" d-dataLoadType="startup" d-dataValue="ToggleItemField({{node.Visible}});Notify(nodes)"></div>
+    <div d-dataKey="functionToggleAll" d-dataType="value" d-dataLoadType="startup" d-dataValue="ExecuteDataItem({{functionToggle}},node in nodes,true,true,node in node.Nodes)"></div>
+    <div>
+        <div d-for="node in nodes">
+            <br />
+            <span d-model="{{node.Key}}" d-class="{selectedExecuteDataItemHierarchy:{{node.Visible}}}" d-on-click="{{functionToggle}}"></span>
+            <div d-for="node in node.Nodes"></div>
+        </div>
+    </div>
+</div>
