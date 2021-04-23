@@ -1,0 +1,11 @@
+<div d-dataKey="personCurrent" d-dataType="object" d-dataValue='{"Code":1,"Name":"Thiago"}'></div>
+<div d-dataKey="persons" d-dataType="array"></div>
+<span>Current: </span>
+<input type="text" d-model="{{personCurrent.Name}}" />
+<br />
+<div>
+    <input type="button" value="Add" d-on-click="AddDataItem(persons,{{personCurrent}},true,false)">
+    <ul>
+        <li d-for="person in persons">{{person.Name}}</li>
+    </ul>
+</div>

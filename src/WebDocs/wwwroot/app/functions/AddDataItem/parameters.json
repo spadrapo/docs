@@ -17,5 +17,12 @@
     "Types": [ "boolean" ],
     "Optional": true,
     "DefaultValue": "true"
+  },
+  {
+    "Name": "Clone",
+    "Description": "You can choose if you want no clone the object or use a reference",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
   }
 ]
