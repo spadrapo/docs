@@ -69,5 +69,23 @@
         </d-code>
         <p>We can see that we are using the mapping with reference to load the data. And to save the save we are just using the PostData</p>
         <p>The mapping will store the reference of his source to use the same reference to save the data.</p>
+        <br />
+        <p>You can subscribe a mapping to reload when its source is changed with the attribute <b>d-dataMappingSubscribe</b>. You can see a sample below:</p>
+        <d-sample>
+            <div>
+                <div>
+                    <div d-dataKey="value" d-dataType="value" d-dataValue="NewValue"></div>
+                    <div d-dataKey="mapping" d-dataType="mapping" d-dataLoadType="startup" d-dataValue="value" d-dataMappingSubscribe="true"></div>
+                    <div d-dataKey="start" d-dataType="function" d-dataLoadType="startup" d-dataValue="UpdateData(value,UltraNew)"></div>
+                </div>
+                <div>
+                    <span d-model="{{value}}"></span>
+                    <br />
+                    <span d-model="{{mapping}}"></span>
+                    <br />
+                    <input type="text" d-model="{{value}}" />
+                </div>
+            </div>
+        </d-sample>
     </div>
 </div>
