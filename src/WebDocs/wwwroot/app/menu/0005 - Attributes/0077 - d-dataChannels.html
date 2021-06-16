@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataChannels</h2>
+        <p>You can use d-dataChannels to sync 2 or more storagem items.</p>
+        <p>When a storage have a channel he will try to use the same value of another storage item already loaded. If it is the first one. He will be initialized following his type</p>
+        <p>Every time that you update an storage item with channel all chanels of that storage item will be updated too.</p>
+        <p>Only primitive types are supported in channels.</p>
+        <p>A sample using data channels:</p>
+        <d-sample>
+            <div d-dataKey="value0" d-dataType="value" d-dataValue="value0" d-dataChannels="c012"></div>
+            <span>0: </span>
+            <span d-model="{{value0}}"></span>
+            <input type="text" d-model="{{value0}}" />
+            <div d-sector="1">
+                <div d-dataKey="value1" d-dataType="value" d-dataValue="value1" d-dataChannels="c012"></div>
+                <span>1: </span>
+                <span d-model="{{value1}}"></span>
+                <input type="text" d-model="{{value1}}" />
+            </div>
+            <div d-sector="2">
+                <div d-dataKey="value2" d-dataType="value" d-dataValue="value2" d-dataChannels="c012"></div>
+                <span>2: </span>
+                <span d-model="{{value2}}"></span>
+                <input type="text" d-model="{{value2}}" />
+            </div>
+            <div d-sector="3">
+                <div d-dataKey="value3" d-dataType="value" d-dataValue="value3" d-dataChannels="c34"></div>
+                <span>3: </span>
+                <span d-model="{{value3}}"></span>
+                <input type="text" d-model="{{value3}}" />
+            </div>
+            <div d-sector="4">
+                <div d-dataKey="value4" d-dataType="value" d-dataValue="value4" d-dataChannels="c34"></div>
+                <span>4: </span>
+                <span d-model="{{value4}}"></span>
+                <input type="text" d-model="{{value4}}" />
+            </div>
+            <div d-dataKey="dataFunction" d-dataType="function" d-dataLoadType="startup" d-dataValue="UpdateData(value0,startup)"></div>
+        </d-sample>
+    </div>
+</div>
