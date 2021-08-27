@@ -170,5 +170,18 @@
                 </div>
             </div>
         </d-sample>
+        <br />
+        <p>Sometimes we need our output to be a primitive array. We can do that using the attribute d-dataQueryArray. This will inform which column will be used to be the output column</p>
+        <d-sample>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/GetArray?start=0&length=5"></div>
+            <div d-dataKey="objects2" d-dataUrlGet="~/api/Sample/GetArray?start=3&length=8"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataQueryArray="Code1" d-dataValue="SELECT O1 AS Code1, O2 as Code2 FROM objects1 AS O1 OUTER JOIN objects2 AS O2 ON O1 = O2"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
     </div>
 </div>
