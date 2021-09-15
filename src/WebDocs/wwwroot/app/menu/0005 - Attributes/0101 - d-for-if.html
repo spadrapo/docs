@@ -3,5 +3,24 @@
 <div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
     <div>
         <h2>d-for-if</h2>
+        <p>It works as a conditional for d-for. So, it means: it can be used for active or inactive the attribute d-for.</p>
+        <p>Here a basic sample where the button toggle will active or inactive the interator:</p>
+        <d-sample>
+            <div d-dataKey="nodes" d-dataUrlGet="~/api/Sample/CreateNodes"></div>
+            <div d-dataKey="data" d-dataType="object" d-dataProperty-show="false"></div>
+            <div d-dataKey="click" d-dataType="value" d-dataLoadType="startup" d-dataValue="ToggleItemField({{data.show}})"></div>
+            <br />
+            <div>
+                <div>
+                    <span>Hello World !!!</span>
+                    <div d-for="node in nodes" d-for-if="{{data.show}}">
+                        <span d-model="{{node.Key}}"></span>
+                        <br />
+                    </div>
+                </div>
+                <br />
+                <input type="button" value="Toogle" d-on-click="{{click}}" />
+            </div>
+        </d-sample>
     </div>
 </div>
