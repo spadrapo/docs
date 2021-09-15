@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataChannels</h2>
+        <p>You can use d-dataPipes when you need to send some information from backend to the frontend.</p>
+        <p>In the backend you need to inject the interface IDrapoPlumber. This interface has the following contract:</p>
+        <div>
+            <d-code>
+                public interface IDrapoPlumber
+                {
+                    bool CheckConnections();
+                    Task<long> Count();
+                    Task<List<DrapoConnection>> GetConnections();
+                    Task<bool> Identify(long identity);
+                    Task<bool> Send(DrapoPipeMessage message, DrapoPipeAudienceType recipient = DrapoPipeAudienceType.Others);
+                }
+            </d-code>
+        </div>
+        <br />
+        <p>To send information to the client side you can use the method Send. The first parameter is the DrapoPipeMessage.</p>
+        <p>You have 3 types of message that you can delivery to the frontend.</p>
+        <ul>
+            <li>Register - When you need to register</li>
+            <li>Storage - When you need to update storage item</li>
+            <li>Execute - When you need to execute a function</li>
+        </ul>
+        <p>The send method has a second parameter that is the audience of the message. You have 3 options here</p>
+        <ul>
+            <li><b>Others</b> (default)</li>
+            <li>Me</li>
+            <li>Everyone</li>
+        </ul>
+        <p>Here a sample code of C# that updates the storage items that have d-dataPipes="chat"</p>
+        <d-code>
+            _plumber.Send(new DrapoPipeMessage() { Data = "chat" });
+        </d-code>
+        <p>A simple chat using d-dataPipes:</p>
+        <d-sample>
+            <span>Chat</span>
+            <div d-dataKey="user" d-dataType="object" d-dataProperty-name-name="User" d-dataProperty-name-value="John"></div>
+            <div d-dataKey="chats" d-dataUnitOfWork="true" d-dataUrlGet="~/api/Chat/Get" d-dataUrlSet="~/api/Chat/Set" d-dataPipes="chat"></div>
+            <br>
+            <span>User:</span><input type="text" d-model="{{user.User}}">
+            <br>
+            <span>Message:</span><input type="text" d-model="{{user.Message}}"><input type="button" value="Talk" d-on-click="AddDataItem(chats,user,false);PostData(chats)" /><input type="button" value="Clear" d-on-click="ClearData(chats,false);PostData(chats)" />
+            <br />
+            <br />
+            <ul>
+                <li d-for="chat in chats">{{chat.Date}} - {{chat.User}} - {{chat.Message}}</li>
+            </ul>
+        </d-sample>
+        <br />
+    </div>
+</div>

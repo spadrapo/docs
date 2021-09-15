@@ -28,7 +28,11 @@ namespace WebDocs
             services.AddHttpContextAccessor();
             services.AddSignalR().AddJsonProtocol(options => options.PayloadSerializerOptions.PropertyNamingPolicy = null);
             services.AddDrapo();
-            services.AddMvc()
+            services.AddControllersWithViews()
+                  .AddNewtonsoftJson(options =>
+                  {
+                      options.SerializerSettings.ContractResolver = new DefaultContractResolver();
+                  })
                   .AddJsonOptions(options =>
                   {
                       options.JsonSerializerOptions.PropertyNamingPolicy = null;
