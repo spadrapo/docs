@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataCache</h2>
+        <p>You can use d-dataCache to inform if the storage item will be mantained in cache or used and discarted (unloaded).
+        <br>When accessing a cached storage item it's dataValue is not evalueted again. Use d-dataCache="false" to ensure that dataValue is always re-evaluated when used (reloaded/executed).</p>
+        <br>
+        <h4>Sample 1</h4>
+        <d-sample>
+            <div d-datakey="s1-collection1" d-datatype="array" d-datavalue="[{&quot;name&quot;: &quot;john&quot;},{&quot;name&quot;: &quot;mary&quot;}]"></div>
+            <div d-datakey="s1-collection2" d-datatype="array" d-datavalue="[{&quot;name&quot;: &quot;david&quot;},{&quot;name&quot;: &quot;nika&quot;}]"></div>
+            <div d-datakey="s1-loadCollection1" d-datatype="function" d-dataloadtype="startup" d-datavalue="UpdateData(s1-collectionNames,{{s1-collection1}})"></div>
+            <div d-datakey="s1-loadCollection2" d-datatype="function" d-datavalue="UpdateData(s1-collectionNames,{{s1-collection2}})"></div>
+            <div d-datakey="s1-collectionNames" d-datatype="object"></div>
+            <div>
+                <ul>
+                    <li d-for="item in s1-collectionNames">{{item.name}}</li>
+                </ul>
+            </div>
+            <br>
+            <input type="button" value="Load collection 1" d-on-click="Execute({{s1-loadCollection1}})">
+            <input type="button" value="Load collection 2" d-on-click="Execute({{s1-loadCollection2}})">
+        </d-sample>
+        <p>Note: A function "cacheable" execute only one time because your "dataValue" already is in cache after the first execution and in teory is not necessary evaluate his dataValue again.</p>
+        <br>
+        <h4>Sample 2</h4>
+        <d-sample>
+            <div d-datakey="s2-collection1" d-datatype="array" d-datavalue="[{&quot;name&quot;: &quot;john&quot;},{&quot;name&quot;: &quot;mary&quot;}]"></div>
+            <div d-datakey="s2-collection2" d-datatype="array" d-datavalue="[{&quot;name&quot;: &quot;david&quot;},{&quot;name&quot;: &quot;nika&quot;}]"></div>
+            <div d-datakey="s2-loadCollection1" d-datatype="function" d-dataCache="false" d-dataloadtype="startup" d-datavalue="UpdateData(s2-collectionNames,{{s2-collection1}})"></div>
+            <div d-datakey="s2-loadCollection2" d-datatype="function" d-dataCache="false" d-datavalue="UpdateData(s2-collectionNames,{{s2-collection2}})"></div>
+            <div d-datakey="s2-collectionNames" d-datatype="object"></div>
+            <div>
+                <ul>
+                    <li d-for="item in s2-collectionNames">{{item.name}}</li>
+                </ul>
+            </div>
+            <br>
+            <input type="button" value="Load collection 1" d-on-click="Execute({{s2-loadCollection1}})">
+            <input type="button" value="Load collection 2" d-on-click="Execute({{s2-loadCollection2}})">
+        </d-sample>
+        <br><br>
+    </div>
+</div>
