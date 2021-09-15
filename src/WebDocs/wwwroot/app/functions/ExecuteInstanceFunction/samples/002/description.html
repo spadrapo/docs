@@ -1,0 +1,47 @@
+<p>A sample that creates a component that will increase an internal number when you click in the button <b>from ribbon button</b>. When you click an internal function is called</p>
+<br />
+<p>The view of the component is the following:</p>
+<d-code>
+    <div d-sector="@" dc-value="0">
+        <div d-dataKey="internal" d-dataType="parent" d-dataValue="dc-"></div>
+        <div d-dataKey="internalFunction" d-dataType="value" d-dataLoadType="startup" d-dataValue="ExecuteInstanceFunction(,Increment,{{internal.value}},{{internal.value}})"></div>
+        <div>
+            <!--Layout-->
+            <span d-model="{{internal.value}}"></span><input type="button" d-on-click="{{internalFunction}}" value="Increment" />
+        </div>
+    </div>
+</d-code>
+<p>And the typescript of the component:</p>
+<d-code>
+    async function executorConstructor(el: HTMLElement, app: DrapoApplication): Promise< Executor>
+    {
+        //Initialize
+        let instance: Executor = new Executor(el, app);
+        await instance.Initalize();
+        return (instance);
+    }
+
+    class Executor {
+        //Field
+        private _el: HTMLElement = null;
+        private _app: DrapoApplication;
+        private _sector: string = null;
+        //Properties
+        //Constructors
+        constructor(el: HTMLElement, app: DrapoApplication) {
+            this._el = el;
+            this._app = app;
+        }
+
+        public async Initalize(): Promise< void>
+        {
+            this._sector = this._app.Document.GetSector(this._el);
+        }
+
+        public async Increment(value : string): Promise< string>
+        {
+            let valueNumber: number = this._app.Parser.GetStringAsNumber(value) + 1;
+            return (valueNumber.toString());
+        }
+    }
+</d-code>
