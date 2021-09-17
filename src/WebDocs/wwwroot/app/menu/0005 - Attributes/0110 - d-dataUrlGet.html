@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataUrlGet</h2>
+        <p>You can use dataUrlGet to query the APIs.</p>
+        <h4>Sample 1</h4>
+        <d-sample>
+            <div d-datakey="listNames" d-dataUrlGet="~/api/Sample/GetNames"></div>
+            <div>
+                <span>Get names</span><br>
+                <div d-for="name in listNames">
+                    <span>Key: {{name.Key}}</span>
+                    <span>Value: {{name.Value}}</span><br>
+                </div>
+            </div>
+        </d-sample>
+        <br>
+        <h4>Sample 2</h4>
+        <p>Passando parametros no dataUrlGet.</p>
+        <br>
+        <d-sample>
+            <div d-datakey="object" d-datatype="object" d-dataproperty-id="1"></div>
+            <div d-datakey="nameById" d-dataUrlParameters="required" d-dataUrlGet="~/api/Sample/GetNameById?idName={{object.id}}"></div>
+            <div>
+                <span>Get name by Id:</span>
+                <br>
+                <input type="number" d-model="{{object.id}}">
+                <input type="button" value="Reload" d-on-click="PostData(nameById)">
+                <div>
+                    <span>Value: </span>
+                    <span d-model="{{nameById.Value}}"></span><br>
+                </div>
+            </div>
+        </d-sample>
+        <br>
+    </div>
+</div>

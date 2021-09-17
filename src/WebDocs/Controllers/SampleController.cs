@@ -54,6 +54,59 @@ namespace WebDocs.Controllers
             }
         }
 
+        [HttpPost]
+        public object SetNameInListNames([FromBody] object names) 
+        {
+            return (names);
+        }
+
+        [HttpGet]
+        public List<NodeVM> GetNames() 
+        {
+            List<NodeVM> namesVM = new List<NodeVM>();
+            Dictionary<string, string> ListName = new Dictionary<string, string>();
+            ListName.Add("1", "Akuma");
+            ListName.Add("2", "Ken");
+            ListName.Add("3", "Ryo");
+
+            foreach (KeyValuePair<string, string> name in ListName)
+            {
+                NodeVM nameVM = new NodeVM();
+                nameVM.Key = name.Key;
+                nameVM.Value = name.Value;
+                namesVM.Add(nameVM);
+            }
+            return (namesVM);
+        }
+
+        [HttpPost]
+        public List<NodeVM> GetProfessionsByPeaples([FromBody] List<NodeVM> names) 
+        {
+            List<NodeVM> namesProfession = new List<NodeVM>();
+            Dictionary<string, string> professions = new Dictionary<string, string>();
+            professions.Add("1", "Developer");
+            professions.Add("2", "Engineer");
+            professions.Add("3", "Support");
+
+            foreach (KeyValuePair<string, string> profession in professions)
+            {
+                NodeVM nameProfession = new NodeVM();
+                NodeVM name= names.FirstOrDefault(_ => _.Key == profession.Key);
+                nameProfession.Key = name.Value;
+                nameProfession.Value = profession.Value;
+                namesProfession.Add(nameProfession);
+            }
+            return (namesProfession);
+        }
+
+        [HttpGet]
+        public NodeVM GetNameById(string idName) 
+        {
+            List<NodeVM> names = GetNames();
+            NodeVM name = names.FirstOrDefault(_ => _.Key == idName);
+            return name;
+        }
+
         [HttpGet]
         public List<string> GetArray(int start = 0, int length = 10, string prefix = null, int? divisor = null)
         {

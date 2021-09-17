@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataUrlSet</h2>
+        <p>You can use the dataUrlSet to send data as APIs.</p>
+        
+        <d-sample>
+            <div d-datakey="object" d-datatype="object" d-dataproperty-key-name="Key" d-dataproperty-key-value="" d-dataproperty-value-name="Value" d-dataproperty-value-value=""></div>
+            <div d-datakey="listNames" d-dataUrlGet="~/api/Sample/GetNames" d-dataUrlSet="~/api/Sample/SetNameInListNames"></div>
+            <div>
+                <span>Get names:</span><br>
+                <div d-for="name in listNames">
+                    <span>Key: </span>
+                    <span d-model="{{name.Key}}"></span>
+                    <span>Value:</span>
+                    <span d-model="{{name.Value}}"></span><br>
+                </div>
+            </div>
+            <br>
+            <div>
+                <span>Add name in list:</span><br>
+                <span>Key: </span>
+                <input type="number" d-model="{{object.Key}}">
+                <span>Value: </span>
+                <input type="text" d-model="{{object.Value}}">
+                <input type="button" value="Add" d-on-click="AddDataItem(listNames,{{object}},false);PostDataItem(listNames)">
+            </div>
+        </d-sample>
+        <br>
+    </div>
+</div>

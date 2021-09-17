@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataPostGet</h2>
+        <p>You can use d-dataPostGet to pass the value of one dataKey as a parameter of another d-dataUrlGet.</p>
+        <d-sample>
+            <div d-datakey="listNames" d-dataUrlGet="~/api/Sample/GetNames"></div>
+            <div d-datakey="ProfessionsByPeaples" d-dataUrlGet="~/api/Sample/GetProfessionsByPeaples" d-dataPostGet="listNames"></div>
+            <div>
+                <span>Profession by peaples:</span><br><br>
+                <div d-for="ProfessionByPeaple in ProfessionsByPeaples">
+                    <label>Peaple name: </label>
+                    <span d-model="{{ProfessionByPeaple.Key}}"></span>
+                    <label>Professions: </label>
+                    <span d-model="{{ProfessionByPeaple.Value}}"></span><br>
+                </div>
+            </div>
+        </d-sample>
+        <br>
+    </div>
+</div>
