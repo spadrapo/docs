@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-render</h2>
+        <p>You can use d-render when you need conditionally choose to render or not an element.</p>
+        <p>Syntax:</p>
+        <d-sample>
+            <div d-dataKey="object" d-dataType="object" d-dataProperty-value1="true" d-dataProperty-value2="false"></div>
+            <div d-render="{{object.value1}}">
+                <span>must see</span>
+            </div>
+            <div d-render="{{object.value2}}">
+                <span>must not see</span>
+            </div>
+            <div d-render="true">
+                <span>must see 2</span>
+            </div>
+            <div d-render="false">
+                <span>must not see 2</span>
+            </div>
+        </d-sample>
+    </div>
+</div>
