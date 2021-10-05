@@ -183,5 +183,21 @@
                 </div>
             </div>
         </d-sample>
+        <br />
+        <p>You can use mustache inside WHERE too</p>
+        <d-sample>
+            <div d-datakey="objectValue1" d-datatype="value" d-dataloadtype="startup" d-datavalue="2"></div>
+            <div d-dataKey="selectionsWhere" d-dataType="array" d-dataValue="[1,2,4]"></div>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsSelected2" d-dataType="query" d-dataValue="SELECT S AS Selected, P.Code AS Code, P.Name as Name FROM persons AS P LEFT JOIN selectionsWhere AS S ON P.Code = S WHERE P.Code = {{objectValue1}}"></div>
+            <span>Value: </span><input type="text" d-model="{{objectValue1}}" /><br />
+            <div>
+                <div d-for="personSelected in personsSelected2">
+                    <span>{{personSelected.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
     </div>
 </div>
