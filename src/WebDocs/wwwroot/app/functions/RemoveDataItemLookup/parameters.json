@@ -1,8 +1,8 @@
 [
   {
     "Name": "DataKey",
-    "Description": "The identification of a storage item",
-    "Types": [ "datakey" ],
+    "Description": "The identification of a storage item or data",
+    "Types": [ "datakey", "mustache" ],
     "Optional": false
   },
   {

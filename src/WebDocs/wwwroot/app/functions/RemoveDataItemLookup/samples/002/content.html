@@ -1,0 +1,13 @@
+<div d-dataKey="objects" d-dataUrlGet="~/api/Sample/CreateNodes?children=5&Levels=1&includeIndex=true"></div>
+<div d-dataKey="search" d-dataType="object" d-dataProperty-key="Key" d-dataProperty-value="L1K2"></div>
+<div d-dataKey="functionStartup" d-dataType="value" d-dataLoadType="startup" d-dataValue="RemoveDataItemLookup({{objects.[3].Nodes}},{{search.key}},{{search.value}})"></div>
+<div>
+    <ul>
+        <li d-for="item in objects.[3].Nodes">{{item.Key}} - {{item.Value}}</li>
+    </ul>
+</div>
+<br />
+<span>Key:</span>
+<input type="text" d-model="{{search.key}}" />
+<input type="text" d-model="{{search.value}}" />
+<input type="button" value="Remove" d-on-click="{{functionStartup}}" />
