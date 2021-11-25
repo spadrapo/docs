@@ -2,7 +2,7 @@
     {
         "Name": "DataKey",
         "Description": "The identification of a storage item to be cleaned",
-        "Types": ["datakey"],
+        "Types": ["datakey","mustache"],
         "Optional": false
     },
     {
