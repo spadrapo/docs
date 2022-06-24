@@ -199,5 +199,74 @@
             </div>
         </d-sample>
         <br />
+        <p>Order By is available too</p>
+        <d-sample>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsQuery" d-dataType="query" d-dataValue="SELECT Code, Name FROM persons ORDER BY Name"></div>
+            <div>
+                <div d-for="person in personsQuery">
+                    <span>{{person.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>Can you use DESC</p>
+        <d-sample>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsQuery" d-dataType="query" d-dataValue="SELECT Code, Name FROM persons ORDER BY Name DESC"></div>
+            <div>
+                <div d-for="person in personsQuery">
+                    <span>{{person.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>Two types of sort together</p>
+        <d-sample>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsQuery" d-dataType="query" d-dataValue="SELECT Code, Name FROM persons ORDER BY Name ASC,Code DESC"></div>
+            <div>
+                <div d-for="person in personsQuery">
+                    <span>{{person.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>Dynamically change the order. Just click in ASC to change it</p>
+        <d-sample>
+            <div d-dataKey="sort" d-dataType="object" d-dataProperty-type="ASC"></div>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsQuery" d-dataType="query" d-dataValue="SELECT Code, Name FROM persons ORDER BY Name {{sort.type}}"></div>
+            <input type="button" d-attr-value="{{sort.type}}" d-on-click="IF({{sort.type}}=ASC,UpdateDataField(sort,type,DESC),UpdateDataField(sort,type,ASC))" />
+            <br />
+            <br />
+            <div>
+                <div d-for="person in personsQuery">
+                    <span>{{person.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>Or maybe change dynamically the column too. Just click in ASC to change it</p>
+        <d-sample>
+            <div d-dataKey="sort" d-dataType="object" d-dataProperty-column="Name" d-dataProperty-type="ASC"></div>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago"},{"Code":2,"Name":"Henrique"},{"Code":3,"Name":"Silva"},{"Code":4,"Name":"Catarina"},{"Code":5,"Name":"Augusto"}]'></div>
+            <div d-dataKey="personsQuery" d-dataType="query" d-dataValue="SELECT Code, Name FROM persons ORDER BY {{sort.column}} {{sort.type}}"></div>
+            <input type="button" d-attr-value="{{sort.column}}" d-on-click="IF({{sort.column}}=Name,UpdateDataField(sort,column,Code),UpdateDataField(sort,column,Name))" />
+            <input type="button" d-attr-value="{{sort.type}}" d-on-click="IF({{sort.type}}=ASC,UpdateDataField(sort,type,DESC),UpdateDataField(sort,type,ASC))" />
+            <br />
+            <br />
+            <div>
+                <div d-for="person in personsQuery">
+                    <span>{{person.Name}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
     </div>
 </div>
