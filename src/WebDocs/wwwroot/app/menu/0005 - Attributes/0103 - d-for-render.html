@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-for-render</h2>
+        <p>You can use d-for-render to control how the behavior of d-for.</p>
+        <p>You have a few options that can be used in this attribute:</p>
+        <ul>
+            <li>viewport. This will inform the d-for that he need to create a viewport to render the data. So the render startup will be much more faster.</li>
+            <li><b>dom</b>. When rendering the difference. The difference of nodes in the template will be compared to check if there is a change in the template.</li>
+            <li>html. When rendering the difference. The html of the template will be used to compare if there is any change in the template.</li>
+            <li>hash. When rendering the difference. A hash of all mustaches of the template will be used to check if there is a change in the template.</li>
+        </ul>
+        <p>Examples of use: </p>
+        <p>d-for-render='viewport'</p>
+        <p>d-for-render='viewport,html'</p>
+        <p>d-for-render='viewport,hash'</p>
+    </div>
+</div>
