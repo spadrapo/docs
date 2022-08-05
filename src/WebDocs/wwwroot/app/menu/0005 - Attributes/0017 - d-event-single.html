@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-event-single</h2>
+        <p>You can use d-event-single when you want to fire only one event at once per element. Others events fired will be not executed and will be discarted until the first one finishes</p>
+        <p>The default value for this attribute is false.</p>
+        <d-sample>
+            <span>Event Single</span>
+            <div d-dataKey="items" d-dataType="array"></div>
+            <div d-dataKey="itemAdd" d-dataType="value" d-dataUrlGet="~/api/Sample/GetDateDelay"></div>
+            <div d-dataKey="add" d-dataType="value" d-dataLoadType="startup" d-dataValue="UnloadData(itemAdd);AddDataItem(items,{{itemAdd}})"></div>
+            <input type="button" value="Add" d-event-single="true" d-on-click="{{add}}" />
+            <div>
+                <div d-for="item in items">
+                    <span d-model="{{item}}"></span>
+                </div>
+            </div>
+        </d-sample>
+    </div>
+</div>

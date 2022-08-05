@@ -61,6 +61,13 @@ namespace WebDocs.Controllers
         }
 
         [HttpGet]
+        public string GetDateDelay()
+        {
+            System.Threading.Thread.Sleep(5000);
+            return (DateTime.Now.ToString("yyyy-MM-dd hh:mm:ss.fff tt"));
+        }
+
+        [HttpGet]
         public List<NodeVM> GetNames() 
         {
             List<NodeVM> namesVM = new List<NodeVM>();
