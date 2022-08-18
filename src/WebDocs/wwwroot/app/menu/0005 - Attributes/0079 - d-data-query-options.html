@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-data-query-options</h2>
+        <p>You can use d-data-query-options when you need to send some options to data query engine.</p>
+        <p>Right now you have only option:</p>
+        <ul>
+            <li>list - When you need to transform an hierarchy in a flat list</li>
+        </ul>
+        <p>Here a sample how to use list.</p>
+        <div>
+            <d-sample>
+                <div>
+                    <span>Data Query - Options List</span>
+                    <div d-dataKey="objects" d-dataUrlGet="~/api/Sample/CreateNodes?levels=3&length=3&prefix=O1"></div>
+                    <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT Key, Value FROM objects ORDER BY Key DESC" d-data-query-options="list=Nodes"></div>
+                    <div>
+                        <div d-for="object in objectsQuery">
+                            <span>{{object.Key}}</span>
+                            <br />
+                        </div>
+                    </div>
+                </div>
+            </d-sample>
+        </div>
+        <br />
+    </div>
+</div>
