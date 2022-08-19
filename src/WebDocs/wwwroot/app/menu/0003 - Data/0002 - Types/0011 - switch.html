@@ -1,0 +1,27 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>switch</h2>
+        <p>The type switch can be used when you want to choose two or more data source relying in conditionals.</p>
+        <p>You need to split the data sources with comma. And the conditional with colon</p>
+        <p>Here a simple sample: </p>
+        <p>objectsQuery:{{options.flat}},objects</p>
+        <p>And here a sample using it:</p>
+        <d-sample>
+            <span>Data Switch</span>
+            <div d-dataKey="optionsSwitch" d-dataType="object" d-dataProperty-flat="false"></div>
+            <div d-dataKey="objects" d-dataUrlGet="~/api/Sample/CreateNodes?levels=3&length=3"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT Key, Value FROM objects ORDER BY Key DESC" d-data-query-options="list=Nodes"></div>
+            <div d-dataKey="objectsSwitch" d-dataType="switch" d-dataValue="objectsQuery:{{optionsSwitch.flat}},objects"></div>
+            <input type="button" value="Switch" d-on-click="ToggleItemField({{optionsSwitch.flat}})" />
+            <div>
+                <div d-for="object in objectsSwitch">
+                    <span>{{object.Key}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+    </div>
+</div>
