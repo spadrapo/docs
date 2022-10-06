@@ -1,0 +1,9 @@
+[
+  {
+    "Name": "Data",
+    "Description": "The data that you want to put in stack.",
+    "Types": [ "mustache", "text" ],
+    "Optional": true,
+    "DefaultValue": "Empty"
+  }
+]

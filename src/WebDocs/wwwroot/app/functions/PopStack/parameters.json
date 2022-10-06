@@ -1,0 +1,16 @@
+[
+  {
+    "Name": "Data",
+    "Description": "The location you want to update the data from stack",
+    "Types": [ "mustache" ],
+    "Optional": true,
+    "DefaultValue": "Empty"
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
