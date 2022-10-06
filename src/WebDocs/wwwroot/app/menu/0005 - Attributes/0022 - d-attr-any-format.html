@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-attr-any-format</h2>
+        <p>You can use d-attr-any-format to format the value of the attribute</p>
+        <p>Syntax:</p>
+        <d-code>
+            d-attr-[attributeName]-format="[format]"
+        </d-code>
+        <d-sample>
+            <div d-dataKey="object" d-dataType="object" d-dataProperty-value="123.12345" d-dataProperty-format="P"></div>
+            <div>
+                <input type="text" d-attr-placeholder="{{object.value}}" d-attr-placeholder-format="{{object.format}}">
+                <br />
+            </div>
+        </d-sample>
+    </div>
+</div>
