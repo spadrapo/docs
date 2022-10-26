@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage what will be locked",
+    "Types": [ "datakey" ],
+    "Optional": false
+  }
+]
