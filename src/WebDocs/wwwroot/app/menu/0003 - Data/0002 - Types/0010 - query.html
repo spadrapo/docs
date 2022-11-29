@@ -268,5 +268,18 @@
             </div>
         </d-sample>
         <br />
+        <p>You can also use LIKE in query</p>
+        <d-sample>
+            <div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/GetArray?start=0&length=15"></div>
+            <div d-dataKey="objects2" d-dataUrlGet="~/api/Sample/GetArray?start=0&length=15"></div>
+            <div d-dataKey="objectsQuery" d-dataType="query" d-dataValue="SELECT O1 AS Code1, O2 as Code2 FROM objects1 AS O1 OUTER JOIN objects2 AS O2 ON O1 = O2 WHERE O1 LIKE '1%'"></div>
+            <div>
+                <div d-for="object in objectsQuery">
+                    <span>{{object.Code1}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
     </div>
 </div>
