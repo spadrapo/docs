@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-modelNotify</h2>
+        <p>You can use d-modelnotify when you need to disable the notification after the model change caused by the d-model. The default value for this attribute is true.</p>
+        <d-sample>
+            <div d-dataKey="object" d-dataType="object" d-dataProperty-name="Name"></div>
+            <label>Text:</label>
+            <input type="text" d-model="{{object.name}}" d-modelnotify="false" />
+            <br />
+            <label>Reply:</label>
+            <label d-model="{{object.name}}"></label>
+            <input type="button" value="Click here to update" d-on-click="Notify(object)" />
+        </d-sample>
+    </div>
+</div>
