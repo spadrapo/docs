@@ -1,0 +1,9 @@
+[
+  {
+    "Name": "Type",
+    "Description": "The return type desired. Supported values: date and ISO",
+    "Types": [ "mustache", "text" ],
+    "Optional": true,
+    "DefaultValue": "date"
+  }
+]
