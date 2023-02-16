@@ -16,5 +16,15 @@
                 <li d-for="person in persons">{{person.name}}</li>
             </ul>
         </d-sample>
+        <br />
+        <p>You can initialize an array with a reference of another object. This way you can use an object inside a d-for</p>
+        <d-sample>
+            <div d-dataKey="objectSource" d-dataType="object" d-dataProperty-key="Key"></div>
+            <div d-dataKey="objects" d-dataType="array" d-dataValue="{{objectSource}}"></div>
+            <div>
+                <span d-for="object in objects" d-model="{{object.key}}"></span>
+            </div>
+            <input type="text" d-model="{{objectSource.key}}" />
+        </d-sample>
     </div>
 </div>
