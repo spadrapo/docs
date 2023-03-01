@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "Date",
+    "Description": "The base date that will be used",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Type",
+    "Description": "Defines what will be changed. Valid options are: day, month, year",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Increment",
+    "Description": "The increment that will be used in base date",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Return Type",
+    "Description": "The return type desired. Supported values: date and ISO",
+    "Types": [ "mustache", "text" ],
+    "Optional": true,
+    "DefaultValue": "date"
+  }
+]
