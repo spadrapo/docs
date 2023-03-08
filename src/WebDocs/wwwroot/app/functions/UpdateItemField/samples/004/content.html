@@ -1,0 +1,15 @@
+<div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"v1"},{"name":"v2"},{"name":"v3"}]'></div>
+<div d-datakey="input" d-datatype="object" d-dataproperty-value="New"></div>
+<div d-dataKey="index" d-dataType="value" d-dataValue="1"></div>
+<span>Value:</span>
+<input type="text" d-model="{{input.value}}" />
+<br />
+<span>Index:</span>
+<input type="text" d-model="{{index}}" />
+<br />
+<div>
+    <div d-for="object in objects">
+        <span d-model="{{object.name}}"></span>
+    </div>
+</div>
+<input type="button" value="update" d-on-click="UpdateItemField({{objects.[{{index}}].name}},{{input.value}})" />
