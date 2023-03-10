@@ -1,0 +1,20 @@
+<div d-dataKey="objects1" d-dataUrlGet="~/api/Sample/CreateNodes?levels=1&length=5&prefix=O1"></div>
+<div d-dataKey="objects2" d-dataUrlGet="~/api/Sample/CreateNodes?levels=1&length=5&prefix=O2"></div>
+<div d-dataKey="Update" d-dataType="value" d-dataLoadType="startup" d-dataValue="ExecuteDataItem({{UpdateObject1}},obj1 in objects1);Notify(objects1)"></div>
+<div d-dataKey="UpdateObject1" d-dataType="value" d-dataLoadType="startup" d-dataValue="PushStack({{obj1}});ExecuteDataItem({{UpdateObject1Object2}},obj2 in objects2);PopStack()"></div>
+<div d-dataKey="UpdateObject1Object2" d-dataType="value" d-dataLoadType="startup" d-dataValue="IF({{_stack.peek.Value}}={{obj2.Value}},UpdateItemField({{_stack.peek.Key}},{{obj2.Key}}))"></div>
+<div>
+    <div d-for="object1 in objects1">
+        <span d-model="{{object1.Key}}"></span>
+        <br />
+    </div>
+</div>
+<br />
+<div>
+    <div d-for="object2 in objects2">
+        <span d-model="{{object2.Key}}"></span>
+        <br />
+    </div>
+</div>
+<br />
+<input type="button" value="update" d-on-click="{{Update}}" />
