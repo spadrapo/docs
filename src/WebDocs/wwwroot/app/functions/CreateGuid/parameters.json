@@ -1,0 +1,23 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage what will receive the object",
+    "Types": [ "datakey"],
+    "Optional": false
+  },
+  {
+    "Name": "DataField",
+    "Description": "The data field item that will be inserted",
+    "Types": [ "datafield" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
+
+
