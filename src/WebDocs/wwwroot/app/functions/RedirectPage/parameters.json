@@ -1,8 +1,0 @@
-[
-  {
-    "Name": "Url",
-    "Description": "The url that will redirect",
-    "Types": [ "url" ],
-    "Optional": false
-  }
-]
