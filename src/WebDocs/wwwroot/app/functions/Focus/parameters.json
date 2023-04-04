@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "did",
+    "Description": "",
+    "Types": [ "did" ],
+    "Optional": true
+  }
+]
