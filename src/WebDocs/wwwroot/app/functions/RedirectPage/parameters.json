@@ -2,7 +2,7 @@
   {
     "Name": "Url",
     "Description": "The url that will redirect",
-    "Types": [ "url" ],
+    "Types": [ "text, mustache" ],
     "Optional": false
   }
 ]
