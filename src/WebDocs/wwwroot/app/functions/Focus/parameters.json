@@ -1,7 +1,7 @@
 [
   {
     "Name": "did",
-    "Description": "",
+    "Description": "Specific element that will draw the user's attention.",
     "Types": [ "did" ],
     "Optional": true
   }
