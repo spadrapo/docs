@@ -15,10 +15,18 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
+      
+    - name: Login to GitHub Packages
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner  }}
+        password: ${{ secrets.GITHUB_TOKEN }}
+      
     - name: Build and push Docker image
-      uses: docker/build-push-action@v3
+      uses: docker/build-push-action@v4
       with:
         context: ./src
-        push: false
+        push: true
         file: ./src/Dockerfile
-        tags: drapo/docs:latest
+        tags: ghcr.io/spadrapo/docs:latest
