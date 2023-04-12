@@ -13,6 +13,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - name: Checkout Code
     - uses: actions/checkout@v3
-    - name: Build the Docker image
-      run: docker build . --file src/Dockerfile --tag drapo/docs:latest
+    - name: Build and push Docker image
+    - uses: docker/build-push-action@v2
+      with:
+        context: ./src
+        push: true
+        file: Dockerfile
+        tags: drapo/docs:latest
