@@ -14,9 +14,9 @@ jobs:
 
     steps:
     - name: Checkout Code
-    - uses: actions/checkout@v3
+      uses: actions/checkout@v3
     - name: Build and push Docker image
-    - uses: docker/build-push-action@v2
+      uses: docker/build-push-action@v2
       with:
         context: ./src
         push: true
