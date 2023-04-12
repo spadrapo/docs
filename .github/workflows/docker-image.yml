@@ -19,6 +19,6 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         context: ./src
-        push: true
+        push: false
         file: ./src/Dockerfile
         tags: drapo/docs:latest
