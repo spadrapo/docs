@@ -30,3 +30,11 @@ jobs:
         push: true
         file: ./src/Dockerfile
         tags: ghcr.io/spadrapo/docs:latest
+        
+    - name: Webhook Action
+    # You may pin to the exact commit or the version.
+    # uses: joelwmale/webhook-action@448a17bf857ead98546cfbdbe3b9d4cf979dda95
+      uses: joelwmale/webhook-action@2.3.2
+      with:
+       # The url to send the webhook event to
+        url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
