@@ -31,11 +31,7 @@ jobs:
         file: ./src/Dockerfile
         tags: ghcr.io/spadrapo/docs:latest
         
-    - name: Webhook Trigger
-      # You may pin to the exact commit or the version.
-      # uses: zzzze/webhook-trigger@58075d3bb1f1ea2cf30d3d3833b1da403654e9e1
-      uses: zzzze/webhook-trigger@v1.0.0
+    - name: Call Webhook
+      uses: wei/call-webhook@v1
       with:
-        # Data to be posted
-        webhook_url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
-        
+        url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
