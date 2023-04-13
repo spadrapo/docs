@@ -31,7 +31,11 @@ jobs:
         file: ./src/Dockerfile
         tags: ghcr.io/spadrapo/docs:latest
         
-    - name: Call Webhook
-      uses: wei/call-webhook@v1
+
+    - name: Fast Webhook
+      # You may pin to the exact commit or the version.
+      # uses: jasongitmail/fast-webhook@6deed6ce6c4f3b7044a27fc272b7a019a6e4c41a
+      uses: jasongitmail/fast-webhook@v1.1.4
       with:
+        # The webhook URL to send the request to.
         url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
