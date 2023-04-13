@@ -19,15 +19,7 @@ stages:
   - job: Build
     displayName: Build
     steps:
-    - task: Docker@2
-      displayName: Build an image
-      inputs:
-        containerRegistry: 'docker'
-        repository: 'drapo/docs'
-        command: 'build'
-        Dockerfile: '**/Dockerfile'
-        tags: latest
     - task: PowerShell@2
       inputs:
         targetType: 'inline'
-        script: 'docker push drapo/docs'
+        script: 'Write-Host done'
