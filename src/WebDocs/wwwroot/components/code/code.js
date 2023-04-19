@@ -59,14 +59,20 @@ var Code = (function () {
         return __awaiter(this, void 0, void 0, function () {
             var elContent, elCode, content, contentEncoded;
             return __generator(this, function (_a) {
-                elContent = this.GetElementContent();
-                elCode = this.GetElementCode();
-                content = $(elContent).html();
-                contentEncoded = $('<textarea/>').text(content).html();
-                $(elContent).remove();
-                $(elCode).html(contentEncoded);
-                $(elCode).attr('d-pre', 'true');
-                return [2];
+                switch (_a.label) {
+                    case 0:
+                        elContent = this.GetElementContent();
+                        elCode = this.GetElementCode();
+                        content = this._app.Document.GetHTML(elContent);
+                        ;
+                        contentEncoded = this._app.Document.GetHTMLEncoded(content);
+                        return [4, this._app.Document.RemoveElement(elContent, false)];
+                    case 1:
+                        _a.sent();
+                        this._app.Document.SetHTML(elCode, contentEncoded);
+                        elCode.setAttribute('d-pre', 'true');
+                        return [2];
+                }
             });
         });
     };

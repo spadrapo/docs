@@ -19,7 +19,6 @@ Task("less")
     //Build
     foreach(KeyValuePair<string,string> entry in themes){
         FileWriteText("../wwwroot/css/" + entry.Key, dotless.Core.Less.Parse(entry.Value));
-
     }
 });
 

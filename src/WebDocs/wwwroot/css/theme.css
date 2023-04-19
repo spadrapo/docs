@@ -32,6 +32,17 @@ body {
 .dCloak {
   display: none;
 }
+.doc {
+  position: relative;
+  display: flex;
+}
+.docLeft {
+  width: 15%;
+  padding-left: 15px;
+}
+.docRight {
+  width: 80%;
+}
 .dMenu > div {
   padding: 0;
   margin: 0;

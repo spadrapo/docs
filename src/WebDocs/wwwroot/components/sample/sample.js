@@ -61,10 +61,10 @@ var Sample = (function () {
             return __generator(this, function (_a) {
                 elContent = this.GetElementContent();
                 elCode = this.GetElementCode();
-                content = $(elContent).html();
-                contentEncoded = $('<textarea/>').text(content).html();
-                $(elCode).html(contentEncoded);
-                $(elCode).attr('d-pre', 'true');
+                content = this._app.Document.GetHTML(elContent);
+                contentEncoded = this._app.Document.GetHTMLEncoded(content);
+                this._app.Document.SetHTML(elCode, contentEncoded);
+                elCode.setAttribute('d-pre', 'true');
                 return [2];
             });
         });

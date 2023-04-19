@@ -28,19 +28,15 @@
     <div d-id="windows" d-sector="windows" class="dSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
     <!--Header-->
     <div d-sector="header" d-route="false" d-sector-url="/app/shared/header.html" class="dSectorHeader"></div>
-    <div class="container-fluid">
-        <div class="row">
-            <!--Menu-->
-            <div d-sector="menu" d-route="false" d-sector-url="/app/shared/menu.html" class="col-sm-2 dSectorMenu"></div>
-            <!--Content-->
-            <div d-sector="content" d-sector-url="/index.html" class="col-sm-10 dSectorContent"></div>
-        </div>
+    <div class="doc">
+        <!--Menu-->
+        <div d-sector="menu" d-route="false" d-sector-url="/app/shared/menu.html" class="docLeft dSectorMenu"></div>
+        <!--Content-->
+        <div d-sector="content" d-sector-url="/index.html" class="docRight dSectorContent"></div>
     </div>
     <!--Footer-->
     <div d-sector="footer" d-route="false" d-sector-url="/app/shared/footer.html" class="dSectorFooter"></div>
     <!--Initialize-->
     <div d-dataKey="initialize" d-dataType="function" d-dataLoadType="startup" d-dataValue="IF({{querystring.w}},ExecuteDataItem({{item.Action}},item in menuItems,{{item.Name}}={{querystring.w}},false,item in item.Items))"></div>
-    <!--Startup-->
-    <script src="/js/bootstrap.min.js"></script>
 </body>
 </html>
