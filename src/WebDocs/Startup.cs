@@ -94,6 +94,7 @@ namespace WebDocs
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
+            options.PollingEvent += Polling;
             this._options = options;
         }
 
@@ -124,6 +125,12 @@ namespace WebDocs
                     return (itemChild);
             }
             return (null);
+        }
+
+        private async Task<string> Polling(string domain, string connectionId, string key)
+        {
+            string hash = Math.Ceiling((decimal)(DateTime.Now.Second / 5)).ToString();
+            return (await Task.FromResult<string>(hash));
         }
     }
 }

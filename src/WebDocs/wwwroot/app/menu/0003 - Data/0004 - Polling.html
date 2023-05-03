@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>Polling</h2>
+        <p>Polling is a system that allows you to check regularly if there is any changes in the some data. When there is a change in the data you can execute a expression in a storage item.</p>
+        <p>To configure polling you need first configure the event PollingEvent in DrapoMiddlewareOptions. </p>
+        <d-code>
+            options.PollingEvent += Polling;
+        </d-code>
+        <p>In this event you will receive 3 paremeters.</p>
+        <p><b>domain</b>: the domain uses in this context</p>
+        <p><b>connectionId</b>: the connectionId of the client that sent the request</p>
+        <p><b>key</b>: the d-pollingKey of the storage item in the client side</p>
+        <br />
+        <p>Your function will be like this one below</p>
+        <d-code>
+            private async Task<string>Polling(string domain, string connectionId, string key)
+            {
+               string hash = Math.Ceiling((decimal)(DateTime.Now.Second / 5)).ToString();
+               return (await Task.FromResult<string>(hash));
+            }
+        </d-code>
+        <br />
+        <p>In the storage item you need to configure 2 new atributes.</p>
+        <p><b>d-pollingKey</b> will be the key for the polling. Each storage must have an unique value for it.</p>
+        <p><b>d-pollingTimespan</b> is the timespan between each check. This is an optional attribute. If you miss him the default value will be 10000ms</p>
+        <br />
+        <p>Bellow an sample using it</p>
+        <d-sample>
+            <div d-sector="polling">
+                <span>Data Polling</span>
+                <div d-dataKey="date" d-dataType="value" d-dataUrlGet="~/api/Sample/GetDate"></div>
+                <div d-dataKey="datePolling" d-dataType="value" d-dataLoadType="startup" d-dataValue="ReloadData(date)" d-dataPollingKey="date" d-dataPollingTimespan="5000"></div>
+                <span d-model="{{date}}"></span>
+            </div>
+        </d-sample>
+    </div>
+</div>
