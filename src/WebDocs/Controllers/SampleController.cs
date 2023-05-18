@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebDocs.Models;
+using WebDrapo.Model;
 
 namespace WebDocs.Controllers
 {
@@ -112,6 +113,32 @@ namespace WebDocs.Controllers
             List<NodeVM> names = GetNames();
             NodeVM name = names.FirstOrDefault(_ => _.Key == idName);
             return name;
+        }
+
+        private void CreateLevels(List<KeyValueVO> values, int levels, int childs, bool includeIndex, ref int index, string prefix)
+        {
+            if (levels < 0)
+                return;
+            for (int i = 0; i < childs; i++)
+            {
+                KeyValueVO keyValue = new KeyValueVO() { Key = string.Format("L{0}K{1}", levels, i.ToString()), Value = string.Format("L{0}V{1}", levels, i.ToString()) };
+                if (includeIndex)
+                    keyValue.Key = "I" + index + keyValue.Key;
+                if (!string.IsNullOrEmpty(prefix))
+                    keyValue.Key = prefix + keyValue.Key;
+                values.Add(keyValue);
+                index++;
+                this.CreateLevels(keyValue.Children, levels - 1, childs, includeIndex, ref index, prefix);
+            }
+        }
+
+        [HttpGet]
+        public IEnumerable<KeyValueVO> GetLevels(int levels, int children = 5, bool includeIndex = false, string prefix = null)
+        {
+            List<KeyValueVO> dictionary = new List<KeyValueVO>();
+            int index = 0;
+            CreateLevels(dictionary, levels, children, includeIndex, ref index, prefix);
+            return (dictionary);
         }
 
         [HttpGet]
