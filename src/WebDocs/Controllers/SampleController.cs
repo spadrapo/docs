@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WebDocs.Models;
-using WebDrapo.Model;
 
 namespace WebDocs.Controllers
 {
@@ -128,15 +127,5 @@ namespace WebDocs.Controllers
             }
             return (array);
         }
-
-        [HttpGet]
-        public IEnumerable<KeyValueVO> GetModelSample()
-        {
-            List<KeyValueVO> dictionary = new List<KeyValueVO>();
-            for (int i = 0; i < 8; i++)
-                dictionary.Add(new KeyValueVO() { Key = string.Format("K{0}", i.ToString()), Value = string.Format("V{0}", i.ToString()), Visible = (i % 2 == 0) });
-            return (dictionary);
-        }
-
     }
 }
