@@ -127,5 +127,75 @@ namespace WebDocs.Controllers
             }
             return (array);
         }
+
+        [HttpGet]
+        public string GetUsage(string key)
+        {
+            if (key == "d-model-event")
+                return "<input class=\"edit\" type=\"text\" d-model=\"{{todo.Task}}\" d-model-event=\"blur\" d-on-blur=\"UncheckItemField({{todo.Edit}},false)\">";
+            else if (key == "d-on-click")
+                return "<input type=\"button\" value=\"Talk\" d-on-click=\"AddDataItem(chats, user, false); PostData(chats)\"/>";
+            else if (key == "d-on-change")
+                return "<select d-model=\"{{drapo.theme}}\" d-on-change=\"PostData(drapo); ReloadPage()\">";
+            else if (key == "d-on-keyup-enter")
+                return "<input type=\"text\" class=\"new- todo\"  d-model=\"{{taskAdd.Task}}\" d-on-keyup-enter=\"AddDataItem(todos, taskAdd); ClearDataField(taskAdd, Task)\">";
+            else if (key == "d-on-dblclick")
+                return "<label d-on-dblclick=\"CheckItemField({{todo.Edit}})\">\"Text\"</label>";
+            else if (key == "d-on-blur")
+                return "<input class=\"edit\" type=\"text\" d-model=\"{{todo.Task}}\" d-model-event=\"blur\" d-on-blur=\"UncheckItemField({{todo.Edit}},false)\">";
+            else if (key == "d-sector")
+                return "<div d-sector=\"sector\" d-sector-url=\"/DrapoPages/RouterOne.html\">";
+            else if (key == "d-sector-url")
+                return "<div d-sector=\"sector\" d-sector-url=\"/DrapoPages/RouterOne.html\">";
+            else if (key == "d-sector-parent")
+                return "<div d-sector-parent-url=\"/DrapoPages/RouterMaster.html\" d-sector-parent=\"sector\">";
+            else if (key == "d-sector-parent-url")
+                return "<div d-sector-parent-url=\"/DrapoPages/RouterMaster.html\" d-sector-parent=\"sector\">";
+            else if (key == "d-route")
+                return "<div d-sector=\"sectorSubMenu\" d-route=\"false\">";
+            else if (key == "d-dataKey")
+                return "<div d-dataKey=\"users\" d-dataUrlGet=\"/Data/GetIFSample\">";
+            else if (key == "d-dataUrlGet")
+                return "<div d-dataKey=\"cultures\" d-dataUrlGet=\"/Culture/GetCultures\">";
+            else if (key == "d-dataUrlSet")
+                return "<div d-dataKey=\"chats\" d-dataUnitOfWork=\"true\" d-dataUrlGet=\"/Chat/Get\" d-dataUrlSet=\"/Chat/Set\">";
+            else if (key == "d-dataType=\"object\"")
+                return "<div d-dataKey=\"response\" d-dataType=\"object\">";
+            else if (key == "d-dataType=\"array\"")
+                return "<div d-dataKey=\"list\" d-dataType=\"array\">";
+            else if (key == "d-dataType=\"value\"")
+                return "<div d-dataKey=\"response\" d-dataType=\"value\" d-dataValue=\"NewValue\">";
+            else if (key == "d-dataValue")
+                return "<div d-dataKey=\"response\" d-dataType=\"value\" d-dataValue=\"NewValue\">";
+            else if (key == "d-model")
+                return "<input type=\"text\" d-model=\"{{keyValue.Key}}\"/>";
+            else if (key == "d-dataProperty-<name>")
+                return "<div d-datakey=\"config\" d-dataType=\"object\" d-dataproperty-showactive=\"true\" d-dataproperty-showcompleted=\"true\">";
+            else if (key == "d-attr-<name>")
+                return "<input d-attr-placeholder=\"{{res.placeholder}}\" type=\"text\" d-attr-title=\"{{res.Tooltip}} \" placeholder=\"Name here\" title=\"I am a tip !\"/>";
+            else if (key == "d-dataProperty-<name>-name")
+                return "<div d-datakey=\"keyValue\" d-dataType=\"object\" d-dataproperty-key-name=\"Key\" d-dataproperty-key-value=\"admin\" d-dataurlset=\"/Authentication/Login\">";
+            else if (key == "d-dataProperty-<name>-value")
+                return "<div d-datakey=\"keyValue\" d-dataType=\"object\" d-dataproperty-key-name=\"Key\" d-dataproperty-key-value=\"admin\" d-dataurlset=\"/Authentication/Login\">";
+            else if (key == "d-dataLazy")
+                return "< div d-dataKey = \"users\" d-dataLazy = \"true\" d-dataLazyStart = \"0\" d-dataLazyIncrement = \"100\" d - dataUrlGet = \"/Data/GetData\"> ";
+            else if (key == "d-dataLazyStart")
+                return "< div d-dataKey = \"users\" d-dataLazy = \"true\" d-dataLazyStart = \"0\" d-dataLazyIncrement = \"100\" d - dataUrlGet = \"/Data/GetData\"> ";
+            else if (key == "d-dataLazyIncrement")
+                return "< div d-dataKey = \"users\" d-dataLazy = \"true\" d-dataLazyStart = \"0\" d-dataLazyIncrement = \"100\" d - dataUrlGet = \"/Data/GetData\"> ";
+            else if (key == "d-dataDelay")
+                return "<div d-dataKey=\"culture\" d-dataDelay=\"true\" d-dataUrlGet=\"/Data/GetCulture\">";
+            else if (key == "d-dataUnitOfWork")
+                return "<div d-dataKey=\"chats\" d-dataUnitOfWork=\"true\" d-dataUrlGet=\"/Chat/Get\" d-dataUrlSet=\"/Chat/Set\">";
+            else if (key == "d-for")
+                return "<div d-for=\"user in users\">";
+            else if (key == "d-if")
+                return "<option d-for=\"user in users\" d-if=\"{{user.Visible}}\" value=\"{{user.Key}}\">";
+            else if (key == "d-dataConfigGet")
+                return "<div d-dataKey=\"views\" d-dataConfigGet=\"Views\">";
+            else if (key == "d-dataCookieGet")
+                return "<div d-dataKey=\"drapo\" d-dataCookieGet=\"drapo\">";
+            return "";
+        }
     }
 }
