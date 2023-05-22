@@ -6,7 +6,7 @@
 </head>
 <body>
     <span>Function FilterData</span>
-    <div d-dataKey="data" d-dataUrlGet="~/api/Sample/GetLevels"></div>
+    <div d-dataKey="data" d-dataUrlGet="~/api/Sample/CreateNodes"></div>
     <div d-dataKey="dataFiltered" d-dataType="array"></div>
     <div d-dataKey="prop" d-dataType="object" d-dataProperty-filter="1"></div>
     <div d-dataKey="functionFilter" d-dataType="value" d-dataLoadType="startup" d-dataValue="FilterData(item in data,{{item.Key}} LIKE %{{prop.filter}}%,dataFiltered)"></div>
