@@ -117,15 +117,6 @@ namespace WebDocs.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<KeyValueVO> GetModelSample()
-        {
-            List<KeyValueVO> dictionary = new List<KeyValueVO>();
-            for (int i = 0; i < 8; i++)
-                dictionary.Add(new KeyValueVO() { Key = string.Format("K{0}", i.ToString()), Value = string.Format("V{0}", i.ToString()), Visible = (i % 2 == 0) });
-            return (dictionary);
-        }
-
-        [HttpGet]
         public List<string> GetArray(int start = 0, int length = 10, string prefix = null, int? divisor = null)
         {
             List<string> array = new List<string>();
