@@ -6,7 +6,7 @@
             <span>Window State</span>
             <br />
             <div>
-                <div d-dataKey="items" d-dataUrlGet="~/api/Sample/GetModelSample"></div>
+                <div d-dataKey="items" d-dataUrlGet="~/api/Sample/CreateNodes"></div>
                 <div d-for="item in items">
                     <input type="checkbox" d-model="{{item.Visible}}">
                     <span>{{item.Visible}}</span>
