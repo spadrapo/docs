@@ -10,5 +10,7 @@
     <span>Function Hide Window</span>
     <br>
     <div d-dataKey="loader" d-dataType="function" d-dataLoadType="startup" d-dataValue="ShowWindow(~/app/data/WindowsStorageWindow.html,Windows);HideWindow(,,noclose)"></div>
+    <input type="button" value="Show" d-on-click="ShowWindow(~/app/shared/windowCenter.html,windows,[Message],Hello World)" />
+    <input type="button" value="Hide" d-on-click="HideWindow()" />
 </body>
 </html>
