@@ -13,7 +13,7 @@
     },
     {
         "Name": "DataKey",
-        "Description": "The identification of a storage what will be filtered",
+        "Description": "The identification of a storage that filtered data will be stored",
         "Types": ["datakey"]
     },
     {
