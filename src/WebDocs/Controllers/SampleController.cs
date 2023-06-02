@@ -120,7 +120,7 @@ namespace WebDocs.Controllers
             {
                 foreach (var header in this.Request.Headers)
                 {
-                    if (header.Key.Contains("Custom"))
+                    if (header.Key.Contains("custom"))
                         result.Properties.Add(header.Key, header.Value.ToString());
                 }
             }
