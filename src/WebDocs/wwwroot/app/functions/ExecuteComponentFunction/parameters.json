@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "did",
+    "Description": "Specific component needed to perform the function",
+    "Types": "did",
+    "Optional": false
+  },
+  {
+    "Name": "function",
+    "Description": "The function that will be called",
+    "Types": "text",
+    "Optional": false
+  }
+]
