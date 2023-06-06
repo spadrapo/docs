@@ -2,13 +2,13 @@
   {
     "Name": "did",
     "Description": "Specific component needed to perform the function",
-    "Types": "did",
+    "Types": [ "did" ],
     "Optional": false
   },
   {
     "Name": "function",
     "Description": "The function that will be called",
-    "Types": "text",
+    "Types": [ "text" ],
     "Optional": false
   }
 ]
