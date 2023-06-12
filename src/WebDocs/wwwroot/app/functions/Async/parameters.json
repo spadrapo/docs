@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Content",
+    "Description": "The content of the dataname",
+    "Types": ["text"],
+    "Optional": false
+  }
+]
