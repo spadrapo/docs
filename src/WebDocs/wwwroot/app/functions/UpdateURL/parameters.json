@@ -1,7 +1,7 @@
 [
   {
     "Name": "Url",
-    "Description": "The url that will be used to update the page",
+    "Description": "The url that will be shown in browser",
     "Types": [ "url" ],
     "Optional": false
   }
