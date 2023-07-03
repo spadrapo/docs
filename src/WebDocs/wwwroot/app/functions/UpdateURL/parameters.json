@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Url",
+    "Description": "The url that will be shown in browser",
+    "Types": [ "url" ],
+    "Optional": false
+  }
+]
