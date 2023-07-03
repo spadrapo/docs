@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "DataKey, mustache",
+    "Description": "Data key that will contain all values",
+    "Types": [ "datakey, mustache" ],
+    "Optional": false
+  },
+
+  {
+    "Name": "Value, mustache",
+    "Description": "Value we need to check",
+    "Types": [ "text, mustache" ],
+    "Optional": false
+  }
+]
