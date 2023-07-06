@@ -87,6 +87,8 @@ namespace WebDocs
             options.Config.UsePipes = true;
             options.Config.CreateTheme("", "");
             options.Config.CreateTheme("Dark", "dark");
+            options.Config.CreateView("Mobile", "mobile", "{{__browser.Width}} < 768");
+            options.Config.CreateView("Web", "default");
             options.Config.StorageErrors = "errors";
             options.Config.ValidatorUncheckedClass = "ppValidationUnchecked";
             options.Config.ValidatorValidClass = "ppValidatorValid";
