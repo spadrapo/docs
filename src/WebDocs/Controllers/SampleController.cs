@@ -39,6 +39,23 @@ namespace WebDocs.Controllers
             return (nodes);
         }
 
+        [HttpGet]
+        public List<NodeVM> GetCultures(string culture)
+        {
+            List<NodeVM> cultures = new List<NodeVM>();
+            cultures.Add(new NodeVM() { Key = "en", Value = "Ingles" });
+            cultures.Add(new NodeVM() { Key = "pt", Value = "Portugues" });
+            return (cultures);
+        }
+
+        [HttpGet]
+        public Dictionary<string, string> GetUserConfig()
+        {
+            Dictionary<string, string> values = new Dictionary<string, string>();
+            values.Add("Culture", "pt");
+            return (values);
+        }
+
         private void Append(List<NodeVM> buffer, int length, int currentLevel, int levels, string prefix) 
         {
             if (currentLevel > levels)
