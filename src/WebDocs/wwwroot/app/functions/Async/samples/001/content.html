@@ -7,11 +7,11 @@
 <body>
     <br>
     <span>Async</span>
-    <div d-dataKey="data" d-dataUrlGet="/Sample/GetFunctionPostDataItem" d-dataUrlSet="/Sample/SetFunctionPostDataItemSleep?Sleep=1"></div>
+    <div d-dataKey="data" d-dataUrlGet="api/Sample/GetFunctionPostDataItem" d-dataUrlSet="api/Sample/SetFunctionPostDataItemSleep?Sleep=1"></div>
     <div>
-        <span d-model="{{data.Name}}"></span>
-        <input type="text" d-model="{{data.Name}}">
-        <input type="button" value="+1" d-id='__drapoUnitTest' d-on-click="Async(PostDataItem(data));UpdateDataField(data,Name,Zero)">
+        <span d-model="{{data.Key}}"></span>
+        <input type="text" d-model="{{data.Key}}">
+        <input type="button" value="+1" d-id='__drapoUnitTest' d-on-click="Async(PostDataItem(data));UpdateDataField(data,Key,Zero)">
     </div>
 </body>
 </html>
