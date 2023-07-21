@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataUrlSetChunk</h2>
+        <p>You can use the d-dataUrlSetChunk the API that will receive the data chunk. You need to configure the attribute d-dataChunk to inform drapo what field will be chunked.</p>
+        <br>
+        <p>Below a sample of a html using chunks</p>
+        <d-code>
+            <div d-dataKey="panelFileObjectCode" d-dataType="value"></div>
+            <div d-dataKey="panelFileObject" d-dataType="object" d-dataUrlSet="~/Data/CreateFile" d-dataUrlSetChunk="~/Data/AppendFile?name={{panelFileObject.Name}}&code={{panelFileObjectCode}}" d-dataChunk="{{panelFileObject.Content}}"></div>
+            <input type="button" value="Upload" d-on-click="PostDataItem(panelFileObject,panelFileObjectCode)" />
+        </d-code>
+        <br />
+        <p>In this sample the storage item panelFileObject should have a field called Name and another called Content. The content will be chunked to the server.</p>
+        <p>To do that, drapo will split the data in 4Mb chunks. If in the first POST (CreateFile) all the data was sended. There wont be any call of append (AppendFile).</p>
+        <p>The rest of the data will be chunked in 4Mb chunks.</p>
+        <br />
+        <p>The request to the chunked data will be use the content type for text (text/plain). Remember that asp.net cant receive this kind of content in [FromBody].</p>
+        <p>To read the content you will need to use the Request object in the API. Like this code below</p>
+        <d-code>
+            [HttpPost]
+            public async Task<ActionResult> AppendFile([FromQuery]string name, [FromQuery] string code) 
+            {
+                string chunk = null;
+                using (StreamReader reader = new StreamReader(Request.Body))
+                chunk = await reader.ReadToEndAsync();
+                string path = System.IO.Path.Combine(@"C:\tmp\", name);
+                byte[] content = Convert.FromBase64String(chunk);
+                AppendAllBytes(path, content);
+                return (Ok(true));
+            }
+        </d-code>
+    </div>
+</div>
