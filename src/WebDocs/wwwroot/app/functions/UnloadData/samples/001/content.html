@@ -6,7 +6,7 @@
 </head>
 <body>
     <span>Function - UnloadData</span>
-    <div d-dataKey="data" d-dataUrlGet="/Data"></div>
+    <div d-dataKey="data" d-dataUrlGet="api/Sample/CreateNodes"></div>
     <div>
         <ul>
             <li d-for="item in data">{{item.Key}} - {{item.Value}}</li>
