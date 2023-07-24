@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "Sector",
+    "Description": "The sector that will be reloaded",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  }
+]
