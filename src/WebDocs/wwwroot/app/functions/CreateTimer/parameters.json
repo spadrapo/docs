@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "Content",
+    "Description": "The content",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Time",
+    "Description": "The timer set. It represents the time interval for executing the specified content",
+    "Types": [ "text , mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Loop",
+    "Description": "You can use to add a loop",
+    "Types": [ "boolean" ],
+    "Optional": true
+  }
+]
