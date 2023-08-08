@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Item",
+    "Description": "The item that will be destroyed",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]
