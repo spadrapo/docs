@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The path",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
