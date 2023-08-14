@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <script src="/drapo.js"></script>
-    <title>UnCheckItemField</title>
+    <title>UncheckDataField</title>
     <style>
         .normal {
             cursor: pointer;
@@ -19,7 +19,7 @@
 </head>
 <body>
     <div>
-        <span>UnCheckItemField</span>
+        <span>UncheckDataField</span>
         <div d-datakey="users" d-dataurlget="/api/Sample/CreateNodes"></div>
         <div d-for="user in users" d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="UncheckDataField(users,Visible);CheckItemField({{user.Visible}});" style="display: none;">
             <span>{{user.Key}}</span>
