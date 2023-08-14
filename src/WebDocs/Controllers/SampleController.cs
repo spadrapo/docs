@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Sysphera.Middleware.Drapo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -112,6 +113,26 @@ namespace WebDocs.Controllers
             List<NodeVM> names = GetNames();
             NodeVM name = names.FirstOrDefault(_ => _.Key == idName);
             return name;
+        }
+
+        [HttpPost]
+        public DrapoObject GetCookieValues([FromBody] Dictionary<string, string> values, bool useHeaders = false)
+        {
+            DrapoObject result = new DrapoObject();
+            if (values != null)
+            {
+                foreach (KeyValuePair<string, string> entry in values)
+                    result.Properties.Add(entry.Key, entry.Value);
+            }
+            if (useHeaders)
+            {
+                foreach (var header in this.Request.Headers)
+                {
+                    if (header.Key.Contains("Custom"))
+                        result.Properties.Add(header.Key, header.Value.ToString());
+                }
+            }
+            return (result);
         }
 
         [HttpGet]
