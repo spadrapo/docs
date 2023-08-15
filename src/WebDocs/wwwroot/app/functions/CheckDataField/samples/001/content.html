@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <script src="/drapo.js"></script>
+    <title>CheckDataField</title>
+    <style>
+        .normal {
+            cursor: pointer;
+        }
+
+        .selected {
+            background-color: red;
+        }
+
+        .unselected {
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <div>
+        <span>CheckDataField</span>
+        <div d-datakey="users" d-dataurlget="/api/Sample/CreateNodes"></div>
+        <div d-for="user in users" d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" style="display: none;">
+            <span>{{user.Key}}</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal selected">
+            <span>K0</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal unselected">
+            <span>K1</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal selected">
+            <span>K2</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal unselected">
+            <span>K3</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal selected">
+            <span>K4</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal unselected">
+            <span>K5</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal selected">
+            <span>K6</span>
+        </div><div d-class="{normal,selected:{{user.Visible}}:unselected}" d-on-click="checkDataField(users,Visible);UncheckItemField({{user.Visible}});" class="normal unselected">
+            <span>K7</span>
+        </div>
+    </div>
+
+</body>
+</html>
