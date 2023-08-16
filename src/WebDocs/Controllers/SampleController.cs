@@ -62,6 +62,29 @@ namespace WebDocs.Controllers
         }
 
         [HttpGet]
+        public NodeVM GetFunctionPostDataItem()
+        {
+            NodeVM data = new NodeVM();
+            data.Key = "1";
+            return (data);
+        }
+
+        [HttpPost]
+        public NodeVM SetFunctionPostDataItem([FromBody] NodeVM data)
+        {
+            data.Key += " +1";
+            return (data);
+        }
+
+        [HttpPost]
+        public async Task<NodeVM> SetFunctionPostDataItemSleep([FromBody] NodeVM data, [FromQuery] int sleep)
+        {
+            data.Key += " +1";
+            System.Threading.Thread.Sleep(sleep);
+            return (await Task.FromResult<NodeVM>(data));
+        }
+
+        [HttpGet]
         public string GetDateDelay()
         {
             System.Threading.Thread.Sleep(5000);
