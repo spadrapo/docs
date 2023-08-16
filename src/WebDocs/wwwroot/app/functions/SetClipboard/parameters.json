@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "value",
+    "Description": "The value that will be copied to the clipboard",
+    "Types": [ "value, mustache " ],
+    "Optional": false
+  }
+]
