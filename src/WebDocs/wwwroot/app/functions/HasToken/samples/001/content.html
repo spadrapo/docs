@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>HasToken</title>
+</head>
+<body>
+    <div>
+        <div>
+            <div d-dataKey="response" d-dataType="value"></div>
+            <div d-dataKey="tokenHasvalue" d-dataType="value"></div>
+            <div d-dataKey="functionToken" d-dataType="value" d-dataLoadType="startup" d-dataValue="IF(HasToken(),UpdateDataField(tokenHasvalue,,Yes),UpdateDataField(tokenHasvalue,,No))"></div>
+            <div d-dataKey="functionStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="{{functionToken}}"></div>
+        </div>
+        <div>
+            <span d-model="{{tokenHasvalue}}"></span>
+            <br />
+            <input type="button" value="Update Token" d-on-click="UpdateToken({{response}}); Execute({{functionToken}})">
+            <input type="button" value="Clear Token" d-on-click="ClearToken(); Execute({{functionToken}})">
+            <input type="button" value="Has Token" d-on-click="HasToken(); Execute({{functionToken}})">
+            <br />
+            <span d-model="{{response}}"></span>
+        </div>
+    </div>
+</body>
+</html>
