@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage item",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "Url",
+    "Description": "The url that will be changed in storage",
+    "Types": [ "url" ],
+    "Optional": false
+  }
+]
