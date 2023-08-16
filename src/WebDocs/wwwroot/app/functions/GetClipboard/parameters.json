@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The place where will be saved the value from the clipboard",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
