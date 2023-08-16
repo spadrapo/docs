@@ -1,7 +1,7 @@
 [
   {
-    "Name": "Content",
-    "Description": "The content of the dataname",
+    "Name": "Expression",
+    "Description": "Expression that you want to run async",
     "Types": ["text"],
     "Optional": false
   }
