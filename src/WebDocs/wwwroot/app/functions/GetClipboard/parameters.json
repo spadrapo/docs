@@ -1,7 +1,7 @@
 [
   {
     "Name": "DataPath",
-    "Description": "The path",
+    "Description": "The place where will be saved the value from the clipboard",
     "Types": [ "mustache" ],
     "Optional": false
   },
