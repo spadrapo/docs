@@ -1,7 +1,7 @@
 [
   {
-    "Name": "Content",
-    "Description": "The content",
+    "Name": "Expression",
+    "Description": "Expression that will run after the time elapsed",
     "Types": [ "text" ],
     "Optional": false
   },
