@@ -7,7 +7,7 @@
   },
   {
     "Name": "all",
-    "Description": "You want to hide windows",
+    "Description": "Choose (true/false) if you want to hide all windows or just the last one.",
     "Types": [ "boolean" ],
     "Optional": true,
     "DefaultValue": "false"
