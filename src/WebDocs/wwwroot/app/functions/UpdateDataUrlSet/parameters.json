@@ -7,7 +7,7 @@
   },
   {
     "Name": "Url",
-    "Description": "The url that will be shown in browser",
+    "Description": "The url that will be changed in storage",
     "Types": [ "url" ],
     "Optional": false
   }
