@@ -1,0 +1,17 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content">
+    <div>
+        <h2>d-dataPipesDebounce</h2>
+        <p>You can use d-dataPipesDebounce when you need to update the data pipe with a debounce.</p>
+        <p>With this attribute you can reduce the update of the data pipe</p>
+        <p>A simple use of the d-dataPipesDebounce:</p>
+        <d-sample>
+            <div d-datakey="debounceUpdate" d-datatype="value" d-dataloadtype="startup" d-dataurlset="~/api/Todo/Notify?datakey=debounceDate"></div>
+            <div d-dataKey="debounceDate" d-dataUrlGet="~/api/Sample/GetDate" d-dataPipes="debounceDate" d-dataPipesDebounce="3000"></div>
+            <span>Date: </span><span d-model="{{debounceDate}}"></span>
+            <input type="button" value="Update" d-on-click="PostDataItem(debounceUpdate)" />
+        </d-sample>
+        <br />
+    </div>
+</div>

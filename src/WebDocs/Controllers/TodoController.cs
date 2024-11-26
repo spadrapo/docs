@@ -25,6 +25,12 @@ namespace WebDocs.Controllers
             return View();
         }
 
+        [HttpPost]
+        public void Notify([FromQuery] string dataKey)
+        {
+            _plumber.Send(new DrapoPipeMessage() { Type = DrapoPipeMessageType.Storage, Data = dataKey }, DrapoPipeAudienceType.Me);
+        }
+
         public static List<TodoVM> Create()
         {
             List<TodoVM> chats = new List<TodoVM>();
