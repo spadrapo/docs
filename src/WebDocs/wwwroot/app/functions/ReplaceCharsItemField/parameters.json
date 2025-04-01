@@ -1,0 +1,41 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The path to the place that you want to update",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "ReplacedChars",
+    "Description": "A string with all characters that will be replaced. All occurrences of each character will be replaced",
+    "Types": [ "text", "mustache", "functionValue" ],
+    "Optional": false
+  },
+  {
+    "Name": "ReplacingChars",
+    "Description": "A string with all characters that will be replace the first ones, respectivelly",
+    "Types": [ "text", "mustache", "functionValue" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  },
+  {
+    "Name": "Recursive",
+    "Description": "Resolve the value mustaches until exist a mustache inside it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  },
+  {
+    "Name": "Resolve",
+    "Description": "Resolve the value mustaches or functions",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
