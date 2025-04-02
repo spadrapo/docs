@@ -1,4 +1,4 @@
 <div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"John"},{"name":"Anna"},{"name":"Roberto"}]'></div>
 <div d-for="object in objects">
-    <span d-model="{{object.name}}" d-on-click="ReplaceCharsItemField({{object.name}},'aeiou','AEIOU')"></span>
+    <span d-model="{{object.name}}" d-on-click="UpdateItemField({{object.name}},ReplaceCharsItemField({{object.name}},'aeiou','AEIOU'))"></span>
 </div>

@@ -1,7 +1,7 @@
 [
   {
     "Name": "DataPath",
-    "Description": "The path to the place that you want to update",
+    "Description": "The path with the data to replace",
     "Types": [ "mustache" ],
     "Optional": false
   },
@@ -23,13 +23,6 @@
     "Types": [ "boolean", "mustache", "functionValue" ],
     "Optional": true,
     "DefaultValue": "false"
-  },
-  {
-    "Name": "Notify",
-    "Description": "You can choose if you want no notify the change to the observer",
-    "Types": [ "boolean" ],
-    "Optional": true,
-    "DefaultValue": "true"
   },
   {
     "Name": "Recursive",

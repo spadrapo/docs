@@ -1,4 +1,4 @@
 <div d-dataKey="objects" d-dataType="array" d-dataValue='[{"name":"John"},{"name":"Anna"},{"name":"Roberto"}]'></div>
 <div d-for="object in objects">
-    <span d-model="{{object.name}}" d-on-click="ReplaceRegexItemField({{object.name}},'[^aeiou]','*',true)"></span>
+    <span d-model="{{object.name}}" d-on-click="UpdateItemField({{object.name}},ReplaceRegexItemField({{object.name}},'[^aeiou]','*',true))"></span>
 </div>
