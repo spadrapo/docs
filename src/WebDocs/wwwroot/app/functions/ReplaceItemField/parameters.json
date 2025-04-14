@@ -7,7 +7,7 @@
   },
   {
     "Name": "Substring",
-    "Description": "The substring that will be replaced. All occurrences will be replaced",
+    "Description": "The substring that will be replaced. All occurrences will be replaced. The way this will be used, depends on the parameter ReplacementStyle",
     "Types": [ "text", "mustache", "functionValue" ],
     "Optional": false
   },
@@ -23,6 +23,13 @@
     "Types": [ "boolean", "mustache", "functionValue" ],
     "Optional": true,
     "DefaultValue": "false"
+  },
+  {
+    "Name": "ReplacementStyle",
+    "Description": "How the substitution will happen: 0 - 'Substring' will be entirely replaced by 'Replacement', 1 - Each char of 'Substring' will be replaced by its respective char in 'Replacement', 2 - 'Substring' is a regular expression where each match will be replaced by 'Replacement'",
+    "Types": [ "number", "mustache", "functionValue" ],
+    "Optional": true,
+    "DefaultValue": "0"
   },
   {
     "Name": "Recursive",
