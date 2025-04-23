@@ -1,0 +1,48 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The path with the data to replace",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Substring",
+    "Description": "The substring that will be replaced. All occurrences will be replaced. The way this will be used, depends on the parameter ReplacementStyle",
+    "Types": [ "text", "mustache", "functionValue" ],
+    "Optional": false
+  },
+  {
+    "Name": "Replacement",
+    "Description": "The string that will replace the substring in the previous parameter",
+    "Types": [ "text", "mustache", "functionValue" ],
+    "Optional": false
+  },
+  {
+    "Name": "IgnoreCase",
+    "Description": "If the case of letters matters while searching for the replaced substring",
+    "Types": [ "boolean", "mustache", "functionValue" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  },
+  {
+    "Name": "ReplacementStyle",
+    "Description": "How the substitution will happen: 0 - 'Substring' will be entirely replaced by 'Replacement', 1 - Each char of 'Substring' will be replaced by its respective char in 'Replacement', 2 - 'Substring' is a regular expression where each match will be replaced by 'Replacement'",
+    "Types": [ "number", "mustache", "functionValue" ],
+    "Optional": true,
+    "DefaultValue": "0"
+  },
+  {
+    "Name": "Recursive",
+    "Description": "Resolve the value mustaches until exist a mustache inside it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  },
+  {
+    "Name": "Resolve",
+    "Description": "Resolve the value mustaches or functions",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
