@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Regex",
+    "Description": "The regular expression that will define the route",
+    "Types": [ "regex"],
+    "Optional": false
+  },
+  {
+    "Name": "Expression",
+    "Description": "Expression that will be executed after loaded the route",
+    "Types": [ "expression" ],
+    "Optional": false
+  },
+  {
+    "Name": "BeforeLoadExpression",
+    "Description": "Expression that will be executed before a route change if its at the startup",
+    "Types": [ "expression" ],
+    "Optional": true
+  },
+  {
+    "Name": "AfterLoadExpression",
+    "Description": "Expression that will be executed after a route change if its at the startup",
+    "Types": [ "expression" ],
+    "Optional": true
+  }
+]
