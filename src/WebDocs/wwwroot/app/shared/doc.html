@@ -1,0 +1,7 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div d-dataKey="docData" d-datatype="mapping" d-datavalue="__route"></div>
+    <div d-dataKey="docUrl" d-dataurlget="~/api/Menu/GetUrl?id={{docData.id}}"></div>
+    <div d-dataKey="docStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="UpdateSector(content,{{docUrl}},,false,false)"></div>
+</div>

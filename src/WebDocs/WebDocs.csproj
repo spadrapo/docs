@@ -4,7 +4,9 @@
     <TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Drapo" Version="2025.4.8.2" />
+	  <PackageReference Include="Drapo" Version="2025.4.24.5">
+		  <ExcludeAssets>contentfiles</ExcludeAssets>
+	  </PackageReference>
     <PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="5.0.0-rc5" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.0" />

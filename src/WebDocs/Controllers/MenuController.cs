@@ -35,6 +35,38 @@ namespace WebDocs.Controllers
             }
         }
 
+        [HttpGet]
+        [ProducesResponseType(typeof(string), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(Exception), (int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult> GetUrl(string id)
+        {
+            try
+            {
+                List<MenuItemVM> items = await this.GetItemsInternal();
+                MenuItemVM item = GetMenuItemByID(items, id);
+                if (item != null)
+                    return (Ok(item.Url));
+                return (NotFound());
+            }
+            catch (Exception e)
+            {
+                return (StatusCode((int)HttpStatusCode.InternalServerError, e));
+            }
+        }
+
+        private MenuItemVM GetMenuItemByID(List<MenuItemVM> items, string id) 
+        {
+            foreach (MenuItemVM item in items) 
+            {
+                if (item.ID == id)
+                    return (item);
+                MenuItemVM itemChild = GetMenuItemByID(item.Items, id);
+                if (itemChild != null)
+                    return (itemChild);
+            }
+            return (null);
+        }
+
         public async Task<List<MenuItemVM>> GetItemsInternal()
         {
             string path = Path.Combine(_env.WebRootPath, "app", "menu");
@@ -86,15 +118,18 @@ namespace WebDocs.Controllers
         {
             MenuItemVM menuItem = new MenuItemVM();
             menuItem.Name = functionName;
-            menuItem.Action = $"UpdateUrl(~?w={menuItem.Name});UpdateSector(content,~/api/Function/GetContent?name={functionName},,false,false)";
+            menuItem.Action = $"ApplyRoute(/function/{functionName})";
             return (menuItem);
         }
 
         private MenuItemVM CreateMenuItemLink(string fullPath)
         {
             MenuItemVM menuItem = new MenuItemVM();
-            menuItem.Name = this.GetFriendlyName(Path.GetFileNameWithoutExtension(fullPath));
-            menuItem.Action = $"UpdateUrl(~?w={menuItem.Name});UpdateSector(content,{GetFullPathUrl(fullPath)},false,false)";
+            string fileNameWithoutExtension = Path.GetFileNameWithoutExtension(fullPath);
+            menuItem.Name = this.GetFriendlyName(fileNameWithoutExtension);
+            menuItem.ID = GetMenuID(fileNameWithoutExtension);
+            menuItem.Action = $"ApplyRoute(/doc/{menuItem.ID})";
+            menuItem.Url = GetFullPathUrl(fullPath);
             return (menuItem);
         }
 
@@ -105,6 +140,16 @@ namespace WebDocs.Controllers
                 return (name);
             string nameFriendly = name.Substring(index + 3);
             return (nameFriendly);
+        }
+
+        private string GetMenuID(string name) 
+        {
+            int index = name.IndexOf(" - ");
+            if (index < 0)
+                return (name);
+            string nameFriendly = name.Substring(index + 3);
+            string nameWithoutSpaces = nameFriendly.Replace(" ", "").Replace("-", "");
+            return (nameWithoutSpaces);
         }
 
         private string GetFullPathUrl(string fullPath)

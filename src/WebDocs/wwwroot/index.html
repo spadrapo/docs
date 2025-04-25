@@ -1,3 +1,42 @@
 ﻿<!DOCTYPE html>
-<script src="/drapo.js"></script>
-<div d-sector-parent-url="~/app/shared/layout.html" d-sector-parent="content"></div>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <link href="/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="/css/theme.css" rel="stylesheet" />
+    <link href="/css/todo.css" rel="stylesheet" />
+    <meta charset="utf-8" />
+    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-143277263-1"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'UA-143277263-1');
+    </script>
+    <title>Drapo</title>
+</head>
+<body>
+    <!--Data-->
+    <div d-dataKey="errors" d-dataType="array"></div>
+    <div d-dataKey="systemClipboard" d-dataType="value"></div>
+    <div d-dataKey="querystring" d-dataType="querystring"></div>
+    <div d-dataKey="menuItems" d-dataUrlGet="/api/Menu/GetItems"></div>
+    <!--Windows-->
+    <div d-id="windows" d-sector="windows" class="dSectorWindows" d-on-body-keyup-escape="CloseWindow()"></div>
+    <!--Header-->
+    <div d-sector="header" d-route="false" d-sector-url="/app/shared/header.html" class="dSectorHeader"></div>
+    <div class="doc">
+        <!--Menu-->
+        <div d-sector="menu" d-route="false" d-sector-url="/app/shared/menu.html" class="docLeft dSectorMenu"></div>
+        <!--Content-->
+        <div d-sector="content" class="docRight dSectorContent"></div>
+    </div>
+    <!--Footer-->
+    <div d-sector="footer" d-route="false" d-sector-url="/app/shared/footer.html" class="dSectorFooter"></div>
+    <!--Initialize-->
+    <div d-dataKey="initialize" d-dataType="function" d-dataLoadType="startup" d-dataValue="IF({{querystring.w}},ExecuteDataItem({{item.Action}},item in menuItems,{{item.Name}}={{querystring.w}},false,item in item.Items))"></div>
+</body>
+</html>
