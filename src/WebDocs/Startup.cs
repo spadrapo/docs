@@ -84,6 +84,7 @@ namespace WebDocs
         {
             if (env.IsDevelopment())
                 options.Debug = true;
+            options.Config.UseRouter = false;
             options.Config.UsePipes = true;
             options.Config.CreateTheme("", "");
             options.Config.CreateTheme("Dark", "dark");
@@ -97,6 +98,9 @@ namespace WebDocs
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
             options.PollingEvent += Polling;
+            options.Config.CreateRoute("^/function/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
+            options.Config.CreateRoute("^/doc/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/doc.html)");
+            options.Config.CreateRoute("^/$", "UpdateSector(content,~/app/menu/0000%20-%20Drapo.html)");
             this._options = options;
         }
 
