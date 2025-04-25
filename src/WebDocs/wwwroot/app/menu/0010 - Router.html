@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Router</h2>
+        <p>Drapo provides a simple way to create routes in your application. To do this, you must have a default <code>index.html</code> file in the root folder of your application.</p>
+        <p>This file must have all sectors properly configured.</p>
+        <p>You can check a sample <code>index.html</code> in the link <a href="https://github.com/spadrapo/docs/blob/master/src/WebDocs/wwwroot/index.html">below</a>:</p>
+        <d-code>
+            https://github.com/spadrapo/docs/blob/master/src/WebDocs/wwwroot/index.html
+        </d-code>
+        <p>You can configure the routes using the Drapo config class file. Each route must have at least a regular expression and an expression to execute. You can also configure expressions to run before and after the route is loaded.</p>
+        <p><a href="https://github.com/spadrapo/docs/blob/master/src/WebDocs/Startup.cs">Here</a> you can see a sample configuration:</p>
+        <d-code>
+            options.Config.CreateRoute("^/function/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
+            options.Config.CreateRoute("^/doc/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/doc.html)");
+            options.Config.CreateRoute("^/$", "UpdateSector(content,~/app/menu/0000%20-%20Drapo.html)");
+        </d-code>
+        <p>In this example, we have three routes. The first one is used for functions, the second for documentation or menu options, and the third for the default route.</p>
+        <p>This sample configuration is the same one currently used in this documentation.</p>
+        <p>When the browser URL path changes, Drapo will try to find the best matching route.</p>
+        <p>Once it finds a matching route, Drapo will load the default <code>index.html</code> and execute the expression defined in the route.</p>
+        <br />
+        <p>To change the current route in the application, you can use the <code>ApplyRoute</code> function. Below is an example of how to use it:</p>
+        <d-sample>
+            <span d-on-click="ApplyRoute(/function/ApplyRoute)">Click here to route the application to ApplyRoute</span>
+        </d-sample>
+    </div>
+</div>
