@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Encode URL</title>
+</head>
+<body>
+    <div d-datakey="testData" d-datatype="object" 
+         d-dataproperty-originalText="Hello World! This is a test with special characters: @#$%^&*()">
+    </div>
+    
+    <div>
+        <h3>URL Encoding Example</h3>
+        <p><strong>Original Text:</strong></p>
+        <div d-model="{{testData.originalText}}"></div>
+        
+        <p><strong>Encoded URL:</strong></p>
+        <div d-model="EncodeUrl({{testData.originalText}})"></div>
+        
+        <br>
+        <p><strong>Direct text encoding:</strong></p>
+        <div d-model="EncodeUrl(hello@world.com)"></div>
+        
+        <br>
+        <p><strong>Example usage in a link:</strong></p>
+        <a href="#" d-href="~/search?q=EncodeUrl({{testData.originalText}})">Search Link</a>
+    </div>
+</body>
+</html>
