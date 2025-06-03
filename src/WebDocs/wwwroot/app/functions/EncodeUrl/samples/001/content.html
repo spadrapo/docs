@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Encode URL Function</title>
+</head>
+<body>
+    <br>
+    <span>Encode URL Function Example</span>
+    <div d-dataKey="url" d-dataType="value" d-dataValue="P&L"></div>
+    <div>
+        <p><strong>Original value:</strong> {{url}}</p>
+        <p><strong>Encoded value:</strong> EncodeUrl({{url}})</p>
+        <p><strong>Usage in URL parameter:</strong></p>
+        <iframe d-attr-src="~/search.html?query=EncodeUrl({{url}})" style="width: 100%; height: 200px; border: 1px solid #ccc;"></iframe>
+    </div>
+    
+    <br>
+    <div>
+        <p><strong>Additional examples:</strong></p>
+        <div d-dataKey="email" d-dataType="value" d-dataValue="user@example.com"></div>
+        <p>Email encoding: EncodeUrl({{email}})</p>
+        <a href="#" d-attr-href="~/contact?email=EncodeUrl({{email}})">Contact Link</a>
+    </div>
+</body>
+</html>

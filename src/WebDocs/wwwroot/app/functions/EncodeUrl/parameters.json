@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Value",
+    "Description": "The text or mustache expression that will be URL encoded",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]
