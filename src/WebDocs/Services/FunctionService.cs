@@ -11,6 +11,10 @@ using WebDocs.Models;
 
 namespace WebDocs.Services
 {
+    /// <summary>
+    /// Service for retrieving Drapo function metadata, including listing, details, parameters, and samples.
+    /// Used by the MCP server to provide Drapo function search and detail endpoints.
+    /// </summary>
     public class FunctionService : IFunctionService
     {
         private readonly IWebHostEnvironment _env;
@@ -19,11 +23,17 @@ namespace WebDocs.Services
             _env = env;
         }
 
+        /// <summary>
+        /// Gets the full HTML content for a Drapo function, including description, syntax, parameters, and samples.
+        /// </summary>
         public async Task<string> GetContent(string name)
         {
             return await CreateContent(name);
         }
 
+        /// <summary>
+        /// Gets the list of all Drapo function names.
+        /// </summary>
         public async Task<List<string>> GetNames()
         {
             List<string> functions = new List<string>();
@@ -130,6 +140,9 @@ namespace WebDocs.Services
                 content.AppendLine(sufix);
         }
 
+        /// <summary>
+        /// Gets the list of parameters for a Drapo function.
+        /// </summary>
         private async Task<List<FunctionParameterVM>> GetParameters(string functionName)
         {
             string path = Path.Combine(_env.WebRootPath, "app", "functions", functionName, "parameters.json");
@@ -151,6 +164,9 @@ namespace WebDocs.Services
             return content.ToString();
         }
 
+        /// <summary>
+        /// Gets a list of Drapo function view models (without details).
+        /// </summary>
         public async Task<List<FunctionVM>> GetList()
         {
             List<FunctionVM> functions = new List<FunctionVM>();
@@ -164,6 +180,9 @@ namespace WebDocs.Services
             return (functions);
         }
 
+        /// <summary>
+        /// Gets the details for a specific Drapo function, including parameters and samples.
+        /// </summary>
         public async Task<FunctionVM> Get(string name)
         {
             List<string> names = await this.GetNames();
