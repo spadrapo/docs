@@ -17,6 +17,7 @@ using WebDocs.Models;
 using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Hosting;
 using Sysphera.Middleware.Drapo.Pipe;
+using WebDocs.Services;
 
 namespace WebDocs
 {
@@ -37,8 +38,8 @@ namespace WebDocs
                   {
                       options.JsonSerializerOptions.PropertyNamingPolicy = null;
                   });
-            services.AddSingleton<MenuController, MenuController>();
-            services.AddSingleton<FunctionController, FunctionController>();
+            services.AddScoped<IFunctionService, FunctionService>();
+            services.AddScoped<MenuController, MenuController>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
@@ -48,6 +49,7 @@ namespace WebDocs
                     Description = "API to be used in the drapo docs",
                 });
             });
+            services.AddMcpServer().WithStdioServerTransport().WithToolsFromAssembly();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MenuController menu)
