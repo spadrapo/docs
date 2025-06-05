@@ -174,12 +174,36 @@ namespace WebDocs.Services
 
         private async Task<FunctionVM> GetFunctionInternal(string name, bool loadDetails)
         {
-            string path = Path.Combine(_env.WebRootPath, "app", "functions", name, "description.html");
-            if (!System.IO.File.Exists(path))
+            string path = Path.Combine(_env.WebRootPath, "app", "functions", name);
+            string descriptionPath = Path.Combine(path, "description.html");
+            if (!System.IO.File.Exists(descriptionPath))
                 return (null);
             FunctionVM function = new FunctionVM();
             function.Name = name;
-            function.Description = await File.ReadAllTextAsync(path);
+            function.Description = await File.ReadAllTextAsync(descriptionPath);
+            if (loadDetails)
+            {
+                // Load parameters
+                function.Parameters = await GetParameters(name);
+                // Load samples
+                string samplesPath = Path.Combine(path, "samples");
+                var samples = new List<FunctionSampleVM>();
+                if (Directory.Exists(samplesPath))
+                {
+                    List<string> sampleDirs = Sort(new List<string>(Directory.GetDirectories(samplesPath)));
+                    foreach (var sampleDir in sampleDirs)
+                    {
+                        var sample = new FunctionSampleVM();
+                        sample.Name = Path.GetFileName(sampleDir);
+                        string descFile = Path.Combine(sampleDir, "description.html");
+                        string contentFile = Path.Combine(sampleDir, "content.html");
+                        sample.Description = System.IO.File.Exists(descFile) ? await File.ReadAllTextAsync(descFile) : null;
+                        sample.Content = System.IO.File.Exists(contentFile) ? await File.ReadAllTextAsync(contentFile) : null;
+                        samples.Add(sample);
+                    }
+                }
+                function.Samples = samples;
+            }
             return (function);
         }
     }
