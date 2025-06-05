@@ -150,5 +150,37 @@ namespace WebDocs.Services
             }
             return content.ToString();
         }
+
+        public async Task<List<FunctionVM>> GetList()
+        {
+            List<FunctionVM> functions = new List<FunctionVM>();
+            List<string> names = await this.GetNames();
+            foreach (string name in names)
+            {
+                FunctionVM function = await GetFunctionInternal(name, false);
+                if (function != null)
+                    functions.Add(function);
+            }
+            return (functions);
+        }
+
+        public async Task<FunctionVM> Get(string name)
+        {
+            List<string> names = await this.GetNames();
+            if (!names.Contains(name))
+                return null;
+            return await GetFunctionInternal(name, true);
+        }
+
+        private async Task<FunctionVM> GetFunctionInternal(string name, bool loadDetails)
+        {
+            string path = Path.Combine(_env.WebRootPath, "app", "functions", name, "description.html");
+            if (!System.IO.File.Exists(path))
+                return (null);
+            FunctionVM function = new FunctionVM();
+            function.Name = name;
+            function.Description = await File.ReadAllTextAsync(path);
+            return (function);
+        }
     }
 }

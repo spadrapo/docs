@@ -1,21 +1,30 @@
 ﻿using ModelContextProtocol.Server;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading.Tasks;
+using WebDocs.Models;
+using WebDocs.Services;
 
 namespace WebDocs.Tools
 {
     [McpServerToolType]
     public class FunctionTool
     {
-        [McpServerTool(Name = "get_functions"), Description("Get the list of all drapo functions. These functions does not have too much detail.")]
-        public string[] GetFunctions()
+        private readonly IFunctionService _functionService;
+        public FunctionTool(IFunctionService functionService)
         {
-            return new[] { "Function1", "Function2", "Function3" };
+            this._functionService = functionService;
+        }
+        [McpServerTool(Name = "get_functions"), Description("Get the list of all drapo functions. These functions does not have too much detail.")]
+        public async Task<List<FunctionVM>> GetFunctions()
+        {
+            return (await this._functionService.GetList());
         }
 
-        [McpServerTool(Name = "get_function"), Description("Get details about a drapo function with samples of how to use it")]
-        public string GetFunction(string name)
+        [McpServerTool(Name = "get_function_details"), Description("Get details about a drapo function with samples of how to use it and the parameters needed for the function")]
+        public async Task<FunctionVM> GetFunctionDetails(string name)
         {
-            return $"Function: {name}";
+            return (await this._functionService.Get(name));
         }
     }
 }
