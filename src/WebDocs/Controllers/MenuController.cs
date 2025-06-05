@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using WebDocs.Models;
+using WebDocs.Services;
 
 namespace WebDocs.Controllers
 {
@@ -14,11 +15,11 @@ namespace WebDocs.Controllers
     public class MenuController : Controller
     {
         IWebHostEnvironment _env;
-        FunctionController _function;
-        public MenuController(IWebHostEnvironment env, FunctionController function)
+        IFunctionService _functionService;
+        public MenuController(IWebHostEnvironment env, IFunctionService functionService)
         {
             _env = env;
-            _function = function;
+            _functionService = functionService;
         }
         [HttpGet]
         [ProducesResponseType(typeof(IEnumerable<MenuItemVM>), (int)HttpStatusCode.OK)]
@@ -74,7 +75,7 @@ namespace WebDocs.Controllers
             //Inject Functions
             MenuItemVM itemFunctions = FindByName(items, "Functions");
             itemFunctions.Items.Clear();
-            List<string> functionNames = await this._function.GetNames();
+            List<string> functionNames = await this._functionService.GetNames();
             foreach (string functionName in functionNames)
                 itemFunctions.Items.Add(CreateMenuItemFunction(functionName));
             return (items);
