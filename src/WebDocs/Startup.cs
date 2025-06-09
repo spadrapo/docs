@@ -18,6 +18,7 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Hosting;
 using Sysphera.Middleware.Drapo.Pipe;
 using WebDocs.Services;
+using ModelContextProtocol.AspNetCore;
 
 namespace WebDocs
 {
@@ -49,7 +50,7 @@ namespace WebDocs
                     Description = "API to be used in the drapo docs",
                 });
             });
-            services.AddMcpServer().WithStdioServerTransport().WithToolsFromAssembly();
+            services.AddMcpServer().WithHttpTransport().WithToolsFromAssembly();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env, MenuController menu)
@@ -74,6 +75,7 @@ namespace WebDocs
             {
                 endpoints.MapControllers();
                 endpoints.MapHub<DrapoPlumberHub>(string.Format("/{0}", _options.Config.PipeHubName));
+                endpoints.MapMcp("/mcp");
             });
             app.UseSwagger();
             app.UseSwaggerUI(c =>
