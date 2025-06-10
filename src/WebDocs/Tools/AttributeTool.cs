@@ -26,7 +26,7 @@ namespace WebDocs.Tools
         /// Gets the list of all Drapo attributes (basic info only).
         /// </summary>
         /// <returns>List of <see cref="AttributeVM"/> objects.</returns>
-        [McpServerTool(Name = "get_attributes"), Description("Get the list of all drapo attributes. These attributes are used in elements in the DOM. These attributes does not have too much detail.")]
+        [McpServerTool(Name = "get_attributes"), Description("Get the list of all drapo attributes. These attributes are used in elements in the DOM. These attributes do not have too much detail.")]
         public async Task<List<AttributeVM>> GetAttributes()
         {
             return (await this._attributeService.GetList());
