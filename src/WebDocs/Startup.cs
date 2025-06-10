@@ -40,6 +40,7 @@ namespace WebDocs
                       options.JsonSerializerOptions.PropertyNamingPolicy = null;
                   });
             services.AddScoped<IFunctionService, FunctionService>();
+            services.AddScoped<IAttributeService, AttributeService>();
             services.AddScoped<MenuController, MenuController>();
             services.AddSwaggerGen(c =>
             {
