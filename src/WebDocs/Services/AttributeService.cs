@@ -54,7 +54,7 @@ namespace WebDocs.Services
                 string name = Path.GetFileName(file);
                 string displayName = RemoveNumberPrefix(name);
                 if (displayName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
-                    displayName = displayName.Substring(0, displayName.Length - 5);
+                    displayName = Path.GetFileNameWithoutExtension(displayName);
                 if (matchName != null && !string.Equals(displayName, matchName, StringComparison.OrdinalIgnoreCase))
                     continue;
                 string[] lines = await File.ReadAllLinesAsync(file);
