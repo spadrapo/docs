@@ -3,5 +3,76 @@
 <div>
     <div>
         <h2>d-if</h2>
+        <p>You can use d-if to conditionally render an element based on a boolean expression. The element will only be rendered when the expression evaluates to true.</p>
+        <p>This attribute is particularly useful when combined with [d-for](d-for) loops to filter items, or to show/hide elements based on data conditions.</p>
+        <p>Basic syntax:</p>
+        <d-sample>
+            <div d-dataKey="data" d-dataType="object" d-dataProperty-show="true" d-dataProperty-hide="false"></div>
+            <div d-if="{{data.show}}">
+                <span>This will be visible because data.show is true</span>
+            </div>
+            <div d-if="{{data.hide}}">
+                <span>This will NOT be visible because data.hide is false</span>
+            </div>
+            <div d-if="true">
+                <span>This will always be visible</span>
+            </div>
+            <div d-if="false">
+                <span>This will never be visible</span>
+            </div>
+        </d-sample>
+        <br />
+        <h4>Using d-if with d-for</h4>
+        <p>When used inside a d-for loop, d-if can filter which items are rendered based on their properties:</p>
+        <d-sample>
+            <div d-dataKey="users" d-dataUrlGet="~/api/Sample/CreateUsers"></div>
+            <ul>
+                <li d-for="user in users" d-if="{{user.Active}}">{{user.Name}} (Active)</li>
+            </ul>
+        </d-sample>
+        <br />
+        <h4>Dynamic conditional rendering</h4>
+        <p>You can use d-if with interactive controls to dynamically show or hide content:</p>
+        <d-sample>
+            <div d-dataKey="control" d-dataType="object" d-dataProperty-showDetails="false"></div>
+            <div d-dataKey="toggleClick" d-dataType="value" d-dataLoadType="startup" d-dataValue="ToggleItemField({{control.showDetails}})"></div>
+            <div d-dataKey="products" d-dataUrlGet="~/api/Sample/CreateProducts"></div>
+            
+            <input type="button" value="Toggle Details" d-on-click="{{toggleClick}}" />
+            <br />
+            <br />
+            <div d-if="{{control.showDetails}}">
+                <h5>Product Details:</h5>
+                <ul>
+                    <li d-for="product in products">{{product.Name}} - ${{product.Price}}</li>
+                </ul>
+            </div>
+            <div d-if="!{{control.showDetails}}">
+                <p>Click the button to show product details</p>
+            </div>
+        </d-sample>
+        <br />
+        <h4>Complex conditions</h4>
+        <p>d-if supports complex boolean expressions and comparisons:</p>
+        <d-sample>
+            <div d-dataKey="inventory" d-dataUrlGet="~/api/Sample/CreateInventory"></div>
+            <div d-dataKey="threshold" d-dataType="value" d-dataValue="10"></div>
+            
+            <h5>Low Stock Items (less than {{threshold}} in stock):</h5>
+            <ul>
+                <li d-for="item in inventory" d-if="{{item.Stock}} < {{threshold}}">
+                    {{item.Name}} - Only {{item.Stock}} left!
+                </li>
+            </ul>
+            
+            <h5>High Value Items (over $100):</h5>
+            <ul>
+                <li d-for="item in inventory" d-if="{{item.Price}} > 100">
+                    {{item.Name}} - ${{item.Price}}
+                </li>
+            </ul>
+        </d-sample>
+        <br />
+        <p><strong>Note:</strong> Unlike [d-render](d-render), d-if is specifically designed for conditional logic and is commonly used in combination with d-for loops for filtering collections.</p>
     </div>
 </div>
