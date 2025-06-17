@@ -1,26 +1,26 @@
+<div d-dataKey="user" d-dataType="object" d-dataProperty-name="User" d-dataProperty-message=""></div>
+<div d-dataKey="chats" d-dataUnitOfWork="true" d-dataUrlGet="~/api/Chat/Get" d-dataUrlSet="~/api/Chat/Set" d-dataPipes="chat"></div>
 <div>
-    <div d-dataKey="sampleData" d-dataType="object" d-dataPipes="plumberDemo" d-dataUrlGet="~/api/Sample/GetData" d-dataUrlSet="~/api/Sample/SetData"></div>
     <div>
-        <label>Sample Value:</label>
-        <input type="text" d-model="{{sampleData.Value}}" />
-        <br><br>
-        <input type="button" value="Load Data" d-on-click="ReloadData(sampleData)">
-        <input type="button" value="Save Data" d-on-click="PostDataItem(sampleData)">
-        <br><br>
-        <input type="button" value="Lock Plumber" d-on-click="Lockplumber(plumberDemo)">
+        <h4>Plumber Control:</h4>
+        <input type="button" value="Lock Plumber" d-on-click="Lockplumber()">
         <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber()">
-        <br><br>
-        <span>Current Value: </span><span d-model="{{sampleData.Value}}"></span><br>
-        <span>Last Updated: </span><span d-model="{{sampleData.LastUpdate}}"></span>
-        <br><br>
-        <p><strong>Instructions:</strong></p>
-        <ol>
-            <li>Click "Load Data" to fetch data from the server</li>
-            <li>Modify the value in the text input</li>
-            <li>Click "Lock Plumber" to prevent data pipe communications</li>
-            <li>Try "Save Data" - it will be blocked by the locked plumber</li>
-            <li>Click "Unlock Plumber" to restore normal data pipe communications</li>
-            <li>Try "Save Data" again - it should now work</li>
-        </ol>
+        <p><i>When locked, incoming pipe messages are queued. When unlocked, queued messages are processed.</i></p>
+    </div>
+    <br />
+    <div>
+        <h4>Chat Example:</h4>
+        <span>User:</span><input type="text" d-model="{{user.name}}" placeholder="Your name">
+        <br>
+        <span>Message:</span><input type="text" d-model="{{user.message}}" placeholder="Your message">
+        <input type="button" value="Send" d-on-click="AddDataItem(chats,user,false);PostData(chats);ClearDataField(user,message)" />
+        <input type="button" value="Clear All" d-on-click="ClearData(chats,false);PostData(chats)" />
+    </div>
+    <br />
+    <div>
+        <h4>Messages:</h4>
+        <ul>
+            <li d-for="chat in chats">{{chat.Date}} - {{chat.User}} - {{chat.Message}}</li>
+        </ul>
     </div>
 </div>
