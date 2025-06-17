@@ -1,0 +1,9 @@
+[
+  {
+    "Name": "DataPipe",
+    "Description": "The identification of a data pipe what will be unlocked",
+    "Types": [ "text", "mustache" ],
+    "Optional": true,
+    "DefaultValue": "all pipes"
+  }
+]

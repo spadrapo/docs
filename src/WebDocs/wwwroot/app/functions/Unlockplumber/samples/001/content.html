@@ -1,0 +1,14 @@
+<div d-dataKey="plumberStatus" d-dataType="value">Locked</div>
+<div d-dataKey="messages" d-dataType="array" d-dataPipes="plumberDemo"></div>
+<div>
+    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber();UpdateDataField(plumberStatus,'Unlocked')">
+    <input type="button" value="Send Message" d-on-click="AddDataItem(messages,'Message sent at ' + GetDate())">
+    <input type="button" value="Clear Messages" d-on-click="ClearData(messages)">
+    <br><br>
+    <span>Plumber Status: </span><span d-model="{{plumberStatus}}"></span>
+    <br><br>
+    <span>Messages:</span>
+    <ul>
+        <li d-for="message in messages">{{message}}</li>
+    </ul>
+</div>
