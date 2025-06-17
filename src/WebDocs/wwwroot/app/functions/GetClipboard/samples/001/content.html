@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - GetClipboard</title>
+</head>
+<body>
+    <span>Function - GetClipboard</span>
+    <div d-dataKey="clipboardData" d-dataType="object" d-dataProperty-content=""></div>
+    <div>
+        <h3>Clipboard Content:</h3>
+        <span d-model="{{clipboardData.content}}"></span>
+        <br />
+        <br />
+        <input type="button" value="Read Clipboard" d-on-click="GetClipboard({{clipboardData.content}})" />
+    </div>
+</body>
+</html>
