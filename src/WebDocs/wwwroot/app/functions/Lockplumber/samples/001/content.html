@@ -1,13 +1,26 @@
-<div d-dataKey="messages" d-dataType="array" d-dataPipes="demo"></div>
-<div d-dataKey="messageTemplate" d-dataType="object" d-dataProperty-text="Sample Message"></div>
+<div d-dataKey="user" d-dataType="object" d-dataProperty-name="User" d-dataProperty-message=""></div>
+<div d-dataKey="chats" d-dataUnitOfWork="true" d-dataUrlGet="~/api/Chat/Get" d-dataUrlSet="~/api/Chat/Set" d-dataPipes="demo"></div>
 <div>
-    <input type="button" value="Lock Plumber" d-on-click="Lockplumber()">
-    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber()">
-    <input type="button" value="Add Message" d-on-click="UpdateItemField({{messageTemplate.text}},GetDate());AddDataItem(messages,messageTemplate)">
+    <div>
+        <h4>Plumber Control:</h4>
+        <input type="button" value="Lock Plumber" d-on-click="Lockplumber()">
+        <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber()">
+        <p><i>When locked, incoming pipe messages are queued. When unlocked, queued messages are processed.</i></p>
+    </div>
     <br />
+    <div>
+        <h4>Chat Example:</h4>
+        <span>User:</span><input type="text" d-model="{{user.name}}" placeholder="Your name">
+        <br>
+        <span>Message:</span><input type="text" d-model="{{user.message}}" placeholder="Your message">
+        <input type="button" value="Send" d-on-click="AddDataItem(chats,user,false);PostData(chats);ClearDataField(user,message)" />
+        <input type="button" value="Clear All" d-on-click="ClearData(chats,false);PostData(chats)" />
+    </div>
     <br />
-    <div>Messages:</div>
-    <ul>
-        <li d-for="message in messages">{{message.text}}</li>
-    </ul>
+    <div>
+        <h4>Messages:</h4>
+        <ul>
+            <li d-for="chat in chats">{{chat.Date}} - {{chat.User}} - {{chat.Message}}</li>
+        </ul>
+    </div>
 </div>
