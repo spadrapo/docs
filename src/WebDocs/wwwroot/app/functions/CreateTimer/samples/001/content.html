@@ -1,0 +1,9 @@
+<div d-dataKey="message" d-dataType="object" d-dataProperty-text="Waiting..." d-dataProperty-status="pending"></div>
+<div d-dataKey="timerUpdate" d-dataType="value" d-dataLoadType="startup" d-dataValue="UpdateDataField(message,text,Timer executed!);UpdateDataField(message,status,completed)"></div>
+
+<div>
+    <p>Status: <span d-model="{{message.status}}"></span></p>
+    <p>Message: <span d-model="{{message.text}}"></span></p>
+</div>
+
+<div d-dataKey="functionStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="CreateTimer({{timerUpdate}},1000)"></div>
