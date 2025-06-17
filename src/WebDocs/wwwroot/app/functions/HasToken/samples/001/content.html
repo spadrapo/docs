@@ -1,0 +1,8 @@
+<div d-dataKey="tokenStatus" d-dataType="value" d-dataLoadType="startup" d-dataValue="IF(HasToken(),UpdateDataField(tokenStatus,,Yes),UpdateDataField(tokenStatus,,No))"></div>
+<div d-dataKey="newToken" d-dataType="value"></div>
+<p>Token Status: <span d-model="{{tokenStatus}}"></span></p>
+<p>Check if a token exists and display the result.</p>
+<br />
+<input type="text" d-model="{{newToken}}" placeholder="Enter token to set" />
+<button d-on-click="UpdateToken({{newToken}});Execute(IF(HasToken(),UpdateDataField(tokenStatus,,Yes),UpdateDataField(tokenStatus,,No)))">Set Token</button>
+<button d-on-click="ClearToken();Execute(IF(HasToken(),UpdateDataField(tokenStatus,,Yes),UpdateDataField(tokenStatus,,No)))">Clear Token</button>
