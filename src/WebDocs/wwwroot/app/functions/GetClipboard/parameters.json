@@ -4,5 +4,12 @@
     "Description": "The data key where the clipboard content will be stored",
     "Types": [ "mustache", "text" ],
     "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
   }
 ]
