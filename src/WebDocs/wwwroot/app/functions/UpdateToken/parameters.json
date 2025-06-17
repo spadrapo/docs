@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Token",
+    "Description": "The new authentication or session token value to be set",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]
