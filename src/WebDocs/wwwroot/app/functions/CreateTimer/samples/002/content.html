@@ -1,0 +1,13 @@
+<div d-dataKey="counter" d-dataType="object" d-dataProperty-value="0"></div>
+<div d-dataKey="items" d-dataType="array"></div>
+<div d-dataKey="timerLoop" d-dataType="value" d-dataLoadType="startup" d-dataValue="UpdateDataField(counter,value,{{counter.value}} + 1);AddDataItem(items,Item {{counter.value}})"></div>
+
+<div>
+    <p>Counter: <span d-model="{{counter.value}}"></span></p>
+    <p>Items added:</p>
+    <ul>
+        <li d-for="item in items">{{item}}</li>
+    </ul>
+</div>
+
+<div d-dataKey="functionStartup" d-dataType="function" d-dataLoadType="startup" d-dataValue="CreateTimer({{timerLoop}},500,true)"></div>

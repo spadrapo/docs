@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "Content",
+    "Description": "The function or expression to execute when the timer triggers",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Time",
+    "Description": "The time in milliseconds before executing the content",
+    "Types": [ "number" ],
+    "Optional": false
+  },
+  {
+    "Name": "Loop",
+    "Description": "Whether the timer should repeat continuously",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
