@@ -1,12 +1,26 @@
-<div d-dataKey="plumberMessages" d-dataType="array" d-dataPipes="plumberDemo"></div>
 <div>
-    <input type="button" value="Add Message" d-on-click="AddDataItem(plumberMessages,'Message ' + GetDate())">
-    <input type="button" value="Lock Plumber" d-on-click="Lockplumber(plumberDemo)">
-    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber(plumberDemo)">
-    <input type="button" value="Clear Messages" d-on-click="ClearData(plumberMessages)">
-    <br><br>
-    <span>Messages:</span>
-    <ul>
-        <li d-for="message in plumberMessages">{{message}}</li>
-    </ul>
+    <div d-dataKey="sampleData" d-dataType="object" d-dataPipes="plumberDemo" d-dataUrlGet="~/api/Sample/GetData" d-dataUrlSet="~/api/Sample/SetData"></div>
+    <div>
+        <label>Sample Value:</label>
+        <input type="text" d-model="{{sampleData.Value}}" />
+        <br><br>
+        <input type="button" value="Load Data" d-on-click="ReloadData(sampleData)">
+        <input type="button" value="Save Data" d-on-click="PostDataItem(sampleData)">
+        <br><br>
+        <input type="button" value="Lock Plumber" d-on-click="Lockplumber(plumberDemo)">
+        <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber()">
+        <br><br>
+        <span>Current Value: </span><span d-model="{{sampleData.Value}}"></span><br>
+        <span>Last Updated: </span><span d-model="{{sampleData.LastUpdate}}"></span>
+        <br><br>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Click "Load Data" to fetch data from the server</li>
+            <li>Modify the value in the text input</li>
+            <li>Click "Lock Plumber" to prevent data pipe communications</li>
+            <li>Try "Save Data" - it will be blocked by the locked plumber</li>
+            <li>Click "Unlock Plumber" to restore normal data pipe communications</li>
+            <li>Try "Save Data" again - it should now work</li>
+        </ol>
+    </div>
 </div>
