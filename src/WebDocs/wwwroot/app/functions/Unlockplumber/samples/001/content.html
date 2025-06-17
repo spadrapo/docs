@@ -1,14 +1,12 @@
-<div d-dataKey="plumberStatus" d-dataType="value">Locked</div>
-<div d-dataKey="messages" d-dataType="array" d-dataPipes="plumberDemo"></div>
+<div d-dataKey="plumberMessages" d-dataType="array" d-dataPipes="plumberDemo"></div>
 <div>
-    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber();UpdateDataField(plumberStatus,'Unlocked')">
-    <input type="button" value="Send Message" d-on-click="AddDataItem(messages,'Message sent at ' + GetDate())">
-    <input type="button" value="Clear Messages" d-on-click="ClearData(messages)">
-    <br><br>
-    <span>Plumber Status: </span><span d-model="{{plumberStatus}}"></span>
+    <input type="button" value="Add Message" d-on-click="AddDataItem(plumberMessages,'Message ' + GetDate())">
+    <input type="button" value="Lock Plumber" d-on-click="Lockplumber(plumberDemo)">
+    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber(plumberDemo)">
+    <input type="button" value="Clear Messages" d-on-click="ClearData(plumberMessages)">
     <br><br>
     <span>Messages:</span>
     <ul>
-        <li d-for="message in messages">{{message}}</li>
+        <li d-for="message in plumberMessages">{{message}}</li>
     </ul>
 </div>
