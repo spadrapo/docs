@@ -1,0 +1,48 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-cloak</h2>
+        <p>You can use d-cloak to prevent a flash of uncompiled content while Drapo is processing elements. The attribute specifies which CSS class to remove from the element after Drapo has finished processing it.</p>
+        <p>This is useful when you have elements with mustache templates or conditional content that might be visible before Drapo compiles them.</p>
+        <p>Syntax:</p>
+        <d-code>
+            &lt;div class="loading" d-cloak="loading"&gt;
+                &lt;span&gt;{{someData}}&lt;/span&gt;
+            &lt;/div&gt;
+        </d-code>
+        <p>The CSS class should hide the element:</p>
+        <d-code>
+            .loading {
+                display: none;
+            }
+        </d-code>
+        <d-sample>
+            <style>
+                .hidden-content {
+                    display: none;
+                }
+                .demo-box {
+                    border: 1px solid #ccc;
+                    padding: 10px;
+                    margin: 10px 0;
+                    background-color: #f9f9f9;
+                }
+            </style>
+            <div d-dataKey="cloakData" d-dataType="object" d-dataProperty-message="Content loaded!" d-dataProperty-count="42"></div>
+            
+            <div class="demo-box">
+                <h4>Without d-cloak (may flash before processing):</h4>
+                <div>{{cloakData.message}} - Count: {{cloakData.count}}</div>
+            </div>
+            
+            <div class="demo-box">
+                <h4>With d-cloak (hidden until processed):</h4>
+                <div class="hidden-content" d-cloak="hidden-content">
+                    <p>{{cloakData.message}} - Count: {{cloakData.count}}</p>
+                    <p>This content was hidden until Drapo processed it.</p>
+                </div>
+            </div>
+        </d-sample>
+    </div>
+</div>
