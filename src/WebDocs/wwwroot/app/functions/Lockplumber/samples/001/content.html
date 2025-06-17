@@ -1,0 +1,12 @@
+<div d-dataKey="messages" d-dataType="array" d-dataPipes="demo"></div>
+<div>
+    <input type="button" value="Lock Plumber" d-on-click="Lockplumber()">
+    <input type="button" value="Unlock Plumber" d-on-click="Unlockplumber()">
+    <input type="button" value="Add Message" d-on-click="AddDataItem(messages,'Message ' + GetDate())">
+    <br />
+    <br />
+    <div>Messages:</div>
+    <ul>
+        <li d-for="message in messages">{{message}}</li>
+    </ul>
+</div>
