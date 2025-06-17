@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Update Data URL</title>
+</head>
+<body>
+    <div d-dataKey="dataItem" d-dataType="object" d-dataUrlGet="~/api/Sample/GetData" d-dataproperty-value="Initial Data"></div>
+    <div d-dataKey="newUrl" d-dataType="value" d-dataValue="~/api/Sample/GetUpdatedData"></div>
+    
+    <div>
+        <span>Current Data: </span>
+        <span d-model="{{dataItem.value}}"></span><br />
+        <span>Current URL: </span>
+        <span>~/api/Sample/GetData</span><br /><br />
+        
+        <span>New URL: </span>
+        <input type="text" d-model="{{newUrl}}" placeholder="Enter new URL" /><br /><br />
+        
+        <input type="button" value="Update Data URL" d-on-click="UpdateDataURL(dataItem,{{newUrl}})" />
+        <input type="button" value="Reload Data" d-on-click="ReloadData(dataItem)" />
+    </div>
+</body>
+</html>
