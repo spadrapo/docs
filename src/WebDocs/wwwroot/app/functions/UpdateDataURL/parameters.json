@@ -10,12 +10,5 @@
     "Description": "The new URL endpoint that will be associated with the data item",
     "Types": [ "url", "text", "mustache" ],
     "Optional": false
-  },
-  {
-    "Name": "UrlMethod",
-    "Description": "The URL method type (Get or Set)",
-    "Types": [ "text" ],
-    "Optional": true,
-    "DefaultValue": "Get"
   }
 ]
