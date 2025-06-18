@@ -1,0 +1,9 @@
+<div d-dataKey="data" d-dataType="object" d-dataProperty-name="Original" d-dataProperty-status="ready"></div>
+
+<div>
+    <p>Status: <span d-model="{{data.status}}"></span></p>
+    <p>Name: <span d-model="{{data.name}}"></span></p>
+    <input type="text" d-model="{{data.name}}">
+    <input type="button" value="Save Async" d-on-click="Async(UpdateDataField(data,status,saving));UpdateDataField(data,name,Saved)">
+    <input type="button" value="Reset" d-on-click="UpdateDataField(data,name,Original);UpdateDataField(data,status,ready)">
+</div>

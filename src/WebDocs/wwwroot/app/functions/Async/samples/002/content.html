@@ -1,0 +1,17 @@
+<div d-dataKey="userForm" d-dataType="object" d-dataProperty-name="" d-dataProperty-email="" d-dataProperty-sending="false"></div>
+
+<div>
+    <h3>User Registration Form</h3>
+    <div>
+        <label>Name:</label>
+        <input type="text" d-model="{{userForm.name}}">
+    </div>
+    <div>
+        <label>Email:</label>
+        <input type="email" d-model="{{userForm.email}}">
+    </div>
+    <div>
+        <span d-if="{{userForm.sending}}">Sending...</span>
+        <input type="button" value="Submit" d-on-click="UpdateDataField(userForm,sending,true);Async(PostDataItem(userForm));UpdateDataField(userForm,sending,false)">
+    </div>
+</div>
