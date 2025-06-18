@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - SetClipboard</title>
+</head>
+<body>
+    <span>Function - SetClipboard</span>
+    <div d-dataKey="clipboardData" d-dataType="object" d-dataProperty-content="Hello, this is test content!"></div>
+    <div>
+        <h3>Text to Copy:</h3>
+        <input type="text" d-model="{{clipboardData.content}}" style="width: 300px;" />
+        <br />
+        <br />
+        <input type="button" value="Copy to Clipboard" d-on-click="SetClipboard({{clipboardData.content}})" />
+    </div>
+</body>
+</html>
