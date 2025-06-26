@@ -33,10 +33,10 @@ namespace WebDocs.Controllers
 
                 var searchResults = new List<SearchItemVM>();
                 var menuItems = await _menuController.GetItemsInternal();
-                
+
                 // Search through all menu items recursively
                 searchResults.AddRange(SearchMenuItems(menuItems, query.ToLower()));
-                
+
                 // Sort results by relevance (exact matches first, then partial matches)
                 var sortedResults = searchResults
                     .OrderBy(r => !r.Name.ToLower().StartsWith(query.ToLower()))
