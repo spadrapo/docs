@@ -1,8 +1,31 @@
 ﻿<!DOCTYPE html>
 <script src="/drapo.js"></script>
 <div>
-    <div>
-        <img src="../../img/drapo.png" class="dHeaderImage"/>
-        <span>Drapo Docs</span>
+    <div class="header-container">
+        <div class="header-left">
+            <img src="../../img/drapo.png" class="dHeaderImage"/>
+            <span>Drapo Docs</span>
+        </div>
+        <div class="header-right">
+            <div class="search-container">
+                <div d-dataKey="searchQuery" d-dataType="value"></div>
+                <div d-dataKey="searchResults" d-dataUrlGet="/api/Search/Search?query={{searchQuery}}" d-dataUrlGetOnChange="searchQuery"></div>
+                <input type="text" 
+                       class="search-input" 
+                       placeholder="Search documentation..." 
+                       d-model="{{searchQuery}}" 
+                       d-model-event="keyup"
+                       d-on-keyup-debounce="true"
+                       d-on-blur="UpdateData(searchQuery,'')" />
+                <div class="search-results" d-if="{{searchResults.length}} > 0">
+                    <div class="search-item" 
+                         d-for="result in searchResults" 
+                         d-on-click="UpdateData(searchQuery,'');ClearData(searchResults);{{result.Action}}">
+                        <div class="search-item-name">{{result.Name}}</div>
+                        <div class="search-item-type">{{result.Type}}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
