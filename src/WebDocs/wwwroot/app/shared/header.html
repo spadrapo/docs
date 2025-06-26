@@ -20,7 +20,7 @@
                 <div class="search-results" d-if="{{searchResults.length}} > 0">
                     <div class="search-item" 
                          d-for="result in searchResults" 
-                         d-on-click="UpdateData(searchQuery,'');{{result.Action}}">
+                         d-on-click="UpdateData(searchQuery,'');ClearData(searchResults);{{result.Action}}">
                         <div class="search-item-name">{{result.Name}}</div>
                         <div class="search-item-type">{{result.Type}}</div>
                     </div>
