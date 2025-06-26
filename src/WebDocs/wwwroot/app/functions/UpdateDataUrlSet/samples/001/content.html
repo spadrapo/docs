@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Update Data URL Set</title>
+</head>
+<body>
+    <div d-dataKey="dataItem" d-dataType="object" d-dataUrlGet="~/api/Sample/GetData" d-dataUrlSet="~/api/Sample/SetData" d-dataproperty-value="Initial Data"></div>
+    <div d-dataKey="newSetUrl" d-dataType="value" d-dataValue="~/api/Sample/SetUpdatedData"></div>
+    
+    <div>
+        <span>Current Data: </span>
+        <span d-model="{{dataItem.value}}"></span><br />
+        <span>Current SET URL: </span>
+        <span>~/api/Sample/SetData</span><br /><br />
+        
+        <span>New SET URL: </span>
+        <input type="text" d-model="{{newSetUrl}}" placeholder="Enter new SET URL" /><br /><br />
+        
+        <input type="button" value="Update Data URL Set" d-on-click="UpdateDataUrlSet(dataItem,{{newSetUrl}})" />
+        <input type="button" value="Post Data with New URL" d-on-click="PostDataItem(dataItem)" />
+        <input type="button" value="Reload Data" d-on-click="ReloadData(dataItem)" />
+    </div>
+</body>
+</html>
