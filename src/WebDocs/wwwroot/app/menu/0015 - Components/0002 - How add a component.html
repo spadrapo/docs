@@ -3,5 +3,127 @@
 <div>
     <div>
         <h2>How add a component</h2>
+        <p>Creating a new component in Drapo is straightforward. Follow these steps to build your own reusable component.</p>
+        
+        <h3>Step 1: Create Component Folder</h3>
+        <p>Create a new folder in your wwwroot/components/ directory with your component name:</p>
+        <d-code>
+/wwwroot/components/mybutton/
+        </d-code>
+        
+        <h3>Step 2: Create HTML Template</h3>
+        <p>Create a mybutton.html file with your component's HTML structure:</p>
+        <d-code>
+&lt;div d-sector="@" class="my-button" dc-text="" dc-onclick=""&gt;
+    &lt;button type="button"&gt;
+        &lt;span d-model="{{_text}}"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/div&gt;
+        </d-code>
+        <p><strong>Key points:</strong></p>
+        <ul>
+            <li><code>d-sector="@"</code> creates an isolated data context for the component</li>
+            <li><code>dc-*</code> attributes are custom component attributes that will be processed</li>
+            <li>Use mustache syntax <code>{{variable}}</code> for data binding</li>
+        </ul>
+        
+        <h3>Step 3: Create TypeScript Logic</h3>
+        <p>Create a mybutton.ts file with the component's behavior:</p>
+        <d-code>
+async function mybuttonConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyButton&gt; {
+    let instance: MyButton = new MyButton(el, app);
+    await instance.Initialize();
+    return instance;
+}
+
+class MyButton {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+    
+    constructor(el: HTMLElement, app: DrapoApplication) {
+        this._el = el;
+        this._app = app;
+    }
+    
+    public async Initialize(): Promise&lt;void&gt; {
+        // Get custom attributes
+        const text = this._el.getAttribute('dc-text') || 'Button';
+        const onclick = this._el.getAttribute('dc-onclick') || '';
+        
+        // Remove processed attributes
+        this._el.removeAttribute('dc-text');
+        this._el.removeAttribute('dc-onclick');
+        
+        // Set up data
+        await this._app.Storage.SetDataKeyField('_text', null, text);
+        
+        // Set up click handler
+        if (onclick) {
+            const button = this._el.querySelector('button');
+            button.setAttribute('d-on-click', onclick);
+        }
+    }
+}
+        </d-code>
+        
+        <h3>Step 4: Add Styling (Optional)</h3>
+        <p>Create a mybutton.css file for component-specific styles:</p>
+        <d-code>
+.my-button button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.my-button button:hover {
+    background-color: #0056b3;
+}
+        </d-code>
+        
+        <h3>Step 5: Create Type Definitions (Optional)</h3>
+        <p>Create a mybutton.d.ts file for TypeScript support:</p>
+        <d-code>
+/// &lt;reference types="drapo" /&gt;
+
+declare function mybuttonConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyButton&gt;;
+
+declare class MyButton {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+    
+    constructor(el: HTMLElement, app: DrapoApplication);
+    Initialize(): Promise&lt;void&gt;;
+}
+        </d-code>
+        
+        <h3>Step 6: Use Your Component</h3>
+        <p>Now you can use your component in any HTML page:</p>
+        <d-code>
+&lt;d-mybutton dc-text="Click Me!" dc-onclick="alert('Hello World!')"&gt;&lt;/d-mybutton&gt;
+
+&lt;d-mybutton dc-text="Save" dc-onclick="SaveData()"&gt;&lt;/d-mybutton&gt;
+        </d-code>
+        
+        <h3>Best Practices</h3>
+        <ul>
+            <li><strong>Use sectors</strong> - Always include <code>d-sector="@"</code> to isolate component data</li>
+            <li><strong>Custom attributes</strong> - Use <code>dc-*</code> prefix for component-specific attributes</li>
+            <li><strong>Clean up</strong> - Remove processed attributes in the Initialize method</li>
+            <li><strong>Error handling</strong> - Add proper error handling in your component logic</li>
+            <li><strong>Documentation</strong> - Document your component's attributes and usage</li>
+            <li><strong>Naming convention</strong> - Use consistent naming for constructors and classes</li>
+        </ul>
+        
+        <h3>Component Configuration</h3>
+        <p>Components can accept various types of configuration:</p>
+        <ul>
+            <li><strong>Simple values</strong> - <code>dc-text="Hello"</code></li>
+            <li><strong>Data references</strong> - <code>dc-value="{{user.name}}"</code></li>
+            <li><strong>Functions</strong> - <code>dc-onclick="SaveUser(user)"</code></li>
+            <li><strong>Boolean flags</strong> - <code>dc-enabled="{{user.isActive}}"</code></li>
+        </ul>
     </div>
 </div>

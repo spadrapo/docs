@@ -3,16 +3,172 @@
 <div>
     <div>
         <h2>Content</h2>
-        <p>You can use the inner html of you component element inside your component.</p>
-        <p>Inside your component you must have a child element with the attribute d-content="internal".</p>
-        <p>So, when drapo is creating the component element he will inject the inner html of your component below the component that have the d-content="internal".</p>
-        <p>Example of component using content:</p>
+        <p>Content projection in Drapo components allows you to inject HTML content from the component usage into specific locations within the component template. This enables flexible and reusable components that can wrap and enhance any content.</p>
+        
+        <h3>Basic Content Projection</h3>
+        <p>You can use the inner HTML of your component element inside your component template. Inside your component you must have a child element with the attribute <code>d-content="internal"</code>.</p>
+        <p>When Drapo creates the component element, it will inject the inner HTML of your component below the element that has the <code>d-content="internal"</code> attribute.</p>
+        
+        <h3>Example: Simple Content Wrapper</h3>
+        <p>Example of component using content projection:</p>
         <d-code>
-            <div class="code">
-                <div style="display:none" d-content="internal"></div>
-                <pre></pre>
-            </div>
+&lt;div class="wrapper"&gt;
+    &lt;div class="header"&gt;Component Header&lt;/div&gt;
+    &lt;div d-content="internal"&gt;&lt;/div&gt;
+    &lt;div class="footer"&gt;Component Footer&lt;/div&gt;
+&lt;/div&gt;
         </d-code>
-        <p>This is the code of the d-code component used here at the drapo docs. You can find the source code of this component <a href="https://github.com/spadrapo/docs/tree/master/src/WebDocs/wwwroot/components/code">here</a></p>
+        <p>Usage:</p>
+        <d-code>
+&lt;d-wrapper&gt;
+    &lt;p&gt;This content will be projected into the component!&lt;/p&gt;
+    &lt;button&gt;Click me&lt;/button&gt;
+&lt;/d-wrapper&gt;
+        </d-code>
+        <p>Result:</p>
+        <d-code>
+&lt;div class="wrapper"&gt;
+    &lt;div class="header"&gt;Component Header&lt;/div&gt;
+    &lt;div&gt;
+        &lt;p&gt;This content will be projected into the component!&lt;/p&gt;
+        &lt;button&gt;Click me&lt;/button&gt;
+    &lt;/div&gt;
+    &lt;div class="footer"&gt;Component Footer&lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h3>Real Example: Code Component</h3>
+        <p>Here's the actual implementation of the d-code component used in this documentation:</p>
+        <d-code>
+&lt;div class="code"&gt;
+    &lt;div style="display:none" d-content="internal"&gt;&lt;/div&gt;
+    &lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;
+        </d-code>
+        <p>The TypeScript logic processes the content:</p>
+        <d-code>
+public async Initialize(): Promise&lt;void&gt; {
+    const elContent: HTMLDivElement = this.GetElementContent();
+    const elCode: HTMLPreElement = this.GetElementCode();
+    const content: string = this._app.Document.GetHTML(elContent);
+    const contentEncoded: string = this._app.Document.GetHTMLEncoded(content);
+    await this._app.Document.RemoveElement(elContent, false);
+    this._app.Document.SetHTML(elCode, contentEncoded);
+    elCode.setAttribute('d-pre', 'true');
+}
+        </d-code>
+        <p>This component takes HTML content, encodes it, and displays it as formatted code. You can find the source code of this component <a href="https://github.com/spadrapo/docs/tree/master/src/WebDocs/wwwroot/components/code">here</a>.</p>
+        
+        <h3>Advanced Content Projection</h3>
+        <p>Components can perform complex operations on projected content:</p>
+        
+        <h4>Content Processing</h4>
+        <p>Components can modify, format, or transform the projected content:</p>
+        <d-code>
+// In component TypeScript
+public async Initialize(): Promise&lt;void&gt; {
+    const contentElement = this.GetContentElement();
+    const originalContent = this._app.Document.GetHTML(contentElement);
+    
+    // Process the content
+    const processedContent = this.ProcessContent(originalContent);
+    
+    // Update the display area
+    const displayElement = this.GetDisplayElement();
+    this._app.Document.SetHTML(displayElement, processedContent);
+}
+
+private ProcessContent(content: string): string {
+    // Example: Convert markdown to HTML, syntax highlighting, etc.
+    return content.replace(/\*\*(.*?)\*\*/g, '&lt;strong&gt;$1&lt;/strong&gt;');
+}
+        </d-code>
+        
+        <h4>Multiple Content Slots</h4>
+        <p>Components can have multiple content projection areas:</p>
+        <d-code>
+&lt;div class="card"&gt;
+    &lt;div class="card-header"&gt;
+        &lt;div d-content="header"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card-body"&gt;
+        &lt;div d-content="internal"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+    &lt;div class="card-footer"&gt;
+        &lt;div d-content="footer"&gt;&lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+        <p>Usage with named slots:</p>
+        <d-code>
+&lt;d-card&gt;
+    &lt;div slot="header"&gt;Card Title&lt;/div&gt;
+    &lt;p&gt;Main content goes here&lt;/p&gt;
+    &lt;div slot="footer"&gt;Card Actions&lt;/div&gt;
+&lt;/d-card&gt;
+        </d-code>
+        
+        <h3>Content with Data Binding</h3>
+        <p>Projected content maintains its data binding context:</p>
+        <d-code>
+&lt;d-list&gt;
+    &lt;div d-for="item in items"&gt;
+        &lt;span&gt;{{item.name}}&lt;/span&gt;
+        &lt;button d-on-click="DeleteItem(item)"&gt;Delete&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/d-list&gt;
+        </d-code>
+        <p>The list component can enhance the items while preserving the original data binding:</p>
+        <d-code>
+&lt;div class="enhanced-list"&gt;
+    &lt;div class="list-header"&gt;Enhanced List View&lt;/div&gt;
+    &lt;div class="list-content" d-content="internal"&gt;&lt;/div&gt;
+    &lt;div class="list-footer"&gt;Total items: {{items.length}}&lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h3>Conditional Content Projection</h3>
+        <p>Components can conditionally show or hide projected content:</p>
+        <d-code>
+&lt;div class="collapsible" d-dataKey="state" d-dataProperty-expanded="true"&gt;
+    &lt;div class="header" d-on-click="ToggleDataField(state, expanded)"&gt;
+        &lt;span&gt;{{state.expanded ? '▼' : '▶'}}&lt;/span&gt; Click to expand
+    &lt;/div&gt;
+    &lt;div class="content" d-if="{{state.expanded}}" d-content="internal"&gt;&lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h3>Content Isolation and Sectors</h3>
+        <p>When using content projection with component sectors, be aware of data context:</p>
+        <d-code>
+&lt;div d-sector="@" class="component-with-sector"&gt;
+    &lt;!-- Component has its own data context --&gt;
+    &lt;div d-dataKey="componentData" d-dataProperty-title="Component Title"&gt;&lt;/div&gt;
+    
+    &lt;h3&gt;{{componentData.title}}&lt;/h3&gt;
+    
+    &lt;!-- Projected content maintains parent context --&gt;
+    &lt;div d-content="internal"&gt;&lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h3>Best Practices</h3>
+        <ul>
+            <li><strong>Hidden content element</strong> - Use <code>style="display:none"</code> on the <code>d-content="internal"</code> element to avoid flashing</li>
+            <li><strong>Content validation</strong> - Validate projected content in your component's Initialize method</li>
+            <li><strong>Fallback content</strong> - Provide default content when no content is projected</li>
+            <li><strong>Preserve binding</strong> - Be careful not to break data binding when processing content</li>
+            <li><strong>Content cleanup</strong> - Properly remove temporary content elements after processing</li>
+            <li><strong>Multiple slots</strong> - Use named content slots for complex layout requirements</li>
+        </ul>
+        
+        <h3>Common Patterns</h3>
+        <ul>
+            <li><strong>Layout Wrappers</strong> - Cards, panels, modals that wrap content</li>
+            <li><strong>Enhanced Lists</strong> - Lists with sorting, filtering, pagination</li>
+            <li><strong>Code Formatters</strong> - Syntax highlighting, code execution</li>
+            <li><strong>Content Transformers</strong> - Markdown renderers, text processors</li>
+            <li><strong>Interactive Containers</strong> - Tabs, accordions, carousels</li>
+        </ul>
     </div>
 </div>
