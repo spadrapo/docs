@@ -6,6 +6,10 @@
     margin: 0;
     border: none;
     cursor: pointer;
+    // Improve touch targets for mobile
+    min-height: 44px; // Apple's recommended minimum touch target size
+    display: flex;
+    align-items: center;
 }
 
 .dMenuTab > span
@@ -25,4 +29,27 @@
 
 .dMenuGroupNone::before {
     content: "•";
+}
+
+// Mobile menu improvements
+@media (max-width: 768px) {
+    .dMenu > div {
+        min-height: 48px; // Even larger touch targets on mobile
+        padding: 12px 8px; // More padding for easier tapping
+        border-bottom: 1px solid #e9ecef;
+        font-size: 16px; // Larger font size for mobile
+    }
+    
+    .dMenuTab > span {
+        padding-left: 20px; // Reduce indentation on mobile
+        padding-top: 12px;
+        padding-bottom: 12px;
+    }
+    
+    .dMenuGroupExpanded::before,
+    .dMenuGroupCollapsed::before,
+    .dMenuGroupNone::before {
+        font-size: 18px; // Larger icons for mobile
+        margin-right: 8px;
+    }
 }
