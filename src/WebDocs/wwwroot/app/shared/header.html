@@ -10,18 +10,17 @@
             <div class="search-container">
                 <div d-dataKey="searchQuery" d-dataType="value"></div>
                 <div d-dataKey="searchResults" d-dataUrlGet="/api/Search/Search?query={{searchQuery}}" d-dataUrlGetOnChange="searchQuery"></div>
-                <div d-dataKey="showSearchResults" d-dataType="value" d-dataValue="false"></div>
                 <input type="text" 
                        class="search-input" 
                        placeholder="Search documentation..." 
                        d-model="{{searchQuery}}" 
                        d-model-event="keyup"
-                       d-on-focus="IF({{searchQuery.length}} >= 3, UpdateData(showSearchResults,true))"
-                       d-on-blur="Async(UpdateData(showSearchResults,false),200)" />
-                <div class="search-results" d-if="{{showSearchResults}} && {{searchResults.length}} > 0">
+                       d-on-keyup-debounce="true"
+                       d-on-blur="UpdateData(searchQuery,'')" />
+                <div class="search-results" d-if="{{searchResults.length}} > 0">
                     <div class="search-item" 
                          d-for="result in searchResults" 
-                         d-on-click="UpdateData(searchQuery,'');UpdateData(showSearchResults,false);{{result.Action}}">
+                         d-on-click="UpdateData(searchQuery,'');{{result.Action}}">
                         <div class="search-item-name">{{result.Name}}</div>
                         <div class="search-item-type">{{result.Type}}</div>
                     </div>
