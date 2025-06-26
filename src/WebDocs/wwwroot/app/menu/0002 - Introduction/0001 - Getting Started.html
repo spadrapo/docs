@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Getting Started with Drapo</h2>
+        <p><strong>Welcome to Drapo!</strong> This guide will help you get up and running with Drapo, the powerful frontend framework for .NET developers.</p>
+        
+        <h3>What is Drapo?</h3>
+        <p>Drapo is a declarative frontend framework that brings reactive programming to .NET web applications. You can build complex single-page applications using only HTML attributes and .NET - no JavaScript required!</p>
+        
+        <h3>Prerequisites</h3>
+        <p>Before you start, make sure you have:</p>
+        <ul>
+            <li><strong>.NET 8.0 SDK</strong> or later - <a href="https://dotnet.microsoft.com/download" target="_blank">Download here</a></li>
+            <li><strong>Visual Studio, VS Code, or your preferred IDE</strong></li>
+            <li><strong>Basic knowledge of HTML and C#</strong></li>
+        </ul>
+        
+        <h3>Quick Installation</h3>
+        <p>Setting up Drapo is simple. Follow these steps:</p>
+        
+        <h4>1. Create a new ASP.NET Core project</h4>
+        <d-code>
+            dotnet new web -n MyDrapoApp
+            cd MyDrapoApp
+        </d-code>
+        
+        <h4>2. Add the Drapo NuGet package</h4>
+        <d-code>
+            dotnet add package Drapo
+        </d-code>
+        
+        <h4>3. Configure Drapo in your Startup.cs or Program.cs</h4>
+        <d-code>
+            public void ConfigureServices(IServiceCollection services)
+            {
+                services.AddDrapo();
+            }
+        </d-code>
+        
+        <p>For more detailed installation instructions, see the <a href="#" d-on-click="ApplyRoute(/doc/Basic)">Installation</a> section.</p>
+        
+        <h3>Your First Drapo Application</h3>
+        <p>Let's create a simple interactive application to see Drapo in action. Create an <strong>index.html</strong> file in your <strong>wwwroot</strong> folder:</p>
+        
+        <d-code>
+            &lt;!DOCTYPE html&gt;
+            &lt;html&gt;
+            &lt;head&gt;
+                &lt;title&gt;My First Drapo App&lt;/title&gt;
+                &lt;script src="/drapo.js"&gt;&lt;/script&gt;
+            &lt;/head&gt;
+            &lt;body&gt;
+                &lt;div d-sector="main"&gt;
+                    &lt;!-- Data setup --&gt;
+                    &lt;div d-dataKey="user" d-dataType="object" 
+                         d-dataProperty-name="John Doe" 
+                         d-dataProperty-age="25"&gt;&lt;/div&gt;
+                    
+                    &lt;h1&gt;Welcome to Drapo!&lt;/h1&gt;
+                    
+                    &lt;!-- Two-way data binding --&gt;
+                    &lt;p&gt;Name: &lt;input type="text" d-model="{{user.name}}" /&gt;&lt;/p&gt;
+                    &lt;p&gt;Age: &lt;input type="number" d-model="{{user.age}}" /&gt;&lt;/p&gt;
+                    
+                    &lt;!-- Display bound data --&gt;
+                    &lt;h2&gt;Hello, {{user.name}}!&lt;/h2&gt;
+                    &lt;p d-if="{{user.age >= 18}}"&gt;You are an adult.&lt;/p&gt;
+                    &lt;p d-if="{{user.age &lt; 18}}"&gt;You are a minor.&lt;/p&gt;
+                    
+                    &lt;!-- Event handling --&gt;
+                    &lt;button d-on-click="SetDataField(user, age, 30)"&gt;Set Age to 30&lt;/button&gt;
+                &lt;/div&gt;
+            &lt;/body&gt;
+            &lt;/html&gt;
+        </d-code>
+        
+        <h4>Run your application</h4>
+        <d-code>
+            dotnet run
+        </d-code>
+        
+        <p>Open your browser to <strong>http://localhost:5000</strong> and you'll see your interactive Drapo application!</p>
+        
+        <h3>Key Concepts You Just Used</h3>
+        <ul>
+            <li><strong>d-sector</strong> - Defines a data scope for your application</li>
+            <li><strong>d-dataKey</strong> - Creates a data object named "user"</li>
+            <li><strong>d-model</strong> - Creates two-way data binding with form inputs</li>
+            <li><strong>{{expression}}</strong> - Displays data values in templates</li>
+            <li><strong>d-if</strong> - Conditional rendering based on data</li>
+            <li><strong>d-on-click</strong> - Event handling for user interactions</li>
+        </ul>
+        
+        <h3>What's Next?</h3>
+        <p>Now that you have a basic Drapo application running, explore these topics to build more powerful applications:</p>
+        <ul>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/Storage)">Data Management</a></strong> - Learn about data types, storage, and AJAX integration</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/d-for)">Template System</a></strong> - Use loops and conditions to create dynamic UIs</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ValidationIntroduction)">Form Validation</a></strong> - Add robust validation to your forms</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/How%20it%20works)">Components</a></strong> - Build reusable UI components</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/Todo)">Sample Applications</a></strong> - See complete examples like Todo app</li>
+        </ul>
+        
+        <h3>Need Help?</h3>
+        <p>If you run into issues or have questions:</p>
+        <ul>
+            <li>Check the comprehensive <a href="#" d-on-click="ApplyRoute(/doc/d-model)">Attributes Reference</a> for all available Drapo attributes</li>
+            <li>Browse the <a href="#" d-on-click="ApplyRoute(/function/SetDataField)">Functions Documentation</a> for all built-in functions</li>
+            <li>Review working examples in the <a href="#" d-on-click="ApplyRoute(/doc/Todo)">Applications</a> section</li>
+        </ul>
+        
+        <p><strong>Happy coding with Drapo!</strong> 🚀</p>
+    </div>
+</div>
