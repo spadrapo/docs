@@ -1,0 +1,7 @@
+.dContentLink {
+  text-decoration: underline;
+}
+.dContentLink:hover {
+  cursor: pointer;
+  font-weight: bold;
+}
