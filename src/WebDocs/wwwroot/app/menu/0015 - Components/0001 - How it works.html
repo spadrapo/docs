@@ -3,5 +3,66 @@
 <div>
     <div>
         <h2>How it works</h2>
+        <p>Components in Drapo are reusable UI elements that encapsulate HTML structure, behavior, and styling. They provide a way to create modular, maintainable web applications by breaking down complex interfaces into smaller, manageable pieces.</p>
+        
+        <h3>Component Architecture</h3>
+        <p>A Drapo component consists of several files organized in a folder structure:</p>
+        <ul>
+            <li><strong>component.html</strong> - The HTML template that defines the component's structure</li>
+            <li><strong>component.ts</strong> - TypeScript file containing the component's logic and behavior</li>
+            <li><strong>component.css</strong> - Optional CSS file for component-specific styling</li>
+            <li><strong>component.d.ts</strong> - Optional TypeScript declaration file for type definitions</li>
+        </ul>
+        
+        <h3>Component Lifecycle</h3>
+        <p>When Drapo encounters a component in the DOM, it follows this lifecycle:</p>
+        <ol>
+            <li><strong>Discovery</strong> - Drapo discovers component tags (like &lt;d-mycomponent&gt;) in the HTML</li>
+            <li><strong>Loading</strong> - The component files are loaded from the /components/ directory</li>
+            <li><strong>Instantiation</strong> - The component constructor function is called</li>
+            <li><strong>Initialization</strong> - The Initialize() method sets up the component</li>
+            <li><strong>Rendering</strong> - The component template is inserted into the DOM</li>
+            <li><strong>Data Binding</strong> - Any data binding attributes are processed</li>
+        </ol>
+        
+        <h3>Component Structure</h3>
+        <p>Each component follows a standardized structure:</p>
+        <d-code>
+async function myComponentConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyComponent&gt; {
+    let instance: MyComponent = new MyComponent(el, app);
+    await instance.Initialize();
+    return instance;
+}
+
+class MyComponent {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+    
+    constructor(el: HTMLElement, app: DrapoApplication) {
+        this._el = el;
+        this._app = app;
+    }
+    
+    public async Initialize(): Promise&lt;void&gt; {
+        // Component initialization logic
+        // Set up data binding, event handlers, etc.
+    }
+}
+        </d-code>
+        
+        <h3>Key Features</h3>
+        <ul>
+            <li><strong>Encapsulation</strong> - Components encapsulate their own HTML, CSS, and JavaScript logic</li>
+            <li><strong>Reusability</strong> - Components can be used multiple times throughout an application</li>
+            <li><strong>Data Binding</strong> - Components support Drapo's data binding system</li>
+            <li><strong>Event Handling</strong> - Components can define and handle custom events</li>
+            <li><strong>Content Projection</strong> - Components can include content from their usage context</li>
+            <li><strong>Sectors</strong> - Components can define isolated data contexts using sectors</li>
+            <li><strong>Custom Attributes</strong> - Components can accept configuration through custom attributes</li>
+        </ul>
+        
+        <h3>Component Registration</h3>
+        <p>Components are automatically discovered by Drapo based on their folder structure in the /components/ directory. The component name corresponds to the folder name and the HTML tag used to invoke it.</p>
+        <p>For example, a component in /components/mybutton/ would be used as &lt;d-mybutton&gt; in HTML.</p>
     </div>
 </div>

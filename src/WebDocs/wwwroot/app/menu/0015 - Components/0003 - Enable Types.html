@@ -3,15 +3,195 @@
 <div>
     <div>
         <h2>How enable types in a component</h2>
-        <p>The nuget package of drapo comes with the declaration files used by drapo. By default typescript loads the types from node_modules\@types folder. Drapo add the declaration type file as a linked file in csproj. The only thing that you need to do is to persist this link file in the disk. You can do that inserting the following code in your csproj: </p>
+        <p>TypeScript support in Drapo components provides intellisense, type checking, and better development experience. Here's how to enable and use TypeScript types in your components.</p>
+        
+        <h3>Setting Up TypeScript Support</h3>
+        <p>The NuGet package of Drapo comes with the declaration files used by Drapo. By default, TypeScript loads the types from node_modules\@types folder. Drapo adds the declaration type file as a linked file in the csproj. You need to persist this link file to disk by inserting the following code in your csproj:</p>
         <d-code>
-            <Target Name="CopyLinkedContentFiles" BeforeTargets="Build">
-                <Copy SourceFiles="%(Content.Identity)"
-                      DestinationFiles="%(Content.Link)"
-                      SkipUnchangedFiles='false'
-                      OverwriteReadOnlyFiles='true'
-                      Condition="'%(Content.Link)' != ''" />
-            </Target>
+&lt;Target Name="CopyLinkedContentFiles" BeforeTargets="Build"&gt;
+    &lt;Copy SourceFiles="%(Content.Identity)"
+          DestinationFiles="%(Content.Link)"
+          SkipUnchangedFiles='false'
+          OverwriteReadOnlyFiles='true'
+          Condition="'%(Content.Link)' != ''" /&gt;
+&lt;/Target&gt;
         </d-code>
+        
+        <h3>Creating Component Type Definitions</h3>
+        <p>Create a .d.ts file for your component to provide type definitions:</p>
+        <d-code>
+/// &lt;reference types="drapo" /&gt;
+
+declare function myComponentConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyComponent&gt;;
+
+interface IMyComponentOptions {
+    text?: string;
+    enabled?: boolean;
+    onClick?: string;
+}
+
+declare class MyComponent {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+    private _options: IMyComponentOptions;
+    
+    constructor(el: HTMLElement, app: DrapoApplication);
+    Initialize(): Promise&lt;void&gt;;
+    GetElementButton(): HTMLButtonElement;
+    SetEnabled(enabled: boolean): void;
+}
+        </d-code>
+        
+        <h3>TypeScript Component Implementation</h3>
+        <p>Write your component using TypeScript with full type safety:</p>
+        <d-code>
+async function myComponentConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyComponent&gt; {
+    const instance: MyComponent = new MyComponent(el, app);
+    await instance.Initialize();
+    return instance;
+}
+
+interface IMyComponentOptions {
+    text?: string;
+    enabled?: boolean;
+    onClick?: string;
+}
+
+class MyComponent {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+    private _options: IMyComponentOptions;
+    
+    constructor(el: HTMLElement, app: DrapoApplication) {
+        this._el = el;
+        this._app = app;
+        this._options = {};
+    }
+    
+    public async Initialize(): Promise&lt;void&gt; {
+        // Parse component attributes with type safety
+        this._options.text = this._el.getAttribute('dc-text') || 'Button';
+        this._options.enabled = this._el.getAttribute('dc-enabled') !== 'false';
+        this._options.onClick = this._el.getAttribute('dc-onclick') || '';
+        
+        // Clean up attributes
+        this._el.removeAttribute('dc-text');
+        this._el.removeAttribute('dc-enabled');
+        this._el.removeAttribute('dc-onclick');
+        
+        // Setup with type safety
+        await this.SetupButton();
+    }
+    
+    private async SetupButton(): Promise&lt;void&gt; {
+        const button: HTMLButtonElement = this.GetElementButton();
+        button.textContent = this._options.text!;
+        button.disabled = !this._options.enabled!;
+        
+        if (this._options.onClick) {
+            button.setAttribute('d-on-click', this._options.onClick);
+        }
+    }
+    
+    public GetElementButton(): HTMLButtonElement {
+        return this._el.querySelector('button') as HTMLButtonElement;
+    }
+    
+    public SetEnabled(enabled: boolean): void {
+        this._options.enabled = enabled;
+        this.GetElementButton().disabled = !enabled;
+    }
+}
+        </d-code>
+        
+        <h3>TypeScript Configuration</h3>
+        <p>Create or update your tsconfig.json to include proper configuration:</p>
+        <d-code>
+{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "none",
+    "lib": ["ES2017", "DOM"],
+    "outDir": "./wwwroot/components/",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["drapo"]
+  },
+  "include": [
+    "wwwroot/components/**/*.ts"
+  ],
+  "exclude": [
+    "wwwroot/components/**/*.d.ts",
+    "wwwroot/components/**/*.js"
+  ]
+}
+        </d-code>
+        
+        <h3>Drapo Type Definitions</h3>
+        <p>Drapo provides comprehensive type definitions for:</p>
+        <ul>
+            <li><strong>DrapoApplication</strong> - Main application interface</li>
+            <li><strong>DrapoDocument</strong> - DOM manipulation utilities</li>
+            <li><strong>DrapoStorage</strong> - Data storage and management</li>
+            <li><strong>DrapoFunction</strong> - Function execution context</li>
+            <li><strong>DrapoEvent</strong> - Event handling system</li>
+        </ul>
+        
+        <h3>Common Type Patterns</h3>
+        <p>Here are common TypeScript patterns for Drapo components:</p>
+        <d-code>
+// Generic component interface
+interface IComponent&lt;T&gt; {
+    Initialize(): Promise&lt;void&gt;;
+    GetOptions(): T;
+    SetOptions(options: Partial&lt;T&gt;): void;
+}
+
+// Data model interfaces
+interface IUserData {
+    id: number;
+    name: string;
+    email: string;
+    isActive: boolean;
+}
+
+// Event handler types
+type ClickHandler = (event: MouseEvent, data?: any) =&gt; void;
+type ChangeHandler = (value: any, oldValue: any) =&gt; void;
+
+// Component with generic data
+class DataComponent&lt;T&gt; implements IComponent&lt;T&gt; {
+    private _data: T;
+    
+    public async SetData(data: T): Promise&lt;void&gt; {
+        this._data = data;
+        await this.Render();
+    }
+    
+    public GetData(): T {
+        return this._data;
+    }
+}
+        </d-code>
+        
+        <h3>Compilation and Building</h3>
+        <p>To compile your TypeScript components:</p>
+        <ol>
+            <li>Install TypeScript globally: <code>npm install -g typescript</code></li>
+            <li>Compile components: <code>tsc</code> or <code>tsc --watch</code> for automatic compilation</li>
+            <li>The compiled JavaScript files will be generated alongside your TypeScript files</li>
+            <li>Drapo will automatically load the .js files at runtime</li>
+        </ol>
+        
+        <h3>Benefits of TypeScript</h3>
+        <ul>
+            <li><strong>IntelliSense</strong> - Full autocomplete and code suggestions</li>
+            <li><strong>Type Safety</strong> - Catch errors at compile time</li>
+            <li><strong>Refactoring</strong> - Safe and reliable code refactoring</li>
+            <li><strong>Documentation</strong> - Types serve as inline documentation</li>
+            <li><strong>Maintainability</strong> - Easier to maintain large component libraries</li>
+        </ul>
     </div>
 </div>
