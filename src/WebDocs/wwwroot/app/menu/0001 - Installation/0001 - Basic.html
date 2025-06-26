@@ -1,13 +1,32 @@
 ﻿<!DOCTYPE html>
 <script src="/drapo.js"></script>
-<div>
+<div d-dataUrlGet="/api/NuGet/GetPackage" d-dataKey="nuget">
     <div>
         <h2>Basic Installation</h2>
-        <p>The first step is to add a reference to drapo. You can just add the package from nuget.</p>
+        <p>The first step is to add a reference to Drapo. You can just add the package from NuGet.</p>
+        
+        <!-- NuGet Package Information -->
+        <div class="card" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; margin: 15px 0;">
+            <h4>📦 NuGet Package Information</h4>
+            <div d-if="nuget != null">
+                <p><strong>Package ID:</strong> {{nuget.Id}}</p>
+                <p><strong>Latest Version:</strong> <span class="badge bg-primary">{{nuget.LatestVersion}}</span></p>
+                <p><strong>Total Downloads:</strong> <span class="text-success">{{nuget.TotalDownloads}}</span></p>
+                <p><strong>Authors:</strong> <span d-for="author in nuget.Authors">{{author}}<span d-if="!$index.IsLast">, </span></span></p>
+                <p><strong>Tags:</strong> 
+                    <span d-for="tag in nuget.Tags" class="badge bg-secondary me-1">{{tag}}</span>
+                </p>
+                <p><strong>Project URL:</strong> <a d-attr-href="nuget.ProjectUrl" target="_blank">{{nuget.ProjectUrl}}</a></p>
+            </div>
+            <div d-if="nuget == null">
+                <p class="text-warning">⚠️ Unable to load current package information. Using static version reference.</p>
+            </div>
+        </div>
+
         <p>Your csproj will be like this below:</p>
         <d-code>
             <ItemGroup>
-                <PackageReference Include="Drapo" Version="2018.6.12.1" />
+                <PackageReference Include="Drapo" Version="{{nuget != null ? nuget.LatestVersion : '2025.4.24.5'}}" />
             </ItemGroup>
         </d-code>
         <br>
@@ -19,6 +38,11 @@
             }
         </d-code>
         <br>
-        <p>And that's it. </p>
+        <p>And that's it!</p>
+        
+        <div class="alert alert-info mt-3">
+            <h5>💡 Tip</h5>
+            <p>Always check the <a href="https://www.nuget.org/packages/Drapo/" target="_blank">official NuGet page</a> for the latest version and release notes before updating your package reference.</p>
+        </div>
     </div>
 </div>
