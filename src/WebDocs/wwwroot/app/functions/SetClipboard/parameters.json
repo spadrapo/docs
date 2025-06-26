@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "DataValue",
+    "Description": "The data value that will be written to the clipboard",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  }
+]
