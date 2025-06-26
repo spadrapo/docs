@@ -1,0 +1,10 @@
+﻿<div d-sector="@" style="position:relative;top:10vh;left:30vh;width:40vh;height:25vh;background-color:lightgray;float:left">
+    <div style="padding: 10px;">
+        <h3>GetWindow Example</h3>
+        <div d-dataKey="windowData" d-dataType="object" d-dataProperty-currentWindow=""></div>
+        <input type="button" value="Get Current Window" d-on-click="UpdateDataField(windowData,[currentWindow],GetWindow())" />
+        <div>Current Window: <span d-model="{{windowData.currentWindow}}"></span></div>
+        <br/>
+        <input type="button" value="Close" d-on-click="CloseWindow()" />
+    </div>
+</div>
