@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "did",
+    "Description": "The location where you want to hide a window. If did is not informed, the last did used will be assigned",
+    "Types": [ "did" ],
+    "Optional": true
+  },
+  {
+    "Name": "all",
+    "Description": "You want to hide all windows",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  },
+  {
+    "Name": "type",
+    "Description": "The type of hiding. The value 'noclose' prevents the window from being automatically closed",
+    "Types": [ "text" ],
+    "Optional": true,
+    "DefaultValue": ""
+  }
+]
