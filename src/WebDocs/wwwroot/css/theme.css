@@ -44,15 +44,15 @@ body {
   width: 80%;
 }
 .dMenu > div {
-  padding: 4px 8px;
-  margin: 1px 0;
+  padding: 10px 12px;
+  margin: 3px 0;
   border: none;
   cursor: pointer;
 }
 .dMenuTab > span {
   padding-left: 30px;
-  padding-top: 2px;
-  padding-bottom: 2px;
+  padding-top: 6px;
+  padding-bottom: 6px;
 }
 .dMenuGroupExpanded::before {
   content: "▼";
