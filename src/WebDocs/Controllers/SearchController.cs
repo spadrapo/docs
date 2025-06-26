@@ -58,8 +58,8 @@ namespace WebDocs.Controllers
             
             foreach (var item in items)
             {
-                // Check if current item matches search query
-                if (item.Name.ToLower().Contains(query))
+                // Check if current item matches search query and is a leaf node (not expandable folder)
+                if (item.Name.ToLower().Contains(query) && !item.IsExpandable)
                 {
                     var searchItem = new SearchItemVM
                     {
