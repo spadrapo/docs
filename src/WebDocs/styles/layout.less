@@ -15,13 +15,6 @@ body {
     -webkit-font-smoothing: subpixel-antialiased;
 }
 
-// Mobile-first responsive font sizes
-@media (max-width: 768px) {
-    body {
-        font-size: 16px; // Larger base font size for mobile
-    }
-}
-
 .dSectorWindows {
     position: absolute;
     z-index: 9999;
@@ -61,26 +54,4 @@ body {
 
 .docRight {
     width: 80%;
-}
-
-// Mobile responsive layout
-@media (max-width: 768px) {
-    .doc {
-        flex-direction: column;
-    }
-    
-    .docLeft {
-        width: 100%;
-        padding-left: 0;
-        order: 1;
-        background-color: #f8f9fa;
-        border-bottom: 1px solid #dee2e6;
-        padding: 10px;
-    }
-    
-    .docRight {
-        width: 100%;
-        order: 2;
-        padding: 15px;
-    }
 }
