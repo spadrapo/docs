@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-sector-friend</h2>
+        <p>You can use d-sector-friend to establish friendship relationships between sectors, enabling cross-sector data sharing beyond the normal parent-child hierarchy. This attribute allows sectors to access data from friend sectors, which is particularly useful for complex UI scenarios like modals, popup windows, or separate interface sections that need to share data.</p>
+        
+        <h4>Basic Usage</h4>
+        <p>The d-sector-friend attribute is used with sectors to specify which other sectors should be considered "friends" for data access purposes:</p>
+        <d-sample>
+            <div d-dataKey="sharedData" d-dataType="value" d-dataValue="Available to friends"></div>
+            <div d-sector="main">
+                <div d-dataKey="mainData" d-dataType="value" d-dataValue="Main sector data"></div>
+                <span>Main: {{mainData}}</span><br/>
+                <span>Shared: {{sharedData}}</span>
+            </div>
+            <div d-sector="popup" d-sector-friend="main">
+                <span>In popup - Main data: {{mainData}}</span><br/>
+                <span>In popup - Shared data: {{sharedData}}</span>
+            </div>
+        </d-sample>
+        
+        <h4>Component Friendship</h4>
+        <p>Friend relationships are especially useful with component sectors (<code>d-sector="@"</code>) to enable data sharing between isolated components:</p>
+        <d-sample>
+            <div d-dataKey="globalCounter" d-dataType="value" d-dataValue="0"></div>
+            <div d-sector="control">
+                <div d-dataKey="controlData" d-dataType="value" d-dataValue="Control panel data"></div>
+                <input type="button" value="Increment" d-on-click="UpdateData(globalCounter, Add({{globalCounter}}, 1))" />
+                <span>Control: {{controlData}}</span>
+            </div>
+            <div d-sector="@" d-sector-friend="control">
+                <span>Component can access control data: {{controlData}}</span><br/>
+                <span>Global counter from component: {{globalCounter}}</span>
+            </div>
+        </d-sample>
+        
+        <h4>Multiple Friends</h4>
+        <p>A sector can have multiple friends by specifying a comma-separated list of sector names:</p>
+        <d-sample>
+            <div d-sector="data1">
+                <div d-dataKey="value1" d-dataType="value" d-dataValue="Data from sector 1"></div>
+            </div>
+            <div d-sector="data2">
+                <div d-dataKey="value2" d-dataType="value" d-dataValue="Data from sector 2"></div>
+            </div>
+            <div d-sector="consumer" d-sector-friend="data1,data2">
+                <span>Value 1: {{value1}}</span><br/>
+                <span>Value 2: {{value2}}</span>
+            </div>
+        </d-sample>
+        
+        <h4>Window and Modal Scenarios</h4>
+        <p>Friend relationships are particularly useful for popup windows, modals, and overlays that need to share data with their parent contexts:</p>
+        <d-sample>
+            <div d-sector="content">
+                <div d-dataKey="selectedItem" d-dataType="value" d-dataValue="Item 1"></div>
+                <div d-dataKey="items" d-dataType="array" d-dataValue='["Item 1", "Item 2", "Item 3"]'></div>
+                <span>Selected: {{selectedItem}}</span>
+                <ul>
+                    <li d-for="item in items">{{item}}</li>
+                </ul>
+            </div>
+            <div d-sector="modal" d-sector-friend="content">
+                <h5>Modal Window</h5>
+                <span>Current selection: {{selectedItem}}</span><br/>
+                <select d-model="{{selectedItem}}">
+                    <option d-for="item in items" d-attr-value="{{item}}">{{item}}</option>
+                </select>
+            </div>
+        </d-sample>
+        
+        <h4>Data Access Control</h4>
+        <p>Friend relationships work with [d-dataAccess](d-dataAccess) to control data visibility. Only public data is accessible to friend sectors:</p>
+        <d-sample>
+            <div d-sector="source">
+                <div d-dataKey="publicData" d-dataType="value" d-dataAccess="public" d-dataValue="Visible to friends"></div>
+                <div d-dataKey="privateData" d-dataType="value" d-dataAccess="private" d-dataValue="Hidden from friends"></div>
+                <span>Source - Public: {{publicData}}</span><br/>
+                <span>Source - Private: {{privateData}}</span>
+            </div>
+            <div d-sector="friend" d-sector-friend="source">
+                <span>Friend - Public: {{publicData}}</span><br/>
+                <span>Friend - Private: {{privateData}}</span> <!-- This will be empty -->
+            </div>
+        </d-sample>
+        
+        <h4>Best Practices</h4>
+        <ul>
+            <li><b>Use meaningful names</b> - Choose descriptive sector names that clearly indicate the relationship</li>
+            <li><b>Avoid circular dependencies</b> - Be careful not to create complex friendship chains that make data flow difficult to understand</li>
+            <li><b>Combine with data access control</b> - Use [d-dataAccess](d-dataAccess) to control what data is shared with friends</li>
+            <li><b>Document relationships</b> - Clearly document which sectors are friends and why the relationship is needed</li>
+            <li><b>Use for specific scenarios</b> - Friend relationships are ideal for modals, popups, sidebars, and cross-component communication</li>
+            <li><b>Consider hierarchy first</b> - Use normal parent-child sector relationships when possible; friends are for special cases</li>
+        </ul>
+        
+        <p><strong>Related:</strong> [d-sector](d-sector), [d-dataAccess](d-dataAccess), [GetSector function](~/app/functions/GetSector/description.html), [UpdateSector function](~/app/functions/UpdateSector/description.html)</p>
+    </div>
+</div>
