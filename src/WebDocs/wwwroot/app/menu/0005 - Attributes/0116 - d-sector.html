@@ -1,0 +1,100 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-sector</h2>
+        <p>You can use d-sector to define isolated data contexts and create modular sections in your application. Sectors provide data scoping, content management, and component isolation capabilities.</p>
+        
+        <h4>Basic Usage</h4>
+        <p>The d-sector attribute creates a named section that can have its own data scope and be dynamically updated:</p>
+        <d-sample>
+            <div d-dataKey="message" d-dataType="value" d-dataValue="Global message"></div>
+            <div d-sector="main">
+                <div d-dataKey="message" d-dataType="value" d-dataValue="Sector message"></div>
+                <span>In main sector: {{message}}</span>
+            </div>
+            <span>In global scope: {{message}}</span>
+        </d-sample>
+        
+        <h4>Sector Types</h4>
+        <p>There are several types of sector values you can use:</p>
+        <ul>
+            <li><b>Named sectors</b> - Use string names for functional areas: <code>d-sector="content"</code>, <code>d-sector="sidebar"</code></li>
+            <li><b>Numeric sectors</b> - Use numbers for simple isolation: <code>d-sector="1"</code>, <code>d-sector="2"</code></li>
+            <li><b>Component sectors</b> - Use <code>d-sector="@"</code> for component isolation</li>
+            <li><b>Dynamic sectors</b> - Use variables for runtime sector names</li>
+        </ul>
+        
+        <h4>Component Isolation</h4>
+        <p>The special value <code>@</code> creates complete data isolation for components:</p>
+        <d-sample>
+            <div d-dataKey="shared" d-dataType="value" d-dataValue="Available everywhere"></div>
+            <div d-sector="@">
+                <div d-dataKey="private" d-dataType="value" d-dataValue="Only in this sector"></div>
+                <span>Shared: {{shared}}</span><br/>
+                <span>Private: {{private}}</span>
+            </div>
+            <span>Outside sector - Shared: {{shared}}</span><br/>
+            <span>Outside sector - Private: {{private}}</span> <!-- This will be empty -->
+        </d-sample>
+        
+        <h4>Multiple Sectors</h4>
+        <p>Different sectors can have separate data contexts, useful for organizing complex interfaces:</p>
+        <d-sample>
+            <div d-dataKey="counter1" d-dataType="value" d-dataValue="0"></div>
+            <div d-dataKey="counter2" d-dataType="value" d-dataValue="0"></div>
+            
+            <div d-sector="section1">
+                <div d-dataKey="counter1" d-dataType="value" d-dataValue="10"></div>
+                <h5>Section 1</h5>
+                <span>Counter: {{counter1}}</span>
+                <input type="button" value="Increment" d-on-click="UpdateData(counter1,{{counter1}} + 1)" />
+            </div>
+            
+            <div d-sector="section2">
+                <div d-dataKey="counter2" d-dataType="value" d-dataValue="100"></div>
+                <h5>Section 2</h5>
+                <span>Counter: {{counter2}}</span>
+                <input type="button" value="Increment" d-on-click="UpdateData(counter2,{{counter2}} + 1)" />
+            </div>
+            
+            <h5>Global Counters</h5>
+            <span>Global Counter1: {{counter1}}</span><br/>
+            <span>Global Counter2: {{counter2}}</span>
+        </d-sample>
+        
+        <h4>Dynamic Content Loading</h4>
+        <p>Sectors can be used with [UpdateSector](~/app/functions/UpdateSector/description.html) and other functions to dynamically load content:</p>
+        <d-sample>
+            <input type="button" value="Load Content A" d-on-click="UpdateSector(dynamic,~/app/data/GreenSector.html)" />
+            <input type="button" value="Load Content B" d-on-click="UpdateSector(dynamic,~/app/data/RedSector.html)" />
+            <input type="button" value="Clear" d-on-click="ClearSector(dynamic)" />
+            <div d-sector="dynamic">
+                <p>Initial content - click buttons to change</p>
+            </div>
+        </d-sample>
+        
+        <h4>Data Access Control</h4>
+        <p>Sectors work with [d-dataAccess](d-dataAccess) to control data visibility between parent and child sectors:</p>
+        <d-sample>
+            <div d-dataKey="publicData" d-dataType="value" d-dataAccess="public" d-dataValue="Visible to all sectors"></div>
+            <div d-dataKey="privateData" d-dataType="value" d-dataAccess="private" d-dataValue="Only in this scope"></div>
+            
+            <div d-sector="child">
+                <span>Public: {{publicData}}</span><br/>
+                <span>Private: {{privateData}}</span> <!-- This will be empty -->
+            </div>
+        </d-sample>
+        
+        <h4>Best Practices</h4>
+        <ul>
+            <li><b>Use meaningful names</b> - Choose descriptive sector names like "header", "content", "sidebar"</li>
+            <li><b>Component isolation</b> - Always use <code>d-sector="@"</code> in reusable components</li>
+            <li><b>Avoid deep nesting</b> - Excessive sector nesting can make data flow complex</li>
+            <li><b>Document data flow</b> - Clearly document which data is shared between sectors</li>
+            <li><b>Use with functions</b> - Combine with [GetSector](~/app/functions/GetSector/description.html), [UpdateSector](~/app/functions/UpdateSector/description.html), and [ClearSector](~/app/functions/ClearSector/description.html) for dynamic behavior</li>
+        </ul>
+        
+        <p><strong>Related:</strong> [d-dataAccess](d-dataAccess), [GetSector function](~/app/functions/GetSector/description.html), [UpdateSector function](~/app/functions/UpdateSector/description.html), [ClearSector function](~/app/functions/ClearSector/description.html), [ReloadSector function](~/app/functions/ReloadSector/description.html)</p>
+    </div>
+</div>
