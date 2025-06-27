@@ -1,0 +1,121 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-sector-parent</h2>
+        <p>You can use d-sector-parent to assign a parent sector in Drapo layouts. This attribute is used together with <code>d-sector-parent-url</code> to implement master page or layout functionality, allowing you to embed content within parent templates.</p>
+        
+        <h4>Basic Usage</h4>
+        <p>The d-sector-parent attribute works in conjunction with d-sector-parent-url to create a parent-child relationship between pages:</p>
+        <d-code>
+&lt;div d-sector-parent-url="/layouts/master.html" d-sector-parent="content"&gt;
+    &lt;h1&gt;Child Page Content&lt;/h1&gt;
+    &lt;p&gt;This content will be injected into the "content" sector of the master layout.&lt;/p&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h4>How It Works</h4>
+        <p>When Drapo encounters these attributes, it follows this process:</p>
+        <ol>
+            <li>Loads the parent HTML from the URL specified in <code>d-sector-parent-url</code></li>
+            <li>Replaces the current document with the parent content</li>
+            <li>Finds the sector with the name specified in <code>d-sector-parent</code></li>
+            <li>Injects the current page's content into that parent sector</li>
+        </ol>
+        
+        <h4>Master Layout Example</h4>
+        <p>Here's a typical master layout structure that would be referenced by child pages:</p>
+        <d-code>
+&lt;!-- master.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Application&lt;/title&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;header&gt;
+        &lt;nav&gt;Navigation Menu&lt;/nav&gt;
+    &lt;/header&gt;
+    
+    &lt;main d-sector="content"&gt;
+        &lt;!-- Child content will be injected here --&gt;
+    &lt;/main&gt;
+    
+    &lt;footer&gt;
+        &lt;p&gt;Copyright 2024&lt;/p&gt;
+    &lt;/footer&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </d-code>
+        
+        <h4>Child Page Example</h4>
+        <p>A child page that uses the master layout:</p>
+        <d-code>
+&lt;!-- child-page.html --&gt;
+&lt;!DOCTYPE html&gt;
+&lt;script src="/drapo.js"&gt;&lt;/script&gt;
+&lt;div d-sector-parent-url="/layouts/master.html" d-sector-parent="content"&gt;
+    &lt;h1&gt;Welcome to the Home Page&lt;/h1&gt;
+    &lt;p&gt;This is the main content of the home page.&lt;/p&gt;
+    
+    &lt;div d-dataKey="greeting" d-dataType="value" d-dataValue="Hello from child page!"&gt;&lt;/div&gt;
+    &lt;p&gt;{{greeting}}&lt;/p&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h4>Nested Layouts</h4>
+        <p>You can create nested layout hierarchies by having child layouts that also reference parent layouts:</p>
+        <d-code>
+&lt;!-- section-layout.html - A section-specific layout --&gt;
+&lt;div d-sector-parent-url="/layouts/master.html" d-sector-parent="content"&gt;
+    &lt;div class="section-header"&gt;
+        &lt;h2&gt;Section Header&lt;/h2&gt;
+    &lt;/div&gt;
+    
+    &lt;div d-sector="section-content"&gt;
+        &lt;!-- Section-specific content goes here --&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;!-- final-page.html - Uses the section layout --&gt;
+&lt;div d-sector-parent-url="/layouts/section-layout.html" d-sector-parent="section-content"&gt;
+    &lt;p&gt;This content goes through two layout levels.&lt;/p&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h4>Dynamic Parent URLs</h4>
+        <p>You can use mustache expressions in the parent URL for dynamic layout selection:</p>
+        <d-code>
+&lt;div d-dataKey="layoutType" d-dataType="value" d-dataValue="admin"&gt;&lt;/div&gt;
+&lt;div d-sector-parent-url="/layouts/{{layoutType}}-layout.html" d-sector-parent="main"&gt;
+    &lt;p&gt;Content that will use different layouts based on the layoutType variable.&lt;/p&gt;
+&lt;/div&gt;
+        </d-code>
+        
+        <h4>Common Use Cases</h4>
+        <ul>
+            <li><b>Master Pages</b> - Create consistent site-wide layouts with headers, footers, and navigation</li>
+            <li><b>Section Templates</b> - Use different layouts for different sections of your application</li>
+            <li><b>Modal Containers</b> - Embed content within modal or dialog templates</li>
+            <li><b>Component Wrappers</b> - Wrap content with standardized component containers</li>
+        </ul>
+        
+        <h4>Best Practices</h4>
+        <ul>
+            <li><b>Consistent sector names</b> - Use standardized sector names like "content", "main", or "body" across layouts</li>
+            <li><b>Layout hierarchy</b> - Keep layout nesting to a reasonable depth to maintain performance</li>
+            <li><b>Error handling</b> - Ensure parent URLs are valid and parent sectors exist</li>
+            <li><b>Data scope awareness</b> - Remember that data contexts are inherited from parent to child</li>
+            <li><b>Performance consideration</b> - Parent layouts are loaded dynamically, so minimize nested layout chains</li>
+        </ul>
+        
+        <h4>Related Attributes</h4>
+        <ul>
+            <li><b>d-sector-parent-url</b> - Required companion attribute that specifies the parent layout URL</li>
+            <li><b>d-sector</b> - Used in parent layouts to define content injection points</li>
+            <li><b>d-sector-url</b> - Alternative approach for loading content into sectors</li>
+        </ul>
+        
+        <p><strong>Related:</strong> [d-sector](d-sector), [d-dataAccess](d-dataAccess), [UpdateSector function](~/app/functions/UpdateSector/description.html)</p>
+    </div>
+</div>
