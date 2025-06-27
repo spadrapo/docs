@@ -1,0 +1,131 @@
+﻿<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-sector-parent-url</h2>
+        <p>You can use d-sector-parent-url to specify a relative path to a parent page that contains other pages or sectors. This attribute enables hierarchical page structures and master-detail layouts by allowing child pages to be embedded within parent page templates.</p>
+        
+        <h4>Basic Usage</h4>
+        <p>The d-sector-parent-url attribute works together with d-sector-parent to create page hierarchies. When Drapo encounters this attribute, it loads the parent page and embeds the current page's content into the specified parent sector:</p>
+        <d-code>
+            <div d-sector-parent-url="/Pages/MasterTemplate.html" d-sector-parent="content">
+                <!-- Current page content will be embedded in parent's "content" sector -->
+            </div>
+        </d-code>
+        
+        <h4>How It Works</h4>
+        <p>When a page with d-sector-parent-url is loaded, Drapo performs these steps:</p>
+        <ol>
+            <li>Fetches the HTML content from the specified parent URL</li>
+            <li>Replaces the current document with the parent page's HTML</li>
+            <li>Finds the sector specified by d-sector-parent within the parent page</li>
+            <li>Inserts the original page's content into that parent sector</li>
+            <li>Resolves any nested sectors and continues normal processing</li>
+        </ol>
+        
+        <h4>Master-Detail Layout Example</h4>
+        <p>Create a master layout that child pages can inherit:</p>
+        <d-code>
+            <!-- Master.html -->
+            <!DOCTYPE html>
+            <html>
+            <head>
+                <title>Application Master</title>
+                <script src="/drapo.js"></script>
+            </head>
+            <body>
+                <header>
+                    <h1>My Application</h1>
+                    <nav>Navigation here</nav>
+                </header>
+                <main d-sector="content">
+                    <!-- Child page content will be inserted here -->
+                </main>
+                <footer>
+                    <p>Footer content</p>
+                </footer>
+            </body>
+            </html>
+        </d-code>
+        
+        <p>Child page that uses the master layout:</p>
+        <d-code>
+            <!-- ChildPage.html -->
+            <div d-sector-parent-url="/Master.html" d-sector-parent="content">
+                <h2>Child Page Title</h2>
+                <p>This content will appear inside the master layout's content sector.</p>
+                <div d-dataKey="message" d-dataType="value" d-dataValue="Hello from child page"></div>
+                <span>Message: {{message}}</span>
+            </div>
+        </d-code>
+        
+        <h4>Nested Page Hierarchies</h4>
+        <p>You can create multiple levels of page hierarchies by chaining parent-child relationships:</p>
+        <d-sample>
+            <!-- Example showing concept - actual files would be separate -->
+            <div>
+                <h5>Level 1: Application Master</h5>
+                <div style="border: 2px solid #333; padding: 10px; margin: 5px;">
+                    <div>Header with navigation</div>
+                    <div d-sector="content" style="border: 1px dashed #666; padding: 5px;">
+                        <h6>Level 2: Section Template</h6>
+                        <div style="border: 2px solid #666; padding: 10px;">
+                            <div>Section-specific sidebar</div>
+                            <div d-sector="main" style="border: 1px dashed #999; padding: 5px;">
+                                <h6>Level 3: Actual Content Page</h6>
+                                <div>Final content here</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>Footer</div>
+                </div>
+            </div>
+        </d-sample>
+        
+        <h4>Working with Routing</h4>
+        <p>The d-sector-parent-url attribute integrates with Drapo's routing system. Use d-route="false" if you need to disable routing features for specific sectors:</p>
+        <d-code>
+            <div d-sector-parent-url="/Templates/Layout.html" 
+                 d-sector-parent="body" 
+                 d-route="false">
+                <!-- Content without routing -->
+            </div>
+        </d-code>
+        
+        <h4>Data Scope and Inheritance</h4>
+        <p>Data defined in child pages remains scoped to their sectors, while parent page data is accessible throughout the hierarchy:</p>
+        <d-sample>
+            <!-- Simulated example of data inheritance -->
+            <div d-dataKey="parentData" d-dataType="value" d-dataValue="Available everywhere"></div>
+            <div style="border: 1px solid #ccc; padding: 10px;">
+                <span>Parent scope - parentData: {{parentData}}</span>
+                <div style="border: 1px dashed #999; padding: 10px; margin: 5px;">
+                    <div d-dataKey="childData" d-dataType="value" d-dataValue="Only in child"></div>
+                    <span>Child scope - parentData: {{parentData}}</span><br/>
+                    <span>Child scope - childData: {{childData}}</span>
+                </div>
+                <span>Parent scope - childData: {{childData}}</span> <!-- This will be empty -->
+            </div>
+        </d-sample>
+        
+        <h4>Best Practices</h4>
+        <ul>
+            <li><b>Consistent master templates</b> - Create reusable master pages for common layouts</li>
+            <li><b>Clear sector naming</b> - Use descriptive names for parent sectors like "content", "main", "body"</li>
+            <li><b>Avoid circular references</b> - Ensure parent-child relationships don't create loops</li>
+            <li><b>Keep masters lightweight</b> - Don't include heavy processing in master templates</li>
+            <li><b>Plan data flow</b> - Consider how data will flow between parent and child pages</li>
+            <li><b>Test hierarchy depths</b> - Avoid overly deep nesting which can impact performance</li>
+        </ul>
+        
+        <h4>Common Use Cases</h4>
+        <ul>
+            <li><b>Application shells</b> - Common headers, footers, and navigation</li>
+            <li><b>Section templates</b> - Different layouts for different application areas</li>
+            <li><b>Modal containers</b> - Parent pages that provide modal or dialog frameworks</li>
+            <li><b>Multi-step workflows</b> - Wizards with consistent navigation and progress indicators</li>
+        </ul>
+        
+        <p><strong>Related:</strong> [d-sector](d-sector), [d-sector-parent](d-sector-parent), [d-dataAccess](d-dataAccess), [UpdateSector function](~/app/functions/UpdateSector/description.html)</p>
+    </div>
+</div>
