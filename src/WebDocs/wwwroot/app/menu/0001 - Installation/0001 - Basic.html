@@ -24,11 +24,20 @@
         </div>
 
         <p>Your csproj will be like this below:</p>
-        <d-code>
-            <ItemGroup>
-                <PackageReference Include="Drapo" Version="{{nuget ? nuget.LatestVersion : '2025.4.24.5'}}" />
-            </ItemGroup>
-        </d-code>
+        <div d-if="{{nuget}}">
+            <d-code>
+                <ItemGroup>
+                    <PackageReference Include="Drapo" Version="{{nuget.LatestVersion}}" />
+                </ItemGroup>
+            </d-code>
+        </div>
+        <div d-if="!{{nuget}}">
+            <d-code>
+                <ItemGroup>
+                    <PackageReference Include="Drapo" Version="2025.4.24.5" />
+                </ItemGroup>
+            </d-code>
+        </div>
         <br>
         <p>After that you will need to update your Startup.cs. First you need to add the service. To do that you will need to include this line of code in your ConfigureServices method. Like this:</p>
         <d-code>
