@@ -41,8 +41,10 @@ namespace WebDocs
                   });
             services.AddScoped<IFunctionService, FunctionService>();
             services.AddScoped<IAttributeService, AttributeService>();
+            services.AddScoped<INuGetService, NuGetService>();
             services.AddScoped<MenuController, MenuController>();
             services.AddScoped<SearchController, SearchController>();
+            services.AddHttpClient<NuGetService>();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo
