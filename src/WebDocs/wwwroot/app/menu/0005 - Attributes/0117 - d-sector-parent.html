@@ -98,13 +98,95 @@
             <li><b>Section Templates</b> - Use different layouts for different sections of your application</li>
             <li><b>Modal Containers</b> - Embed content within modal or dialog templates</li>
             <li><b>Component Wrappers</b> - Wrap content with standardized component containers</li>
+            <li><b>Dashboard layouts</b> - Different widgets targeting different dashboard sections</li>
+            <li><b>Multi-column layouts</b> - Content distributed across sidebar, main, and aside areas</li>
+            <li><b>Tab panels</b> - Content targeting specific tab panel areas</li>
         </ul>
         
+        <h4>Multiple Target Sectors</h4>
+        <p>Different child pages can target different sectors in the same parent:</p>
+        <d-sample>
+            <!-- Example showing different target sectors -->
+            <div style="border: 2px solid #333; padding: 15px;">
+                <div style="background: #f0f0f0; padding: 10px; margin-bottom: 10px;">
+                    <strong>Master Page Layout</strong>
+                </div>
+                
+                <div style="display: flex; gap: 10px;">
+                    <div style="flex: 1; border: 1px dashed #666; padding: 10px;">
+                        <strong>d-sector="sidebar"</strong>
+                        <div style="margin-top: 5px; color: #666;">
+                            Navigation content would go here
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 2; border: 1px dashed #666; padding: 10px;">
+                        <strong>d-sector="main"</strong>
+                        <div style="margin-top: 5px; color: #666;">
+                            Main content would go here
+                        </div>
+                    </div>
+                    
+                    <div style="flex: 1; border: 1px dashed #666; padding: 10px;">
+                        <strong>d-sector="widgets"</strong>
+                        <div style="margin-top: 5px; color: #666;">
+                            Widget content would go here
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </d-sample>
+
+        <p>Child pages can target any of these sectors:</p>
+        <d-code>
+<!-- Navigation page -->
+&lt;div d-sector-parent-url="/Layout.html" d-sector-parent="sidebar"&gt;
+    &lt;ul&gt;
+        &lt;li&gt;&lt;a href="/home"&gt;Home&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/about"&gt;About&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="/contact"&gt;Contact&lt;/a&gt;&lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;
+
+<!-- Content page -->
+&lt;div d-sector-parent-url="/Layout.html" d-sector-parent="main"&gt;
+    &lt;h1&gt;Main Content&lt;/h1&gt;
+    &lt;p&gt;Primary page content goes here&lt;/p&gt;
+&lt;/div&gt;
+
+<!-- Widget page -->
+&lt;div d-sector-parent-url="/Layout.html" d-sector-parent="widgets"&gt;
+    &lt;div&gt;Weather Widget&lt;/div&gt;
+    &lt;div&gt;News Widget&lt;/div&gt;
+&lt;/div&gt;
+        </d-code>
+
+        <h4>Dynamic Sector Names</h4>
+        <p>You can use data binding for dynamic sector names:</p>
+        <d-code>
+&lt;div d-dataKey="targetSection" d-dataType="value" d-dataValue="content"&gt;&lt;/div&gt;
+&lt;div d-sector-parent-url="/Master.html" d-sector-parent="{{targetSection}}"&gt;
+    &lt;p&gt;Content will go to the sector specified by targetSection data&lt;/p&gt;
+&lt;/div&gt;
+        </d-code>
+
+        <h4>Error Handling</h4>
+        <p>If the specified parent sector is not found, Drapo will log an error and the content may not be displayed correctly. Always ensure:</p>
+        <ul>
+            <li>The parent page exists and is accessible</li>
+            <li>The parent page contains a sector with the exact name specified</li>
+            <li>Sector names are case-sensitive and match exactly</li>
+        </ul>
+
         <h4>Best Practices</h4>
         <ul>
-            <li><b>Consistent sector names</b> - Use standardized sector names like "content", "main", or "body" across layouts</li>
+            <li><b>Use descriptive sector names</b> - Choose clear names like "content", "main", "sidebar", "header"</li>
+            <li><b>Document sector contracts</b> - Clearly document which sectors are available in master pages</li>
+            <li><b>Consistent naming</b> - Use consistent sector naming conventions across your application</li>
+            <li><b>Validate parent sectors</b> - Ensure parent pages have the expected sectors</li>
+            <li><b>Avoid conflicts</b> - Don't use sector names that might conflict with existing HTML elements</li>
+            <li><b>Plan for fallbacks</b> - Consider what happens if parent loading fails</li>
             <li><b>Layout hierarchy</b> - Keep layout nesting to a reasonable depth to maintain performance</li>
-            <li><b>Error handling</b> - Ensure parent URLs are valid and parent sectors exist</li>
             <li><b>Data scope awareness</b> - Remember that data contexts are inherited from parent to child</li>
             <li><b>Performance consideration</b> - Parent layouts are loaded dynamically, so minimize nested layout chains</li>
         </ul>
@@ -116,6 +198,6 @@
             <li><b>d-sector-url</b> - Alternative approach for loading content into sectors</li>
         </ul>
         
-        <p><strong>Related:</strong> [d-sector](d-sector), [d-dataAccess](d-dataAccess), [UpdateSector function](~/app/functions/UpdateSector/description.html)</p>
+        <p><strong>Related:</strong> [d-sector](d-sector), [d-sector-parent-url](d-sector-parent-url), [d-dataAccess](d-dataAccess), [UpdateSector function](~/app/functions/UpdateSector/description.html)</p>
     </div>
 </div>
