@@ -9,7 +9,7 @@
         <div class="card" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; margin: 15px 0;">
             <h4>📦 NuGet Package Information</h4>
             <div d-if="{{nuget}}">
-                <p><strong>Package ID:</strong> {{nuget.Id}}</p>
+                <p><strong>Package ID:</strong> Drapo</p>
                 <p><strong>Latest Version:</strong> <span class="badge bg-primary">{{nuget.LatestVersion}}</span></p>
                 <p><strong>Total Downloads:</strong> <span class="text-success">{{nuget.TotalDownloads}}</span></p>
                 <p><strong>Authors:</strong> <span d-for="author in nuget.Authors">{{author}}<span d-if="!{{$index.IsLast}}">, </span></span></p>
@@ -24,20 +24,11 @@
         </div>
 
         <p>Your csproj will be like this below:</p>
-        <div d-if="{{nuget}}">
-            <d-code>
-                <ItemGroup>
-                    <PackageReference Include="Drapo" Version="{{nuget.LatestVersion}}" />
-                </ItemGroup>
-            </d-code>
-        </div>
-        <div d-if="!{{nuget}}">
-            <d-code>
-                <ItemGroup>
-                    <PackageReference Include="Drapo" Version="2025.4.24.5" />
-                </ItemGroup>
-            </d-code>
-        </div>
+        <d-code>
+            <ItemGroup>
+                <PackageReference Include="Drapo" Version="2025.4.24.5" />
+            </ItemGroup>
+        </d-code>
         <br>
         <p>After that you will need to update your Startup.cs. First you need to add the service. To do that you will need to include this line of code in your ConfigureServices method. Like this:</p>
         <d-code>
