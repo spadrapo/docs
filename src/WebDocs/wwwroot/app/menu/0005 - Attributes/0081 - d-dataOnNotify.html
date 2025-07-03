@@ -15,7 +15,7 @@
         <p><b>Basic Usage:</b></p>
         <d-sample>
             <div d-dataKey="items" d-dataType="array" d-dataValue='[{"name":"Item 1"},{"name":"Item 2"}]'></div>
-            <div d-dataKey="counter" d-dataType="object" d-dataProperty-count="0" d-dataOnNotify="UpdateDataField(counter,count,{{GetLength(items)}})"></div>
+            <div d-dataKey="counter" d-dataType="object" d-dataProperty-count="0" d-dataOnNotify="UpdateDataField(counter,count,{{items.length}})"></div>
             <div d-dataKey="newItem" d-dataType="object" d-dataProperty-name=""></div>
             <br />
             <span>Add new item:</span>
@@ -40,7 +40,7 @@
             <br />
             <span>Add new task:</span><br />
             <input type="text" placeholder="Task name" d-model="{{newTask.name}}" />
-            <input type="button" value="Add Task" d-on-click="UpdateDataField(newTask,id,{{GetLength(sourceList)}} + 1);AddDataItem(sourceList,{{newTask}});UpdateDataField(newTask,name,);UpdateDataField(newTask,id,)" />
+            <input type="button" value="Add Task" d-on-click="UpdateDataField(newTask,id,{{sourceList.length}} + 1);AddDataItem(sourceList,{{newTask}});UpdateDataField(newTask,name,);UpdateDataField(newTask,id,)" />
             <br /><br />
             <span><b>Source List:</b></span>
             <div d-for="task in sourceList">
