@@ -23,13 +23,13 @@
             <input type="button" value="Add Item" d-on-click="AddDataItem(items,{{newItem}});UpdateDataField(newItem,name,)" />
             <br /><br />
             <span><b>Items List:</b></span>
+            <br />
+            <span><b>Item Count (automatically updated via d-dataOnNotify): </b><span d-model="{{counter.count}}"></span></span>
             <div d-for="item in items">
                 <span d-model="{{item.name}}"></span>
                 <input type="button" value="Remove" d-on-click="DeleteDataItem(items,{{item}})" />
                 <br />
             </div>
-            <br />
-            <span><b>Item Count (automatically updated via d-dataOnNotify): </b><span d-model="{{counter.count}}"></span></span>
         </d-sample>
         <br />
         <p><b>Advanced Example - Data Synchronization:</b></p>
@@ -42,16 +42,20 @@
             <input type="text" placeholder="Task name" d-model="{{newTask.name}}" />
             <input type="button" value="Add Task" d-on-click="UpdateDataField(newTask,id,{{sourceList.length}} + 1);AddDataItem(sourceList,{{newTask}});UpdateDataField(newTask,name,);UpdateDataField(newTask,id,)" />
             <br /><br />
-            <span><b>Source List:</b></span>
-            <div d-for="task in sourceList">
-                <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span>
-                <input type="button" value="Remove" d-on-click="DeleteDataItem(sourceList,{{task}})" />
-                <br />
+            <div>
+                <span><b>Source List:</b></span>
+                <div d-for="task in sourceList">
+                    <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span>
+                    <input type="button" value="Remove" d-on-click="DeleteDataItem(sourceList,{{task}})" />
+                    <br />
+                </div>
             </div>
             <br />
-            <span><b>Mirror List (automatically synced when sourceList changes):</b></span>
-            <div d-for="task in mirrorList">
-                <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span><br />
+            <div>
+                <span><b>Mirror List (automatically synced when sourceList changes):</b></span>
+                <div d-for="task in mirrorList">
+                    <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span><br />
+                </div>
             </div>
         </d-sample>
     </div>
