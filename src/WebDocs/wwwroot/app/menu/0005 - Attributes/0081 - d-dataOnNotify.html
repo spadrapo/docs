@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-dataOnNotify</h2>
+        <p>You can use d-dataOnNotify to execute a Drapo expression when a data key is notified of changes by the observer. This event will be fired every time that the storage item is notified.</p>
+        <p>This attribute is useful for implementing reactive behaviors where you want to automatically execute actions when data changes.</p>
+        <p><b>When the event triggers:</b> The d-dataOnNotify expression is executed whenever the data key with this attribute is notified of changes, which happens when:</p>
+        <ul>
+            <li>Data is added, updated, or removed from the storage item</li>
+            <li>The Notify() function is called explicitly on the data key</li>
+            <li>Other operations that trigger observer notifications</li>
+        </ul>
+        <br />
+        <p><b>Basic Usage:</b></p>
+        <d-sample>
+            <div d-dataKey="items" d-dataType="array" d-dataValue='[{"name":"Item 1"},{"name":"Item 2"}]'></div>
+            <div d-dataKey="counter" d-dataType="object" d-dataProperty-count="0" d-dataOnNotify="UpdateDataField(counter,count,{{GetLength(items)}})"></div>
+            <div d-dataKey="newItem" d-dataType="object" d-dataProperty-name=""></div>
+            <br />
+            <span>Add new item:</span>
+            <input type="text" d-model="{{newItem.name}}" placeholder="Enter item name" />
+            <input type="button" value="Add Item" d-on-click="AddDataItem(items,{{newItem}});UpdateDataField(newItem,name,)" />
+            <br /><br />
+            <span><b>Items List:</b></span>
+            <div d-for="item in items">
+                <span d-model="{{item.name}}"></span>
+                <input type="button" value="Remove" d-on-click="DeleteDataItem(items,{{item}})" />
+                <br />
+            </div>
+            <br />
+            <span><b>Item Count (automatically updated via d-dataOnNotify): </b><span d-model="{{counter.count}}"></span></span>
+        </d-sample>
+        <br />
+        <p><b>Advanced Example - Data Synchronization:</b></p>
+        <d-sample>
+            <div d-dataKey="sourceList" d-dataType="array" d-dataValue='[{"id":1,"name":"Task 1"},{"id":2,"name":"Task 2"}]'></div>
+            <div d-dataKey="mirrorList" d-dataType="array" d-dataOnNotify="ClearData(mirrorList);AddDataItem(mirrorList,{{sourceList}},false)"></div>
+            <div d-dataKey="newTask" d-dataType="object" d-dataProperty-id="" d-dataProperty-name=""></div>
+            <br />
+            <span>Add new task:</span><br />
+            <input type="text" placeholder="Task name" d-model="{{newTask.name}}" />
+            <input type="button" value="Add Task" d-on-click="UpdateDataField(newTask,id,{{GetLength(sourceList)}} + 1);AddDataItem(sourceList,{{newTask}});UpdateDataField(newTask,name,);UpdateDataField(newTask,id,)" />
+            <br /><br />
+            <span><b>Source List:</b></span>
+            <div d-for="task in sourceList">
+                <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span>
+                <input type="button" value="Remove" d-on-click="DeleteDataItem(sourceList,{{task}})" />
+                <br />
+            </div>
+            <br />
+            <span><b>Mirror List (automatically synced when sourceList changes):</b></span>
+            <div d-for="task in mirrorList">
+                <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span><br />
+            </div>
+        </d-sample>
+    </div>
+</div>
