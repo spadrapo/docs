@@ -25,13 +25,22 @@
         </d-sample>
         <br />
         <h3>Date</h3>
-        <p>Dates can be formatted in: Short date pattern (d), Long date pattern (D), Short time pattern (t), Long time pattern (T), General date/time with short time (g), General date/time with long time (G), RFC1123 pattern (r), Custom (YYYY) </p>
+        <p>Dates can be formatted in: Short date pattern (d), Long date pattern (D), Short time pattern (t), Long time pattern (T), General date/time with short time (g), General date/time with long time (G), RFC1123 pattern (r), Custom (YYYY), 12-hour format (h), 12-hour format with padding (hh), AM/PM indicator (tt), Single character AM/PM (t) </p>
         <d-sample>
-            <div d-dataKey="dates" d-dataType="array" d-dataValue='[{"value":"1980-06-03T11:57:24Z","format":"d"},{"value":"1980-06-03T11:57:24Z","format":"D"},{"value":"1980-06-03T11:57:24Z","format":"t"},{"value":"1980-06-03T11:57:24Z","format":"T"},{"value":"1980-06-03T11:57:24Z","format":"g"},{"value":"1980-06-03T11:57:24Z","format":"G"},{"value":"1980-06-03T11:57:24Z","format":"r"},{"value":"1980-06-03T11:57:24Z","format":"YYYY"}]'></div>
+            <div d-dataKey="dates" d-dataType="array" d-dataValue='[{"value":"1980-06-03T11:57:24Z","format":"d"},{"value":"1980-06-03T11:57:24Z","format":"D"},{"value":"1980-06-03T11:57:24Z","format":"t"},{"value":"1980-06-03T11:57:24Z","format":"T"},{"value":"1980-06-03T11:57:24Z","format":"g"},{"value":"1980-06-03T11:57:24Z","format":"G"},{"value":"1980-06-03T11:57:24Z","format":"r"},{"value":"1980-06-03T11:57:24Z","format":"YYYY"},{"value":"1980-06-03T11:57:24Z","format":"h:mm tt"},{"value":"1980-06-03T11:57:24Z","format":"hh:mm tt"},{"value":"1980-06-03T11:57:24Z","format":"h:mm:ss tt"},{"value":"1980-06-03T11:57:24Z","format":"h:mm t"}]'></div>
             <div d-for="date in dates">
                 <span d-model="{{date.format}}"></span><br />
                 <span d-model="{{date.value}}" d-format="{{date.format}}"></span><br />
                 <br />
+            </div>
+        </d-sample>
+        <br />
+        <h3>12-Hour Format with AM/PM</h3>
+        <p>The 12-hour format patterns include proper handling of midnight and noon edge cases:</p>
+        <d-sample>
+            <div d-dataKey="dates12hour" d-dataType="array" d-dataValue='[{"value":"1980-06-03T00:15:30Z","format":"h:mm tt","description":"Midnight"},{"value":"1980-06-03T09:15:30Z","format":"h:mm tt","description":"Morning"},{"value":"1980-06-03T12:15:30Z","format":"h:mm tt","description":"Noon"},{"value":"1980-06-03T13:15:30Z","format":"hh:mm tt","description":"Afternoon"},{"value":"1980-06-03T21:15:30Z","format":"h:mm:ss tt","description":"Evening"},{"value":"1980-06-03T13:15:30Z","format":"h:mm t","description":"Single char AM/PM"}]'></div>
+            <div d-for="date12 in dates12hour">
+                <span d-model="{{date12.description}}"></span>: <span d-model="{{date12.format}}"></span> → <span d-model="{{date12.value}}" d-format="{{date12.format}}"></span><br />
             </div>
         </d-sample>
         <br />
