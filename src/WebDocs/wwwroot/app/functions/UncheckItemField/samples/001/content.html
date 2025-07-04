@@ -1,0 +1,7 @@
+<div d-dataKey="tasks" d-dataType="array" d-dataValue='[{"name":"Task 1","completed":true},{"name":"Task 2","completed":true},{"name":"Task 3","completed":false}]'></div>
+<ul>
+    <li d-for="task in tasks" d-class="{dSampleGreen:{{task.completed}}:dSampleRed}" d-on-click="UncheckItemField({{task.completed}})">
+        {{task.name}} - {{task.completed}}
+    </li>
+</ul>
+<p>Click on any task to uncheck it (set completed to false)</p>
