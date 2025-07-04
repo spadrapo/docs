@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "Property",
+    "Description": "The property that will be set to true",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want to notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue" : "true"
+  }
+]

@@ -1,0 +1,7 @@
+<div d-dataKey="tasks" d-dataType="array" d-dataValue='[{"text":"Learn Drapo","edit":false},{"text":"Build an app","edit":false},{"text":"Deploy to production","edit":false}]'></div>
+<ul>
+    <li d-for="task in tasks">
+        <span d-if="!{{task.edit}}" d-on-dblclick="CheckItemField({{task.edit}})">{{task.text}}</span>
+        <input d-if="{{task.edit}}" type="text" d-model="{{task.text}}" d-on-blur="UncheckItemField({{task.edit}})" />
+    </li>
+</ul>
