@@ -1,0 +1,15 @@
+[
+  {
+    "Name": "DataPath",
+    "Description": "The mustache path to the field that you want to clear",
+    "Types": [ "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want to notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]
