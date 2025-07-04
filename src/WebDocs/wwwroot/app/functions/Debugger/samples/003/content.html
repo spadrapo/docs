@@ -1,0 +1,33 @@
+<div>
+    <h4>Debugger Configuration Management</h4>
+    
+    <div style="margin: 20px 0; padding: 15px; background-color: #f5f5f5; border-left: 4px solid #007acc;">
+        <h5>Available Commands:</h5>
+        <ul>
+            <li><strong>reload</strong> - Reloads the debugger with current configuration from session storage</li>
+            <li><strong>persist</strong> - Persists or removes debugger configuration in session storage</li>
+        </ul>
+    </div>
+    
+    <div style="margin: 20px 0;">
+        <button d-on-click="Debugger(reload)" 
+                style="margin-right: 10px; padding: 8px 16px; background: #007acc; color: white; border: none; cursor: pointer;">
+            Reload Debugger
+        </button>
+        
+        <button d-on-click="Debugger(persist)" 
+                style="padding: 8px 16px; background: #28a745; color: white; border: none; cursor: pointer;">
+            Persist Configuration
+        </button>
+    </div>
+    
+    <div style="margin: 20px 0; padding: 10px; background-color: #fff3cd; border: 1px solid #ffeaa7;">
+        <p><strong>Usage Notes:</strong></p>
+        <ul>
+            <li>Open the debugger first by pressing <kbd>Ctrl + F2</kbd></li>
+            <li>Configure your debugging preferences in the debugger interface</li>
+            <li>Use 'persist' to save configuration across page reloads</li>
+            <li>Use 'reload' to refresh the debugger with saved configuration</li>
+        </ul>
+    </div>
+</div>

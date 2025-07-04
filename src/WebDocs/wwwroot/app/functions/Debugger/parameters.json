@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "Command",
+    "Description": "The debugging command to execute",
+    "Types": ["text"],
+    "Optional": false
+  },
+  {
+    "Name": "Location",
+    "Description": "For highlight command, specifies what to highlight (sector or component)",
+    "Types": ["text"],
+    "Optional": true
+  },
+  {
+    "Name": "Class",
+    "Description": "For highlight command, the CSS class to apply for highlighting",
+    "Types": ["text"],
+    "Optional": true
+  },
+  {
+    "Name": "Target",
+    "Description": "For highlight command, the target sector name or component index to highlight",
+    "Types": ["text", "mustache"],
+    "Optional": true
+  }
+]
