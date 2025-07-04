@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "frameID",
+    "Description": "The ID of the iframe element from which to retrieve data",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "externalFunction",
+    "Description": "The name of the function to call within the iframe to retrieve data",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "dataKey",
+    "Description": "The data key where the retrieved data will be stored",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "isClone",
+    "Description": "Whether to clone the retrieved data before storing it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
