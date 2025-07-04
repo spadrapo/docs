@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "frameID",
+    "Description": "The ID of the iframe element to communicate with",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "externalFunction",
+    "Description": "The tag or function name to be used in the message for identification purposes",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "dataKey",
+    "Description": "The data key where the response data will be stored",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "isClone",
+    "Description": "Whether to clone the received data before storing it",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
