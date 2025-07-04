@@ -1,0 +1,14 @@
+<div d-dataKey="items" d-dataType="array" d-dataValue='[{"value":"Item 1","temp":"Temporary"},{"value":"Item 2","temp":"Temporary"},{"value":"Item 3","temp":"Temporary"}]'></div>
+<div d-dataKey="counter" d-dataType="object" d-dataProperty-changes="0"></div>
+<div>
+    <h3>Items with Change Counter</h3>
+    <p>Changes detected: <span d-model="{{counter.changes}}"></span></p>
+    <div d-for="item in items">
+        <div style="border: 1px solid #ccc; margin: 5px; padding: 10px;">
+            <strong>Value:</strong> <span d-model="{{item.value}}"></span><br/>
+            <strong>Temp:</strong> <span d-model="{{item.temp}}"></span><br/>
+            <button d-on-click="ClearItemField({{item.temp}});UpdateDataField(counter,changes,Add({{counter.changes}},1))">Clear with Notify</button>
+            <button d-on-click="ClearItemField({{item.temp}},false)">Clear without Notify</button>
+        </div>
+    </div>
+</div>

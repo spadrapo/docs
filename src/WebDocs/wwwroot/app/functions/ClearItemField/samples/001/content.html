@@ -1,0 +1,12 @@
+<div d-dataKey="tasks" d-dataType="array" d-dataValue='[{"name":"Task 1","description":"First task"},{"name":"Task 2","description":"Second task"},{"name":"Task 3","description":"Third task"}]'></div>
+<div>
+    <h3>Tasks List</h3>
+    <div d-for="task in tasks">
+        <div style="border: 1px solid #ccc; margin: 5px; padding: 10px;">
+            <strong>Name:</strong> <span d-model="{{task.name}}"></span><br/>
+            <strong>Description:</strong> <span d-model="{{task.description}}"></span><br/>
+            <button d-on-click="ClearItemField({{task.description}})">Clear Description</button>
+            <button d-on-click="ClearItemField({{task.name}})">Clear Name</button>
+        </div>
+    </div>
+</div>
