@@ -1,0 +1,5 @@
+<div d-dataKey="dynamicFunction" d-dataType="value" d-dataValue="UpdateItemField({{counter}}, {{counter}} + 1)"></div>
+<div d-dataKey="counter" d-dataType="value" d-dataValue="0"></div>
+
+<p>Counter value: <span d-model="{{counter}}"></span></p>
+<input type="button" value="Execute Dynamic Function" d-on-click="Execute({{dynamicFunction}})" />
