@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Key",
+    "Description": "The configuration key to set",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Value",
+    "Description": "The configuration value to set",
+    "Types": [ "text", "number" ],
+    "Optional": false
+  }
+]

@@ -1,0 +1,7 @@
+<div d-datakey="timezoneConfig" d-datatype="object" d-dataproperty-offset="-5"></div>
+<div>
+    <span>Current timezone offset: </span><span d-model="{{timezoneConfig.offset}}"></span><br />
+    <span>New timezone offset: </span><input type="number" d-model="{{timezoneConfig.offset}}" /><br />
+    <input type="button" value="Set Timezone" d-on-click="SetConfig(timezone,{{timezoneConfig.offset}})" /><br />
+    <small>Note: Timezone offset is in hours from UTC (e.g., -5 for EST, 0 for UTC, +9 for JST)</small>
+</div>
