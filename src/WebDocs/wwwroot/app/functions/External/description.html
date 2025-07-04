@@ -1,0 +1,32 @@
+<p>External functions enable integration between Drapo applications and external JavaScript functions. This function family allows you to bridge the gap between Drapo's data-driven framework and custom JavaScript code, third-party libraries, or iframe-embedded content.</p>
+
+<h3>External Function Family</h3>
+<p>The External function family includes several variants for different use cases:</p>
+
+<ul>
+    <li><strong>External()</strong> - Basic external function placeholder that returns an empty string</li>
+    <li><strong>SetExternal()</strong> - Passes Drapo data to an external JavaScript function</li>
+    <li><strong>GetExternal()</strong> - Retrieves data from an external JavaScript function into Drapo storage</li>
+    <li><strong>SetExternalFrame()</strong> - Passes data to external functions within iframes</li>
+    <li><strong>GetExternalFrame()</strong> - Retrieves data from external functions within iframes</li>
+    <li><strong>SetExternalFrameMessage()</strong> - Uses postMessage API to send data to iframe functions</li>
+    <li><strong>GetExternalFrameMessage()</strong> - Uses postMessage API to receive data from iframe functions</li>
+</ul>
+
+<h3>Common Use Cases</h3>
+<ul>
+    <li>Integrating with third-party JavaScript libraries (charts, maps, etc.)</li>
+    <li>Communicating with embedded iframes or widgets</li>
+    <li>Calling custom business logic implemented in JavaScript</li>
+    <li>Bridging Drapo applications with existing legacy JavaScript code</li>
+    <li>Creating reusable JavaScript utilities that can be called from Drapo</li>
+</ul>
+
+<h3>Security Considerations</h3>
+<p>When using external functions, consider:</p>
+<ul>
+    <li>Validate external function existence before calling</li>
+    <li>Use the clone parameter to prevent unwanted data mutations</li>
+    <li>Sanitize data when communicating with untrusted external sources</li>
+    <li>Be cautious with iframe communications and origin validation</li>
+</ul>

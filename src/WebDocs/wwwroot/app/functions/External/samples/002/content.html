@@ -1,0 +1,76 @@
+<span>External Frame Communication</span>
+<div d-dataKey="frameData" d-dataType="array" d-dataProperty-0-id="1" d-dataProperty-0-title="Task 1" d-dataProperty-1-id="2" d-dataProperty-1-title="Task 2"></div>
+
+<div>
+    <h4>IFrame External Functions</h4>
+    <p>Communicate with external functions inside an iframe:</p>
+    
+    <div>
+        <input type="button" value="Send Data to Frame" d-on-click="SetExternalFrame(exampleFrame,receiveData,frameData,true)">
+        <input type="button" value="Get Data from Frame" d-on-click="GetExternalFrame(exampleFrame,getData,receivedData,true)">
+    </div>
+    
+    <div d-dataKey="receivedData" d-dataType="array"></div>
+    <h5>Data received from frame:</h5>
+    <div d-for="item in receivedData">
+        <div>ID: {{item.id}}, Title: {{item.title}}, Modified: {{item.modified}}</div>
+    </div>
+    
+    <h4>PostMessage Communication</h4>
+    <p>Use PostMessage API for secure iframe communication:</p>
+    <div>
+        <input type="button" value="Send via PostMessage" d-on-click="SetExternalFrameMessage(exampleFrame,handleMessage,frameData,true)">
+        <input type="button" value="Receive via PostMessage" d-on-click="GetExternalFrameMessage(exampleFrame,requestData,messageData,true)">
+    </div>
+    
+    <div d-dataKey="messageData" d-dataType="array"></div>
+    <h5>Data from PostMessage:</h5>
+    <div d-for="item in messageData">
+        <div>{{item.id}} - {{item.title}} (Via PostMessage)</div>
+    </div>
+</div>
+
+<div style="margin-top: 20px;">
+    <h5>Example IFrame:</h5>
+    <iframe id="exampleFrame" src="data:text/html,
+    <script>
+        var frameStorage = [];
+        
+        function receiveData(data) {
+            frameStorage = data.map(item => ({
+                ...item,
+                modified: true,
+                frameTimestamp: new Date().toISOString()
+            }));
+            console.log('Frame received data:', frameStorage);
+        }
+        
+        function getData() {
+            return frameStorage;
+        }
+        
+        function handleMessage(message) {
+            if (message.Action === 'set') {
+                receiveData(message.Data);
+            }
+        }
+        
+        function requestData() {
+            return frameStorage;
+        }
+        
+        // Listen for PostMessage
+        window.addEventListener('message', function(event) {
+            if (event.data.Action === 'set') {
+                handleMessage(event.data);
+            } else if (event.data.Action === 'get') {
+                event.source.postMessage({
+                    Action: 'response',
+                    Data: requestData()
+                }, '*');
+            }
+        });
+    </script>
+    <div>This iframe contains external functions that can communicate with the parent Drapo application.</div>
+    " width="400" height="100" style="border: 1px solid #ccc;"></iframe>
+</div>

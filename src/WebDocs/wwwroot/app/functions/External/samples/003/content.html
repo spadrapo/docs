@@ -1,0 +1,112 @@
+<script>
+    // Example third-party library integration
+    window.MyLibrary = {
+        // Simulate a charting library
+        createChart: function(data) {
+            const chartData = data.map(item => ({
+                label: item.name,
+                value: item.value || Math.floor(Math.random() * 100),
+                color: '#' + Math.floor(Math.random()*16777215).toString(16)
+            }));
+            console.log('Chart created with data:', chartData);
+            return chartData;
+        },
+        
+        // Simulate a data validation library
+        validateData: function(data) {
+            return data.map(item => ({
+                ...item,
+                isValid: item.name && item.name.length > 0,
+                validatedAt: new Date().toISOString()
+            }));
+        },
+        
+        // Simulate a data transformation library
+        transformData: function(data) {
+            return {
+                total: data.length,
+                items: data,
+                summary: data.reduce((acc, item) => {
+                    acc.totalValue = (acc.totalValue || 0) + (item.value || 0);
+                    return acc;
+                }, {}),
+                transformed: true
+            };
+        }
+    };
+    
+    // Custom utility functions
+    function formatCurrency(amount) {
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: 'USD'
+        }).format(amount);
+    }
+    
+    function getCurrentLocation() {
+        return new Promise((resolve) => {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(
+                    position => resolve({
+                        latitude: position.coords.latitude,
+                        longitude: position.coords.longitude,
+                        timestamp: new Date().toISOString()
+                    }),
+                    error => resolve({ error: error.message })
+                );
+            } else {
+                resolve({ error: 'Geolocation not supported' });
+            }
+        });
+    }
+</script>
+
+<span>Third-Party Library Integration</span>
+<div d-dataKey="sampleData" d-dataType="array" 
+     d-dataProperty-0-name="Product A" d-dataProperty-0-value="150"
+     d-dataProperty-1-name="Product B" d-dataProperty-1-value="200"
+     d-dataProperty-2-name="Product C" d-dataProperty-2-value="75"></div>
+
+<div>
+    <h4>Chart Library Integration</h4>
+    <input type="button" value="Create Chart" d-on-click="GetExternal(MyLibrary.createChart,chartData,false);SetExternal(MyLibrary.createChart,sampleData,true)">
+    <div d-dataKey="chartData" d-dataType="array"></div>
+    <div d-for="chart in chartData">
+        <div style="margin: 5px; padding: 10px; border-left: 5px solid {{chart.color}};">
+            {{chart.label}}: {{chart.value}}
+        </div>
+    </div>
+    
+    <h4>Data Validation</h4>
+    <input type="button" value="Validate Data" d-on-click="GetExternal(MyLibrary.validateData,validatedData,false);SetExternal(MyLibrary.validateData,sampleData,true)">
+    <div d-dataKey="validatedData" d-dataType="array"></div>
+    <div d-for="item in validatedData">
+        <div style="color: {{item.isValid ? 'green' : 'red'}};">
+            {{item.name}} - Valid: {{item.isValid}} ({{item.validatedAt}})
+        </div>
+    </div>
+    
+    <h4>Data Transformation</h4>
+    <input type="button" value="Transform Data" d-on-click="GetExternal(MyLibrary.transformData,transformedData,false);SetExternal(MyLibrary.transformData,sampleData,true)">
+    <div d-dataKey="transformedData" d-dataType="object"></div>
+    <div d-if="{{transformedData.transformed}}">
+        <h5>Summary:</h5>
+        <p>Total Items: {{transformedData.total}}</p>
+        <p>Total Value: {{transformedData.summary.totalValue}}</p>
+    </div>
+    
+    <h4>Custom Utilities</h4>
+    <div d-dataKey="utilityResults" d-dataType="object"></div>
+    <input type="button" value="Format Currency" d-on-click="UpdateDataField(utilityResults,currency,formatCurrency(299.99))">
+    <input type="button" value="Get Location" d-on-click="GetExternal(getCurrentLocation,utilityResults,false)">
+    
+    <div d-if="{{utilityResults.currency}}">
+        <p>Formatted: {{utilityResults.currency}}</p>
+    </div>
+    <div d-if="{{utilityResults.latitude}}">
+        <p>Location: {{utilityResults.latitude}}, {{utilityResults.longitude}}</p>
+    </div>
+    <div d-if="{{utilityResults.error}}">
+        <p style="color: red;">Error: {{utilityResults.error}}</p>
+    </div>
+</div>

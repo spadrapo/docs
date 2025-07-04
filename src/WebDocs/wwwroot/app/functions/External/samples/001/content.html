@@ -1,0 +1,52 @@
+<script>
+    // External JavaScript functions that Drapo can call
+    var externalStorage = null;
+    
+    function saveToExternal(data) {
+        externalStorage = data;
+        console.log('Data saved to external storage:', data);
+    }
+    
+    function loadFromExternal() {
+        console.log('Data loaded from external storage:', externalStorage);
+        return externalStorage || [];
+    }
+    
+    function processData(data) {
+        // Example: Add a timestamp to each item
+        if (Array.isArray(data)) {
+            return data.map(item => ({
+                ...item,
+                processed: true,
+                timestamp: new Date().toISOString()
+            }));
+        }
+        return data;
+    }
+</script>
+
+<span>External Function Examples</span>
+<div d-dataKey="users" d-dataType="array" d-dataProperty-0-name="John" d-dataProperty-0-email="john@example.com" d-dataProperty-1-name="Jane" d-dataProperty-1-email="jane@example.com"></div>
+
+<div>
+    <h4>Basic External Function</h4>
+    <p>External() returns: "<span d-model="{{result}}"></span>"</p>
+    <input type="button" value="Call External()" d-on-click="UpdateData(result,External())">
+    
+    <h4>SetExternal - Save Data to External Function</h4>
+    <input type="button" value="Save Users to External" d-on-click="SetExternal(saveToExternal,users,true)">
+    
+    <h4>GetExternal - Load Data from External Function</h4>
+    <input type="button" value="Load from External" d-on-click="GetExternal(loadFromExternal,loadedUsers,true)">
+    <div d-dataKey="loadedUsers" d-dataType="array"></div>
+    <div d-for="user in loadedUsers">
+        <div>{{user.name}} - {{user.email}}</div>
+    </div>
+    
+    <h4>Data Processing Example</h4>
+    <input type="button" value="Process Users" d-on-click="GetExternal(processData,processedUsers,true);SetExternal(processData,users,false)">
+    <div d-dataKey="processedUsers" d-dataType="array"></div>
+    <div d-for="user in processedUsers">
+        <div>{{user.name}} - {{user.email}} (Processed: {{user.processed}}, Time: {{user.timestamp}})</div>
+    </div>
+</div>
