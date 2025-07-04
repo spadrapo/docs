@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage item",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataFields",
+    "Description": "The path of the data field to be set to true",
+    "Types": [ "text", "datafields" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want to notify the change to the observer",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
+]

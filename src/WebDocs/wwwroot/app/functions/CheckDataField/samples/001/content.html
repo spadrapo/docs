@@ -1,0 +1,7 @@
+<div d-datakey="settings" d-datatype="object" d-dataproperty-isEnabled="false" d-dataproperty-isVisible="false"></div>
+<div>
+    <span>Enabled: </span><input type="checkbox" d-model="{{settings.isEnabled}}" /><br />
+    <span>Visible: </span><input type="checkbox" d-model="{{settings.isVisible}}" /><br />
+    <input type="button" value="Check Enabled" d-on-click="CheckDataField(settings,isEnabled)" /><br />
+    <input type="button" value="Check Visible" d-on-click="CheckDataField(settings,isVisible)" /><br />
+</div>
