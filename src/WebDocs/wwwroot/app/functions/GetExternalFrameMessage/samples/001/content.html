@@ -1,0 +1,34 @@
+<div d-dataKey="externalData" d-dataType="array"></div>
+<div d-dataKey="responseMessage" d-dataType="value"></div>
+
+<h3>GetExternalFrameMessage Example</h3>
+<p>This example demonstrates how to get data from an external iframe using postMessage communication.</p>
+
+<div style="margin: 10px 0;">
+    <input type="button" value="Get Data from Frame" d-on-click="GetExternalFrameMessage(sampleFrame,GetUserData,externalData,true)" />
+    <span d-model="{{responseMessage}}"></span>
+</div>
+
+<h4>Received Data:</h4>
+<div d-for="item in externalData">
+    <div style="border: 1px solid #ccc; padding: 5px; margin: 2px;">
+        <strong>{{item.name}}</strong> - {{item.email}}
+    </div>
+</div>
+
+<h4>Sample iframe (simulated):</h4>
+<iframe id="sampleFrame" 
+        src="data:text/html,<html><body><script>
+        window.addEventListener('message', function(event) {
+            if (event.data && event.data.Action === 'get' && event.data.Tag === 'GetUserData') {
+                const sampleData = [
+                    {name: 'John Doe', email: 'john@example.com'},
+                    {name: 'Jane Smith', email: 'jane@example.com'}
+                ];
+                event.source.postMessage({_data: sampleData}, '*');
+            }
+        });
+        </script>
+        <p>Sample iframe content - this would normally be an external page</p>
+        </body></html>"
+        style="width: 100%; height: 100px; border: 1px solid #ddd;"></iframe>
