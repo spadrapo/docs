@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Expression", 
+    "Description": "The function expression that will be dynamically executed",
+    "Types": ["expression", "mustache", "text"],
+    "Optional": false
+  },
+  {
+    "Name": "Sector",
+    "Description": "The sector in which to execute the function. If not provided, uses the current sector",
+    "Types": ["mustache", "text"],
+    "Optional": true
+  }
+]

@@ -1,0 +1,7 @@
+<div d-dataKey="targetSector" d-dataType="value" d-dataValue="main"></div>
+<div d-dataKey="functionToExecute" d-dataType="value" d-dataValue="UpdateData(sectorData, {executedFrom: 'Execute function', timestamp: 'CreateTick()'})"></div>
+
+<p>Target Sector: <input type="text" d-model="{{targetSector}}" /></p>
+<p>Function to Execute: <input type="text" d-model="{{functionToExecute}}" /></p>
+
+<input type="button" value="Execute in Specified Sector" d-on-click="Execute({{functionToExecute}}, {{targetSector}})" />
