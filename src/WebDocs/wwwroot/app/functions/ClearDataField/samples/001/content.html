@@ -1,0 +1,8 @@
+<div d-datakey="person" d-datatype="object" d-dataproperty-name="John Doe" d-dataproperty-email="john@example.com" d-dataproperty-phone="123-456-7890"></div>
+<div>
+    <span>Name: </span><span d-model="{{person.name}}"></span><br />
+    <span>Email: </span><span d-model="{{person.email}}"></span><br />
+    <span>Phone: </span><span d-model="{{person.phone}}"></span><br /><br />
+    <input type="button" value="Clear Email" d-on-click="ClearDataField(person,email)" /><br />
+    <input type="button" value="Clear Phone" d-on-click="ClearDataField(person,phone)" /><br />
+</div>

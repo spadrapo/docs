@@ -1,0 +1,10 @@
+<div d-datakey="settings" d-datatype="object" d-dataproperty-theme="dark" d-dataproperty-language="en" d-dataproperty-notifications="true"></div>
+<div>
+    <h4>User Settings:</h4>
+    <span>Theme: </span><span d-model="{{settings.theme}}"></span><br />
+    <span>Language: </span><span d-model="{{settings.language}}"></span><br />
+    <span>Notifications: </span><span d-model="{{settings.notifications}}"></span><br /><br />
+    <input type="button" value="Clear Theme" d-on-click="ClearDataField(settings,theme)" /><br />
+    <input type="button" value="Clear Language" d-on-click="ClearDataField(settings,language)" /><br />
+    <input type="button" value="Clear Notifications" d-on-click="ClearDataField(settings,notifications)" /><br />
+</div>
