@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - GetExternal</title>
+</head>
+<body>
+    <script>
+        function GetCurrentTime() {
+            return new Date().toLocaleString();
+        }
+        
+        function GetRandomNumber() {
+            return Math.floor(Math.random() * 100);
+        }
+    </script>
+    
+    <span>Function - GetExternal</span>
+    <div d-dataKey="externalData" d-dataType="object" d-dataProperty-time="" d-dataProperty-number=""></div>
+    
+    <div>
+        <h3>Current Time:</h3>
+        <span d-model="{{externalData.time}}"></span>
+        <br />
+        <input type="button" value="Get Current Time" d-on-click="GetExternal(GetCurrentTime,externalData.time)" />
+        
+        <h3>Random Number:</h3>
+        <span d-model="{{externalData.number}}"></span>
+        <br />
+        <input type="button" value="Get Random Number" d-on-click="GetExternal(GetRandomNumber,externalData.number)" />
+    </div>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - GetExternal with Clone</title>
+</head>
+<body>
+    <script>
+        // External library or API mock
+        window.ExternalLibrary = {
+            userData: {
+                name: "John Doe",
+                age: 30,
+                preferences: {
+                    theme: "dark",
+                    notifications: true
+                }
+            },
+            
+            getUserData: function() {
+                return this.userData;
+            },
+            
+            getConfiguration: function() {
+                return {
+                    version: "1.2.3",
+                    features: ["feature1", "feature2", "feature3"]
+                };
+            }
+        };
+    </script>
+    
+    <span>Function - GetExternal with Clone</span>
+    <div d-dataKey="userData" d-dataType="object"></div>
+    <div d-dataKey="config" d-dataType="object"></div>
+    
+    <div>
+        <h3>User Data (with cloning):</h3>
+        <p><strong>Name:</strong> <span d-model="{{userData.name}}"></span></p>
+        <p><strong>Age:</strong> <span d-model="{{userData.age}}"></span></p>
+        <p><strong>Theme:</strong> <span d-model="{{userData.preferences.theme}}"></span></p>
+        <input type="button" value="Load User Data (Clone=true)" d-on-click="GetExternal(ExternalLibrary.getUserData,userData,true)" />
+        
+        <h3>Configuration (without cloning):</h3>
+        <p><strong>Version:</strong> <span d-model="{{config.version}}"></span></p>
+        <p><strong>Features:</strong> <span d-model="{{config.features}}"></span></p>
+        <input type="button" value="Load Config (Clone=false)" d-on-click="GetExternal(ExternalLibrary.getConfiguration,config,false)" />
+    </div>
+</body>
+</html>
