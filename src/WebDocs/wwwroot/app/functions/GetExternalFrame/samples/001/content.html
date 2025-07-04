@@ -1,0 +1,23 @@
+<div d-dataKey="frameData" d-dataType="object" d-dataProperty-result="[]"></div>
+<div>
+    <h3>GetExternalFrame Example</h3>
+    
+    <!-- Button to retrieve data from the iframe -->
+    <input type="button" value="Get Data from External Frame" d-on-click="GetExternalFrame(myExternalFrame,GetSampleData,frameData,true)" />
+    
+    <!-- Display the retrieved data -->
+    <div d-if="{{frameData.result.length}} > 0">
+        <h4>Data Retrieved from Frame:</h4>
+        <ul>
+            <li d-for="item in frameData.result">
+                {{item.name}}: {{item.value}}
+            </li>
+        </ul>
+    </div>
+    <div d-if="{{frameData.result.length}} == 0">
+        <p>No data retrieved yet. Click the button above to get data from the external frame.</p>
+    </div>
+    
+    <!-- Note about the iframe -->
+    <p><strong>Note:</strong> This example demonstrates calling a GetSampleData() function inside an iframe with ID "myExternalFrame".</p>
+</div>
