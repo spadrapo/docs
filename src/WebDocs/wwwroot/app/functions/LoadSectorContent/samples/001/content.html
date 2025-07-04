@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function LoadSectorContent</title>
+</head>
+<body>
+    <span>Function LoadSectorContent</span>
+    <div d-dataKey="sampleContent" d-dataType="value" d-dataValue="&lt;div style=&quot;color: blue;&quot;&gt;&lt;h3&gt;Dynamic Content&lt;/h3&gt;&lt;p&gt;This content was loaded using LoadSectorContent!&lt;/p&gt;&lt;/div&gt;"></div>
+    <div d-dataKey="alternateContent" d-dataType="value" d-dataValue="&lt;div style=&quot;color: green;&quot;&gt;&lt;h3&gt;Alternate Content&lt;/h3&gt;&lt;p&gt;This is different content loaded into the same sector.&lt;/p&gt;&lt;/div&gt;"></div>
+    
+    <input type="button" value="Load Sample Content" d-on-click="LoadSectorContent(loadsectorsample,{{sampleContent}})" />
+    <input type="button" value="Load Alternate Content" d-on-click="LoadSectorContent(loadsectorsample,{{alternateContent}})" />
+    <input type="button" value="Clear Sector" d-on-click="ClearSector(loadsectorsample)" />
+    
+    <div d-sector="loadsectorsample">
+        <p>Initial content - click buttons to load different content</p>
+    </div>
+</body>
+</html>

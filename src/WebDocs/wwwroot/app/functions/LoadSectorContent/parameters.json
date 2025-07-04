@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "Sector",
+    "Description": "The name of the sector where the content will be loaded",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "Content",
+    "Description": "The content to load into the sector",
+    "Types": [
+      "mustache",
+      "text",
+      "object"
+    ],
+    "Optional": false
+  }
+]
