@@ -1,0 +1,32 @@
+[
+  {
+    "Name": "ComponentId",
+    "Description": "The component ID (d-id) that identifies the specific component instance",
+    "Types": ["text"],
+    "Optional": false
+  },
+  {
+    "Name": "FunctionName",
+    "Description": "The name of the function to call inside the component instance",
+    "Types": ["text"],
+    "Optional": false
+  },
+  {
+    "Name": "Parameter1",
+    "Description": "First parameter to pass to the component function",
+    "Types": ["mustache", "text"],
+    "Optional": true
+  },
+  {
+    "Name": "Parameter2",
+    "Description": "Second parameter to pass to the component function",
+    "Types": ["mustache", "text"],
+    "Optional": true
+  },
+  {
+    "Name": "ParameterN",
+    "Description": "Additional parameters to pass to the component function (can have multiple)",
+    "Types": ["mustache", "text"],
+    "Optional": true
+  }
+]

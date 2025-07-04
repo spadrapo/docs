@@ -1,0 +1,25 @@
+<p>A sample that demonstrates calling a component function with <b>multiple parameters</b> and using <b>mustache expressions</b></p>
+<br />
+<p>This example shows how to pass multiple parameters to a component function and use data from mustache expressions:</p>
+<d-code>
+    &lt;div d-dataKey="componentData" d-dataValue='{"title": "Hello", "message": "World"}'&gt;&lt;/div&gt;
+    
+    &lt;!-- Component instance --&gt;
+    &lt;d-messagecomponent d-id="MSG1"&gt;&lt;/d-messagecomponent&gt;
+    
+    &lt;!-- Button calling component function with multiple parameters --&gt;
+    &lt;input type="button" value="Set Message" 
+           d-on-click="ExecuteComponentFunction(MSG1,SetMessage,{{componentData.title}},{{componentData.message}})" /&gt;
+           
+    &lt;!-- Button calling component function with dynamic parameters --&gt;
+    &lt;input type="button" value="Update Title" 
+           d-on-click="ExecuteComponentFunction(MSG1,UpdateTitle,New Title)" /&gt;
+&lt;/d-code&gt;
+<p>In this example:</p>
+<ul>
+<li><b>MSG1</b> is the component ID</li>
+<li><b>SetMessage</b> and <b>UpdateTitle</b> are function names</li>
+<li><b>{{componentData.title}}, {{componentData.message}}</b> are mustache expressions passed as parameters</li>
+<li><b>New Title</b> is a static text parameter</li>
+</ul>
+<p>This demonstrates that ExecuteComponentFunction can handle multiple parameters of different types (mustache expressions, static text).</p>
