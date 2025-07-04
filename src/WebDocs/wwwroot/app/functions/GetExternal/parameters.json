@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "ExternalFunction",
+    "Description": "The name of the external JavaScript function to call",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataKey",
+    "Description": "The data key where the function's return value will be stored",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "Clone",
+    "Description": "Whether to clone the returned data. If true, a deep copy of the data is made",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
