@@ -1,0 +1,43 @@
+<script>
+    // External JavaScript function to handle data from Drapo
+    function HandleUserData(data) {
+        console.log('Received data from Drapo:', data);
+        alert('External function received: ' + JSON.stringify(data, null, 2));
+    }
+    
+    // External function to process and display user list
+    function ProcessUsers(users) {
+        console.log('Processing users:', users);
+        const userNames = users.map(user => user.name).join(', ');
+        document.getElementById('externalResult').innerHTML = 'External function processed users: ' + userNames;
+    }
+</script>
+
+<div d-dataKey="users" d-dataType="array" d-dataValue='[{"name":"John","age":30},{"name":"Mary","age":25},{"name":"Bob","age":35}]'></div>
+<div d-dataKey="selectedUser" d-dataType="object" d-dataValue='{"name":"Alice","age":28,"role":"Admin"}'></div>
+
+<div>
+    <h4>Users in Storage:</h4>
+    <ul>
+        <li d-for="user in users">{{user.name}} ({{user.age}} years old)</li>
+    </ul>
+</div>
+
+<div>
+    <h4>Selected User:</h4>
+    <p>Name: {{selectedUser.name}}, Age: {{selectedUser.age}}, Role: {{selectedUser.role}}</p>
+</div>
+
+<div>
+    <h4>External Function Integration:</h4>
+    <input type="button" value="Send Users to External Function" d-on-click="SetExternal(ProcessUsers,users,true)" />
+    <input type="button" value="Send Selected User (No Clone)" d-on-click="SetExternal(HandleUserData,selectedUser,false)" />
+    <input type="button" value="Send Selected User (With Clone)" d-on-click="SetExternal(HandleUserData,selectedUser,true)" />
+</div>
+
+<div>
+    <h4>External Function Output:</h4>
+    <div id="externalResult" style="border: 1px solid #ccc; padding: 10px; margin-top: 10px; min-height: 30px;">
+        Click a button above to see external function results here.
+    </div>
+</div>
