@@ -1,0 +1,13 @@
+<div d-dataKey="componentData" d-dataValue='{"title": "Hello", "message": "World"}'></div>
+<div>
+    <span>Title: </span>
+    <span d-model="{{componentData.title}}"></span>
+    <br />
+    <span>Message: </span>
+    <span d-model="{{componentData.message}}"></span>
+</div>
+<br />
+<d-messagecomponent d-id="MSG1"></d-messagecomponent>
+<br />
+<input type="button" value="Set Message" d-on-click="ExecuteComponentFunction(MSG1,SetMessage,{{componentData.title}},{{componentData.message}})" />
+<input type="button" value="Update Title" d-on-click="ExecuteComponentFunction(MSG1,UpdateTitle,New Title)" />

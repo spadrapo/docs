@@ -1,0 +1,23 @@
+<p>A sample that shows how to call an <b>Update</b> function on specific component instances identified by their IDs</p>
+<br />
+<p>The following example shows three label input components with different IDs (I1, I2, I3). Each button calls the <b>Update</b> function on a specific component with a different value:</p>
+<d-code>
+    &lt;!-- Three component instances with different IDs --&gt;
+    &lt;d-labelinputinstance d-id="I1" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"&gt;&lt;/d-labelinputinstance&gt;
+    &lt;br /&gt;
+    &lt;d-labelinputinstance d-id="I2" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"&gt;&lt;/d-labelinputinstance&gt;
+    &lt;br /&gt;
+    &lt;d-labelinputinstance d-id="I3" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"&gt;&lt;/d-labelinputinstance&gt;
+    &lt;br /&gt;
+    
+    &lt;!-- Buttons that call the Update function on specific components --&gt;
+    &lt;input type="button" value="Update I1 to pt" d-on-click="ExecuteComponentFunction(I1,Update,pt)" /&gt;
+    &lt;input type="button" value="Update I2 to en" d-on-click="ExecuteComponentFunction(I2,Update,en)" /&gt;
+    &lt;input type="button" value="Update I3 to pt" d-on-click="ExecuteComponentFunction(I3,Update,pt)" /&gt;
+&lt;/d-code&gt;
+<p>In this example:</p>
+<ul>
+<li><b>I1, I2, I3</b> are the component IDs (first parameter)</li>
+<li><b>Update</b> is the function name to call (second parameter)</li>
+<li><b>pt, en</b> are the values passed to the Update function (third parameter)</li>
+</ul>

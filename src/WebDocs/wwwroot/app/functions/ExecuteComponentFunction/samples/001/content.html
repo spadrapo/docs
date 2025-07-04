@@ -1,0 +1,15 @@
+<div d-dataKey="userConfig" d-dataValue='{"Culture": "en"}'></div>
+<div>
+    <span>Selected Culture: </span>
+    <span d-model="{{userConfig.Culture}}"></span>
+</div>
+<br />
+<d-labelinputinstance d-id="I1" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"></d-labelinputinstance>
+<br />
+<d-labelinputinstance d-id="I2" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"></d-labelinputinstance>
+<br />
+<d-labelinputinstance d-id="I3" d-caption="Name:" d-dataKeySource="userConfig" d-dataKeyField="Culture"></d-labelinputinstance>
+<br />
+<input type="button" value="Update I1 to pt" d-on-click="ExecuteComponentFunction(I1,Update,pt)" />
+<input type="button" value="Update I2 to en" d-on-click="ExecuteComponentFunction(I2,Update,en)" />
+<input type="button" value="Update I3 to pt" d-on-click="ExecuteComponentFunction(I3,Update,pt)" />
