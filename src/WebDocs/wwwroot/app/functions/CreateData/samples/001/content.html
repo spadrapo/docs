@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - CreateData</title>
+</head>
+<body>
+    <br>
+    <span>CreateData - Basic Example</span>
+    <div d-dataKey="person" d-dataType="object"></div>
+    <div>
+        <h4>Create Person Object</h4>
+        <input type="button" value="Create Person" d-on-click="CreateData(person,true,Name,John,Age,25,City,New York)">
+        <br><br>
+        <h4>Person Details:</h4>
+        <div d-if="{{person != null}}">
+            <p>Name: <span d-model="{{person.Name}}"></span></p>
+            <p>Age: <span d-model="{{person.Age}}"></span></p>
+            <p>City: <span d-model="{{person.City}}"></span></p>
+        </div>
+        <div d-if="{{person == null}}">
+            <p><em>Click "Create Person" to create the object</em></p>
+        </div>
+    </div>
+</body>
+</html>

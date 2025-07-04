@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - CreateData</title>
+</head>
+<body>
+    <br>
+    <span>CreateData - Dynamic Values Example</span>
+    <div d-dataKey="formData" d-dataType="object" d-dataProperty-firstName="" d-dataProperty-lastName="" d-dataProperty-email=""></div>
+    <div d-dataKey="contact" d-dataType="object"></div>
+    <div>
+        <h4>Contact Form</h4>
+        <label>First Name: </label>
+        <input type="text" d-model="{{formData.firstName}}" placeholder="Enter first name"><br><br>
+        
+        <label>Last Name: </label>
+        <input type="text" d-model="{{formData.lastName}}" placeholder="Enter last name"><br><br>
+        
+        <label>Email: </label>
+        <input type="email" d-model="{{formData.email}}" placeholder="Enter email"><br><br>
+        
+        <input type="button" value="Create Contact" d-on-click="CreateData(contact,true,FullName,{{formData.firstName}} {{formData.lastName}},Email,{{formData.email}},CreatedDate,{{GetDate()}})">
+        
+        <br><br>
+        <h4>Created Contact:</h4>
+        <div d-if="{{contact != null}}">
+            <p>Full Name: <span d-model="{{contact.FullName}}"></span></p>
+            <p>Email: <span d-model="{{contact.Email}}"></span></p>
+            <p>Created: <span d-model="{{contact.CreatedDate}}"></span></p>
+        </div>
+        <div d-if="{{contact == null}}">
+            <p><em>Fill out the form and click "Create Contact" to create the object</em></p>
+        </div>
+    </div>
+</body>
+</html>
