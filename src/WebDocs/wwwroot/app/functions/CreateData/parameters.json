@@ -1,0 +1,29 @@
+[
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage location that will receive the created object",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want to notify the change to observers",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
+  },
+  {
+    "Name": "Key",
+    "Description": "Property name for the object (alternates with Value parameters)",
+    "Types": [ "text", "mustache" ],
+    "Optional": false,
+    "Repeatable": true
+  },
+  {
+    "Name": "Value",
+    "Description": "Property value for the object (alternates with Key parameters)",
+    "Types": [ "text", "mustache" ],
+    "Optional": false,
+    "Repeatable": true
+  }
+]
