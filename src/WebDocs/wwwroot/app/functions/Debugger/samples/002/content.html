@@ -1,0 +1,25 @@
+<style>
+    .component-highlight {
+        border: 2px solid blue;
+        background-color: rgba(0, 0, 255, 0.1);
+        padding: 10px;
+    }
+    .sample-component {
+        border: 1px solid #ccc;
+        padding: 10px;
+        margin: 10px 0;
+    }
+</style>
+
+<div>
+    <p>Sample component that can be highlighted for debugging:</p>
+    <div class="sample-component" d-component="sample">
+        <h4>Sample Component</h4>
+        <p>This is a sample component that can be highlighted using the debugger.</p>
+    </div>
+    
+    <button d-on-click="Debugger(highlight,component,component-highlight,0)">Highlight First Component</button>
+    <button d-on-click="Debugger(highlight,component,component-highlight,)">Clear Highlight</button>
+    
+    <p><strong>Note:</strong> Component highlighting uses the component index. In this example, we use index 0 for the first component.</p>
+</div>
