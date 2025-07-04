@@ -1,0 +1,9 @@
+<input type="button" value="Load Container A" d-on-click="UpdateSector(switchsectorsample,~/app/data/ContainerA.html,,true,true,containerA)" />
+<input type="button" value="Load Container B" d-on-click="UpdateSector(switchsectorsample,~/app/data/ContainerB.html,,true,true,containerB)" />
+<br/>
+<input type="button" value="Switch to Container A" d-on-click="SwitchSector(switchsectorsample,containerA)" />
+<input type="button" value="Switch to Container B" d-on-click="SwitchSector(switchsectorsample,containerB)" />
+<input type="button" value="Clear Sector" d-on-click="ClearSector(switchsectorsample)" />
+<div d-sector="switchsectorsample">
+    <p>Initial content - load containers first, then switch between them</p>
+</div>
