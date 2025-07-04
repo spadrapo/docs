@@ -1,0 +1,7 @@
+<div d-datakey="config" d-datatype="object" d-dataproperty-isactive="true" d-dataproperty-showcompleted="true"></div>
+<div>
+    <span>Is Active: </span><input type="checkbox" d-model="{{config.isactive}}" disabled /><br />
+    <span>Show Completed: </span><input type="checkbox" d-model="{{config.showcompleted}}" disabled /><br />
+    <input type="button" value="Uncheck Active" d-on-click="UncheckDataField(config,isactive)" /><br />
+    <input type="button" value="Uncheck Show Completed" d-on-click="UncheckDataField(config,showcompleted)" /><br />
+</div>

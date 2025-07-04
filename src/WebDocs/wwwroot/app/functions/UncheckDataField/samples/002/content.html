@@ -1,0 +1,19 @@
+<div d-datakey="filters" d-datatype="object" d-dataproperty-showactive="false" d-dataproperty-showcompleted="false"></div>
+<div d-datakey="tasks" d-datatype="array" d-datavalue='[{"name":"Task 1","completed":false},{"name":"Task 2","completed":true},{"name":"Task 3","completed":false}]'></div>
+<div>
+    <h3>Filter Controls</h3>
+    <button d-on-click="CheckDataField(filters,showactive);CheckDataField(filters,showcompleted)">Show All</button>
+    <button d-on-click="CheckDataField(filters,showactive);UncheckDataField(filters,showcompleted)">Show Active Only</button>
+    <button d-on-click="UncheckDataField(filters,showactive);CheckDataField(filters,showcompleted)">Show Completed Only</button>
+    
+    <h3>Filter Status</h3>
+    <p>Show Active: <span d-model="{{filters.showactive}}"></span></p>
+    <p>Show Completed: <span d-model="{{filters.showcompleted}}"></span></p>
+    
+    <h3>Filtered Tasks</h3>
+    <ul>
+        <li d-for="task in tasks" d-if="(({{filters.showactive}}&&!{{task.completed}})||({{filters.showcompleted}}&&{{task.completed}}))">
+            {{task.name}} - <span d-if="{{task.completed}}">Completed</span><span d-if="!{{task.completed}}">Active</span>
+        </li>
+    </ul>
+</div>
