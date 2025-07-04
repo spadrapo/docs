@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - SetExternalFrame with Cloning</title>
+</head>
+<body>
+    <span>Function - SetExternalFrame with Cloning</span>
+    <div>
+        <div d-dataKey="productList" d-dataType="array" d-dataValue="[{&quot;id&quot;: 1, &quot;name&quot;: &quot;Laptop&quot;, &quot;price&quot;: 999},{&quot;id&quot;: 2, &quot;name&quot;: &quot;Mouse&quot;, &quot;price&quot;: 25},{&quot;id&quot;: 3, &quot;name&quot;: &quot;Keyboard&quot;, &quot;price&quot;: 75}]"></div>
+        <h3>Product List:</h3>
+        <div d-for="product in productList">
+            <p>{{product.id}} - {{product.name}}: ${{product.price}}</p>
+        </div>
+        <br />
+        <input type="button" value="Send Products to Frame (Cloned)" d-on-click="SetExternalFrame(productFrame,displayProducts,productList,true)" />
+        <input type="button" value="Send Products to Frame (Reference)" d-on-click="SetExternalFrame(productFrame,displayProducts,productList,false)" />
+        <br />
+        <br />
+        <iframe id="productFrame" src="about:blank" style="width: 100%; height: 300px; border: 1px solid #ccc;"></iframe>
+    </div>
+</body>
+</html>
