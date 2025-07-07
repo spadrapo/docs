@@ -1,0 +1,6 @@
+<div d-datakey="containerCode" d-datatype="value" d-datavalue="myDynamicContainer"></div>
+<div d-datakey="sectorLoader" d-datatype="function" d-dataloadtype="startup" d-datavalue="UpdateSector(dynamicSector,~/app/data/DynamicContent.html,null,true,false,{{containerCode}})"></div>
+<input type="button" value="Create Container" d-on-click="{{sectorLoader}}" />
+<input type="button" value="Destroy Container" d-on-click="Destroycontainer({{containerCode}})" />
+<div d-sector="dynamicSector">
+</div>
