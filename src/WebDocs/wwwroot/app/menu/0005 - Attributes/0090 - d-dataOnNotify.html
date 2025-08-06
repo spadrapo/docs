@@ -14,8 +14,8 @@
         <br />
         <p><b>Basic Usage:</b></p>
         <d-sample>
-            <div d-dataKey="items" d-dataType="array" d-dataValue='[{"name":"Item 1"},{"name":"Item 2"}]'></div>
-            <div d-dataKey="counter" d-dataType="object" d-dataProperty-count="0" d-dataOnNotify="UpdateDataField(counter,count,{{items.length}})"></div>
+            <div d-dataKey="items" d-dataType="array" d-dataOnNotify="UpdateDataField(counter,count,{{items.length}})"></div>
+            <div d-dataKey="counter" d-dataType="object" d-dataProperty-count="0"></div>
             <div d-dataKey="newItem" d-dataType="object" d-dataProperty-name=""></div>
             <br />
             <span>Add new item:</span>
@@ -27,36 +27,10 @@
             <span><b>Item Count (automatically updated via d-dataOnNotify): </b><span d-model="{{counter.count}}"></span></span>
             <div d-for="item in items">
                 <span d-model="{{item.name}}"></span>
-                <input type="button" value="Remove" d-on-click="DeleteDataItem(items,{{item}})" />
+                <input type="button" value="Remove" d-on-click="RemoveDataItem(items,{{item}})" />
                 <br />
             </div>
         </d-sample>
         <br />
-        <p><b>Advanced Example - Data Synchronization:</b></p>
-        <d-sample>
-            <div d-dataKey="sourceList" d-dataType="array" d-dataValue='[{"id":1,"name":"Task 1"},{"id":2,"name":"Task 2"}]'></div>
-            <div d-dataKey="mirrorList" d-dataType="array" d-dataOnNotify="ClearData(mirrorList);AddDataItem(mirrorList,{{sourceList}},false)"></div>
-            <div d-dataKey="newTask" d-dataType="object" d-dataProperty-id="" d-dataProperty-name=""></div>
-            <br />
-            <span>Add new task:</span><br />
-            <input type="text" placeholder="Task name" d-model="{{newTask.name}}" />
-            <input type="button" value="Add Task" d-on-click="UpdateDataField(newTask,id,{{sourceList.length}} + 1);AddDataItem(sourceList,{{newTask}});UpdateDataField(newTask,name,);UpdateDataField(newTask,id,)" />
-            <br /><br />
-            <div>
-                <span><b>Source List:</b></span>
-                <div d-for="task in sourceList">
-                    <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span>
-                    <input type="button" value="Remove" d-on-click="DeleteDataItem(sourceList,{{task}})" />
-                    <br />
-                </div>
-            </div>
-            <br />
-            <div>
-                <span><b>Mirror List (automatically synced when sourceList changes):</b></span>
-                <div d-for="task in mirrorList">
-                    <span d-model="{{task.id}}"></span>: <span d-model="{{task.name}}"></span><br />
-                </div>
-            </div>
-        </d-sample>
     </div>
 </div>
