@@ -1,5 +1,5 @@
 <div d-datakey="containerCode" d-datatype="value" d-datavalue="myDynamicContainer"></div>
-<div d-datakey="sectorLoader" d-datatype="function" d-dataloadtype="startup" d-datavalue="UpdateSector(dynamicSector,~/app/data/GreenSector.html,null,true,false,{{containerCode}})"></div>
+<div d-datakey="sectorLoader" d-datatype="value" d-dataloadtype="startup" d-datavalue="UpdateSector(dynamicSector,~/app/data/GreenSector.html,null,true,false,{{containerCode}})"></div>
 <input type="button" value="Create Container" d-on-click="{{sectorLoader}}" />
 <input type="button" value="Destroy Container" d-on-click="DestroyContainer({{containerCode}})" />
 <div d-sector="dynamicSector">
