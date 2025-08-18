@@ -1,18 +1,7 @@
-<div d-component="ComponentSample" d-id="C1">
-    <div d-dataKey="text" d-dataValue='"Initial Text 1"'></div>
-    <div d-dataKey="UpdateText" d-dataType="function" d-dataValue="UpdateDataField(text,{{[0]}})" d-dataParameters="message"></div>
-    <div>
-        <strong>Component 1:</strong> <span d-model="{{text}}"></span>
-    </div>
+<div d-dataKey="text" d-dataValue='"Initial Text"' d-id="component1"></div>
+<div d-dataKey="UpdateText" d-dataType="function" d-dataValue="UpdateDataField(text,{{[0]}})" d-dataParameters="message" d-id="component1"></div>
+<div>
+    <strong>Component:</strong> <span d-model="{{text}}"></span>
 </div>
 <br />
-<div d-component="ComponentSample" d-id="C2">
-    <div d-dataKey="text" d-dataValue='"Initial Text 2"'></div>
-    <div d-dataKey="UpdateText" d-dataType="function" d-dataValue="UpdateDataField(text,{{[0]}})" d-dataParameters="message"></div>
-    <div>
-        <strong>Component 2:</strong> <span d-model="{{text}}"></span>
-    </div>
-</div>
-<br />
-<input type="button" value="Update C1" d-on-click="ExecuteComponentFunction(C1,UpdateText,'Updated C1')" />
-<input type="button" value="Update C2" d-on-click="ExecuteComponentFunction(C2,UpdateText,'Updated C2')" />
+<input type="button" value="Update Component" d-on-click="ExecuteComponentFunction(component1,UpdateText,'Updated by ExecuteComponentFunction!')" />
