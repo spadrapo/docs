@@ -8,11 +8,11 @@
 class Executor {
     //Field
     private _el: HTMLElement = null;
-    private _app: any;
+    private _app: DrapoApplication;
     private _sector: string = null;
     //Properties
     //Constructors
-    constructor(el: HTMLElement, app: any) {
+    constructor(el: HTMLElement, app: DrapoApplication) {
         this._el = el;
         this._app = app;
     }
@@ -27,5 +27,11 @@ class Executor {
     public async Increment(value : string): Promise<string> {
         let valueNumber: number = this._app.Parser.GetStringAsNumber(value) + 1;
         return (valueNumber.toString());
+    }
+
+    public async Reset(value: string): Promise<void>
+    {
+        let valueNumber: number = this._app.Parser.GetStringAsNumber(value);
+        await this._app.FunctionHandler.ResolveFunctionWithoutContext(this._sector, this._el, "UpdateItemField({{internal.value}}," + valueNumber.toString() + ")");
     }
 }
