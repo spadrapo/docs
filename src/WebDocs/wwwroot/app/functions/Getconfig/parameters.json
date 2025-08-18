@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Key",
+    "Description": "The configuration key to retrieve. Currently supported keys: 'timezone'",
+    "Types": [ "mustache", "text" ],
+    "Optional": false
+  }
+]

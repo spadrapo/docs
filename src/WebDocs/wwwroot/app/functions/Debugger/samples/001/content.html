@@ -1,0 +1,12 @@
+<style>
+    .debug-highlight {
+        border: 2px solid red;
+        background-color: rgba(255, 0, 0, 0.1);
+    }
+</style>
+
+<div d-sector="content">
+    <p>This is the content sector that will be highlighted when the debug button is clicked.</p>
+    <button d-on-click="Debugger(highlight,sector,debug-highlight,content)">Highlight Content Sector</button>
+    <button d-on-click="Debugger(highlight,sector,debug-highlight,)">Clear Highlight</button>
+</div>

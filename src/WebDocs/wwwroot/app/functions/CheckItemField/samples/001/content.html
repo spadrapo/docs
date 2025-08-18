@@ -1,0 +1,4 @@
+<div d-dataKey="items" d-dataType="array" d-dataValue='[{"name":"Item 1","checked":false},{"name":"Item 2","checked":false},{"name":"Item 3","checked":true}]'></div>
+<ul>
+    <li d-for="item in items" d-class="{dSampleGreen:{{item.checked}}:dSampleRed}" d-on-click="CheckItemField({{item.checked}})">{{item.name}}</li>
+</ul>

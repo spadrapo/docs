@@ -1,0 +1,16 @@
+<div d-dataKey="functions" d-dataType="array" d-dataValue='[
+  {"name": "Show Alert", "func": "ShowWindow(/content/alert.html,alert,message,Hello from Execute!)"},
+  {"name": "Update Message", "func": "UpdateItemField({{message}}, Current time: + CreateTick())"},
+  {"name": "Clear Message", "func": "ClearItemField({{message}})"}
+]'></div>
+<div d-dataKey="message" d-dataType="value" d-dataValue=""></div>
+<div d-dataKey="selectedFunction" d-dataType="value" d-dataValue=""></div>
+
+<p>Message: <span d-model="{{message}}"></span></p>
+
+<select d-model="{{selectedFunction}}">
+  <option value="">Select a function...</option>
+  <option d-for="item in functions" d-attr-value="{{item.func}}">{{item.name}}</option>
+</select>
+
+<input type="button" value="Execute Selected Function" d-on-click="Execute({{selectedFunction}})" />

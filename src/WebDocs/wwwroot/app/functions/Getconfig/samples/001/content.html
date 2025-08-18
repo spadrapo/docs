@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - Getconfig</title>
+</head>
+<body>
+    <span>Function - Getconfig</span>
+    <div d-dataKey="configData" d-dataType="object" d-dataProperty-timezone=""></div>
+    <div>
+        <h3>Current Timezone Configuration:</h3>
+        <span d-model="{{configData.timezone}}"></span>
+        <br />
+        <br />
+        <input type="button" value="Get Timezone Config" d-on-click="UpdateItemField({{configData.timezone}}, Getconfig(timezone))" />
+    </div>
+</body>
+</html>

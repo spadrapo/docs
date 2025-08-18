@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-propagation-[event]</h2>
+        <p>You can use d-propagation-[event] to control whether events bubble up to parent elements. This attribute controls DOM event propagation for specific event types.</p>
+        <p>The attribute follows the pattern <b>d-propagation-{eventType}</b> where {eventType} can be any supported event like click, keyup, change, etc.</p>
+        <p><b>Values:</b></p>
+        <ul>
+            <li><b>true</b> (default): Allow event propagation - the event will bubble up to parent elements</li>
+            <li><b>false</b>: Stop event propagation - the event will not bubble up to parent elements</li>
+            <li>Drapo expressions that resolve to boolean values</li>
+        </ul>
+        <br />
+        <p><b>Common Use Cases:</b></p>
+        <ul>
+            <li>Preventing click events from triggering parent element handlers</li>
+            <li>Stopping form field events from propagating to container elements</li>
+            <li>Creating nested interactive elements with independent behaviors</li>
+        </ul>
+        <br />
+        <d-sample>
+            <span>Event Propagation Control</span>
+            <div d-dataKey="clickedElement" d-dataType="value" d-dataValue="None"></div>
+            <span>Clicked Element: </span>
+            <span d-model="{{clickedElement}}"></span>
+            <br /><br />
+            
+            <div style="padding: 20px; border: 2px solid blue; background-color: lightblue; cursor: pointer;" 
+                 d-on-click="UpdateData(clickedElement,Outer Container)">
+                <b>Outer Container (propagation enabled)</b>
+                <br /><br />
+                
+                <div style="padding: 15px; border: 2px solid green; background-color: lightgreen; cursor: pointer;" 
+                     d-on-click="UpdateData(clickedElement,Middle Container)">
+                    <b>Middle Container (propagation enabled)</b>
+                    <br /><br />
+                    
+                    <button d-on-click="UpdateData(clickedElement,Inner Button)" 
+                            style="padding: 10px; background-color: yellow; border: 2px solid orange;">
+                        Inner Button (propagation enabled)
+                    </button>
+                    <br /><br />
+                    
+                    <button d-on-click="UpdateData(clickedElement,Isolated Button)" 
+                            d-propagation-click="false"
+                            style="padding: 10px; background-color: pink; border: 2px solid red;">
+                        Isolated Button (propagation disabled)
+                    </button>
+                </div>
+            </div>
+            
+            <br /><br />
+            <p><b>Instructions:</b></p>
+            <ul>
+                <li>Click the <b>Inner Button (yellow)</b> - notice how it triggers all parent container click events</li>
+                <li>Click the <b>Isolated Button (pink)</b> - notice how it only triggers its own click event</li>
+                <li>Click the container areas to see their individual click events</li>
+            </ul>
+        </d-sample>
+        
+        <br />
+        
+        <d-sample>
+            <span>Different Event Types</span>
+            <div d-dataKey="eventLog" d-dataType="array"></div>
+            <div d-dataKey="logEntry" d-dataType="value"></div>
+            
+            <div style="padding: 20px; border: 2px solid purple; background-color: lavender;" 
+                 d-on-click="UpdateData(logEntry,Container clicked);AddDataItem(eventLog,{{logEntry}})"
+                 d-on-keyup="UpdateData(logEntry,Container keyup);AddDataItem(eventLog,{{logEntry}})">
+                <b>Container with click and keyup handlers</b>
+                <br /><br />
+                
+                <input type="text" placeholder="Type here (propagation enabled)" 
+                       d-on-keyup="UpdateData(logEntry,Input keyup - propagated);AddDataItem(eventLog,{{logEntry}})"
+                       style="margin: 5px; padding: 5px; width: 250px;" />
+                <br />
+                
+                <input type="text" placeholder="Type here (propagation disabled)" 
+                       d-on-keyup="UpdateData(logEntry,Input keyup - not propagated);AddDataItem(eventLog,{{logEntry}})"
+                       d-propagation-keyup="false"
+                       style="margin: 5px; padding: 5px; width: 250px;" />
+                <br />
+                
+                <button d-on-click="UpdateData(logEntry,Button clicked - propagated);AddDataItem(eventLog,{{logEntry}})"
+                        style="margin: 5px; padding: 5px;">
+                    Click me (propagation enabled)
+                </button>
+                
+                <button d-on-click="UpdateData(logEntry,Button clicked - not propagated);AddDataItem(eventLog,{{logEntry}})"
+                        d-propagation-click="false"
+                        style="margin: 5px; padding: 5px;">
+                    Click me (propagation disabled)
+                </button>
+            </div>
+            
+            <br />
+            <button d-on-click="ClearData(eventLog)" style="margin: 5px; padding: 5px; background-color: lightcoral;">
+                Clear Event Log
+            </button>
+            
+            <br /><br />
+            <b>Event Log:</b>
+            <div style="border: 1px solid gray; padding: 10px; height: 150px; overflow-y: auto; background-color: #f9f9f9;">
+                <div d-for="event in eventLog" style="margin: 2px 0; padding: 2px; background-color: white; border: 1px solid #ddd;">
+                    <span d-model="{{event}}"></span>
+                </div>
+                <div d-if="eventLog.length == 0" style="color: gray; font-style: italic;">
+                    No events logged yet. Try typing in the inputs or clicking the buttons above.
+                </div>
+            </div>
+        </d-sample>
+        
+        <br />
+        
+        <p><b>Expression Examples:</b></p>
+        <d-sample>
+            <span>Dynamic Propagation Control</span>
+            <div d-dataKey="enablePropagation" d-dataType="value" d-dataValue="true"></div>
+            <div d-dataKey="conditionalResult" d-dataType="value" d-dataValue="None"></div>
+            
+            <label>
+                <input type="checkbox" d-model="{{enablePropagation}}" />
+                Enable Propagation
+            </label>
+            <br /><br />
+            
+            <div style="padding: 20px; border: 2px solid navy; background-color: lightcyan;" 
+                 d-on-click="UpdateData(conditionalResult,Parent Container Clicked)">
+                <b>Parent Container</b>
+                <br /><br />
+                
+                <button d-on-click="UpdateData(conditionalResult,Dynamic Button Clicked)" 
+                        d-propagation-click="{{enablePropagation}}"
+                        style="padding: 10px; background-color: lightyellow; border: 2px solid gold;">
+                    Dynamic Propagation Button
+                </button>
+                
+                <br /><br />
+                <span>Last Action: </span>
+                <span d-model="{{conditionalResult}}"></span>
+            </div>
+        </d-sample>
+    </div>
+</div>

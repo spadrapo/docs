@@ -1,0 +1,21 @@
+[
+  {
+    "Name": "externalFunction",
+    "Description": "The name of the JavaScript function to call. This function must be defined in the global window scope.",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "dataKey",
+    "Description": "The identification of a storage item containing the data to pass to the external function.",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "isClone",
+    "Description": "Whether to clone the data before passing it to the external function. When true, modifications to the data by the external function won't affect the original Drapo storage item.",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]

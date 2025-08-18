@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - Getconfig Conditional</title>
+</head>
+<body>
+    <span>Function - Getconfig with Conditional Logic</span>
+    <div d-dataKey="appSettings" d-dataType="object" d-dataProperty-timezone="" d-dataProperty-status=""></div>
+    <div>
+        <h3>Configuration Status:</h3>
+        <p d-if="{{appSettings.timezone}} != ''">
+            Timezone configured: <strong d-model="{{appSettings.timezone}}"></strong>
+        </p>
+        <p d-if="{{appSettings.timezone}} == ''">
+            Timezone not configured
+        </p>
+        <br />
+        <input type="button" value="Check Configuration" d-on-click="UpdateItemField({{appSettings.timezone}}, Getconfig(timezone));UpdateItemField({{appSettings.status}}, IF(Getconfig(timezone) != '', 'Available', 'Not Set'))" />
+        <br />
+        <p>Status: <span d-model="{{appSettings.status}}"></span></p>
+    </div>
+</body>
+</html>
