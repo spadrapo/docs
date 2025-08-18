@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "SectorName",
+    "Description": "The sector that will be switched",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "Container",
+    "Description": "The container code to switch to",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
+  }
+]
