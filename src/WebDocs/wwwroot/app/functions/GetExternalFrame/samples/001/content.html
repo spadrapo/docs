@@ -10,6 +10,9 @@
     <div>
         <h3>GetExternalFrame Example</h3>
         
+        <!-- The iframe that contains the external content -->
+        <iframe id="myExternalFrame" src="~/app/shared/sampleIframe.html" style="width: 100%; height: 200px; border: 1px solid #ccc; margin-bottom: 10px;"></iframe>
+        
         <!-- Button to retrieve data from the iframe -->
         <input type="button" value="Get Data from External Frame" d-on-click="GetExternalFrame(myExternalFrame,GetSampleData,frameData,true)" />
         
@@ -27,7 +30,7 @@
         </div>
         
         <!-- Note about the iframe -->
-        <p><strong>Note:</strong> This example demonstrates calling a GetSampleData() function inside an iframe with ID "myExternalFrame".</p>
+        <p><strong>Note:</strong> This example demonstrates calling a GetSampleData() function inside the iframe above with ID "myExternalFrame".</p>
     </div>
 </body>
 </html>
