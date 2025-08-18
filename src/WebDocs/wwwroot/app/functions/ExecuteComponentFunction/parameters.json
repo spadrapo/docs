@@ -12,20 +12,8 @@
     "Optional": false
   },
   {
-    "Name": "Parameter1",
-    "Description": "First parameter to pass to the component function",
-    "Types": ["mustache", "text"],
-    "Optional": true
-  },
-  {
-    "Name": "Parameter2",
-    "Description": "Second parameter to pass to the component function",
-    "Types": ["mustache", "text"],
-    "Optional": true
-  },
-  {
-    "Name": "ParameterN",
-    "Description": "Additional parameters to pass to the component function (can have multiple)",
+    "Name": "Parameters",
+    "Description": "Parameters to pass to the component function (can have multiple)",
     "Types": ["mustache", "text"],
     "Optional": true
   }
