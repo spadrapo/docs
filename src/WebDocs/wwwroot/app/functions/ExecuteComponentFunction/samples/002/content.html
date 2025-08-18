@@ -1,21 +1,25 @@
-<div d-dataKey="componentData" d-dataValue='{"title": "Hello", "message": "World"}'></div>
-<div d-dataKey="msgData" d-dataValue='{"title": "", "message": ""}'></div>
+<div d-dataKey="inputData" d-dataValue='{"title": "Hello", "message": "World"}'></div>
 
 <div>
-    <span>Title: </span>
-    <span d-model="{{componentData.title}}"></span>
+    <span>Input Title: </span>
+    <span d-model="{{inputData.title}}"></span>
     <br />
-    <span>Message: </span>
-    <span d-model="{{componentData.message}}"></span>
+    <span>Input Message: </span>
+    <span d-model="{{inputData.message}}"></span>
 </div>
 <br />
 
-<div d-id="MSG1" style="border: 1px solid #ccc; padding: 10px;">
+<div d-component="MessageComponent" d-id="MSG1" style="border: 1px solid #ccc; padding: 10px;">
+    <div d-dataKey="title" d-dataValue='""'></div>
+    <div d-dataKey="message" d-dataValue='""'></div>
+    <div d-dataKey="SetMessage" d-dataType="function" d-dataValue="UpdateDataField(title,{{[0]}}); UpdateDataField(message,{{[1]}})" d-dataParameters="newTitle,newMessage"></div>
+    <div d-dataKey="UpdateTitle" d-dataType="function" d-dataValue="UpdateDataField(title,{{[0]}})" d-dataParameters="newTitle"></div>
+    
     <strong>Message Component:</strong><br />
-    Title: <span d-model="{{msgData.title}}"></span><br />
-    Message: <span d-model="{{msgData.message}}"></span>
+    Title: <span d-model="{{title}}"></span><br />
+    Message: <span d-model="{{message}}"></span>
 </div>
 <br />
 
-<input type="button" value="Set Message" d-on-click="ExecuteComponentFunction(MSG1,SetMessage,{{componentData.title}},{{componentData.message}})" />
+<input type="button" value="Set Message" d-on-click="ExecuteComponentFunction(MSG1,SetMessage,{{inputData.title}},{{inputData.message}})" />
 <input type="button" value="Update Title" d-on-click="ExecuteComponentFunction(MSG1,UpdateTitle,'New Title')" />
