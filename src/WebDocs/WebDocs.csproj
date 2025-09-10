@@ -4,7 +4,7 @@
 		<TypeScriptToolsVersion>3.7</TypeScriptToolsVersion>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Drapo" Version="2025.7.3.17">
+		<PackageReference Include="Drapo" Version="2025.9.10.4">
 			<ExcludeAssets>contentfiles</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="Microsoft.AspNetCore.SignalR" Version="1.1.0" />
