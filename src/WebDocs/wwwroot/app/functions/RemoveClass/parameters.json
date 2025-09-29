@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Selector",
+    "Description": "CSS selector or element reference to target the elements from which to remove classes",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "Classes",
+    "Description": "Space-separated list of CSS class names to remove from the selected elements",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]

@@ -1,0 +1,36 @@
+<style>
+.box {
+    width: 100px;
+    height: 60px;
+    margin: 10px;
+    display: inline-block;
+    text-align: center;
+    line-height: 60px;
+    color: white;
+}
+.red {
+    background-color: red;
+}
+.border {
+    border: 3px solid black;
+}
+.shadow {
+    box-shadow: 3px 3px 5px gray;
+}
+</style>
+
+<div>
+    <div class="box red border shadow">Box 1</div>
+    <div class="box red border shadow">Box 2</div>
+    <div class="box red border shadow">Box 3</div>
+    <br><br>
+    <button d-on-click="RemoveClass('.box', 'border shadow')">
+        Remove border and shadow from all boxes
+    </button>
+    <button d-on-click="RemoveClass('.box', 'red')">
+        Remove red background from all boxes
+    </button>
+    <br><br>
+    <p>Use the buttons above to remove specific classes from all boxes at once.</p>
+    <p>Notice how you can remove multiple classes (separated by spaces) in a single function call.</p>
+</div>
