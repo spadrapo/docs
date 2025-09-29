@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Addclass</title>
+    <style>
+        .highlight {
+            background-color: yellow;
+            font-weight: bold;
+        }
+        .border {
+            border: 2px solid red;
+        }
+        .large-text {
+            font-size: 20px;
+        }
+        .blue-text {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <span>Function Addclass</span>
+    <div>
+        <div d-id="targetElement" style="padding: 10px; margin: 10px; background-color: lightgray;">
+            This is the target element
+        </div>
+        <br />
+        <input type="button" value="Add Highlight" d-on-click="Addclass(targetElement, highlight)" />
+        <input type="button" value="Add Border" d-on-click="Addclass(targetElement, border)" />
+        <input type="button" value="Add Large Text" d-on-click="Addclass(targetElement, large-text)" />
+        <input type="button" value="Add Multiple Classes" d-on-click="Addclass(targetElement, blue-text large-text)" />
+    </div>
+</body>
+</html>

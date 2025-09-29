@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "did",
+    "Description": "The Drapo identifier of the element to which the class(es) will be added",
+    "Types": [ "did" ],
+    "Optional": false
+  },
+  {
+    "Name": "classes",
+    "Description": "The CSS class name(s) to add to the element. Multiple classes can be separated by spaces",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]
