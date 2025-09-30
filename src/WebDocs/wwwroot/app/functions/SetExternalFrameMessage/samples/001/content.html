@@ -1,0 +1,13 @@
+<div d-datakey="users" d-datatype="array" d-dataproperty-name="John" d-dataproperty-age="30"></div>
+<div>
+    <h4>User Data:</h4>
+    <div d-for="user in users">
+        <span>Name: {{user.Name}}, Age: {{user.Age}}</span><br />
+    </div>
+    <br />
+    <input type="button" value="Send Data to Frame" d-on-click="SetExternalFrameMessage(myFrame,userData,users,true)" />
+    <br /><br />
+    <iframe id="myFrame" src="about:blank" width="400" height="200" style="border: 1px solid #ccc;">
+        <p>Your browser does not support iframes.</p>
+    </iframe>
+</div>
