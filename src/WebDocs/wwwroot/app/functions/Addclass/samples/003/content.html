@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Addclass - Current Element</title>
+    <style>
+        .clicked {
+            background-color: lightgreen;
+            color: white;
+            font-weight: bold;
+        }
+        .selected {
+            border: 3px solid blue;
+            background-color: lightblue;
+        }
+        .hidden {
+            opacity: 0.3;
+        }
+    </style>
+</head>
+<body>
+    <span>Function Addclass - Current Element</span>
+    <div>
+        <p>Click on any button below to add a class to that button (current element):</p>
+        <br />
+        <input type="button" value="Make Me Green" d-on-click="addclass(clicked)" />
+        <input type="button" value="Select Me" d-on-click="addclass(selected)" />
+        <input type="button" value="Fade Me" d-on-click="addclass(hidden)" />
+        <br /><br />
+        <p>Notice how each button styles itself when clicked, since no element ID is specified.</p>
+    </div>
+</body>
+</html>
