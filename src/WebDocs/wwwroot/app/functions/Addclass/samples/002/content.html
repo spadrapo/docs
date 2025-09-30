@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Addclass - Dynamic Classes</title>
+    <style>
+        .success {
+            background-color: lightgreen;
+            color: darkgreen;
+            padding: 5px;
+        }
+        .error {
+            background-color: lightcoral;
+            color: darkred;
+            padding: 5px;
+        }
+        .warning {
+            background-color: lightyellow;
+            color: darkorange;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div d-datakey="status" d-datatype="object" d-dataproperty-type="success" d-dataproperty-message="Operation completed successfully"></div>
+    <span>Function Addclass - Dynamic Classes</span>
+    <div>
+        <div d-id="messageElement" style="padding: 10px; margin: 10px; border: 1px solid gray;">
+            <span d-model="{{status.message}}"></span>
+        </div>
+        <br />
+        <select d-model="{{status.type}}">
+            <option value="success">Success</option>
+            <option value="error">Error</option>
+            <option value="warning">Warning</option>
+        </select>
+        <input type="text" d-model="{{status.message}}" placeholder="Enter message" />
+        <br /><br />
+        <input type="button" value="Apply Status Class" d-on-click="Addclass(messageElement, {{status.type}})" />
+    </div>
+</body>
+</html>
