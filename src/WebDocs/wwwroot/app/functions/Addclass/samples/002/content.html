@@ -36,7 +36,7 @@
         </select>
         <input type="text" d-model="{{status.message}}" placeholder="Enter message" />
         <br /><br />
-        <input type="button" value="Apply Status Class" d-on-click="Addclass(messageElement, {{status.type}})" />
+        <input type="button" value="Apply Status Class" d-on-click="addclass({{status.type}}, messageElement)" />
     </div>
 </body>
 </html>
