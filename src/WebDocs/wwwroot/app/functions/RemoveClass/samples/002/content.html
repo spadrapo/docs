@@ -1,0 +1,42 @@
+<style>
+.container {
+    padding: 20px;
+}
+.bordered {
+    border: 3px solid blue;
+}
+.shadowed {
+    box-shadow: 5px 5px 10px rgba(0,0,0,0.3);
+}
+.colored {
+    background-color: lightgreen;
+}
+#targetElement {
+    width: 200px;
+    height: 100px;
+    margin: 10px;
+    display: inline-block;
+    text-align: center;
+    line-height: 100px;
+    transition: all 0.3s ease;
+}
+</style>
+
+<div class="container">
+    <div id="targetElement" class="bordered shadowed colored">
+        Target Element
+    </div>
+    <br><br>
+    <button d-on-click="RemoveClass('bordered shadowed', 'targetElement')">
+        Remove border and shadow
+    </button>
+    <button d-on-click="RemoveClass('colored', 'targetElement')">
+        Remove green background
+    </button>
+    <button d-on-click="RemoveClass('bordered shadowed colored', 'targetElement')">
+        Remove all classes
+    </button>
+    <br><br>
+    <p>Use the buttons above to remove specific classes from the target element.</p>
+    <p>Notice how you can remove multiple classes (separated by spaces) in a single function call.</p>
+</div>

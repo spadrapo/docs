@@ -1,0 +1,22 @@
+<style>
+.highlight {
+    background-color: yellow;
+    border: 2px solid orange;
+    padding: 10px;
+    margin: 5px;
+}
+.active {
+    background-color: lightblue;
+    color: darkblue;
+    font-weight: bold;
+}
+</style>
+
+<div>
+    <button id="sampleButton" class="highlight active" d-on-click="RemoveClass('highlight', 'sampleButton')">
+        Click to remove 'highlight' class
+    </button>
+    <br><br>
+    <p>The button above has both 'highlight' and 'active' classes. Click it to remove only the 'highlight' class.</p>
+    <p>After clicking, the yellow background and orange border will be removed, but the blue styling from 'active' class will remain.</p>
+</div>

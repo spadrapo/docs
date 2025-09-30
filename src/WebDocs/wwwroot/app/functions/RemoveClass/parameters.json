@@ -1,0 +1,14 @@
+[
+  {
+    "Name": "Classes",
+    "Description": "Space-separated list of CSS class names to remove from the elements",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "ElementId",
+    "Description": "The ID of the element from which to remove the classes",
+    "Types": [ "text", "mustache" ],
+    "Optional": true
+  }
+]
