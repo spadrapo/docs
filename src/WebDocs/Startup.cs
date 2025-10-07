@@ -94,6 +94,11 @@ namespace WebDocs
                 options.Debug = true;
             options.Config.UseRouter = false;
             options.Config.UsePipes = true;
+            options.Config.CacheKeysView = "applicationbuild,url,view";
+            options.Config.CacheKeysComponentView = "applicationbuild,url,view";
+            options.Config.CacheKeysComponentStyle = "applicationbuild,url,theme";
+            options.Config.CacheKeysComponentScript = "applicationbuild,url";
+            options.Config.ApplicationBuild = typeof(Program).Assembly.GetName().Version?.ToString();
             options.Config.CreateTheme("", "");
             options.Config.CreateTheme("Dark", "dark");
             options.Config.CreateView("Mobile", "mobile", "{{__browser.Width}} < 768");
@@ -104,6 +109,7 @@ namespace WebDocs
             options.Config.ValidatorInvalidClass = "ppValidatorInvalid";
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
+            options.Config.CreatePack("uicomponents").AddIncludePath("~/components/*").AddExcludePath("*.ts").AddExcludePath("*.d.ts").AddExcludePath("*.map");
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
             options.PollingEvent += Polling;
             options.Config.CreateRoute("^/function/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");

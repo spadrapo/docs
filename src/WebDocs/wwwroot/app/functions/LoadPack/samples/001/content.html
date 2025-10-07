@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function LoadPack</title>
+</head>
+<body>
+    <span>Function LoadPack</span>
+    <h3>Load Pack Example</h3>
+    <input type="button" value="Load Test Pack" d-on-click="LoadPack(uicomponents)" />
+    <br><br>
+    <h3>Use Loaded Pack Content</h3>
+    <p>After loading the pack, all components will be loaded and ready for use</p>
+    <br>
+    <h4>Configuration Example</h4>
+    <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 4px;">
+// Drapo configuration example for defining packs:
+options.Config
+    .CreatePack("uicomponents")
+        .AddIncludePath("~/components/*")
+        .AddExcludePath("*.ts")
+        .AddExcludePath("*.d.ts")
+        .AddExcludePath("*.map");
+    </pre>
+</body>
+</html>
