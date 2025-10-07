@@ -1,0 +1,11 @@
+[
+  {
+    "Name": "PackName",
+    "Description": "The name of the pack to load, as defined in the Drapo configuration",
+    "Types": [
+      "text",
+      "mustache"
+    ],
+    "Optional": false
+  }
+]

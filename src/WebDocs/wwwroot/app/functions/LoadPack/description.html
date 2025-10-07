@@ -1,0 +1,18 @@
+<p>The LoadPack function loads a predefined pack of files from the server. A <strong>pack</strong> is a collection of files (HTML, CSS, JavaScript, etc.) that are bundled together on the server and delivered as a single compressed file to improve performance and reduce the number of HTTP requests.</p>
+
+<p>When LoadPack is called with a pack name, it:</p>
+<ul>
+  <li><strong>Retrieves the bundled pack</strong> - Downloads all files defined in the pack as a single compressed file from the server</li>
+  <li><strong>Unpacks the content</strong> - Automatically extracts and places each file in its correct location in the frontend</li>
+  <li><strong>Caches the files</strong> - Makes the unpacked files immediately available for use by other Drapo functions like UpdateSector</li>
+</ul>
+
+<p>Packs are defined in the Drapo configuration and support:</p>
+<ul>
+  <li><strong>Wildcard patterns</strong> - Include multiple files using patterns like <code>*.html</code> or <code>components/**/*.js</code></li>
+  <li><strong>Exclusion patterns</strong> - Exclude specific files or patterns from the pack</li>
+  <li><strong>Multiple paths</strong> - Include files from different directories in a single pack</li>
+  <li><strong>Compression</strong> - Files are automatically compressed (Brotli/Gzip/Deflate) for optimal performance</li>
+</ul>
+
+<p>This function is particularly useful for loading component libraries, themes, or any collection of related files that should be loaded together as a unit.</p>
