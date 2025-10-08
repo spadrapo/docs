@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Drapo Configuration</h2>
+        <p>Drapo provides extensive configuration options to customize your application's behavior. All configuration is done through the <code>DrapoMiddlewareOptions</code> in your startup configuration.</p>
+        
+        <h3>Basic Configuration Setup</h3>
+        <p>Configure Drapo in your <code>Startup.cs</code> or <code>Program.cs</code> file:</p>
+        <d-code>
+            public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+            {
+                app.UseDrapo(options => 
+                {
+                    // Configure Drapo options here
+                    ConfigureDrapo(env, options);
+                });
+            }
+
+            private void ConfigureDrapo(IWebHostEnvironment env, DrapoMiddlewareOptions options)
+            {
+                // Your configuration goes here
+            }
+        </d-code>
+
+        <h3>Core Configuration Options</h3>
+        
+        <h4>Debug and Development</h4>
+        <div class="config-section">
+            <h5><code>options.Debug</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>false</code><br>
+            <strong>Description:</strong> Enables debug mode which provides detailed error information and logging.</p>
+            <d-code>
+                if (env.IsDevelopment())
+                    options.Debug = true;
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.UseInternalComponents</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>true</code><br>
+            <strong>Description:</strong> Determines whether to use Drapo's internal components.</p>
+        </div>
+
+        <h4>Caching Configuration</h4>
+        <div class="config-section">
+            <h5><code>options.Config.UseCacheStatic</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>false</code><br>
+            <strong>Description:</strong> Enables static file caching for better performance.</p>
+            <d-code>
+                options.Config.UseCacheStatic = true;
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.UseCacheLocalStorage</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>true</code><br>
+            <strong>Description:</strong> Enables client-side local storage caching.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.UseComponentsCacheBurst</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>false</code><br>
+            <strong>Description:</strong> Enables cache busting for components when they change.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.ApplicationBuild</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Default:</strong> <code>null</code><br>
+            <strong>Description:</strong> Application build version used for cache busting.</p>
+            <d-code>
+                options.Config.ApplicationBuild = typeof(Program).Assembly.GetName().Version?.ToString();
+            </d-code>
+        </div>
+
+        <h4>Cache Keys Configuration</h4>
+        <p>Configure cache keys to control when cached content should be invalidated:</p>
+        
+        <div class="config-section">
+            <h5><code>options.Config.CacheKeysView</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Comma-separated list of keys that affect view caching.</p>
+            <d-code>
+                options.Config.CacheKeysView = "applicationbuild,url,view";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.CacheKeysComponentView</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Cache keys for component view files.</p>
+            <d-code>
+                options.Config.CacheKeysComponentView = "applicationbuild,url,view";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.CacheKeysComponentStyle</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Cache keys for component style files.</p>
+            <d-code>
+                options.Config.CacheKeysComponentStyle = "applicationbuild,url,theme";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.CacheKeysComponentScript</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Cache keys for component script files.</p>
+            <d-code>
+                options.Config.CacheKeysComponentScript = "applicationbuild,url";
+            </d-code>
+        </div>
+
+        <h4>Real-time Communication (Pipes)</h4>
+        <div class="config-section">
+            <h5><code>options.Config.UsePipes</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>false</code><br>
+            <strong>Description:</strong> Enables real-time communication using SignalR pipes.</p>
+            <d-code>
+                options.Config.UsePipes = true;
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.CanUseWebSocket</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>true</code><br>
+            <strong>Description:</strong> Determines if WebSocket connections are allowed for pipes.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.PipeHubName</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Default:</strong> <code>"drapoHub"</code><br>
+            <strong>Description:</strong> Name of the SignalR hub for real-time communication.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.BackplaneRedis</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Default:</strong> <code>null</code><br>
+            <strong>Description:</strong> Redis connection string for scaling across multiple instances.</p>
+        </div>
+
+        <h4>Routing Configuration</h4>
+        <div class="config-section">
+            <h5><code>options.Config.UseRouter</code></h5>
+            <p><strong>Type:</strong> <code>bool</code><br>
+            <strong>Default:</strong> <code>true</code><br>
+            <strong>Description:</strong> Enables Drapo's client-side routing system.</p>
+            <d-code>
+                options.Config.UseRouter = false; // Disable router
+            </d-code>
+        </div>
+
+        <h3>Theme Configuration</h3>
+        <p>Configure themes to provide different visual appearances:</p>
+        <d-code>
+            // Create themes
+            options.Config.CreateTheme("", "");           // Default theme
+            options.Config.CreateTheme("Dark", "dark");   // Dark theme
+            options.Config.CreateTheme("Light", "light"); // Light theme
+        </d-code>
+
+        <h3>View Configuration</h3>
+        <p>Configure responsive views for different screen sizes:</p>
+        <d-code>
+            // Create views with conditions
+            options.Config.CreateView("Mobile", "mobile", "{{__browser.Width}} < 768");
+            options.Config.CreateView("Tablet", "tablet", "{{__browser.Width}} >= 768 && {{__browser.Width}} < 1024");
+            options.Config.CreateView("Web", "default");  // Default view
+        </d-code>
+
+        <h3>Component Configuration</h3>
+        <div class="config-section">
+            <h5><code>options.Config.LoadComponents</code></h5>
+            <p>Load components from the file system:</p>
+            <d-code>
+                options.Config.LoadComponents(
+                    string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), 
+                    "~/components"
+                );
+            </d-code>
+        </div>
+
+        <h3>Pack Configuration</h3>
+        <p>Create packs to group and load related components:</p>
+        <d-code>
+            options.Config.CreatePack("uicomponents")
+                .AddIncludePath("~/components/*")
+                .AddExcludePath("*.ts")
+                .AddExcludePath("*.d.ts")
+                .AddExcludePath("*.map");
+        </d-code>
+
+        <h3>Route Configuration</h3>
+        <p>Define client-side routes with regex patterns:</p>
+        <d-code>
+            options.Config.CreateRoute("^/function/(?&lt;id&gt;\\w+)$", 
+                "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
+            
+            options.Config.CreateRoute("^/$", 
+                "UpdateSector(content,~/app/menu/0000%20-%20Drapo.html)");
+        </d-code>
+
+        <h3>Error Handling Configuration</h3>
+        <div class="config-section">
+            <h5><code>options.Config.StorageErrors</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Data key where errors are stored.</p>
+            <d-code>
+                options.Config.StorageErrors = "errors";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.StorageBadRequest</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Data key where bad request information is stored.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.OnError</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Drapo expressions to execute when an error occurs.</p>
+            <d-code>
+                options.Config.OnError = "UpdateSector(content,/app/error/index.html,Error,true,true)";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.OnBadRequest</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Drapo expressions to execute on bad requests.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.OnAuthorizationRequest</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Drapo expressions to execute on authorization requests.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.OnReconnect</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Drapo expressions to execute when reconnecting pipes.</p>
+        </div>
+
+        <h3>Validation Configuration</h3>
+        <p>Configure CSS classes for form validation states:</p>
+        <div class="config-section">
+            <h5><code>options.Config.ValidatorUncheckedClass</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> CSS class for unchecked validation fields.</p>
+            <d-code>
+                options.Config.ValidatorUncheckedClass = "ppValidationUnchecked";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.ValidatorValidClass</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> CSS class for valid fields.</p>
+            <d-code>
+                options.Config.ValidatorValidClass = "ppValidatorValid";
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.ValidatorInvalidClass</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> CSS class for invalid fields.</p>
+            <d-code>
+                options.Config.ValidatorInvalidClass = "ppValidatorInvalid";
+            </d-code>
+        </div>
+
+        <h3>Cookie and Header Configuration</h3>
+        <div class="config-section">
+            <h5><code>options.Config.CookieName</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Default:</strong> <code>"drapo"</code><br>
+            <strong>Description:</strong> Name of the cookie used by Drapo.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.HeaderContainerId</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> HTTP header name for container identification.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.HeaderCSRF</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> HTTP header name for CSRF protection.</p>
+        </div>
+
+        <h3>Advanced Configuration</h3>
+        <div class="config-section">
+            <h5><code>options.Config.HandlerCustom</code></h5>
+            <p><strong>Type:</strong> <code>Func&lt;DrapoDynamic, Task&lt;DrapoDynamic&gt;&gt;</code><br>
+            <strong>Description:</strong> Custom handler for processing dynamic content.</p>
+            <d-code>
+                options.Config.HandlerCustom = async (dynamic) => 
+                {
+                    // Custom processing logic
+                    return dynamic;
+                };
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.PollingEvent</code></h5>
+            <p><strong>Type:</strong> <code>PollingDelegate</code><br>
+            <strong>Description:</strong> Event handler for polling operations.</p>
+            <d-code>
+                options.PollingEvent += async (domain, connectionId, key) => 
+                {
+                    // Polling logic
+                    return "result";
+                };
+            </d-code>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.Config.DomainRegex</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> Regular expression for domain matching.</p>
+        </div>
+
+        <div class="config-section">
+            <h5><code>options.ContainerUrl</code></h5>
+            <p><strong>Type:</strong> <code>string</code><br>
+            <strong>Description:</strong> URL for container-based deployments.</p>
+        </div>
+
+        <h3>Complete Configuration Example</h3>
+        <p>Here's a comprehensive example showing most configuration options:</p>
+        <d-code>
+            private void ConfigureDrapo(IWebHostEnvironment env, DrapoMiddlewareOptions options)
+            {
+                // Debug and development
+                if (env.IsDevelopment())
+                    options.Debug = true;
+                
+                // Core features
+                options.Config.UseRouter = false;
+                options.Config.UsePipes = true;
+                
+                // Caching
+                options.Config.UseCacheStatic = true;
+                options.Config.UseCacheLocalStorage = true;
+                options.Config.UseComponentsCacheBurst = true;
+                options.Config.CacheKeysView = "applicationbuild,url,view";
+                options.Config.CacheKeysComponentView = "applicationbuild,url,view";
+                options.Config.CacheKeysComponentStyle = "applicationbuild,url,theme";
+                options.Config.CacheKeysComponentScript = "applicationbuild,url";
+                options.Config.ApplicationBuild = typeof(Program).Assembly.GetName().Version?.ToString();
+                
+                // Themes
+                options.Config.CreateTheme("", "");
+                options.Config.CreateTheme("Dark", "dark");
+                
+                // Views
+                options.Config.CreateView("Mobile", "mobile", "{{__browser.Width}} < 768");
+                options.Config.CreateView("Web", "default");
+                
+                // Error handling
+                options.Config.StorageErrors = "errors";
+                options.Config.OnError = "UpdateSector(content,/app/error/index.html)";
+                
+                // Validation
+                options.Config.ValidatorUncheckedClass = "ppValidationUnchecked";
+                options.Config.ValidatorValidClass = "ppValidatorValid";
+                options.Config.ValidatorInvalidClass = "ppValidatorInvalid";
+                
+                // Components
+                options.Config.LoadComponents(
+                    string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), 
+                    "~/components"
+                );
+                
+                // Packs
+                options.Config.CreatePack("uicomponents")
+                    .AddIncludePath("~/components/*")
+                    .AddExcludePath("*.ts")
+                    .AddExcludePath("*.d.ts")
+                    .AddExcludePath("*.map");
+                
+                // Routes
+                options.Config.CreateRoute("^/function/(?&lt;id&gt;\\w+)$", 
+                    "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
+                options.Config.CreateRoute("^/$", 
+                    "UpdateSector(content,~/app/menu/0000%20-%20Drapo.html)");
+                
+                // Custom handlers
+                options.Config.HandlerCustom = async (dynamic) => 
+                {
+                    // Custom processing
+                    return dynamic;
+                };
+                
+                options.PollingEvent += async (domain, connectionId, key) => 
+                {
+                    return DateTime.Now.ToString();
+                };
+            }
+        </d-code>
+
+        <h3>Next Steps</h3>
+        <p>After configuring Drapo, you can:</p>
+        <ul>
+            <li>Create your first <a href="#" d-on-click="ApplyRoute(/doc/d-model)">data-bound components</a></li>
+            <li>Set up <a href="#" d-on-click="ApplyRoute(/doc/d-dataUrlGet)">AJAX data loading</a></li>
+            <li>Implement <a href="#" d-on-click="ApplyRoute(/doc/ValidationIntroduction)">form validation</a></li>
+            <li>Build <a href="#" d-on-click="ApplyRoute(/doc/How%20it%20works)">reusable components</a></li>
+        </ul>
+    </div>
+</div>
+
+<style>
+.config-section {
+    margin: 20px 0;
+    padding: 15px;
+    background-color: #f8f9fa;
+    border-left: 4px solid #007bff;
+    border-radius: 4px;
+}
+
+.config-section h5 {
+    margin-top: 0;
+    color: #007bff;
+    font-family: 'Courier New', monospace;
+}
+
+.config-section p {
+    margin-bottom: 10px;
+}
+</style>
