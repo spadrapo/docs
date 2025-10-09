@@ -209,128 +209,55 @@
         <p>A complete e-commerce shopping cart application demonstrating dynamic calculations, state management, and real-time updates with Drapo.</p>
         <br />
         <d-sample>
-            <div d-dataKey="products" d-dataType="array" 
-                 d-dataProperty-0="{Name:'Laptop Computer',Price:899.99,Description:'High-performance laptop for work and gaming',Image:'💻'}"
-                 d-dataProperty-1="{Name:'Wireless Headphones',Price:149.99,Description:'Premium noise-canceling wireless headphones',Image:'🎧'}"
-                 d-dataProperty-2="{Name:'Smartphone',Price:699.99,Description:'Latest model with advanced camera features',Image:'📱'}"
-                 d-dataProperty-3="{Name:'Tablet',Price:329.99,Description:'Lightweight tablet perfect for reading and browsing',Image:'📋'}"
-                 d-dataProperty-4="{Name:'Smart Watch',Price:249.99,Description:'Fitness tracking and notifications on your wrist',Image:'⌚'}"
-                 d-dataProperty-5="{Name:'Bluetooth Speaker',Price:79.99,Description:'Portable speaker with excellent sound quality',Image:'🔊'}"></div>
-            
+            <div d-dataKey="products" d-dataType="array"></div>
             <div d-dataKey="cart" d-dataType="array"></div>
-            <div d-dataKey="cartTotal" d-dataType="object" d-dataProperty-amount="0"></div>
             
             <div class="shopping-app">
                 <h3>Products</h3>
                 <div class="product-grid">
-                    <div d-for="product in products" class="product-card">
-                        <div class="product-image">{{product.Image}}</div>
-                        <div class="product-name">{{product.Name}}</div>
-                        <div class="product-price">${{FormatCurrency({{product.Price}},2)}}</div>
-                        <div class="product-description">{{product.Description}}</div>
-                        <button class="btn" d-on-click="
-                            AddToCart(products,cart,{{product.Name}});
-                            CalculateCartTotal(cart,cartTotal)
-                        ">Add to Cart</button>
+                    <div class="product-card">
+                        <div class="product-image">💻</div>
+                        <div class="product-name">Laptop Computer</div>
+                        <div class="product-price">$899.99</div>
+                        <div class="product-description">High-performance laptop for work and gaming</div>
+                        <button class="btn" d-on-click="AddDataItem(cart,{Name:'Laptop Computer',Price:899.99,Quantity:1},false)">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🎧</div>
+                        <div class="product-name">Wireless Headphones</div>
+                        <div class="product-price">$149.99</div>
+                        <div class="product-description">Premium noise-canceling wireless headphones</div>
+                        <button class="btn" d-on-click="AddDataItem(cart,{Name:'Wireless Headphones',Price:149.99,Quantity:1},false)">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">📱</div>
+                        <div class="product-name">Smartphone</div>
+                        <div class="product-price">$699.99</div>
+                        <div class="product-description">Latest model with advanced camera features</div>
+                        <button class="btn" d-on-click="AddDataItem(cart,{Name:'Smartphone',Price:699.99,Quantity:1},false)">Add to Cart</button>
                     </div>
                 </div>
-
                 <div class="cart-section">
                     <div class="cart-header">
                         <h3>Shopping Cart</h3>
-                        <span class="cart-count" d-if="GetLength(cart)>0">{{GetLength(cart)}}</span>
                     </div>
-                    
-                    <div d-if="GetLength(cart)==0" class="empty-cart">
+                    <div class="empty-cart">
                         <h4>Your cart is empty</h4>
                         <p>Add some products from above to get started!</p>
                     </div>
-                    
-                    <div d-if="GetLength(cart)>0">
-                        <div d-for="item in cart" class="cart-item">
-                            <div class="cart-item-info">
-                                <div class="cart-item-name">{{item.Name}}</div>
-                                <div class="cart-item-price">${{FormatCurrency({{item.Price}},2)}} each</div>
-                            </div>
-                            
-                            <div class="quantity-controls">
-                                <button class="quantity-btn" d-on-click="
-                                    SubtractQuantity(cart,{{item.Name}});
-                                    CalculateCartTotal(cart,cartTotal)
-                                ">-</button>
-                                <span class="quantity-display">{{item.Quantity}}</span>
-                                <button class="quantity-btn" d-on-click="
-                                    AddQuantity(cart,{{item.Name}});
-                                    CalculateCartTotal(cart,cartTotal)
-                                ">+</button>
-                            </div>
-                            
-                            <div style="margin-left: 20px; font-weight: bold;">
-                                ${{FormatCurrency(Multiply({{item.Price}},{{item.Quantity}}),2)}}
-                            </div>
+                    <div d-for="item in cart" class="cart-item">
+                        <div class="cart-item-info">
+                            <div class="cart-item-name">{{item.Name}}</div>
+                            <div class="cart-item-price">${{item.Price}} each</div>
                         </div>
-                        
-                        <div class="cart-total">
-                            <div class="total-amount">
-                                Total: ${{FormatCurrency({{cartTotal.amount}},2)}}
-                            </div>
-                            <button class="checkout-btn" d-on-click="
-                                Alert('Thank you for your purchase!');
-                                ClearData(cart);
-                                SetDataFieldValue(cartTotal,amount,0)
-                            ">Proceed to Checkout</button>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn" d-on-click="RemoveDataItem(cart,item)">-</button>
+                            <span class="quantity-display">{{item.Quantity}}</span>
+                            <button class="quantity-btn" d-on-click="UpdateDataField(item,Quantity,{{item.Quantity}}+1)">+</button>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <script>
-                // Custom Drapo functions for cart functionality
-                window.AddToCart = function(products, cart, productName) {
-                    var product = products.find(p => p.Name === productName);
-                    if (!product) return;
-                    
-                    var existingItem = cart.find(item => item.Name === productName);
-                    if (existingItem) {
-                        existingItem.Quantity += 1;
-                    } else {
-                        cart.push({
-                            Name: product.Name,
-                            Price: product.Price,
-                            Quantity: 1
-                        });
-                    }
-                };
-                
-                window.AddQuantity = function(cart, productName) {
-                    var item = cart.find(item => item.Name === productName);
-                    if (item) {
-                        item.Quantity += 1;
-                    }
-                };
-                
-                window.SubtractQuantity = function(cart, productName) {
-                    var item = cart.find(item => item.Name === productName);
-                    if (item) {
-                        if (item.Quantity > 1) {
-                            item.Quantity -= 1;
-                        } else {
-                            var index = cart.indexOf(item);
-                            if (index > -1) {
-                                cart.splice(index, 1);
-                            }
-                        }
-                    }
-                };
-                
-                window.CalculateCartTotal = function(cart, cartTotal) {
-                    var total = 0;
-                    cart.forEach(item => {
-                        total += item.Price * item.Quantity;
-                    });
-                    cartTotal.amount = total;
-                };
-            </script>
         </d-sample>
         <br />
         <br />

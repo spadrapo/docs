@@ -154,7 +154,6 @@
         <d-sample>
             <div d-dataKey="contacts" d-dataType="array" d-dataUnitOfWork="false"></div>
             <div d-dataKey="newContact" d-dataType="object"></div>
-            <div d-dataKey="search" d-dataType="object" d-dataProperty-term=""></div>
             
             <div class="contact-app">
                 <div class="contact-form">
@@ -179,24 +178,20 @@
                         <label for="company">Company</label>
                         <input type="text" id="company" d-model="{{newContact.Company}}" placeholder="Enter company name">
                     </div>
-                    <button class="btn" d-on-click="AddDataItem(contacts,newContact,false);ClearObject(newContact)">Add Contact</button>
-                    <button class="btn btn-secondary" d-on-click="ClearObject(newContact)">Clear Form</button>
+                    <button class="btn" d-on-click="AddDataItem(contacts,newContact,false);ClearDataField(newContact,FirstName);ClearDataField(newContact,LastName);ClearDataField(newContact,Email);ClearDataField(newContact,Phone);ClearDataField(newContact,Company)">Add Contact</button>
+                    <button class="btn btn-secondary" d-on-click="ClearDataField(newContact,FirstName);ClearDataField(newContact,LastName);ClearDataField(newContact,Email);ClearDataField(newContact,Phone);ClearDataField(newContact,Company)">Clear Form</button>
                 </div>
 
                 <div>
-                    <input type="text" class="search-box" d-model="{{search.term}}" placeholder="Search contacts by name, email, or company...">
-                    
                     <div class="contact-list">
                         <div d-for="contact in contacts" 
-                             d-if="Contains({{contact.FirstName}},{{search.term}},true)||Contains({{contact.LastName}},{{search.term}},true)||Contains({{contact.Email}},{{search.term}},true)||Contains({{contact.Company}},{{search.term}},true)||IsNullOrEmpty({{search.term}})"
                              d-class="{contact,editing:{{contact.IsEditing}}}"
                              class="contact-item">
-                            
                             <div class="contact-info">
                                 <h4>{{contact.FirstName}} {{contact.LastName}}</h4>
-                                <p d-if="!IsNullOrEmpty({{contact.Email}})">📧 {{contact.Email}}</p>
-                                <p d-if="!IsNullOrEmpty({{contact.Phone}})">📞 {{contact.Phone}}</p>
-                                <p d-if="!IsNullOrEmpty({{contact.Company}})">🏢 {{contact.Company}}</p>
+                                <p d-if="{{contact.Email}}">📧 {{contact.Email}}</p>
+                                <p d-if="{{contact.Phone}}">📞 {{contact.Phone}}</p>
+                                <p d-if="{{contact.Company}}">🏢 {{contact.Company}}</p>
                             </div>
                             
                             <div class="edit-form">
@@ -217,7 +212,7 @@
                             </div>
                         </div>
                         
-                        <div d-if="GetLength(contacts)==0" style="text-align: center; padding: 40px; color: #666;">
+                        <div class="contact-item" style="text-align: center; padding: 40px; color: #666;">
                             <h4>No contacts found</h4>
                             <p>Add your first contact using the form above.</p>
                         </div>

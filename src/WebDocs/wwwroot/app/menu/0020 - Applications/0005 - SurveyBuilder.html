@@ -240,7 +240,6 @@
             <div d-dataKey="survey" d-dataType="object" 
                  d-dataProperty-title="Customer Feedback Survey"
                  d-dataProperty-description="Help us improve our services by sharing your feedback"></div>
-            
             <div d-dataKey="questions" d-dataType="array"></div>
             <div d-dataKey="responses" d-dataType="object"></div>
             <div d-dataKey="newQuestion" d-dataType="object"></div>
@@ -253,11 +252,11 @@
                     <div class="builder-header">
                         <h3>🔧 Survey Builder</h3>
                         <div class="question-controls">
-                            <button class="btn" d-on-click="ToggleDataField(showPreview,value)">
-                                {{showPreview.value ? 'Hide Preview' : 'Show Preview'}}
+                            <button class="btn" d-on-click="ToggleData(showPreview,value)">
+                                Show/Hide Preview
                             </button>
-                            <button class="btn btn-success" d-on-click="ToggleDataField(showResults,value)">
-                                {{showResults.value ? 'Hide Results' : 'Show Results'}}
+                            <button class="btn btn-success" d-on-click="ToggleData(showResults,value)">
+                                Show/Hide Results
                             </button>
                         </div>
                     </div>
@@ -301,14 +300,14 @@
                         </label>
                     </div>
 
-                    <button class="btn btn-success" d-on-click="AddQuestion(questions,newQuestion);ClearObject(newQuestion)">
+                    <button class="btn btn-success" d-on-click="AddDataItem(questions,newQuestion,false);ClearDataField(newQuestion,text);ClearDataField(newQuestion,type);ClearDataField(newQuestion,options);UncheckDataField(newQuestion,required)">
                         ➕ Add Question
                     </button>
                 </div>
 
                 <!-- Questions List -->
-                <div d-if="GetLength(questions)>0" class="builder-section">
-                    <h4>Survey Questions ({{GetLength(questions)}})</h4>
+                <div class="builder-section">
+                    <h4>Survey Questions</h4>
                     <div d-for="question in questions" class="question-item">
                         <div class="question-header">
                             <span class="question-type-badge">{{question.type}}</span>
@@ -318,63 +317,27 @@
                                 </button>
                             </div>
                         </div>
-                        <h5>{{question.text}} {{question.required ? '*' : ''}}</h5>
-                        <div d-if="{{question.type}}=='radio'||{{question.type}}=='checkbox'">
+                        <h5>{{question.text}}</h5>
+                        <div d-if="{{question.options}}">
                             <strong>Options:</strong> {{question.options}}
                         </div>
                     </div>
                 </div>
 
                 <!-- Survey Preview -->
-                <div d-if="{{showPreview.value}}&&GetLength(questions)>0" class="form-section">
+                <div d-if="{{showPreview.value}}" class="form-section">
                     <h3>📋 {{survey.title}}</h3>
                     <p>{{survey.description}}</p>
-                    
                     <div class="form-preview">
                         <div d-for="question in questions" class="preview-question">
-                            <h4>
-                                {{question.text}}
-                                <span d-if="{{question.required}}" class="required-mark">*</span>
-                            </h4>
-                            
-                            <!-- Text Input -->
+                            <h4>{{question.text}}</h4>
                             <div d-if="{{question.type}}=='text'">
-                                <input type="text" d-model="{{responses[question.id]}}" placeholder="Your answer...">
+                                <input type="text" placeholder="Your answer...">
                             </div>
-                            
-                            <!-- Textarea -->
                             <div d-if="{{question.type}}=='textarea'">
-                                <textarea d-model="{{responses[question.id]}}" placeholder="Your detailed answer..."></textarea>
-                            </div>
-                            
-                            <!-- Radio buttons -->
-                            <div d-if="{{question.type}}=='radio'" class="radio-group">
-                                <div d-for="option in SplitString({{question.options}},'\n')" class="radio-item">
-                                    <input type="radio" d-model="{{responses[question.id]}}" d-value="{{option}}" name="radio_{{question.id}}">
-                                    <label>{{option}}</label>
-                                </div>
-                            </div>
-                            
-                            <!-- Checkboxes -->
-                            <div d-if="{{question.type}}=='checkbox'" class="checkbox-group">
-                                <div d-for="option in SplitString({{question.options}},'\n')" class="checkbox-item">
-                                    <input type="checkbox" d-value="{{option}}">
-                                    <label>{{option}}</label>
-                                </div>
-                            </div>
-                            
-                            <!-- Rating -->
-                            <div d-if="{{question.type}}=='rating'" class="radio-group">
-                                <div d-for="rating in [1,2,3,4,5]" class="radio-item">
-                                    <input type="radio" d-model="{{responses[question.id]}}" d-value="{{rating}}" name="rating_{{question.id}}">
-                                    <label>{{rating}} Star{{rating > 1 ? 's' : ''}}</label>
-                                </div>
+                                <textarea placeholder="Your detailed answer..."></textarea>
                             </div>
                         </div>
-                        
-                        <button class="btn btn-success" d-on-click="SubmitSurvey(responses);CheckDataField(showResults,value)">
-                            📤 Submit Survey
-                        </button>
                     </div>
                 </div>
 
@@ -384,42 +347,12 @@
                     <div d-for="question in questions" class="answer-item">
                         <div class="answer-label">{{question.text}}</div>
                         <div class="answer-value">
-                            <strong>Answer:</strong> {{responses[question.id] || 'No response'}}
+                            <strong>Answer:</strong> Sample answer
                         </div>
                     </div>
                 </div>
             </div>
             
-            <script>
-                window.AddQuestion = function(questions, newQuestion) {
-                    if (!newQuestion.text || !newQuestion.type) {
-                        alert('Please fill in question text and select a type');
-                        return;
-                    }
-                    
-                    var question = {
-                        id: 'q_' + Date.now(),
-                        text: newQuestion.text,
-                        type: newQuestion.type,
-                        required: newQuestion.required || false,
-                        options: newQuestion.options || ''
-                    };
-                    
-                    questions.push(question);
-                };
-                
-                window.SubmitSurvey = function(responses) {
-                    var responseCount = Object.keys(responses).length;
-                    alert('Survey submitted successfully! (' + responseCount + ' responses collected)');
-                };
-                
-                window.SplitString = function(str, delimiter) {
-                    if (!str) return [];
-                    return str.split(delimiter).filter(function(item) {
-                        return item.trim().length > 0;
-                    });
-                };
-            </script>
         </d-sample>
         <br />
         <br />

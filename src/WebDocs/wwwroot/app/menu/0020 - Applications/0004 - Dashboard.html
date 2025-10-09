@@ -253,15 +253,12 @@
                  d-dataProperty-revenue="34567.89"
                  d-dataProperty-orders="89"
                  d-dataProperty-conversion="3.2"></div>
-            
             <div d-dataKey="projects" d-dataType="array"
                  d-dataProperty-0="{Name:'Website Redesign',Progress:85,Status:'active',Budget:15000}"
                  d-dataProperty-1="{Name:'Mobile App',Progress:42,Status:'active',Budget:25000}"
                  d-dataProperty-2="{Name:'API Development',Progress:67,Status:'pending',Budget:12000}"
                  d-dataProperty-3="{Name:'Database Migration',Progress:100,Status:'inactive',Budget:8000}"
                  d-dataProperty-4="{Name:'Security Audit',Progress:23,Status:'pending',Budget:5000}"></div>
-                 
-            <div d-dataKey="refreshCount" d-dataType="object" d-dataProperty-value="0"></div>
             
             <div class="dashboard-app">
                 <div class="dashboard-header">
@@ -270,33 +267,28 @@
                 </div>
                 
                 <div class="controls-section">
-                    <button class="btn" d-on-click="RefreshDashboard(stats,refreshCount)">🔄 Refresh Data</button>
-                    <button class="btn btn-secondary" d-on-click="ExportData(projects)">📊 Export Report</button>
-                    <span style="margin-left: auto; color: #666;">Last updated: {{GetCurrentDateTime()}}</span>
+                    <span style="color: #666;">Analytics Dashboard - Real-time business metrics</span>
                 </div>
 
                 <div class="stats-grid">
                     <div class="stat-card">
                         <div class="stat-icon">👥</div>
-                        <div class="stat-value">{{FormatNumber({{stats.totalUsers}},0)}}</div>
+                        <div class="stat-value">{{stats.totalUsers}}</div>
                         <div class="stat-label">Total Users</div>
                         <div class="stat-change positive">↗ +12% from last month</div>
                     </div>
-                    
                     <div class="stat-card">
                         <div class="stat-icon">💰</div>
-                        <div class="stat-value">${{FormatCurrency({{stats.revenue}},0)}}</div>
+                        <div class="stat-value">${{stats.revenue}}</div>
                         <div class="stat-label">Revenue</div>
                         <div class="stat-change positive">↗ +8.3% from last month</div>
                     </div>
-                    
                     <div class="stat-card">
                         <div class="stat-icon">📦</div>
                         <div class="stat-value">{{stats.orders}}</div>
                         <div class="stat-label">Orders Today</div>
                         <div class="stat-change negative">↘ -2.1% from yesterday</div>
                     </div>
-                    
                     <div class="stat-card">
                         <div class="stat-icon">📈</div>
                         <div class="stat-value">{{stats.conversion}}%</div>
@@ -310,15 +302,14 @@
                         <div class="chart-title">Sales Trend</div>
                         <div class="chart-container">
                             📊 Interactive sales chart would render here<br>
-                            <small>Current revenue: ${{FormatCurrency({{stats.revenue}},2)}}</small>
+                            <small>Current revenue: ${{stats.revenue}}</small>
                         </div>
                     </div>
-                    
                     <div class="chart-card">
                         <div class="chart-title">User Growth</div>
                         <div class="chart-container">
                             📈 User growth visualization<br>
-                            <small>Total users: {{FormatNumber({{stats.totalUsers}},0)}}</small>
+                            <small>Total users: {{stats.totalUsers}}</small>
                         </div>
                     </div>
                 </div>
@@ -346,38 +337,11 @@
                             <div class="table-cell">
                                 <span d-class="status-badge,status-{{project.Status}}">{{project.Status}}</span>
                             </div>
-                            <div class="table-cell">${{FormatCurrency({{project.Budget}},0)}}</div>
+                            <div class="table-cell">${{project.Budget}}</div>
                         </div>
                     </div>
                 </div>
             </div>
-            
-            <script>
-                window.RefreshDashboard = function(stats, refreshCount) {
-                    // Simulate data refresh with random variations
-                    stats.totalUsers = Math.floor(stats.totalUsers + (Math.random() - 0.5) * 100);
-                    stats.revenue = stats.revenue + (Math.random() - 0.5) * 5000;
-                    stats.orders = Math.floor(stats.orders + (Math.random() - 0.5) * 20);
-                    stats.conversion = Math.round((stats.conversion + (Math.random() - 0.5) * 2) * 10) / 10;
-                    
-                    refreshCount.value += 1;
-                    alert('Dashboard data refreshed! (Refresh #' + refreshCount.value + ')');
-                };
-                
-                window.ExportData = function(projects) {
-                    var csvContent = "Project Name,Progress,Status,Budget\n";
-                    projects.forEach(function(project) {
-                        csvContent += project.Name + "," + project.Progress + "%," + project.Status + ",$" + project.Budget + "\n";
-                    });
-                    
-                    // In a real application, this would trigger a file download
-                    alert("Export data (CSV format):\n\n" + csvContent);
-                };
-                
-                window.GetCurrentDateTime = function() {
-                    return new Date().toLocaleString();
-                };
-            </script>
         </d-sample>
         <br />
         <br />
