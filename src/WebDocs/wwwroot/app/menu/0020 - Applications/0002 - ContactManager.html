@@ -160,7 +160,7 @@
                     <h3>Add New Contact</h3>
                     <div class="form-group">
                         <label for="firstName">First Name *</label>
-                        <input type="text" id="firstName" d-model="{{newContact.FirstName}}" placeholder="Enter first name" required>
+                        <input type="text" id="firstName" d-model="{{newContact.FirstName}}" placeholder="Enter first name" required d-validation="required">
                     </div>
                     <div class="form-group">
                         <label for="lastName">Last Name *</label>
@@ -178,7 +178,7 @@
                         <label for="company">Company</label>
                         <input type="text" id="company" d-model="{{newContact.Company}}" placeholder="Enter company name">
                     </div>
-                    <button class="btn" d-on-click="AddDataItem(contacts,newContact,false);ClearDataField(newContact,FirstName);ClearDataField(newContact,LastName);ClearDataField(newContact,Email);ClearDataField(newContact,Phone);ClearDataField(newContact,Company)">Add Contact</button>
+                    <button class="btn" d-on-click="AddDataItem(contacts,newContact,true);ClearDataField(newContact,FirstName);ClearDataField(newContact,LastName);ClearDataField(newContact,Email);ClearDataField(newContact,Phone);ClearDataField(newContact,Company)">Add Contact</button>
                     <button class="btn btn-secondary" d-on-click="ClearDataField(newContact,FirstName);ClearDataField(newContact,LastName);ClearDataField(newContact,Email);ClearDataField(newContact,Phone);ClearDataField(newContact,Company)">Clear Form</button>
                 </div>
 
