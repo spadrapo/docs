@@ -39,18 +39,57 @@
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
     text-align: center;
-    transition: transform 0.2s;
+    transition: transform 0.3s, box-shadow 0.3s;
+    border-left: 4px solid;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-card:nth-child(1) {
+    border-left-color: #3b82f6;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.stat-card:nth-child(2) {
+    border-left-color: #10b981;
+    background: linear-gradient(135deg, #ffffff 0%, #f0fdf4 100%);
+}
+
+.stat-card:nth-child(3) {
+    border-left-color: #f59e0b;
+    background: linear-gradient(135deg, #ffffff 0%, #fffbeb 100%);
+}
+
+.stat-card:nth-child(4) {
+    border-left-color: #ef4444;
+    background: linear-gradient(135deg, #ffffff 0%, #fef2f2 100%);
 }
 
 .stat-card:hover {
-    transform: translateY(-2px);
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #3b82f6, #10b981, #f59e0b, #ef4444);
 }
 
 .stat-icon {
     font-size: 40px;
     margin-bottom: 15px;
+    background: linear-gradient(45deg, #667eea, #764ba2);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
 }
 
 .stat-value {
@@ -91,7 +130,24 @@
     background: white;
     padding: 25px;
     border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    border-top: 4px solid;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.chart-card:nth-child(1) {
+    border-top-color: #8b5cf6;
+    background: linear-gradient(135deg, #ffffff 0%, #faf5ff 100%);
+}
+
+.chart-card:nth-child(2) {
+    border-top-color: #06b6d4;
+    background: linear-gradient(135deg, #ffffff 0%, #f0f9ff 100%);
+}
+
+.chart-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
 }
 
 .chart-title {
@@ -103,7 +159,17 @@
 
 .chart-container {
     height: 200px;
-    background: #f8f9fa;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 2px dashed #dee2e6;
+    color: #6c757d;
+    font-size: 14px;
+    text-align: center;
+}
     border-radius: 8px;
     display: flex;
     align-items: center;

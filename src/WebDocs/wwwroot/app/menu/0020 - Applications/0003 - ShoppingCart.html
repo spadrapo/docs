@@ -209,22 +209,32 @@
         <p>A complete e-commerce shopping cart application demonstrating dynamic calculations, state management, and real-time updates with Drapo.</p>
         <br />
         <d-sample>
-            <div d-dataKey="products" d-dataType="array"
-                 d-dataProperty-0="{Name:'Laptop Computer',Price:899.99,Description:'High-performance laptop for work and gaming',Image:'💻'}"
-                 d-dataProperty-1="{Name:'Wireless Headphones',Price:149.99,Description:'Premium noise-canceling wireless headphones',Image:'🎧'}"
-                 d-dataProperty-2="{Name:'Smartphone',Price:699.99,Description:'Latest model with advanced camera features',Image:'📱'}"></div>
             <div d-dataKey="cart" d-dataType="array"></div>
             <div d-dataKey="tempItem" d-dataType="object"></div>
             
             <div class="shopping-app">
                 <h3>Products</h3>
                 <div class="product-grid">
-                    <div d-for="product in products" class="product-card">
-                        <div class="product-image">{{product.Image}}</div>
-                        <div class="product-name">{{product.Name}}</div>
-                        <div class="product-price">${{product.Price}}</div>
-                        <div class="product-description">{{product.Description}}</div>
-                        <button class="btn" d-on-click="UpdateDataField(tempItem,Name,{{product.Name}});UpdateDataField(tempItem,Price,{{product.Price}});UpdateDataField(tempItem,Quantity,1);AddDataItem(cart,tempItem,true)">Add to Cart</button>
+                    <div class="product-card">
+                        <div class="product-image">💻</div>
+                        <div class="product-name">Laptop Computer</div>
+                        <div class="product-price">$899.99</div>
+                        <div class="product-description">High-performance laptop for work and gaming</div>
+                        <button class="btn" d-on-click="UpdateDataField(tempItem,Name,'Laptop Computer');UpdateDataField(tempItem,Price,899.99);UpdateDataField(tempItem,Quantity,1);AddDataItem(cart,tempItem,true)">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">🎧</div>
+                        <div class="product-name">Wireless Headphones</div>
+                        <div class="product-price">$149.99</div>
+                        <div class="product-description">Premium noise-canceling wireless headphones</div>
+                        <button class="btn" d-on-click="UpdateDataField(tempItem,Name,'Wireless Headphones');UpdateDataField(tempItem,Price,149.99);UpdateDataField(tempItem,Quantity,1);AddDataItem(cart,tempItem,true)">Add to Cart</button>
+                    </div>
+                    <div class="product-card">
+                        <div class="product-image">📱</div>
+                        <div class="product-name">Smartphone</div>
+                        <div class="product-price">$699.99</div>
+                        <div class="product-description">Latest model with advanced camera features</div>
+                        <button class="btn" d-on-click="UpdateDataField(tempItem,Name,'Smartphone');UpdateDataField(tempItem,Price,699.99);UpdateDataField(tempItem,Quantity,1);AddDataItem(cart,tempItem,true)">Add to Cart</button>
                     </div>
                 </div>
                 <div class="cart-section">
