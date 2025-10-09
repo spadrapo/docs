@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<style>
+.contact-app {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+.contact-form {
+    background: #f9f9f9;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border: 1px solid #e0e0e0;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    box-sizing: border-box;
+}
+
+.form-group input:focus {
+    border-color: #4CAF50;
+    outline: none;
+}
+
+.btn {
+    background: #4CAF50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 10px;
+    font-size: 14px;
+}
+
+.btn:hover {
+    background: #45a049;
+}
+
+.btn-secondary {
+    background: #6c757d;
+}
+
+.btn-secondary:hover {
+    background: #5a6268;
+}
+
+.btn-danger {
+    background: #dc3545;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+}
+
+.contact-list {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.contact-item {
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.contact-item:last-child {
+    border-bottom: none;
+}
+
+.contact-item:nth-child(even) {
+    background: #f8f9fa;
+}
+
+.contact-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+}
+
+.contact-info p {
+    margin: 0;
+    color: #666;
+    font-size: 14px;
+}
+
+.contact-actions {
+    display: flex;
+    gap: 5px;
+}
+
+.btn-small {
+    padding: 5px 10px;
+    font-size: 12px;
+}
+
+.search-box {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    box-sizing: border-box;
+}
+
+.editing .contact-info {
+    display: none;
+}
+
+.editing .edit-form {
+    display: block;
+}
+
+.edit-form {
+    display: none;
+    width: 100%;
+}
+
+.edit-form input {
+    margin-bottom: 5px;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 3px;
+}
+</style>
+<div>
+    <div>
+        <h2>Contact Manager</h2>
+        <p>A complete contact management application demonstrating CRUD operations, data binding, and form validation with Drapo.</p>
+        <br />
+        <d-sample>
+            <div d-dataKey="contacts" d-dataType="array" d-dataUnitOfWork="false"></div>
+            <div d-dataKey="newContact" d-dataType="object"></div>
+            <div d-dataKey="search" d-dataType="object" d-dataProperty-term=""></div>
+            
+            <div class="contact-app">
+                <div class="contact-form">
+                    <h3>Add New Contact</h3>
+                    <div class="form-group">
+                        <label for="firstName">First Name *</label>
+                        <input type="text" id="firstName" d-model="{{newContact.FirstName}}" placeholder="Enter first name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="lastName">Last Name *</label>
+                        <input type="text" id="lastName" d-model="{{newContact.LastName}}" placeholder="Enter last name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" d-model="{{newContact.Email}}" placeholder="Enter email address">
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone</label>
+                        <input type="tel" id="phone" d-model="{{newContact.Phone}}" placeholder="Enter phone number">
+                    </div>
+                    <div class="form-group">
+                        <label for="company">Company</label>
+                        <input type="text" id="company" d-model="{{newContact.Company}}" placeholder="Enter company name">
+                    </div>
+                    <button class="btn" d-on-click="AddDataItem(contacts,newContact,false);ClearObject(newContact)">Add Contact</button>
+                    <button class="btn btn-secondary" d-on-click="ClearObject(newContact)">Clear Form</button>
+                </div>
+
+                <div>
+                    <input type="text" class="search-box" d-model="{{search.term}}" placeholder="Search contacts by name, email, or company...">
+                    
+                    <div class="contact-list">
+                        <div d-for="contact in contacts" 
+                             d-if="Contains({{contact.FirstName}},{{search.term}},true)||Contains({{contact.LastName}},{{search.term}},true)||Contains({{contact.Email}},{{search.term}},true)||Contains({{contact.Company}},{{search.term}},true)||IsNullOrEmpty({{search.term}})"
+                             d-class="{contact,editing:{{contact.IsEditing}}}"
+                             class="contact-item">
+                            
+                            <div class="contact-info">
+                                <h4>{{contact.FirstName}} {{contact.LastName}}</h4>
+                                <p d-if="!IsNullOrEmpty({{contact.Email}})">📧 {{contact.Email}}</p>
+                                <p d-if="!IsNullOrEmpty({{contact.Phone}})">📞 {{contact.Phone}}</p>
+                                <p d-if="!IsNullOrEmpty({{contact.Company}})">🏢 {{contact.Company}}</p>
+                            </div>
+                            
+                            <div class="edit-form">
+                                <input type="text" d-model="{{contact.FirstName}}" placeholder="First Name">
+                                <input type="text" d-model="{{contact.LastName}}" placeholder="Last Name">
+                                <input type="email" d-model="{{contact.Email}}" placeholder="Email">
+                                <input type="tel" d-model="{{contact.Phone}}" placeholder="Phone">
+                                <input type="text" d-model="{{contact.Company}}" placeholder="Company">
+                                <div style="margin-top: 10px;">
+                                    <button class="btn btn-small" d-on-click="UncheckDataField(contact,IsEditing)">Save</button>
+                                    <button class="btn btn-secondary btn-small" d-on-click="UncheckDataField(contact,IsEditing)">Cancel</button>
+                                </div>
+                            </div>
+                            
+                            <div class="contact-actions">
+                                <button class="btn btn-small" d-on-click="CheckDataField(contact,IsEditing)">Edit</button>
+                                <button class="btn btn-danger btn-small" d-on-click="RemoveDataItem(contacts,contact)">Delete</button>
+                            </div>
+                        </div>
+                        
+                        <div d-if="GetLength(contacts)==0" style="text-align: center; padding: 40px; color: #666;">
+                            <h4>No contacts found</h4>
+                            <p>Add your first contact using the form above.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+</div>
