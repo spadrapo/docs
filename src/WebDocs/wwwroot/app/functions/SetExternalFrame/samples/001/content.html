@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - SetExternalFrame</title>
+</head>
+<body>
+    <span>Function - SetExternalFrame</span>
+    <div>
+        <div d-dataKey="userData" d-dataType="object" d-dataProperty-name="John" d-dataProperty-email="john@example.com" d-dataProperty-age="30"></div>
+        <h3>User Data:</h3>
+        <p>Name: <span d-model="{{userData.name}}"></span></p>
+        <p>Email: <span d-model="{{userData.email}}"></span></p>
+        <p>Age: <span d-model="{{userData.age}}"></span></p>
+        <br />
+        <input type="button" value="Send Data to Frame" d-on-click="SetExternalFrame(targetFrame,receiveUserData,userData,false)" />
+        <br />
+        <br />
+        <iframe id="targetFrame" src="about:blank" style="width: 100%; height: 200px; border: 1px solid #ccc;"></iframe>
+    </div>
+</body>
+</html>
