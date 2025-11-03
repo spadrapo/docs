@@ -344,19 +344,23 @@
                     string tenant = context.Request.Headers["X-Tenant"].ToString();
                     string path = env.WebRootPath;
                     
-                    // Sanitize tenant identifier to prevent path traversal attacks
-                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
-                        tenant, @"[^a-zA-Z0-9\-]", "");
-                    
-                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    // Check if tenant is provided
+                    if (!string.IsNullOrEmpty(tenant))
                     {
-                        string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
-                        string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                        // Sanitize tenant identifier to prevent path traversal attacks
+                        string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                            tenant, @"[^a-zA-Z0-9\-]", "");
                         
-                        // Verify path is within web root to prevent traversal
-                        if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
-                            File.Exists(tenantIndexPath))
-                            return await File.ReadAllTextAsync(tenantIndexPath);
+                        if (!string.IsNullOrEmpty(sanitizedTenant))
+                        {
+                            string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                            string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                            
+                            // Verify path is within web root to prevent traversal
+                            if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                File.Exists(tenantIndexPath))
+                                return await File.ReadAllTextAsync(tenantIndexPath);
+                        }
                     }
                     
                     // Default fallback
@@ -369,22 +373,31 @@
                 options.RouteIndexEvent += async (context) => 
                 {
                     string host = context.Request.Host.Host;
-                    // Extract tenant from subdomain (e.g., "tenant1.example.com" -> "tenant1")
-                    string tenant = host.Split('.')[0];
-                    
-                    // Apply same security validation as example 1
-                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
-                        tenant, @"[^a-zA-Z0-9\-]", "");
-                    
                     string path = env.WebRootPath;
-                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    
+                    // Extract tenant from subdomain (e.g., "tenant1.example.com" -> "tenant1")
+                    // Handle single-part domains (e.g., "localhost") gracefully
+                    string[] hostParts = host.Split('.');
+                    if (hostParts.Length > 1)
                     {
-                        string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
-                        string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                        string tenant = hostParts[0];
                         
-                        if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
-                            File.Exists(tenantIndexPath))
-                            return await File.ReadAllTextAsync(tenantIndexPath);
+                        // Apply same security validation as example 1
+                        if (!string.IsNullOrEmpty(tenant))
+                        {
+                            string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                                tenant, @"[^a-zA-Z0-9\-]", "");
+                            
+                            if (!string.IsNullOrEmpty(sanitizedTenant))
+                            {
+                                string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                                string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                                
+                                if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                    File.Exists(tenantIndexPath))
+                                    return await File.ReadAllTextAsync(tenantIndexPath);
+                            }
+                        }
                     }
                     
                     return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
@@ -396,20 +409,24 @@
                 options.RouteIndexEvent += async (context) => 
                 {
                     string tenant = context.Request.Cookies["tenant"];
-                    
-                    // Apply same security validation as example 1
-                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
-                        tenant, @"[^a-zA-Z0-9\-]", "");
-                    
                     string path = env.WebRootPath;
-                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    
+                    // Check if cookie exists and has a value
+                    if (!string.IsNullOrEmpty(tenant))
                     {
-                        string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
-                        string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                        // Apply same security validation as example 1
+                        string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                            tenant, @"[^a-zA-Z0-9\-]", "");
                         
-                        if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
-                            File.Exists(tenantIndexPath))
-                            return await File.ReadAllTextAsync(tenantIndexPath);
+                        if (!string.IsNullOrEmpty(sanitizedTenant))
+                        {
+                            string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                            string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                            
+                            if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                File.Exists(tenantIndexPath))
+                                return await File.ReadAllTextAsync(tenantIndexPath);
+                        }
                     }
                     
                     return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
