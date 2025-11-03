@@ -369,8 +369,25 @@
                 options.RouteIndexEvent += async (context) => 
                 {
                     string host = context.Request.Host.Host;
-                    string tenant = ExtractTenantFromDomain(host); // Your custom logic
-                    return await LoadTenantIndex(tenant);
+                    // Extract tenant from subdomain (e.g., "tenant1.example.com" -> "tenant1")
+                    string tenant = host.Split('.')[0];
+                    
+                    // Apply same security validation as example 1
+                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                        tenant, @"[^a-zA-Z0-9\-]", "");
+                    
+                    string path = env.WebRootPath;
+                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    {
+                        string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                        string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                        
+                        if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                            File.Exists(tenantIndexPath))
+                            return await File.ReadAllTextAsync(tenantIndexPath);
+                    }
+                    
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
                 };
             </d-code>
             
@@ -379,9 +396,23 @@
                 options.RouteIndexEvent += async (context) => 
                 {
                     string tenant = context.Request.Cookies["tenant"];
-                    if (!string.IsNullOrEmpty(tenant))
-                        return await LoadTenantIndex(tenant);
-                    return await LoadDefaultIndex();
+                    
+                    // Apply same security validation as example 1
+                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                        tenant, @"[^a-zA-Z0-9\-]", "");
+                    
+                    string path = env.WebRootPath;
+                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    {
+                        string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                        string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                        
+                        if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                            File.Exists(tenantIndexPath))
+                            return await File.ReadAllTextAsync(tenantIndexPath);
+                    }
+                    
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
                 };
             </d-code>
             
@@ -389,16 +420,30 @@
             <d-code>
                 options.RouteIndexEvent += async (context) => 
                 {
-                    string tenant = GetTenantIdentifier(context);
+                    // Example: Get tenant from header, cookie, or domain
+                    string tenant = context.Request.Headers["X-Tenant"].ToString();
                     
-                    // Load tenant configuration from database
-                    var tenantConfig = await dbContext.TenantConfigs
-                        .FirstOrDefaultAsync(t => t.Identifier == tenant);
+                    // Sanitize tenant identifier
+                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                        tenant, @"[^a-zA-Z0-9\-]", "");
                     
-                    if (tenantConfig != null)
-                        return await GenerateIndexFromConfig(tenantConfig);
+                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    {
+                        // Load tenant configuration from your database
+                        // Note: Inject your DbContext via constructor or service locator
+                        // var tenantConfig = await _dbContext.TenantConfigs
+                        //     .FirstOrDefaultAsync(t => t.Identifier == sanitizedTenant);
+                        
+                        // if (tenantConfig != null)
+                        // {
+                        //     // Generate custom index based on tenant configuration
+                        //     return GenerateCustomIndex(tenantConfig);
+                        // }
+                    }
                     
-                    return await LoadDefaultIndex();
+                    // Default fallback
+                    string path = env.WebRootPath;
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
                 };
             </d-code>
             
