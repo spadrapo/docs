@@ -15,4 +15,15 @@
   <li><strong>Compression</strong> - Files are automatically compressed (Brotli/Gzip/Deflate) for optimal performance</li>
 </ul>
 
-<p>This function is particularly useful for loading component libraries, themes, or any collection of related files that should be loaded together as a unit.</p>
+<h3>Dynamic Packs</h3>
+<p>Packs can also be configured as <strong>dynamic</strong>, allowing their content to be generated at runtime through a delegate handler. Dynamic packs provide:</p>
+<ul>
+  <li><strong>Runtime content generation</strong> - Pack content is generated on-demand when requested, allowing for user-specific or context-dependent content</li>
+  <li><strong>Delegate handler</strong> - A configurable <code>HandlerPackDynamic</code> delegate in DrapoConfig that receives the pack request and returns dynamically generated content</li>
+  <li><strong>HTTP caching support</strong> - Dynamic packs support ETags for proper HTTP caching, reducing unnecessary data transfer</li>
+  <li><strong>Flexible content structure</strong> - Content can be provided as a structured list of files or as pre-serialized JSON</li>
+</ul>
+
+<p>Dynamic packs are created by setting the <code>IsDynamic</code> flag when defining the pack in the configuration, and configuring a delegate handler that will be called to generate the pack content each time it's requested.</p>
+
+<p>This function is particularly useful for loading component libraries, themes, or any collection of related files that should be loaded together as a unit, whether predefined or generated dynamically.</p>
