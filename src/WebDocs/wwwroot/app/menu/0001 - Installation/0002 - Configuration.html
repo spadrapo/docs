@@ -331,6 +331,157 @@
         </div>
 
         <div class="config-section">
+            <h5><code>options.RouteIndexEvent</code></h5>
+            <p><strong>Type:</strong> <code>RouteIndexDelegate</code><br>
+            <strong>Description:</strong> Event handler for dynamically generating the route index content. This enables multi-tenant scenarios where different index content is served based on HttpContext. The delegate receives the HttpContext and returns the HTML content as a string. If not set, the default /index.html file will be used.</p>
+            
+            <h6>Multi-Tenant Scenarios</h6>
+            
+            <p><strong>1. Header-Based Tenant Identification</strong></p>
+            <d-code>
+                options.RouteIndexEvent += async (context) => 
+                {
+                    string tenant = context.Request.Headers["X-Tenant"].ToString();
+                    string path = env.WebRootPath;
+                    
+                    // Check if tenant is provided
+                    if (!string.IsNullOrEmpty(tenant))
+                    {
+                        // Sanitize tenant identifier to prevent path traversal attacks
+                        string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                            tenant, @"[^a-zA-Z0-9\-]", "");
+                        
+                        if (!string.IsNullOrEmpty(sanitizedTenant))
+                        {
+                            string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                            string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                            
+                            // Verify path is within web root to prevent traversal
+                            if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                File.Exists(tenantIndexPath))
+                                return await File.ReadAllTextAsync(tenantIndexPath);
+                        }
+                    }
+                    
+                    // Default fallback
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
+                };
+            </d-code>
+            
+            <p><strong>2. Domain-Based Tenant Identification</strong></p>
+            <d-code>
+                options.RouteIndexEvent += async (context) => 
+                {
+                    string host = context.Request.Host.Host;
+                    string path = env.WebRootPath;
+                    
+                    // Extract tenant from subdomain (e.g., "tenant1.example.com" -> "tenant1")
+                    // Handle single-part domains (e.g., "localhost") gracefully
+                    string[] hostParts = host.Split('.');
+                    if (hostParts.Length > 1)
+                    {
+                        string tenant = hostParts[0];
+                        
+                        // Apply same security validation as example 1
+                        if (!string.IsNullOrEmpty(tenant))
+                        {
+                            string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                                tenant, @"[^a-zA-Z0-9\-]", "");
+                            
+                            if (!string.IsNullOrEmpty(sanitizedTenant))
+                            {
+                                string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                                string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                                
+                                if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                    File.Exists(tenantIndexPath))
+                                    return await File.ReadAllTextAsync(tenantIndexPath);
+                            }
+                        }
+                    }
+                    
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
+                };
+            </d-code>
+            
+            <p><strong>3. Cookie-Based Tenant Identification</strong></p>
+            <d-code>
+                options.RouteIndexEvent += async (context) => 
+                {
+                    string tenant = context.Request.Cookies["tenant"];
+                    string path = env.WebRootPath;
+                    
+                    // Check if cookie exists and has a value
+                    if (!string.IsNullOrEmpty(tenant))
+                    {
+                        // Apply same security validation as example 1
+                        string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                            tenant, @"[^a-zA-Z0-9\-]", "");
+                        
+                        if (!string.IsNullOrEmpty(sanitizedTenant))
+                        {
+                            string tenantIndexPath = Path.Combine(path, $"index.{sanitizedTenant}.html");
+                            string fullTenantPath = Path.GetFullPath(tenantIndexPath);
+                            
+                            if (fullTenantPath.StartsWith(Path.GetFullPath(path)) && 
+                                File.Exists(tenantIndexPath))
+                                return await File.ReadAllTextAsync(tenantIndexPath);
+                        }
+                    }
+                    
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
+                };
+            </d-code>
+            
+            <p><strong>4. Database-Driven Dynamic Content</strong></p>
+            <d-code>
+                options.RouteIndexEvent += async (context) => 
+                {
+                    // Example: Get tenant from header, cookie, or domain
+                    string tenant = context.Request.Headers["X-Tenant"].ToString();
+                    
+                    // Sanitize tenant identifier
+                    string sanitizedTenant = System.Text.RegularExpressions.Regex.Replace(
+                        tenant, @"[^a-zA-Z0-9\-]", "");
+                    
+                    if (!string.IsNullOrEmpty(sanitizedTenant))
+                    {
+                        // Load tenant configuration from your database
+                        // Note: Inject your DbContext via constructor or service locator
+                        // var tenantConfig = await _dbContext.TenantConfigs
+                        //     .FirstOrDefaultAsync(t => t.Identifier == sanitizedTenant);
+                        
+                        // if (tenantConfig != null)
+                        // {
+                        //     // Generate custom index based on tenant configuration
+                        //     return GenerateCustomIndex(tenantConfig);
+                        // }
+                    }
+                    
+                    // Default fallback
+                    string path = env.WebRootPath;
+                    return await File.ReadAllTextAsync(Path.Combine(path, "index.html"));
+                };
+            </d-code>
+            
+            <h6>Benefits</h6>
+            <ul>
+                <li><strong>Multi-Tenant Support:</strong> Serve different content to different tenants without code changes</li>
+                <li><strong>Dynamic Content:</strong> Generate index.html dynamically based on runtime conditions</li>
+                <li><strong>Flexible Routing:</strong> Control routing behavior per tenant or request context</li>
+                <li><strong>Single Deployment:</strong> One application deployment can serve multiple tenants</li>
+            </ul>
+            
+            <h6>Security Considerations</h6>
+            <p><strong>Important:</strong> When implementing RouteIndexEvent, always sanitize tenant identifiers and validate file paths to prevent security vulnerabilities:</p>
+            <ul>
+                <li>Use regex to allow only alphanumeric characters and hyphens in tenant identifiers</li>
+                <li>Always verify that resolved paths remain within the web root directory</li>
+                <li>Use <code>Path.GetFullPath()</code> and compare with the web root to prevent path traversal attacks</li>
+            </ul>
+        </div>
+
+        <div class="config-section">
             <h5><code>options.Config.DomainRegex</code></h5>
             <p><strong>Type:</strong> <code>string</code><br>
             <strong>Description:</strong> Regular expression for domain matching.</p>
