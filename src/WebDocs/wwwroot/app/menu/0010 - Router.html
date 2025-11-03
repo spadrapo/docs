@@ -5,6 +5,7 @@
         <h2>Router</h2>
         <p>Drapo provides a simple way to create routes in your application. To do this, you must have a default <code>index.html</code> file in the root folder of your application.</p>
         <p>This file must have all sectors properly configured.</p>
+        <p><strong>Note:</strong> The index.html can be dynamically generated using the <code>RouteIndexEvent</code> delegate. This is useful for multi-tenant applications where different tenants need different index content. See the <a href="#" d-on-click="ApplyRoute(/doc/0002%20-%20Configuration)">Configuration</a> documentation for more details.</p>
         <p>You can check a sample <code>index.html</code> in the link <a href="https://github.com/spadrapo/docs/blob/master/src/WebDocs/wwwroot/index.html">below</a>:</p>
         <d-code>
             https://github.com/spadrapo/docs/blob/master/src/WebDocs/wwwroot/index.html
@@ -19,7 +20,7 @@
         <p>In this example, we have three routes. The first one is used for functions, the second for documentation or menu options, and the third for the default route.</p>
         <p>This sample configuration is the same one currently used in this documentation.</p>
         <p>When the browser URL path changes, Drapo will try to find the best matching route.</p>
-        <p>Once it finds a matching route, Drapo will load the default <code>index.html</code> and execute the expression defined in the route.</p>
+        <p>Once it finds a matching route, Drapo will load the default <code>index.html</code> (or dynamically generate it via <code>RouteIndexEvent</code> if configured) and execute the expression defined in the route.</p>
         <br />
         <p>To change the current route in the application, you can use the <code>ApplyRoute</code> function. Below is an example of how to use it:</p>
         <d-sample>
