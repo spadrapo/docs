@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function LoadPack - Dynamic Pack</title>
+</head>
+<body>
+    <span>Function LoadPack - Dynamic Pack</span>
+    <h3>Dynamic Pack Example</h3>
+    <p>Load a pack that is generated dynamically at runtime based on server-side logic.</p>
+    <input type="button" value="Load Dynamic Pack" d-on-click="LoadPack(dynamicpack)" />
+    <br><br>
+    <h3>Dynamic Pack Content</h3>
+    <p>After loading the dynamic pack, the dynamically generated content will be available.</p>
+    <br>
+    <h4>Configuration Example - C# (Startup.cs)</h4>
+    <pre style="background-color: #f5f5f5; padding: 10px; border-radius: 4px;">
+// 1. Define a dynamic pack in Drapo configuration
+options.Config
+    .CreatePack("dynamicpack", isDynamic: true);
+
+// 2. Configure the delegate handler for dynamic packs
+options.Config.HandlerPackDynamic = HandlePackDynamic;
+
+// 3. Implement the delegate handler
+private async Task&lt;DrapoPackResponse&gt; HandlePackDynamic(DrapoPackRequest request)
+{
+    // Option 1: Using structured Files list
+    DrapoPackResponse response = new DrapoPackResponse();
+    response.Name = request.PackName;
+    response.Files = new List&lt;DrapoPackFile&gt;();
+    
+    // Generate content dynamically (e.g., user-specific, context-dependent)
+    response.Files.Add(new DrapoPackFile
+    {
+        Path = "~/dynamic/component.html",
+        Content = "&lt;div&gt;Dynamic content for user&lt;/div&gt;"
+    });
+    
+    response.Files.Add(new DrapoPackFile
+    {
+        Path = "~/dynamic/script.js",
+        Content = "console.log('Dynamic pack loaded!');"
+    });
+    
+    return await Task.FromResult(response);
+    
+    // Option 2: Using pre-serialized Content (advanced)
+    // response.Content = JsonConvert.SerializeObject(new {
+    //     name = "dynamicpack",
+    //     files = new[] {
+    //         new { path = "~/dynamic/script.js", content = "console.log('Hello!');" }
+    //     }
+    // });
+}
+    </pre>
+    <br>
+    <h4>Key Features</h4>
+    <ul>
+        <li><strong>IsDynamic flag</strong> - Set to true when creating the pack</li>
+        <li><strong>HandlerPackDynamic delegate</strong> - Configured to handle dynamic pack requests</li>
+        <li><strong>DrapoPackRequest</strong> - Contains PackName and HttpContext for request context</li>
+        <li><strong>DrapoPackResponse</strong> - Returns either structured Files list or pre-serialized Content</li>
+        <li><strong>HTTP Caching</strong> - ETags are automatically generated based on content for optimal caching</li>
+    </ul>
+</body>
+</html>
