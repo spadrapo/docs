@@ -22,6 +22,34 @@
         <p>When the browser URL path changes, Drapo will try to find the best matching route.</p>
         <p>Once it finds a matching route, Drapo will load the default <code>index.html</code> (or dynamically generate it via <code>RouteIndexEvent</code> if configured) and execute the expression defined in the route.</p>
         <br />
+        <h3>Rejected Routes</h3>
+        <p>Drapo also supports <strong>rejected routes</strong>—routes that match a pattern but intentionally halt route processing without executing any action or checking subsequent routes. This is useful for blocking access to specific paths.</p>
+        <p>When a rejected route matches the current path, Drapo will:</p>
+        <ul>
+            <li>Stop processing immediately</li>
+            <li>Not execute any expression</li>
+            <li>Not check any subsequent routes in the list</li>
+        </ul>
+        <p>You can create a rejected route using the <code>CreateRejectedRoute</code> method with a regular expression pattern:</p>
+        <d-code>
+            options.Config.CreateRejectedRoute("^/admin/.*$");
+        </d-code>
+        <p>Here's a practical example showing how rejected routes can be used to block specific paths while allowing others:</p>
+        <d-code>
+            // Block access to admin paths—stops processing, doesn't continue to other routes
+            options.Config.CreateRejectedRoute("^/admin/.*$");
+
+            // Block specific subdirectories under /allowed
+            options.Config.CreateRejectedRoute("^/allowed/deny.*$");
+
+            // Normal route continues to work as expected for /allowed paths
+            options.Config.CreateRoute("^/allowed/.*$", "UpdateSector(content,~/DrapoPages/Public.html)");
+
+            // Normal public route
+            options.Config.CreateRoute("^/public/.*$", "UpdateSector(content,~/DrapoPages/Public.html)");
+        </d-code>
+        <p><strong>Important:</strong> Route order matters! Place rejected routes before normal routes that might also match the same path pattern. In the example above, <code>^/allowed/deny.*$</code> is placed before <code>^/allowed/.*$</code> to ensure deny paths are rejected first.</p>
+        <br />
         <p>To change the current route in the application, you can use the <code>ApplyRoute</code> function. Below is an example of how to use it:</p>
         <d-sample>
             <span d-on-click="ApplyRoute(/function/ApplyRoute)">Click here to route the application to ApplyRoute</span>
