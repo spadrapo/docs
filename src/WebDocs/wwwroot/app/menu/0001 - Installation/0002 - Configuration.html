@@ -331,9 +331,171 @@
         </div>
 
         <div class="config-section">
+            <h5><code>options.RouteEvent</code></h5>
+            <p><strong>Type:</strong> <code>RouteDelegate</code><br>
+            <strong>Description:</strong> Event handler for dynamically generating route configurations based on HttpContext. This enables multi-tenant scenarios where different tenants have different routing rules. The delegate receives the HttpContext and returns a list of DrapoRoute objects. Dynamic routes take precedence over static routes.</p>
+            
+            <h6>Dynamic Routes for Multi-Tenant Scenarios</h6>
+            
+            <p><strong>1. Query String-Based Routing (for testing)</strong></p>
+            <d-code>
+                options.RouteEvent += async (context) => 
+                {
+                    string tenant = context.Request.Query["tenant"].ToString();
+                    List&lt;DrapoRoute&gt; routes = new List&lt;DrapoRoute&gt;();
+                    
+                    if (!string.IsNullOrEmpty(tenant))
+                    {
+                        if (tenant.Equals("tenant1", StringComparison.OrdinalIgnoreCase))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/home$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant1Home.html)"
+                            });
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/products$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant1Products.html)"
+                            });
+                        }
+                        else if (tenant.Equals("tenant2", StringComparison.OrdinalIgnoreCase))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/home$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant2Home.html)"
+                            });
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/services$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant2Services.html)"
+                            });
+                        }
+                    }
+                    
+                    return await Task.FromResult(routes);
+                };
+            </d-code>
+            
+            <p><strong>2. Header-Based Routing (recommended for production)</strong></p>
+            <d-code>
+                options.RouteEvent += async (context) => 
+                {
+                    string tenant = context.Request.Headers["X-Tenant"].ToString();
+                    List&lt;DrapoRoute&gt; routes = new List&lt;DrapoRoute&gt;();
+                    
+                    if (!string.IsNullOrEmpty(tenant))
+                    {
+                        if (tenant.Equals("tenant1", StringComparison.OrdinalIgnoreCase))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/home$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant1Home.html)"
+                            });
+                        }
+                        else if (tenant.Equals("tenant2", StringComparison.OrdinalIgnoreCase))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/home$",
+                                Expression = "UpdateSector(content,~/DrapoPages/Tenant2Home.html)"
+                            });
+                        }
+                    }
+                    
+                    return await Task.FromResult(routes);
+                };
+            </d-code>
+            
+            <p><strong>3. Subdomain-Based Routing</strong></p>
+            <d-code>
+                options.RouteEvent += async (context) => 
+                {
+                    string host = context.Request.Host.Host;
+                    string[] hostParts = host.Split('.');
+                    string subdomain = hostParts.Length > 2 ? hostParts[0] : null;
+                    
+                    List&lt;DrapoRoute&gt; routes = new List&lt;DrapoRoute&gt;();
+                    
+                    if (!string.IsNullOrEmpty(subdomain) && subdomain != "www")
+                    {
+                        routes.Add(new DrapoRoute
+                        {
+                            Uri = "^/$",
+                            Expression = $"UpdateSector(content,~/Tenants/{subdomain}/home.html)"
+                        });
+                    }
+                    
+                    return await Task.FromResult(routes);
+                };
+            </d-code>
+            
+            <p><strong>4. User Role-Based Routing</strong></p>
+            <d-code>
+                options.RouteEvent += async (context) => 
+                {
+                    List&lt;DrapoRoute&gt; routes = new List&lt;DrapoRoute&gt;();
+                    
+                    if (context.User.Identity.IsAuthenticated)
+                    {
+                        if (context.User.IsInRole("Admin"))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/dashboard$",
+                                Expression = "UpdateSector(content,~/DrapoPages/AdminDashboard.html)"
+                            });
+                        }
+                        else if (context.User.IsInRole("User"))
+                        {
+                            routes.Add(new DrapoRoute
+                            {
+                                Uri = "^/dashboard$",
+                                Expression = "UpdateSector(content,~/DrapoPages/UserDashboard.html)"
+                            });
+                        }
+                    }
+                    
+                    return await Task.FromResult(routes);
+                };
+            </d-code>
+            
+            <h6>Route Properties</h6>
+            <p>Each <code>DrapoRoute</code> object has the following properties:</p>
+            <ul>
+                <li><strong>Uri:</strong> Regular expression pattern to match the URL path</li>
+                <li><strong>Expression:</strong> Drapo function expression to execute when the route matches</li>
+                <li><strong>BeforeLoadExpression:</strong> (Optional) Expression to execute before loading</li>
+                <li><strong>AfterLoadExpression:</strong> (Optional) Expression to execute after loading</li>
+            </ul>
+            
+            <h6>Benefits</h6>
+            <ul>
+                <li><strong>Multi-Tenant Support:</strong> Different tenants can have completely different route configurations</li>
+                <li><strong>Context-Based Routing:</strong> Routes determined based on request context (headers, subdomain, user, etc.)</li>
+                <li><strong>Priority:</strong> Dynamic routes take precedence over static routes</li>
+                <li><strong>Backward Compatible:</strong> Static routes continue to work unchanged</li>
+                <li><strong>Flexible:</strong> Works with both client-side and server-side routing</li>
+            </ul>
+            
+            <h6>Best Practices</h6>
+            <ul>
+                <li><strong>Performance:</strong> Keep route determination logic lightweight since it's executed on every request</li>
+                <li><strong>Caching:</strong> Consider caching tenant-specific route configurations if they don't change frequently</li>
+                <li><strong>Fallback:</strong> Always have default/static routes configured as fallback</li>
+                <li><strong>Testing:</strong> Test with different tenant identifiers to ensure proper route isolation</li>
+                <li><strong>Security:</strong> Validate tenant identifiers to prevent unauthorized access</li>
+            </ul>
+        </div>
+
+        <div class="config-section">
             <h5><code>options.RouteIndexEvent</code></h5>
             <p><strong>Type:</strong> <code>RouteIndexDelegate</code><br>
             <strong>Description:</strong> Event handler for dynamically generating the route index content. This enables multi-tenant scenarios where different index content is served based on HttpContext. The delegate receives the HttpContext and returns the HTML content as a string. If not set, the default /index.html file will be used.</p>
+            
+            <p><strong>Note:</strong> <code>RouteEvent</code> and <code>RouteIndexEvent</code> are complementary features that can be used together for comprehensive multi-tenant support. <code>RouteEvent</code> controls the routing rules, while <code>RouteIndexEvent</code> controls which index.html file is served.</p>
             
             <h6>Multi-Tenant Scenarios</h6>
             

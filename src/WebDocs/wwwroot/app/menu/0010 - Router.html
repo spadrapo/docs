@@ -50,6 +50,74 @@
         </d-code>
         <p><strong>Important:</strong> Route order matters! Place rejected routes before normal routes that might also match the same path pattern. In the example above, <code>^/allowed/deny.*$</code> is placed before <code>^/allowed/.*$</code> to ensure deny paths are rejected first.</p>
         <br />
+        <h3>Dynamic Routes</h3>
+        <p>Drapo now supports <strong>dynamic routes</strong>—routes that are determined at runtime based on the HTTP request context. This is particularly useful for multi-tenant applications where different tenants may have different routing configurations.</p>
+        <p>With dynamic routes, you can:</p>
+        <ul>
+            <li>Configure routes per request based on tenant, user, or other context</li>
+            <li>Support multi-tenant environments with tenant-specific routes</li>
+            <li>Determine routes based on HTTP headers, subdomains, query parameters, or authentication</li>
+            <li>Override static routes with dynamic routes (dynamic routes take precedence)</li>
+        </ul>
+        <p>To configure dynamic routes, register a <code>RouteEvent</code> delegate in your <code>Startup.cs</code> file:</p>
+        <d-code>
+            private void ConfigureDrapo(IWebHostEnvironment env, DrapoMiddlewareOptions options)
+            {
+                // Configure static routes
+                options.Config.CreateRoute("^/$", "UpdateSector(content,~/app/menu/0000%20-%20Drapo.html)");
+                
+                // Register dynamic route delegate
+                options.RouteEvent += DynamicRoutes;
+            }
+
+            private async Task&lt;List&lt;DrapoRoute&gt;&gt; DynamicRoutes(HttpContext context)
+            {
+                // Get tenant identifier from query string, header, or other source
+                string tenant = context.Request.Query["tenant"].ToString();
+                
+                List&lt;DrapoRoute&gt; routes = new List&lt;DrapoRoute&gt;();
+                
+                if (!string.IsNullOrEmpty(tenant))
+                {
+                    if (tenant.Equals("tenant1", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Routes specific to Tenant 1
+                        routes.Add(new DrapoRoute
+                        {
+                            Uri = "^/home$",
+                            Expression = "UpdateSector(content,~/DrapoPages/Tenant1Home.html)"
+                        });
+                    }
+                    else if (tenant.Equals("tenant2", StringComparison.OrdinalIgnoreCase))
+                    {
+                        // Routes specific to Tenant 2
+                        routes.Add(new DrapoRoute
+                        {
+                            Uri = "^/home$",
+                            Expression = "UpdateSector(content,~/DrapoPages/Tenant2Home.html)"
+                        });
+                    }
+                }
+                
+                return await Task.FromResult(routes);
+            }
+        </d-code>
+        <p><strong>Key Features:</strong></p>
+        <ul>
+            <li><strong>Context-Based:</strong> Routes can be determined based on any aspect of the HttpContext (headers, subdomain, user claims, query parameters, cookies)</li>
+            <li><strong>Priority:</strong> Dynamic routes are checked first and take precedence over static routes</li>
+            <li><strong>Backward Compatible:</strong> Static routes continue to work unchanged</li>
+            <li><strong>Multi-Tenant Support:</strong> Different tenants can have completely different route configurations</li>
+        </ul>
+        <p><strong>Common Use Cases:</strong></p>
+        <ul>
+            <li><strong>Header-Based Routing:</strong> Use <code>context.Request.Headers["X-Tenant"]</code> to determine tenant</li>
+            <li><strong>Subdomain-Based Routing:</strong> Extract tenant from <code>context.Request.Host.Host</code></li>
+            <li><strong>User Role-Based Routing:</strong> Use <code>context.User.IsInRole("Admin")</code> for role-specific routes</li>
+            <li><strong>Query String-Based Routing:</strong> Use <code>context.Request.Query["tenant"]</code> for testing or simple scenarios</li>
+        </ul>
+        <p>For more detailed examples and configuration options, see the <a href="#" d-on-click="ApplyRoute(/doc/0001%20-%20Installation/0002%20-%20Configuration)">Configuration</a> documentation.</p>
+        <br />
         <p>To change the current route in the application, you can use the <code>ApplyRoute</code> function. Below is an example of how to use it:</p>
         <d-sample>
             <span d-on-click="ApplyRoute(/function/ApplyRoute)">Click here to route the application to ApplyRoute</span>
