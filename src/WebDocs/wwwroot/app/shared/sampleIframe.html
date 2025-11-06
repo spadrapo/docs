@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Sample Iframe Content</title>
+</head>
+<body>
+    <h4>External Frame Content</h4>
+    <p>This iframe contains sample data that can be retrieved by the parent window.</p>
+    
+    <script>
+        // Sample function that returns data to the parent frame
+        function GetSampleData() {
+            return [
+                { name: "Product A", value: "150" },
+                { name: "Product B", value: "200" },
+                { name: "Product C", value: "75" }
+            ];
+        }
+        
+        // Make the function globally available
+        window.GetSampleData = GetSampleData;
+    </script>
+</body>
+</html>
