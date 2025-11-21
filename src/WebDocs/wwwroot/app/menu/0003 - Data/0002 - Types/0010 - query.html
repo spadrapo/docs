@@ -281,5 +281,32 @@
             </div>
         </d-sample>
         <br />
+        <p>You can use DISTINCT to filter duplicate rows from the result set</p>
+        <d-sample>
+            <span>DISTINCT with single column</span>
+            <div d-dataKey="persons" d-dataType="array" d-dataValue='[{"Code":1,"Name":"Thiago","Gender":"M"},{"Code":2,"Name":"Henrique","Gender":"M"},{"Code":3,"Name":"Silva","Gender":"M"},{"Code":4,"Name":"Catarina","Gender":"F"},{"Code":5,"Name":"Augusto","Gender":"M"}]'></div>
+            <div d-dataKey="genders" d-dataType="array" d-dataValue='[{"Code":"M","Name":"Male"},{"Code":"F","Name":"Female"}]'></div>
+            <div d-dataKey="distinctGenders" d-dataType="query" d-dataValue="SELECT DISTINCT G.Name AS Gender FROM persons AS P INNER JOIN genders AS G ON P.Gender = G.Code"></div>
+            <div>
+                <div d-for="gender in distinctGenders">
+                    <span>{{gender.Gender}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
+        <p>DISTINCT works with multiple columns too</p>
+        <d-sample>
+            <span>DISTINCT with multiple columns</span>
+            <div d-dataKey="orders" d-dataType="array" d-dataValue='[{"OrderId":1,"Product":"Laptop","Quantity":2},{"OrderId":2,"Product":"Mouse","Quantity":5},{"OrderId":3,"Product":"Laptop","Quantity":2},{"OrderId":4,"Product":"Keyboard","Quantity":3},{"OrderId":5,"Product":"Mouse","Quantity":5}]'></div>
+            <div d-dataKey="distinctOrders" d-dataType="query" d-dataValue="SELECT DISTINCT Product, Quantity FROM orders"></div>
+            <div>
+                <div d-for="order in distinctOrders">
+                    <span>{{order.Product}}</span> - <span>{{order.Quantity}}</span>
+                    <br />
+                </div>
+            </div>
+        </d-sample>
+        <br />
     </div>
 </div>
