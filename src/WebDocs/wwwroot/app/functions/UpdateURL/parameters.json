@@ -4,5 +4,12 @@
     "Description": "The url that will be shown in browser",
     "Types": [ "url" ],
     "Optional": false
+  },
+  {
+    "Name": "AddToHistory",
+    "Description": "When true, adds entry to browser history using pushState. When false, replaces current history entry using replaceState",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "true"
   }
 ]
