@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-dataCacheKeys</h2>
+        <p>The d-dataCacheKeys attribute specifies which components should be used to construct the cache key for a data source. This attribute allows you to control how Drapo generates unique cache entries in browser storage (LocalStorage or IndexedDB).</p>
+        <p>The attribute accepts a comma-separated list of predefined cache key components. Common valid values include:</p>
+        <ul>
+            <li><strong>applicationbuild</strong> - Includes the application version in the cache key, ensuring cache invalidation on app updates</li>
+            <li><strong>datakey</strong> - Includes the data key name in the cache key</li>
+            <li><strong>culture</strong> - Includes the current culture/locale in the cache key for localized data</li>
+        </ul>
+        <p>By default, if d-dataCacheKeys is not specified, Drapo uses its own default cache key strategy. When you specify this attribute, you explicitly control which components are used to build the cache key.</p>
+        <br>
+        <h4>Sample 1 - Using applicationbuild and datakey</h4>
+        <p>This is the recommended configuration for most data sources. Including applicationbuild ensures the cache is invalidated when the application is updated, while datakey ensures different data sources are cached separately.</p>
+        <d-sample>
+            <div d-datakey="s1-names" 
+                 d-datatype="array" 
+                 d-dataUrlGet="~/api/Sample/GetNames" 
+                 d-dataCacheKeys="applicationbuild,datakey"></div>
+            <div>
+                <input type="button" value="Load Names" d-on-click="PostData(s1-names)">
+                <br><br>
+                <ul>
+                    <li d-for="name in s1-names">{{name.Key}} - {{name.Value}}</li>
+                </ul>
+            </div>
+        </d-sample>
+        <br>
+        <h4>Sample 2 - Including culture for localized data</h4>
+        <p>When working with localized data, you can include the culture component to ensure that cached data is specific to each language or locale.</p>
+        <d-sample>
+            <div d-datakey="s2-nodes" 
+                 d-datatype="array" 
+                 d-dataUrlGet="~/api/Sample/CreateNodes?length=5" 
+                 d-dataCacheKeys="applicationbuild,datakey,culture"></div>
+            <div>
+                <input type="button" value="Load Nodes" d-on-click="PostData(s2-nodes)">
+                <br><br>
+                <ul>
+                    <li d-for="node in s2-nodes">{{node.Key}} - {{node.Value}}</li>
+                </ul>
+            </div>
+        </d-sample>
+        <br>
+        <h4>Notes</h4>
+        <ul>
+            <li>The most common configuration is <code>d-dataCacheKeys="applicationbuild,datakey"</code></li>
+            <li>Using <strong>applicationbuild</strong> in the cache key ensures that cached data is automatically invalidated when you deploy a new version of your application</li>
+            <li>Using <strong>datakey</strong> ensures that each data source has its own cache entry</li>
+            <li>Add <strong>culture</strong> when your data is localized and should be cached separately for each language</li>
+            <li>This attribute works with browser storage (LocalStorage or IndexedDB), not in-memory caching</li>
+        </ul>
+        <br>
+        <h4>Related Attributes</h4>
+        <ul>
+            <li><strong>d-dataCache</strong> - Controls whether the storage item is maintained in cache or used and discarded</li>
+            <li><strong>d-dataUrlGet</strong> - Specifies the URL for GET operations to retrieve data</li>
+            <li><strong>d-dataKey</strong> - Defines the unique identifier for a storage item</li>
+        </ul>
+        <br>
+    </div>
+</div>
