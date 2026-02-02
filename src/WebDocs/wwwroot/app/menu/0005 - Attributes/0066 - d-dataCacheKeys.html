@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-dataCacheKeys</h2>
+        <p>The d-dataCacheKeys attribute is used to specify one or more cache keys for a data source. This attribute allows Drapo to cache different requests based on specific keys, enabling partial caching based on dynamic values.</p>
+        <p>When a data retrieval operation is performed (typically via d-dataUrlGet), Drapo uses the values of these keys to build a unique cache entry. This mechanism enables different requests (for example, details of different users or products) to be cached separately, optimizing performance by avoiding unnecessary server requests when valid cached data is available.</p>
+        <p>The d-dataCacheKeys attribute should be used when your data source URL is dynamic—especially when it depends on parameters like user IDs, filter criteria, or other values that determine unique cache entries.</p>
+        <br>
+        <h4>Sample 1 - Cache by Single Key</h4>
+        <p>In this example, user profiles are cached separately by userId. Each distinct user's profile is stored and served from the cache when requested again.</p>
+        <d-sample>
+            <div d-datakey="s1-userId" d-datatype="value" d-datavalue="1"></div>
+            <div d-datakey="s1-userProfile" 
+                 d-datatype="object" 
+                 d-dataUrlGet="~/api/Sample/GetUser?id={{s1-userId}}" 
+                 d-dataCacheKeys="s1-userId"></div>
+            <div>
+                <label>User ID:</label>
+                <input type="number" d-model="{{s1-userId}}" min="1" max="5">
+                <input type="button" value="Load User" d-on-click="PostData(s1-userProfile)">
+                <br><br>
+                <div d-if="{{s1-userProfile.Name != null}}">
+                    <strong>Name:</strong> {{s1-userProfile.Name}}<br>
+                    <strong>Email:</strong> {{s1-userProfile.Email}}
+                </div>
+            </div>
+        </d-sample>
+        <br>
+        <h4>Sample 2 - Cache by Multiple Keys</h4>
+        <p>You can specify multiple cache keys separated by commas. In this example, products are cached based on both category and page number, ensuring that different combinations are cached separately.</p>
+        <d-sample>
+            <div d-datakey="s2-category" d-datatype="value" d-datavalue="electronics"></div>
+            <div d-datakey="s2-page" d-datatype="value" d-datavalue="1"></div>
+            <div d-datakey="s2-products" 
+                 d-datatype="array" 
+                 d-dataUrlGet="~/api/Sample/GetProducts?category={{s2-category}}&page={{s2-page}}" 
+                 d-dataCacheKeys="s2-category,s2-page"></div>
+            <div>
+                <label>Category:</label>
+                <select d-model="{{s2-category}}">
+                    <option value="electronics">Electronics</option>
+                    <option value="books">Books</option>
+                    <option value="clothing">Clothing</option>
+                </select>
+                <label>Page:</label>
+                <input type="number" d-model="{{s2-page}}" min="1" max="3">
+                <input type="button" value="Load Products" d-on-click="PostData(s2-products)">
+                <br><br>
+                <ul>
+                    <li d-for="product in s2-products">{{product.Name}} - ${{product.Price}}</li>
+                </ul>
+            </div>
+        </d-sample>
+        <br>
+        <h4>Related Attributes</h4>
+        <ul>
+            <li><strong>d-dataCache</strong> - Controls whether the storage item is maintained in cache or used and discarded</li>
+            <li><strong>d-dataUrlGet</strong> - Specifies the URL for GET operations to retrieve data</li>
+            <li><strong>d-dataKey</strong> - Defines the unique identifier for a storage item</li>
+        </ul>
+        <br>
+    </div>
+</div>
