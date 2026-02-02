@@ -3,56 +3,39 @@
 <div>
     <div>
         <h2>d-dataCacheKeys</h2>
-        <p>The d-dataCacheKeys attribute is used to specify one or more cache keys for a data source. This attribute allows Drapo to cache different requests based on specific keys, enabling partial caching based on dynamic values.</p>
-        <p>When a data retrieval operation is performed (typically via d-dataUrlGet), Drapo uses the values of these keys to build a unique cache entry. This mechanism enables different requests (for example, details of different users or products) to be cached separately, optimizing performance by avoiding unnecessary server requests when valid cached data is available.</p>
-        <p>The d-dataCacheKeys attribute should be used when your data source URL is dynamic—especially when it depends on parameters like user IDs, filter criteria, or other values that determine unique cache entries.</p>
+        <p>The d-dataCacheKeys attribute specifies which components should be used to construct the cache key for a data source. This attribute allows you to control how Drapo generates unique cache entries in browser storage (LocalStorage or IndexedDB).</p>
+        <p>The attribute accepts a comma-separated list of predefined cache key components. Common valid values include:</p>
+        <ul>
+            <li><strong>applicationbuild</strong> - Includes the application version in the cache key, ensuring cache invalidation on app updates</li>
+            <li><strong>datakey</strong> - Includes the data key name in the cache key</li>
+            <li><strong>culture</strong> - Includes the current culture/locale in the cache key for localized data</li>
+        </ul>
+        <p>By default, if d-dataCacheKeys is not specified, Drapo uses its own default cache key strategy. When you specify this attribute, you explicitly control which components are used to build the cache key.</p>
         <br>
-        <h4>Sample 1 - Cache by Single Key</h4>
-        <p>In this example, names are cached separately by idName. Each distinct name is stored and served from the cache when requested again.</p>
+        <h4>Sample 1 - Using applicationbuild and datakey</h4>
+        <p>This is the recommended configuration for most data sources. Including applicationbuild ensures the cache is invalidated when the application is updated, while datakey ensures different data sources are cached separately.</p>
         <d-sample>
-            <div d-datakey="s1-idName" d-datatype="value" d-datavalue="1"></div>
-            <div d-datakey="s1-nameById" 
-                 d-datatype="object" 
-                 d-dataUrlGet="~/api/Sample/GetNameById?idName={{s1-idName}}" 
-                 d-dataCacheKeys="s1-idName"></div>
+            <div d-datakey="s1-names" 
+                 d-datatype="array" 
+                 d-dataUrlGet="~/api/Sample/GetNames" 
+                 d-dataCacheKeys="applicationbuild,datakey"></div>
             <div>
-                <label>ID:</label>
-                <select d-model="{{s1-idName}}">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                </select>
-                <input type="button" value="Load Name" d-on-click="PostData(s1-nameById)">
+                <input type="button" value="Load Names" d-on-click="PostData(s1-names)">
                 <br><br>
-                <div d-if="{{s1-nameById.Key != null}}">
-                    <strong>Key:</strong> {{s1-nameById.Key}}<br>
-                    <strong>Value:</strong> {{s1-nameById.Value}}
-                </div>
+                <ul>
+                    <li d-for="name in s1-names">{{name.Key}} - {{name.Value}}</li>
+                </ul>
             </div>
         </d-sample>
         <br>
-        <h4>Sample 2 - Cache by Multiple Keys</h4>
-        <p>You can specify multiple cache keys separated by commas. In this example, nodes are cached based on both length and prefix parameters, ensuring that different combinations are cached separately.</p>
+        <h4>Sample 2 - Including culture for localized data</h4>
+        <p>When working with localized data, you can include the culture component to ensure that cached data is specific to each language or locale.</p>
         <d-sample>
-            <div d-datakey="s2-length" d-datatype="value" d-datavalue="3"></div>
-            <div d-datakey="s2-prefix" d-datatype="value" d-datavalue="A"></div>
             <div d-datakey="s2-nodes" 
                  d-datatype="array" 
-                 d-dataUrlGet="~/api/Sample/CreateNodes?length={{s2-length}}&prefix={{s2-prefix}}" 
-                 d-dataCacheKeys="s2-length,s2-prefix"></div>
+                 d-dataUrlGet="~/api/Sample/CreateNodes?length=5" 
+                 d-dataCacheKeys="applicationbuild,datakey,culture"></div>
             <div>
-                <label>Length:</label>
-                <select d-model="{{s2-length}}">
-                    <option value="3">3</option>
-                    <option value="5">5</option>
-                    <option value="7">7</option>
-                </select>
-                <label>Prefix:</label>
-                <select d-model="{{s2-prefix}}">
-                    <option value="A">A</option>
-                    <option value="B">B</option>
-                    <option value="C">C</option>
-                </select>
                 <input type="button" value="Load Nodes" d-on-click="PostData(s2-nodes)">
                 <br><br>
                 <ul>
@@ -60,6 +43,15 @@
                 </ul>
             </div>
         </d-sample>
+        <br>
+        <h4>Notes</h4>
+        <ul>
+            <li>The most common configuration is <code>d-dataCacheKeys="applicationbuild,datakey"</code></li>
+            <li>Using <strong>applicationbuild</strong> in the cache key ensures that cached data is automatically invalidated when you deploy a new version of your application</li>
+            <li>Using <strong>datakey</strong> ensures that each data source has its own cache entry</li>
+            <li>Add <strong>culture</strong> when your data is localized and should be cached separately for each language</li>
+            <li>This attribute works with browser storage (LocalStorage or IndexedDB), not in-memory caching</li>
+        </ul>
         <br>
         <h4>Related Attributes</h4>
         <ul>
