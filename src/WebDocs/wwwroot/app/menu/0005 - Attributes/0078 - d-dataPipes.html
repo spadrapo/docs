@@ -19,12 +19,14 @@
         </div>
         <br />
         <p>To send information to the client side you can use the method Send. The first parameter is the DrapoPipeMessage.</p>
-        <p>You have 3 types of message that you can delivery to the frontend.</p>
+        <p>You have 4 types of message that you can delivery to the frontend.</p>
         <ul>
             <li>Register - When you need to register</li>
-            <li>Storage - When you need to update storage item</li>
+            <li>Storage - When you need to reload and update a storage item</li>
+            <li>Notify - When you need to notify a storage item without reloading its data</li>
             <li>Execute - When you need to execute a function</li>
         </ul>
+        <p><b>Storage vs Notify:</b> The Storage type reloads the data from the server before updating the UI, while the Notify type only triggers UI updates based on the current data in storage without fetching new data. Use Notify when you just need to refresh the UI or notify observers that the data has changed, without the overhead of reloading.</p>
         <p>The send method has a second parameter that is the audience of the message. You have 3 options here</p>
         <ul>
             <li><b>Others</b> (default)</li>
@@ -50,6 +52,11 @@
                 <li d-for="chat in chats">{{chat.Date}} - {{chat.User}} - {{chat.Message}}</li>
             </ul>
         </d-sample>
+        <br />
+        <p>Example of using the Notify type to trigger updates without reloading:</p>
+        <d-code>
+            _plumber.Send(new DrapoPipeMessage() { Type = DrapoPipeMessageType.Notify, Data = "dataKey" });
+        </d-code>
         <br />
     </div>
 </div>
