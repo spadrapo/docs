@@ -41,6 +41,7 @@ namespace WebDocs
                   });
             services.AddScoped<IFunctionService, FunctionService>();
             services.AddScoped<IAttributeService, AttributeService>();
+            services.AddScoped<IDataTypeService, DataTypeService>();
             services.AddScoped<INuGetService, NuGetService>();
             services.AddScoped<MenuController, MenuController>();
             services.AddScoped<SearchController, SearchController>();
