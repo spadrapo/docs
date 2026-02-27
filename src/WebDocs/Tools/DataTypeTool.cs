@@ -26,7 +26,7 @@ namespace WebDocs.Tools
         /// Gets the list of all Drapo data types (basic info only).
         /// </summary>
         /// <returns>List of <see cref="DataTypeVM"/> objects.</returns>
-        [McpServerTool(Name = "get_data_types"), Description("Get the list of all drapo data types. These types are used to define the type of data storage items. These data types do not have too much detail.")]
+        [McpServerTool(Name = "get_data_types"), Description("Get the list of all Drapo data types. These types are used to define the type of data storage items. These data types do not have too much detail.")]
         public async Task<List<DataTypeVM>> GetDataTypes()
         {
             return (await this._dataTypeService.GetList());
@@ -37,7 +37,7 @@ namespace WebDocs.Tools
         /// </summary>
         /// <param name="name">The data type name (without numeric prefix).</param>
         /// <returns>The <see cref="DataTypeVM"/> for the data type, or null if not found.</returns>
-        [McpServerTool(Name = "get_data_type_details"), Description("Get details about a drapo data type with samples of how to use it. These types are used to define the type of data storage items like value, object, array, function, etc.")]
+        [McpServerTool(Name = "get_data_type_details"), Description("Get details about a Drapo data type with samples of how to use it. These types are used to define the type of data storage items like value, object, array, function, etc.")]
         public async Task<DataTypeVM> GetDataTypeDetails(string name)
         {
             return (await this._dataTypeService.Get(name));
