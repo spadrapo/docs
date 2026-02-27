@@ -16,6 +16,7 @@ namespace WebDocs.Services
     public class DataTypeService : IDataTypeService
     {
         private readonly IWebHostEnvironment _env;
+        private const string ParagraphTagStart = "<p>";
         /// <summary>
         /// Initializes a new instance of the <see cref="DataTypeService"/> class.
         /// </summary>
@@ -68,9 +69,9 @@ namespace WebDocs.Services
                 foreach (var line in lines)
                 {
                     var trimmed = line.Trim();
-                    if (trimmed.StartsWith("<p>", StringComparison.OrdinalIgnoreCase))
+                    if (trimmed.StartsWith(ParagraphTagStart, StringComparison.OrdinalIgnoreCase))
                     {
-                        int start = trimmed.IndexOf("<p>") + 3;
+                        int start = trimmed.IndexOf(ParagraphTagStart) + ParagraphTagStart.Length;
                         int end = trimmed.IndexOf("</p>", start, StringComparison.OrdinalIgnoreCase);
                         if (end > start)
                             description = trimmed.Substring(start, end - start).Trim();
@@ -90,7 +91,7 @@ namespace WebDocs.Services
         }
 
         /// <summary>
-        /// Gets a list of all Drapo data types (name and first line only).
+        /// Gets a list of all Drapo data types (name and description only).
         /// </summary>
         /// <returns>List of <see cref="DataTypeVM"/> objects with basic info.</returns>
         public async Task<List<DataTypeVM>> GetList()
@@ -99,7 +100,7 @@ namespace WebDocs.Services
         }
 
         /// <summary>
-        /// Gets the details for a specific Drapo data type (name, first line, and full content).
+        /// Gets the details for a specific Drapo data type (name, description, and full content).
         /// </summary>
         /// <param name="name">The data type name (without numeric prefix).</param>
         /// <returns>The <see cref="DataTypeVM"/> for the data type, or null if not found.</returns>

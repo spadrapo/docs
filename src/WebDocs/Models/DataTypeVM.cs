@@ -8,14 +8,14 @@ namespace WebDocs.Models
         /// <summary>
         /// Gets or sets the data type name (file name without numeric prefix and extension).
         /// </summary>
-        public string Name { set; get; }
+        public string Name { get; set; }
         /// <summary>
         /// Gets or sets the data type description (extracted from first paragraph).
         /// </summary>
-        public string Description { set; get; }
+        public string Description { get; set; }
         /// <summary>
         /// Gets or sets the data type details (full file content, if requested).
         /// </summary>
-        public string Details { set; get; }
+        public string Details { get; set; }
     }
 }
