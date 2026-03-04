@@ -1,5 +1,5 @@
 ﻿.dFunctionParametersTable {
-    color: #333;
+    color: var(--table-text);
     font-family: Helvetica, Arial, sans-serif;
     width: 100%;
     border-collapse: collapse;
@@ -12,17 +12,17 @@
     }
 
     th {
-        background: #DFDFDF; 
+        background: var(--table-header-bg); 
         font-weight: bold;
     }
 
     td {
-        background: #FAFAFA;
+        background: var(--table-cell-bg);
     }
     tr:nth-child(even) td {
-        background: #F1F1F1;
+        background: var(--table-cell-even);
     }
     tr:nth-child(odd) td {
-        background: #FEFEFE;
+        background: var(--table-cell-odd);
     }
 }

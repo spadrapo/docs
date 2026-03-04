@@ -9,8 +9,9 @@
     justify-content: space-between;
     align-items: center;
     padding: 10px 20px;
-    background-color: #f8f9fa;
-    border-bottom: 1px solid #dee2e6;
+    background-color: var(--header-bg);
+    border-bottom: 1px solid var(--header-border);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .header-left {
@@ -22,7 +23,7 @@
 .header-left span {
     font-size: 1.2em;
     font-weight: bold;
-    color: #333;
+    color: var(--header-title-color);
 }
 
 .header-right {
@@ -39,11 +40,17 @@
 .search-input {
     width: 100%;
     padding: 8px 12px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--input-border);
     border-radius: 4px;
     font-size: 14px;
     outline: none;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, background-color 0.3s ease, color 0.3s ease;
+    background-color: var(--input-bg);
+    color: var(--input-color);
+}
+
+.search-input::placeholder {
+    color: var(--search-item-type);
 }
 
 .search-input:focus {
@@ -56,8 +63,8 @@
     top: 100%;
     left: 0;
     right: 0;
-    background: white;
-    border: 1px solid #ccc;
+    background: var(--search-bg);
+    border: 1px solid var(--search-border);
     border-top: none;
     border-radius: 0 0 4px 4px;
     max-height: 300px;
@@ -69,12 +76,12 @@
 .search-item {
     padding: 10px 12px;
     cursor: pointer;
-    border-bottom: 1px solid #f1f1f1;
+    border-bottom: 1px solid var(--search-item-border);
     transition: background-color 0.1s;
 }
 
 .search-item:hover {
-    background-color: #f8f9fa;
+    background-color: var(--search-item-hover);
 }
 
 .search-item:last-child {
@@ -83,14 +90,44 @@
 
 .search-item-name {
     font-weight: 500;
-    color: #333;
+    color: var(--search-item-name);
     margin-bottom: 2px;
 }
 
 .search-item-type {
     font-size: 12px;
-    color: #666;
+    color: var(--search-item-type);
     text-transform: uppercase;
+}
+
+.theme-toggle {
+    background: transparent;
+    border: 1px solid var(--toggle-btn-border);
+    border-radius: 4px;
+    color: var(--toggle-btn-color);
+    cursor: pointer;
+    font-size: 18px;
+    line-height: 1;
+    padding: 5px 8px;
+    margin-left: 12px;
+    transition: border-color 0.3s ease, color 0.3s ease;
+    flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+    opacity: 0.8;
+}
+
+.theme-toggle-icon-dark {
+    display: none;
+}
+
+html.dark-theme .theme-toggle-icon-light {
+    display: none;
+}
+
+html.dark-theme .theme-toggle-icon-dark {
+    display: inline;
 }
 
 @media (max-width: 768px) {
