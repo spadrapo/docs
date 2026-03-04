@@ -3,7 +3,7 @@
 
     .sample > div {
         width: 100%;
-        border: 1px solid #ccc;
-        background-color: #f5f5f5;
+        border: 1px solid var(--color-border-light);
+        background-color: var(--color-bg-tertiary);
         padding: 20px;
     }

@@ -16,7 +16,7 @@
                        d-model="{{searchQuery}}" 
                        d-model-event="keyup"
                        d-on-keyup-debounce="true"
-                       d-on-blur="UpdateData(searchQuery,'')" />
+                       d-on-blur="UpdateData(searchQuery,'');ClearData(searchResults)" />
                 <div class="search-results" d-if="{{searchResults.length}} > 0">
                     <div class="search-item" 
                          d-for="result in searchResults" 
@@ -27,5 +27,8 @@
                 </div>
             </div>
         </div>
+        <button class="theme-toggle" onclick="drapoToggleTheme()" title="Toggle dark/light theme" aria-label="Toggle dark/light theme">
+            <span id="drapo-theme-icon">🌙</span>
+        </button>
     </div>
 </div>

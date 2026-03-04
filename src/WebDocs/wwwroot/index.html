@@ -16,6 +16,32 @@
 
         gtag('config', 'UA-143277263-1');
     </script>
+    <script>
+        (function () {
+            var stored = localStorage.getItem('drapo-docs-theme');
+            var theme = stored || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+            document.documentElement.setAttribute('data-theme', theme);
+        })();
+
+        function drapoApplyThemeUI(theme) {
+            var icon = document.getElementById('drapo-theme-icon');
+            var btn = document.querySelector('.theme-toggle');
+            if (icon) icon.textContent = theme === 'dark' ? '☀️' : '🌙';
+            if (btn) btn.setAttribute('aria-label', theme === 'dark' ? 'Switch to light theme' : 'Switch to dark theme');
+        }
+
+        function drapoToggleTheme() {
+            var current = document.documentElement.getAttribute('data-theme') || 'light';
+            var next = current === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', next);
+            localStorage.setItem('drapo-docs-theme', next);
+            drapoApplyThemeUI(next);
+        }
+
+        window.addEventListener('DOMContentLoaded', function () {
+            drapoApplyThemeUI(document.documentElement.getAttribute('data-theme') || 'light');
+        });
+    </script>
     <title>Drapo</title>
 </head>
 <body>
