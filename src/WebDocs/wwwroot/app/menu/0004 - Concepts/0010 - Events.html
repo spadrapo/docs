@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Events</h2>
+    <p>Drapo's event system lets you attach behavior to standard DOM events using <code>d-on-{event}</code> attributes. When the event fires, Drapo evaluates the attribute value as a sequence of Drapo function calls separated by semicolons — no JavaScript required.</p>
+
+    <h3>Supported Event Attributes</h3>
+    <ul>
+        <li><code>d-on-click</code> – Mouse click</li>
+        <li><code>d-on-change</code> – Input value changed</li>
+        <li><code>d-on-keyup</code> – Any key released</li>
+        <li><code>d-on-keyup-enter</code> – Enter key released</li>
+        <li><code>d-on-keydown</code> – Any key pressed</li>
+        <li><code>d-on-blur</code> – Focus lost</li>
+        <li><code>d-on-focus</code> – Focus gained</li>
+        <li><code>d-on-load</code> – Element or sector loaded</li>
+        <li><code>d-on-dblclick</code> – Double click</li>
+    </ul>
+
+    <h3>Basic Usage</h3>
+    <pre><code>&lt;button d-on-click="PostData(user)"&gt;Save&lt;/button&gt;
+
+&lt;input d-model="{{search.query}}"
+       d-on-keyup-enter="LoadData(results)"
+       placeholder="Search..." /&gt;
+
+&lt;select d-model="{{filter.status}}"
+        d-on-change="LoadData(orders)"&gt;
+    &lt;option value=""&gt;All&lt;/option&gt;
+    &lt;option value="open"&gt;Open&lt;/option&gt;
+&lt;/select&gt;</code></pre>
+
+    <h3>Chaining Functions</h3>
+    <p>Multiple Drapo functions can be executed in sequence by separating them with a semicolon. They are executed in order, left to right.</p>
+    <pre><code>&lt;button d-on-click="AddDataItem(todos,newTodo);ClearDataField(newTodo,text)"&gt;
+    Add Todo
+&lt;/button&gt;</code></pre>
+
+    <h3>Passing Storage Values to Functions</h3>
+    <p>Storage keys and expressions can be passed as arguments to event handler functions. Drapo resolves them before calling the function.</p>
+    <pre><code>&lt;li d-for="item in cart"&gt;
+    {{item.name}}
+    &lt;button d-on-click="RemoveDataItem(cart,item)"&gt;Remove&lt;/button&gt;
+&lt;/li&gt;</code></pre>
+
+    <h3>Load Events</h3>
+    <p>The <code>d-on-load</code> attribute fires when the element's containing sector finishes loading. This is the correct place to trigger data loading that should happen when a page or component is first displayed.</p>
+    <pre><code>&lt;div d-on-load="LoadData(dashboard)"&gt;
+    &lt;!-- dashboard content --&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Conditional Event Actions</h3>
+    <p>You can use <code>d-if</code> together with event attributes to conditionally render elements that trigger events, or use the <code>ToggleItemField</code> / <code>CheckDataField</code> / <code>UncheckDataField</code> functions inside event handlers to implement toggle behaviour.</p>
+    <pre><code>&lt;button d-on-click="ToggleItemField({{item}},selected)"&gt;
+    Toggle
+&lt;/button&gt;</code></pre>
+
+    <h3>Drag and Drop Events</h3>
+    <p>Drapo provides built-in drag-and-drop support via <code>d-dragStart</code> and <code>d-dragEnd</code> attributes. These integrate with the storage system to enable dragging items between lists without custom JavaScript.</p>
+    <pre><code>&lt;div d-for="item in list"
+     d-dragStart="true"
+     d-dragEnd="true"&gt;
+    {{item.name}}
+&lt;/div&gt;</code></pre>
+</body>
+</html>

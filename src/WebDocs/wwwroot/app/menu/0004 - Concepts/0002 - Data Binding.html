@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Data Binding</h2>
+    <p>Data binding in Drapo is the mechanism that keeps the UI automatically in sync with client-side data storage. It uses a mustache-style syntax (<code>{{storageKey.property}}</code>) to read values and the <code>d-model</code> attribute for two-way binding on form controls.</p>
+
+    <h3>One-way Binding (Read)</h3>
+    <p>Any text node or attribute value that contains a mustache expression like <code>{{user.name}}</code> is automatically updated whenever the <code>user</code> storage item changes. Drapo scans the DOM for these expressions on initialisation and re-evaluates them when data changes.</p>
+    <pre><code>&lt;span&gt;Hello, {{user.name}}!&lt;/span&gt;</code></pre>
+
+    <h3>Two-way Binding (d-model)</h3>
+    <p>The <code>d-model</code> attribute creates a two-way link between a form control and a storage property. When the user types in the control the storage value is updated immediately, and when the storage value changes programmatically the control reflects the new value.</p>
+    <pre><code>&lt;input d-model="{{user.name}}" type="text" /&gt;</code></pre>
+
+    <h3>Expression Evaluation</h3>
+    <p>Drapo evaluates mustache expressions in the context of the current data sector. Expressions can reference nested properties (<code>{{order.address.city}}</code>), array items inside a <code>d-for</code> loop (<code>{{item.price}}</code>), or computed values like <code>{{items.length}}</code>. Simple JavaScript-like arithmetic and comparisons are supported inside expressions used in attributes such as <code>d-if</code> and <code>d-class</code>.</p>
+
+    <h3>Binding Inside Loops</h3>
+    <p>Inside a <code>d-for</code> loop, the iterator variable is available as a special storage context scoped to each iteration. Bindings inside the loop body automatically resolve relative to the current iteration item.</p>
+    <pre><code>&lt;ul&gt;
+    &lt;li d-for="product in products"&gt;
+        {{product.name}} — ${{product.price}}
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+    <h3>Binding to HTML Attributes</h3>
+    <p>Mustache expressions can appear in any HTML attribute value, not just text nodes. This makes it possible to dynamically set URLs, CSS classes, ARIA attributes, and more.</p>
+    <pre><code>&lt;img src="{{user.avatarUrl}}" alt="{{user.name}}" /&gt;
+&lt;a href="/profile/{{user.id}}"&gt;View profile&lt;/a&gt;</code></pre>
+
+    <h3>Change Tracking</h3>
+    <p>Drapo automatically tracks changes to storage items. When a value changes, all DOM nodes bound to that storage key are updated in a single pass. This avoids unnecessary re-renders and keeps the UI consistent with the data at all times.</p>
+</body>
+</html>

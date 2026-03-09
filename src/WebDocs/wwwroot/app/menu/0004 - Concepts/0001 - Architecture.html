@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Architecture</h2>
+    <p>Drapo is a declarative Single Page Application (SPA) framework composed of a client-side JavaScript library and a server-side ASP.NET Core middleware that work together to deliver reactive web applications without requiring custom JavaScript.</p>
+
+    <h3>Overview</h3>
+    <p>Drapo consists of two main components that communicate over HTTP and optionally over WebSockets via SignalR:</p>
+    <ul>
+        <li><strong>Client-side library (drapo.js):</strong> A TypeScript-compiled JavaScript bundle loaded by the browser. It intercepts HTML attributes prefixed with <code>d-</code>, manages a client-side data storage, performs DOM manipulation, evaluates expressions, handles events, and communicates with the server.</li>
+        <li><strong>Server-side middleware (ASP.NET Core):</strong> An ASP.NET Core middleware (<code>UseDrapo</code>) that serves the client library, handles API requests from the client, manages real-time pipes via SignalR, serves component markup and styles, and resolves dynamic routing.</li>
+    </ul>
+
+    <h3>Request Lifecycle</h3>
+    <p>When a user navigates to a Drapo application, the following happens:</p>
+    <ol>
+        <li>The browser loads a static <code>index.html</code> page that includes <code>drapo.js</code> and defines the root sectors using <code>d-sector</code>.</li>
+        <li>The client library initialises, reads the HTML attributes, and loads data and views into the sectors via AJAX calls to the server.</li>
+        <li>As the user interacts with the page, the client library evaluates expressions, updates the DOM, triggers functions, and synchronises data with the server as needed.</li>
+        <li>Real-time updates are pushed from the server to the client via SignalR pipes when enabled.</li>
+    </ol>
+
+    <h3>Client-Side Storage</h3>
+    <p>The Drapo client maintains an in-memory storage registry keyed by <code>d-dataKey</code> values. Each storage item holds typed data (value, object, array, etc.) that can be two-way bound to form controls and rendered in templates. The storage is the central state management mechanism in Drapo applications.</p>
+
+    <h3>Server-Side Integration</h3>
+    <p>The <code>AddDrapo</code> and <code>UseDrapo</code> calls in <code>Program.cs</code> / <code>Startup.cs</code> integrate Drapo into the ASP.NET Core pipeline. The middleware serves <code>drapo.js</code> and handles special routes for components, views, and pipes. Your own controllers and API endpoints co-exist alongside the Drapo middleware and are called directly by the client library via <code>d-dataUrlGet</code> / <code>d-dataUrlSet</code> attributes.</p>
+
+    <h3>Folder Convention</h3>
+    <p>By convention, Drapo applications place shared HTML view files under <code>wwwroot/app/</code>, components under <code>wwwroot/components/</code>, and static assets under <code>wwwroot/img/</code> or similar. The middleware resolves URLs prefixed with <code>~/</code> relative to <code>wwwroot</code>, so paths like <code>~/app/menu/page.html</code> map to <code>wwwroot/app/menu/page.html</code>.</p>
+</body>
+</html>

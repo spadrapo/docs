@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Expressions</h2>
+    <p>Drapo expressions are snippets of dynamic content embedded in HTML attribute values and text nodes using double curly braces: <code>{{expression}}</code>. The Drapo client evaluates these expressions in the context of the current sector's storage and updates the DOM whenever the referenced storage values change.</p>
+
+    <h3>Basic Property Access</h3>
+    <p>The simplest expression is a path to a property of a storage item.</p>
+    <pre><code>{{user.name}}
+{{order.total}}
+{{settings.theme}}</code></pre>
+
+    <h3>Nested Properties</h3>
+    <p>Expressions support arbitrarily deep property paths.</p>
+    <pre><code>{{order.shipping.address.city}}</code></pre>
+
+    <h3>Array Item Properties (inside d-for)</h3>
+    <p>Inside a <code>d-for</code> loop the iterator variable is accessible directly.</p>
+    <pre><code>&lt;li d-for="item in cart"&gt;{{item.name}} x {{item.quantity}}&lt;/li&gt;</code></pre>
+
+    <h3>Arithmetic and Comparisons</h3>
+    <p>Drapo supports basic arithmetic and comparison operators inside expressions used in conditional attributes such as <code>d-if</code> and <code>d-class</code>.</p>
+    <pre><code>&lt;!-- Show element only when count is greater than zero --&gt;
+&lt;span d-if="{{cart.length}} &gt; 0"&gt;{{cart.length}} items&lt;/span&gt;
+
+&lt;!-- Apply a CSS class conditionally --&gt;
+&lt;div d-class="{active:{{tab.selected}}}"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Function Call Expressions</h3>
+    <p>Drapo built-in functions can be invoked inside event attribute values (e.g., <code>d-on-click</code>). Multiple function calls can be chained with a semicolon.</p>
+    <pre><code>&lt;button d-on-click="SaveData(user);ClearDataField(form,error)"&gt;Save&lt;/button&gt;</code></pre>
+
+    <h3>Special Variables</h3>
+    <p>Drapo injects a set of special storage items that are always available:</p>
+    <ul>
+        <li><code>__browser</code> – Browser information such as <code>__browser.Width</code> and <code>__browser.Height</code>.</li>
+        <li><code>__location</code> – Current URL information.</li>
+        <li><code>__sector</code> – Sector metadata.</li>
+    </ul>
+    <pre><code>&lt;!-- Show mobile layout for small screens --&gt;
+&lt;div d-if="{{__browser.Width}} &lt; 768"&gt;Mobile View&lt;/div&gt;</code></pre>
+
+    <h3>Expressions in Attributes</h3>
+    <p>Expressions can appear inside any HTML attribute value, not just text content. This allows dynamic URLs, class names, aria attributes, and more.</p>
+    <pre><code>&lt;a href="/user/{{user.id}}"&gt;Profile&lt;/a&gt;
+&lt;img src="{{product.imageUrl}}" alt="{{product.name}}" /&gt;</code></pre>
+
+    <h3>Escaping</h3>
+    <p>If you need to output the literal text <code>{{</code> without it being treated as an expression, encode the braces in HTML (<code>&amp;#123;&amp;#123;</code>) or consider using a server-side template to emit the final HTML.</p>
+</body>
+</html>

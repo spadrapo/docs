@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Routing</h2>
+    <p>Drapo includes a client-side SPA routing system that maps URL patterns to Drapo function calls — typically <code>UpdateSector</code> calls that load different views. Routes are configured on the server and sent to the client as part of the Drapo initialisation payload.</p>
+
+    <h3>Defining Routes</h3>
+    <p>Routes are created in your startup configuration using <code>CreateRoute(pattern, action)</code>. The <code>pattern</code> is a regular expression and the <code>action</code> is a Drapo function string.</p>
+    <pre><code>// Match /page/{id} and load the corresponding view
+options.Config.CreateRoute(
+    "^/page/(?&lt;id&gt;\\w+)$",
+    "ClearSector(content);UpdateSector(content,~/app/pages/{{id}}.html)");
+
+// Default route — home page
+options.Config.CreateRoute(
+    "^/$",
+    "UpdateSector(content,~/app/home.html)");</code></pre>
+
+    <h3>Named Capture Groups</h3>
+    <p>Regular expression named capture groups (e.g., <code>(?&lt;id&gt;\w+)</code>) are automatically extracted and made available as expressions inside the action string. In the example above, <code>{{id}}</code> in the action is replaced by the captured value from the URL.</p>
+
+    <h3>Applying a Route</h3>
+    <p>Routes are applied programmatically using the <code>ApplyRoute</code> function. This updates the browser's address bar and executes the matching route action without a full page reload.</p>
+    <pre><code>&lt;a d-on-click="ApplyRoute(/page/about)"&gt;About&lt;/a&gt;
+&lt;button d-on-click="ApplyRoute(/page/{{item.slug}})"&gt;Open&lt;/button&gt;</code></pre>
+
+    <h3>Rejected Routes</h3>
+    <p>Some URL paths should not be handled by the client-side router (e.g., API endpoints, static files). Add rejected route patterns to prevent Drapo from intercepting those URLs:</p>
+    <pre><code>options.Config.CreateRouteRejected("^/api/");</code></pre>
+
+    <h3>Dynamic / Multi-Tenant Routes</h3>
+    <p>For multi-tenant applications, you can inject tenant-specific routing logic using the <code>RouteEvent</code> delegate. The delegate receives the current domain and URL, and returns the action to execute. This allows per-tenant view resolution without duplicating route definitions.</p>
+    <pre><code>options.Config.RouteEvent = async (domain, url) =&gt;
+{
+    string tenant = ResolveTenant(domain);
+    return $"UpdateSector(content,~/tenants/{tenant}/home.html)";
+};</code></pre>
+
+    <h3>UseRouter Flag</h3>
+    <p>Set <code>options.Config.UseRouter = false</code> to disable the Drapo client router entirely if you prefer to handle all navigation with explicit <code>UpdateSector</code> calls without changing the browser URL. This is useful for applications embedded inside other pages or iframes.</p>
+</body>
+</html>
