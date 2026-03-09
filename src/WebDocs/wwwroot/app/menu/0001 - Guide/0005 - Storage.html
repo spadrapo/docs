@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Storage</h2>
-    <p>Drapo Storage is the client-side state management system. Each storage item is identified by a unique key defined with the <code>d-dataKey</code> attribute and holds typed data that can be loaded from the server, initialised inline, or manipulated by Drapo functions.</p>
+    <p>Drapo Storage is the client-side state management system. Each storage item is identified by a unique key defined with the <a href="#" d-on-click="ApplyRoute(/doc/ddataKey)"><code>d-dataKey</code></a> attribute and holds typed data that can be loaded from the server, initialised inline, or manipulated by Drapo functions.</p>
 
     <h3>Defining Storage Items</h3>
     <p>A storage item is declared on any HTML element using the <code>d-dataKey</code> attribute. Additional attributes configure its type, initial values, and server endpoints.</p>
@@ -25,10 +25,10 @@
      d-dataUrlGet="~/api/products"&gt;&lt;/div&gt;</code></pre>
 
     <h3>Storage Types</h3>
-    <p>Drapo supports the following storage types (configured via <code>d-dataType</code>):</p>
+    <p>Drapo supports the following storage types (configured via <a href="#" d-on-click="ApplyRoute(/doc/ddataType)"><code>d-dataType</code></a>):</p>
     <ul>
         <li><strong>value</strong> – A single scalar value (string, number, boolean).</li>
-        <li><strong>object</strong> – A key-value map of properties. Properties are set with <code>d-dataProperty-{name}</code>.</li>
+        <li><strong>object</strong> – A key-value map of properties. Properties are set with <a href="#" d-on-click="ApplyRoute(/doc/ddataProperty)"><code>d-dataProperty-{name}</code></a>.</li>
         <li><strong>array</strong> – An ordered list of items, often loaded from a server endpoint.</li>
         <li><strong>function</strong> – Data populated by a Drapo function call.</li>
         <li><strong>querystring</strong> – Data parsed from the current URL query string.</li>
@@ -36,12 +36,12 @@
         <li><strong>file</strong> – File data used for upload scenarios.</li>
         <li><strong>mapping</strong> – A transformation mapping between two storage items.</li>
         <li><strong>pointer</strong> – A reference to another storage item.</li>
-        <li><strong>query</strong> – Data derived from a query over other storage items.</li>
+        <li><strong>query</strong> – Data derived from a query over other storage items. See <a href="#" d-on-click="ApplyRoute(/doc/DataQuerying)">Data Querying</a>.</li>
         <li><strong>switch</strong> – Data toggled between a set of predefined values.</li>
     </ul>
 
     <h3>Loading Data from the Server</h3>
-    <p>Use <code>d-dataUrlGet</code> to load data when the element is rendered, and <code>d-dataUrlSet</code> to define the URL for posting changes back to the server.</p>
+    <p>Use <a href="#" d-on-click="ApplyRoute(/doc/ddataUrlGet)"><code>d-dataUrlGet</code></a> to load data when the element is rendered, and <a href="#" d-on-click="ApplyRoute(/doc/ddataUrlSet)"><code>d-dataUrlSet</code></a> to define the URL for posting changes back to the server.</p>
     <pre><code>&lt;div d-dataKey="orders"
      d-dataType="array"
      d-dataUrlGet="~/api/orders"
@@ -60,6 +60,7 @@
 
 &lt;!-- Clear a storage field --&gt;
 &lt;button d-on-click="ClearDataField(user, name)"&gt;Clear Name&lt;/button&gt;</code></pre>
+    <p>Key functions: <a href="#" d-on-click="ApplyRoute(/function/AddDataItem)"><code>AddDataItem</code></a>, <a href="#" d-on-click="ApplyRoute(/function/RemoveDataItem)"><code>RemoveDataItem</code></a>, <a href="#" d-on-click="ApplyRoute(/function/PostData)"><code>PostData</code></a>, <a href="#" d-on-click="ApplyRoute(/function/ClearDataField)"><code>ClearDataField</code></a>, <a href="#" d-on-click="ApplyRoute(/function/UpdateDataField)"><code>UpdateDataField</code></a>, <a href="#" d-on-click="ApplyRoute(/function/ReloadData)"><code>ReloadData</code></a>.</p>
 
     <h3>Storage Scope</h3>
     <p>Storage items defined inside a sector are scoped to that sector's lifetime. When a sector is cleared or replaced, its local storage items are destroyed. Global storage items can be defined outside any sector (e.g., in the root layout) so that they persist across navigation.</p>

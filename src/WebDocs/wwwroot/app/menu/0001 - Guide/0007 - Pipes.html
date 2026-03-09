@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Pipes</h2>
-    <p>Pipes are Drapo's real-time communication mechanism. They use SignalR WebSockets to push data updates from the server to connected clients without the client needing to poll. When a pipe fires, Drapo automatically refreshes the bound storage items in the browser.</p>
+    <p>Pipes are Drapo's real-time communication mechanism. They use SignalR WebSockets to push data updates from the server to connected clients without the client needing to poll. When a pipe fires, Drapo automatically refreshes the bound storage items in the browser. For a simpler interval-based alternative, see <a href="#" d-on-click="ApplyRoute(/doc/Polling)">Polling</a>.</p>
 
     <h3>Enabling Pipes</h3>
     <p>Pipes must be enabled in the server-side configuration and on each storage item that should receive real-time updates.</p>
@@ -15,7 +15,7 @@ app.UseDrapo(options =&gt;
 {
     options.Config.UsePipes = true;
 });</code></pre>
-    <p>Then on the storage element, add the <code>d-dataPipes</code> attribute with the pipe key to listen on:</p>
+    <p>Then on the storage element, add the <a href="#" d-on-click="ApplyRoute(/doc/ddataPipes)"><code>d-dataPipes</code></a> attribute with the pipe key to listen on:</p>
     <pre><code>&lt;div d-dataKey="notifications"
      d-dataType="array"
      d-dataUrlGet="~/api/notifications"
@@ -30,7 +30,7 @@ await _drapoPlumber.SendPipe("notificationPipe");</code></pre>
     <p>The SignalR hub used by Drapo is automatically mapped by the middleware. Its URL is controlled by <code>options.Config.PipeHubName</code> (default: <code>DrapoPlumberHub</code>). You do not need to configure this manually unless you want to change the hub path.</p>
 
     <h3>Polling as an Alternative</h3>
-    <p>When WebSockets are not available or not desired, the Drapo middleware also supports a polling model. The <code>PollingEvent</code> delegate on <code>DrapoMiddlewareOptions</code> lets you provide a function that returns a hash value. The client periodically calls this endpoint and triggers a data refresh whenever the hash changes.</p>
+    <p>When WebSockets are not available or not desired, the Drapo middleware also supports a polling model. The <code>PollingEvent</code> delegate on <code>DrapoMiddlewareOptions</code> lets you provide a function that returns a hash value. The client periodically calls this endpoint and triggers a data refresh whenever the hash changes. See <a href="#" d-on-click="ApplyRoute(/doc/Polling)">Polling</a> for full details.</p>
     <pre><code>options.PollingEvent += async (domain, connectionId, key) =&gt;
 {
     // Return a value that changes when data has changed

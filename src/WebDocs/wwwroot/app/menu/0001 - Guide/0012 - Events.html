@@ -7,6 +7,7 @@
 <body>
     <h2>Events</h2>
     <p>Drapo's event system lets you attach behavior to standard DOM events using <code>d-on-{event}</code> attributes. When the event fires, Drapo evaluates the attribute value as a sequence of Drapo function calls separated by semicolons — no JavaScript required.</p>
+    <p>See <a href="#" d-on-click="ApplyRoute(/doc/Storage)">Storage</a> for all available functions and <a href="#" d-on-click="ApplyRoute(/doc/DataBinding)">Data Binding</a> for how <a href="#" d-on-click="ApplyRoute(/doc/dmodel)"><code>d-model</code></a> interacts with events.</p>
 
     <h3>Supported Event Attributes</h3>
     <ul>
@@ -35,7 +36,7 @@
 &lt;/select&gt;</code></pre>
 
     <h3>Chaining Functions</h3>
-    <p>Multiple Drapo functions can be executed in sequence by separating them with a semicolon. They are executed in order, left to right.</p>
+    <p>Multiple Drapo functions can be executed in sequence by separating them with a semicolon. They are executed in order, left to right. See the <a href="#" d-on-click="ApplyRoute(/doc/Functions)">Functions</a> section for the full list of available functions.</p>
     <pre><code>&lt;button d-on-click="AddDataItem(todos,newTodo);ClearDataField(newTodo,text)"&gt;
     Add Todo
 &lt;/button&gt;</code></pre>
@@ -54,7 +55,7 @@
 &lt;/div&gt;</code></pre>
 
     <h3>Conditional Event Actions</h3>
-    <p>You can use <code>d-if</code> together with event attributes to conditionally render elements that trigger events, or use the <code>ToggleItemField</code> / <code>CheckDataField</code> / <code>UncheckDataField</code> functions inside event handlers to implement toggle behaviour.</p>
+    <p>You can use <a href="#" d-on-click="ApplyRoute(/doc/dif)"><code>d-if</code></a> together with event attributes to conditionally render elements that trigger events, or use the <a href="#" d-on-click="ApplyRoute(/function/ToggleItemField)"><code>ToggleItemField</code></a> / <a href="#" d-on-click="ApplyRoute(/function/CheckDataField)"><code>CheckDataField</code></a> / <a href="#" d-on-click="ApplyRoute(/function/UncheckDataField)"><code>UncheckDataField</code></a> functions inside event handlers to implement toggle behaviour.</p>
     <pre><code>&lt;button d-on-click="ToggleItemField({{item}},selected)"&gt;
     Toggle
 &lt;/button&gt;</code></pre>

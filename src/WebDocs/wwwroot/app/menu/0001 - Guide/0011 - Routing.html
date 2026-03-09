@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Routing</h2>
+    <p>Drapo includes a client-side SPA routing system that maps URL patterns to Drapo function calls — typically <a href="#" d-on-click="ApplyRoute(/function/UpdateSector)"><code>UpdateSector</code></a> calls that load different views. Routes are configured on the server and sent to the client as part of the Drapo initialisation payload.</p>
+
+    <h3>How It Works</h3>
+    <p>Your application needs a default <code>index.html</code> in <code>wwwroot</code> that defines all sectors. When a URL is requested, Drapo loads this shell, then executes the action for the matching route to populate the appropriate sector. See the <a href="https://github.com/spadrapo/docs/blob/master/src/WebDocs/wwwroot/index.html" target="_blank">docs site index.html</a> as a reference.</p>
+
+    <h3>Defining Routes</h3>
+    <p>Routes are created in your startup configuration using <code>CreateRoute(pattern, action)</code>. The <code>pattern</code> is a regular expression and the <code>action</code> is a Drapo function string:</p>
+    <pre><code>options.Config.CreateRoute(
+    "^/function/(?&lt;id&gt;\\w+)$",
+    "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
+
+options.Config.CreateRoute(
+    "^/doc/(?&lt;id&gt;\\w+)$",
+    "ClearSector(content);UpdateSector(content,~/app/shared/doc.html)");
+
+options.Config.CreateRoute(
+    "^/$",
+    "UpdateSector(content,~/app/menu/home.html)");</code></pre>
+
+    <h3>Named Capture Groups</h3>
+    <p>Named groups in the regex (e.g. <code>(?&lt;id&gt;\w+)</code>) are extracted and stored in the special <code>__route</code> storage object. They are available as mustache expressions inside the action string — so <code>{{id}}</code> in the action is replaced by the captured URL segment.</p>
+
+    <h3>Navigating with ApplyRoute</h3>
+    <p>Use the <a href="#" d-on-click="ApplyRoute(/function/ApplyRoute)"><code>ApplyRoute</code></a> function to navigate programmatically. It updates the browser's address bar and executes the matching route action without a full page reload:</p>
+    <pre><code>&lt;a d-on-click="ApplyRoute(/page/about)"&gt;About&lt;/a&gt;
+&lt;button d-on-click="ApplyRoute(/page/{{item.slug}})"&gt;Open&lt;/button&gt;</code></pre>
+
+    <h3>Rejected Routes</h3>
+    <p>Some URL paths should not be handled by the router (e.g. API endpoints, static files). Rejected routes match a pattern but stop processing immediately without executing any action:</p>
+    <pre><code>options.Config.CreateRejectedRoute("^/api/");
+options.Config.CreateRejectedRoute("^/admin/.*$");</code></pre>
+    <p><strong>Order matters:</strong> place rejected routes before any normal routes that might match the same path.</p>
+
+    <h3>Dynamic / Multi-Tenant Routes</h3>
+    <p>For multi-tenant applications, register a <code>RouteEvent</code> delegate. It receives the <code>HttpContext</code> and returns a list of routes specific to the current request — tenant, user role, subdomain, etc. Dynamic routes take precedence over static ones:</p>
+    <pre><code>options.RouteEvent += async (context) =&gt;
+{
+    string tenant = context.Request.Headers["X-Tenant"].ToString();
+    var routes = new List&lt;DrapoRoute&gt;();
+    if (tenant == "acme")
+        routes.Add(new DrapoRoute {
+            Uri = "^/home$",
+            Expression = "UpdateSector(content,~/tenants/acme/home.html)"
+        });
+    return routes;
+};</code></pre>
+    <p>Common context sources for tenant identification: <code>context.Request.Headers</code>, <code>context.Request.Host.Host</code> (subdomain), <code>context.User.IsInRole()</code>, <code>context.Request.Query</code>.</p>
+
+    <h3>Disabling the Router</h3>
+    <p>Set <code>options.Config.UseRouter = false</code> to disable the client-side router entirely. This is useful for applications embedded inside other pages or iframes where URL changes are not desired.</p>
+</body>
+</html>

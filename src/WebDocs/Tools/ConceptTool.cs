@@ -26,7 +26,7 @@ namespace WebDocs.Tools
         /// Gets the list of all Drapo concepts (basic info only).
         /// </summary>
         /// <returns>List of <see cref="ConceptVM"/> objects.</returns>
-        [McpServerTool(Name = "get_concepts"), Description("Get the list of all Drapo concepts. These concepts explain how Drapo works including architecture, data binding, storage, sectors, pipes, configuration, expressions, components, routing, and events.")]
+        [McpServerTool(Name = "get_concepts"), Description("Get the list of all Drapo concepts from the Guide section. These concepts explain how Drapo works including installation, architecture, data binding, rendering (d-for/d-if), storage, sectors, pipes, configuration, expressions, components, routing, events, validation, formatting (d-format/d-culture), polling (live data refresh), and data querying (client-side SQL). Some concepts have sub-pages; use get_concept_details to retrieve the full content.")]
         public async Task<List<ConceptVM>> GetConcepts()
         {
             return (await this._conceptService.GetList());

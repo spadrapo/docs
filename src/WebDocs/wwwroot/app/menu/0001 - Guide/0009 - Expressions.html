@@ -19,11 +19,11 @@
     <pre><code>{{order.shipping.address.city}}</code></pre>
 
     <h3>Array Item Properties (inside d-for)</h3>
-    <p>Inside a <code>d-for</code> loop the iterator variable is accessible directly.</p>
+    <p>Inside a <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a> loop the iterator variable is accessible directly.</p>
     <pre><code>&lt;li d-for="item in cart"&gt;{{item.name}} x {{item.quantity}}&lt;/li&gt;</code></pre>
 
     <h3>Arithmetic and Comparisons</h3>
-    <p>Drapo supports basic arithmetic and comparison operators inside expressions used in conditional attributes such as <code>d-if</code> and <code>d-class</code>.</p>
+    <p>Drapo supports basic arithmetic and comparison operators inside expressions used in conditional attributes such as <a href="#" d-on-click="ApplyRoute(/doc/dif)"><code>d-if</code></a> and <a href="#" d-on-click="ApplyRoute(/doc/dclass)"><code>d-class</code></a>.</p>
     <pre><code>&lt;!-- Show element only when count is greater than zero --&gt;
 &lt;span d-if="{{cart.length}} &gt; 0"&gt;{{cart.length}} items&lt;/span&gt;
 
@@ -37,9 +37,9 @@
     <h3>Special Variables</h3>
     <p>Drapo injects a set of special storage items that are always available:</p>
     <ul>
-        <li><code>__browser</code> – Browser information such as <code>__browser.Width</code> and <code>__browser.Height</code>.</li>
-        <li><code>__location</code> – Current URL information.</li>
-        <li><code>__sector</code> – Sector metadata.</li>
+        <li><code>__browser</code> — Browser information such as <code>__browser.Width</code> and <code>__browser.Height</code>.</li>
+        <li><code>__location</code> — Current URL information.</li>
+        <li><code>__sector</code> — Sector metadata.</li>
     </ul>
     <pre><code>&lt;!-- Show mobile layout for small screens --&gt;
 &lt;div d-if="{{__browser.Width}} &lt; 768"&gt;Mobile View&lt;/div&gt;</code></pre>
@@ -48,6 +48,21 @@
     <p>Expressions can appear inside any HTML attribute value, not just text content. This allows dynamic URLs, class names, aria attributes, and more.</p>
     <pre><code>&lt;a href="/user/{{user.id}}"&gt;Profile&lt;/a&gt;
 &lt;img src="{{product.imageUrl}}" alt="{{product.name}}" /&gt;</code></pre>
+
+    <h3>Parameter Types</h3>
+    <p>Functions and attributes accept different types of parameters. Understanding these types helps you use functions correctly:</p>
+    <ul>
+        <li><strong>text</strong> — A plain string value. Example: <code>SaveData(user,"my label")</code></li>
+        <li><strong>mustache</strong> — A data binding expression in <code>{{double curly braces}}</code>. Example: <code>{{user.name}}</code> or <code>{{person.Address.City}}</code></li>
+        <li><strong>boolean</strong> — A value of <code>true</code> or <code>false</code></li>
+        <li><strong>url</strong> — A valid URL path. Example: <code>/api/users</code></li>
+        <li><strong>conditional</strong> — An expression that evaluates to true or false. Example: <code>{{user.isActive}} == true</code></li>
+        <li><strong>expression</strong> — A collection of function calls separated by semicolons. Example: <code>SaveData(user);Navigate(/home)</code></li>
+        <li><strong>datakey</strong> — The name of a storage item declared with <a href="#" d-on-click="ApplyRoute(/doc/ddataKey)"><code>d-dataKey</code></a>. Example: <code>user</code>, <code>products</code></li>
+        <li><strong>datafields</strong> — A dot-separated path within a storage item. Example: <code>user.address.city</code></li>
+        <li><strong>function</strong> — A function that evaluates and returns a value</li>
+        <li><strong>validation</strong> — A validation rule or group of rules applied to a field</li>
+    </ul>
 
     <h3>Escaping</h3>
     <p>If you need to output the literal text <code>{{</code> without it being treated as an expression, encode the braces in HTML (<code>&amp;#123;&amp;#123;</code>) or consider using a server-side template to emit the final HTML.</p>

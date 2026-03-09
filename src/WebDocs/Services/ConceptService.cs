@@ -38,7 +38,41 @@ namespace WebDocs.Services
         }
 
         /// <summary>
+        /// Recursively collects all .html files under a directory, sorted by file/folder name at each level.
+        /// </summary>
+        private List<string> GetHtmlFilesSorted(string directory)
+        {
+            var result = new List<string>();
+            foreach (var file in Directory.GetFiles(directory, "*.html").OrderBy(f => Path.GetFileName(f), StringComparer.OrdinalIgnoreCase))
+                result.Add(file);
+            foreach (var sub in Directory.GetDirectories(directory).OrderBy(d => Path.GetFileName(d), StringComparer.OrdinalIgnoreCase))
+                result.AddRange(GetHtmlFilesSorted(sub));
+            return result;
+        }
+
+        /// <summary>
+        /// Extracts the first paragraph text from a set of file lines.
+        /// </summary>
+        private string ExtractFirstParagraph(IEnumerable<string> lines)
+        {
+            foreach (var line in lines)
+            {
+                var trimmed = line.Trim();
+                if (trimmed.StartsWith(ParagraphTagStart, StringComparison.OrdinalIgnoreCase))
+                {
+                    int start = trimmed.IndexOf(ParagraphTagStart) + ParagraphTagStart.Length;
+                    int end = trimmed.IndexOf("</p>", start, StringComparison.OrdinalIgnoreCase);
+                    return end > start
+                        ? trimmed.Substring(start, end - start).Trim()
+                        : trimmed.Substring(start).Trim();
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
         /// Internal method to retrieve concept view models from the Concepts folder.
+        /// Supports both single .html files and sub-folders (multi-page concepts).
         /// </summary>
         /// <param name="withDetails">Whether to include the full file content as details.</param>
         /// <param name="matchName">If provided, only returns the concept with this name (after prefix removal).</param>
@@ -46,42 +80,55 @@ namespace WebDocs.Services
         private async Task<List<ConceptVM>> GetConceptsInternal(bool withDetails, string matchName = null)
         {
             string conceptsFolder = Directory.GetDirectories(Path.Combine(_env.WebRootPath, "app", "menu"))
-                .FirstOrDefault(d => d.EndsWith("Concepts", StringComparison.OrdinalIgnoreCase));
+                .FirstOrDefault(d => d.EndsWith("Guide", StringComparison.OrdinalIgnoreCase));
             if (conceptsFolder == null)
                 return new List<ConceptVM>();
 
-            var files = Directory.GetFiles(conceptsFolder, "*.html");
+            // Collect both .html files and sub-directories, sorted together by their entry name
+            var entries = Directory.GetFiles(conceptsFolder, "*.html")
+                .Select(f => (sortKey: Path.GetFileName(f), path: f, isDir: false))
+                .Concat(Directory.GetDirectories(conceptsFolder)
+                    .Select(d => (sortKey: Path.GetFileName(d), path: d, isDir: true)))
+                .OrderBy(e => e.sortKey, StringComparer.OrdinalIgnoreCase);
+
             var list = new List<ConceptVM>();
-            foreach (var file in files)
+            foreach (var (_, path, isDir) in entries)
             {
-                string name = Path.GetFileName(file);
-                string displayName = RemoveNumberPrefix(name);
-                if (displayName.EndsWith(".html", StringComparison.OrdinalIgnoreCase))
-                    displayName = Path.GetFileNameWithoutExtension(displayName);
+                string entryName = isDir ? Path.GetFileName(path) : Path.GetFileNameWithoutExtension(path);
+                string displayName = RemoveNumberPrefix(entryName);
+
                 if (matchName != null && !string.Equals(displayName, matchName, StringComparison.OrdinalIgnoreCase))
                     continue;
-                string[] lines = await File.ReadAllLinesAsync(file);
+
                 string description = null;
-                foreach (var line in lines)
+                string details = null;
+
+                if (isDir)
                 {
-                    var trimmed = line.Trim();
-                    if (trimmed.StartsWith(ParagraphTagStart, StringComparison.OrdinalIgnoreCase))
+                    var htmlFiles = GetHtmlFilesSorted(path);
+                    if (htmlFiles.Count > 0)
                     {
-                        int start = trimmed.IndexOf(ParagraphTagStart) + ParagraphTagStart.Length;
-                        int end = trimmed.IndexOf("</p>", start, StringComparison.OrdinalIgnoreCase);
-                        if (end > start)
-                            description = trimmed.Substring(start, end - start).Trim();
-                        else
-                            description = trimmed.Substring(start).Trim();
-                        break;
+                        description = ExtractFirstParagraph(await File.ReadAllLinesAsync(htmlFiles[0]));
+                        if (withDetails)
+                        {
+                            var sb = new System.Text.StringBuilder();
+                            foreach (var htmlFile in htmlFiles)
+                            {
+                                sb.AppendLine(await File.ReadAllTextAsync(htmlFile));
+                            }
+                            details = sb.ToString();
+                        }
                     }
                 }
-                list.Add(new ConceptVM
+                else
                 {
-                    Name = displayName,
-                    Description = description,
-                    Details = withDetails ? string.Join("\n", lines) : null
-                });
+                    var lines = await File.ReadAllLinesAsync(path);
+                    description = ExtractFirstParagraph(lines);
+                    if (withDetails)
+                        details = string.Join("\n", lines);
+                }
+
+                list.Add(new ConceptVM { Name = displayName, Description = description, Details = details });
             }
             return list;
         }

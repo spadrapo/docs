@@ -6,7 +6,7 @@
 </head>
 <body>
     <h2>Sectors</h2>
-    <p>A sector is a named region of the page managed by Drapo. Sectors are the building blocks of Drapo's Single Page Application model: they allow parts of the page to be loaded, cleared, and replaced independently without a full page reload.</p>
+    <p>A sector is a named region of the page managed by Drapo. Sectors are the building blocks of Drapo's Single Page Application model: they allow parts of the page to be loaded, cleared, and replaced independently without a full page reload. Sectors are defined with the <a href="#" d-on-click="ApplyRoute(/doc/dsector)"><code>d-sector</code></a> attribute.</p>
 
     <h3>Defining a Sector</h3>
     <p>Mark any HTML element as a sector by adding the <code>d-sector</code> attribute with a unique name.</p>
@@ -14,7 +14,7 @@
 &lt;div d-sector="sidebar"&gt;&lt;/div&gt;</code></pre>
 
     <h3>Loading Content into a Sector</h3>
-    <p>The <code>UpdateSector</code> function replaces the content of a sector with HTML loaded from a URL. It is typically called from route handlers or event handlers.</p>
+    <p>The <a href="#" d-on-click="ApplyRoute(/function/UpdateSector)"><code>UpdateSector</code></a> function replaces the content of a sector with HTML loaded from a URL. It is typically called from route handlers or event handlers.</p>
     <pre><code>&lt;!-- Load a page into the content sector --&gt;
 &lt;button d-on-click="UpdateSector(content, ~/app/pages/home.html)"&gt;Home&lt;/button&gt;
 
@@ -44,6 +44,6 @@
 &lt;/div&gt;</code></pre>
 
     <h3>Sectors and SPA Routing</h3>
-    <p>Drapo's routing system (configured via <code>CreateRoute</code> in startup) maps URL patterns to <code>UpdateSector</code> calls, so navigating to a route automatically loads the matching view into the correct sector. This is the primary mechanism for implementing navigation in a Drapo SPA without full page reloads.</p>
+    <p>Drapo's routing system (configured via <code>CreateRoute</code> in startup) maps URL patterns to <a href="#" d-on-click="ApplyRoute(/function/UpdateSector)"><code>UpdateSector</code></a> calls, so navigating to a route automatically loads the matching view into the correct sector. This is the primary mechanism for implementing navigation in a Drapo SPA without full page reloads. See <a href="#" d-on-click="ApplyRoute(/doc/Routing)">Routing</a> for full details.</p>
 </body>
 </html>

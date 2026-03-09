@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div d-dataUrlGet="/api/NuGet/GetPackage" d-dataKey="nuget">
+    <div>
+        <h2>Installation</h2>
+        <p>Drapo is a declarative frontend framework for .NET web applications. You can build reactive single-page applications using only HTML attributes and .NET — no JavaScript required.</p>
+
+        <h3>Prerequisites</h3>
+        <ul>
+            <li><strong>.NET 8.0 SDK</strong> or later — <a href="https://dotnet.microsoft.com/download" target="_blank">Download here</a></li>
+            <li><strong>Visual Studio, VS Code, or your preferred IDE</strong></li>
+            <li><strong>Basic knowledge of HTML and C#</strong></li>
+        </ul>
+
+        <h3>Step 1: Add the NuGet Package</h3>
+        <div class="card" style="background-color: #f8f9fa; border: 1px solid #dee2e6; border-radius: 5px; padding: 15px; margin: 15px 0;">
+            <h4>📦 NuGet Package</h4>
+            <div d-if="{{nuget}}">
+                <p><strong>Package ID:</strong> Drapo</p>
+                <p><strong>Latest Version:</strong> <span class="badge bg-primary">{{nuget.LatestVersion}}</span></p>
+                <p><strong>Total Downloads:</strong> <span class="text-success">{{nuget.TotalDownloads}}</span></p>
+            </div>
+            <div d-if="!{{nuget}}">
+                <p><strong>Package ID:</strong> Drapo — check <a href="https://www.nuget.org/packages/Drapo/" target="_blank">NuGet</a> for the latest version.</p>
+            </div>
+        </div>
+        <p>Create a new ASP.NET Core project and add the package:</p>
+        <d-code>
+dotnet new web -n MyDrapoApp
+cd MyDrapoApp
+dotnet add package Drapo
+        </d-code>
+
+        <h3>Step 2: Configure Drapo in Program.cs</h3>
+        <p>Register the Drapo service and middleware:</p>
+        <d-code>
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDrapo();
+
+var app = builder.Build();
+app.UseStaticFiles();
+app.UseDrapo(options => {
+    // Optional configuration here
+});
+app.Run();
+        </d-code>
+
+        <h3>Step 3: Create Your First Page</h3>
+        <p>Create an <code>index.html</code> in your <code>wwwroot</code> folder and include the Drapo script:</p>
+        <d-code>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+    &lt;title&gt;My Drapo App&lt;/title&gt;
+    &lt;script src="/drapo.js"&gt;&lt;/script&gt;
+&lt;/head&gt;
+&lt;body&gt;
+    &lt;div d-sector="main"&gt;
+        &lt;!-- Data setup --&gt;
+        &lt;div d-dataKey="user" d-dataType="object"
+             d-dataProperty-name="Jane Doe"
+             d-dataProperty-age="30"&gt;&lt;/div&gt;
+
+        &lt;h1&gt;Hello, {{user.name}}!&lt;/h1&gt;
+
+        &lt;!-- Two-way data binding --&gt;
+        &lt;p&gt;Name: &lt;input type="text" d-model="{{user.name}}" /&gt;&lt;/p&gt;
+        &lt;p&gt;Age: &lt;input type="number" d-model="{{user.age}}" /&gt;&lt;/p&gt;
+
+        &lt;!-- Conditional rendering --&gt;
+        &lt;p d-if="{{user.age}} &gt;= 18"&gt;You are an adult.&lt;/p&gt;
+        &lt;p d-if="{{user.age}} &lt; 18"&gt;You are a minor.&lt;/p&gt;
+
+        &lt;!-- Event handling --&gt;
+        &lt;button d-on-click="SetDataField(user,age,30)"&gt;Set Age to 30&lt;/button&gt;
+    &lt;/div&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+        </d-code>
+        <p>Run the app with <code>dotnet run</code> and open <strong>http://localhost:5000</strong>.</p>
+
+        <h3>Key Concepts Used</h3>
+        <ul>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/dsector)">d-sector</a></strong> — Defines a data scope for your application</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ddataKey)">d-dataKey</a></strong> — Declares a named storage item</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/dmodel)">d-model</a></strong> — Two-way data binding for inputs</li>
+            <li><strong><code>{{expression}}</code></strong> — Displays data values in the template</li>
+            <li><strong><a href="#" d-on-click="ApplyRoute(/doc/dif)">d-if</a></strong> — Conditional rendering</li>
+        </ul>
+
+        <h3>Configuration Options</h3>
+        <p>Drapo can be configured via <code>DrapoMiddlewareOptions</code> in your startup. The most common options are:</p>
+
+        <h4>Debug Mode</h4>
+        <d-code>
+app.UseDrapo(options => {
+    if (env.IsDevelopment())
+        options.Debug = true;
+});
+        </d-code>
+
+        <h4>Caching</h4>
+        <d-code>
+options.Config.UseCacheStatic = true;           // Cache static files
+options.Config.UseCacheLocalStorage = true;     // Browser local storage cache
+options.Config.ApplicationBuild =
+    typeof(Program).Assembly.GetName().Version?.ToString(); // Cache busting
+        </d-code>
+
+        <h4>Components</h4>
+        <d-code>
+options.Config.LoadComponents(
+    Path.Combine(env.WebRootPath, "components"),
+    "~/components");
+        </d-code>
+
+        <h4>Real-time (Pipes / SignalR)</h4>
+        <d-code>
+options.Config.UsePipes = true;
+        </d-code>
+
+        <h3>Sample Project</h3>
+        <p>This documentation site itself is built with Drapo. You can find the full source code at <a href="https://github.com/spadrapo/docs" target="_blank">github.com/spadrapo/docs</a> — it's a great real-world reference for how to structure a Drapo application.</p>
+
+        <div class="alert alert-info mt-3">
+            <h5>💡 Tip</h5>
+            <p>Always check the <a href="https://www.nuget.org/packages/Drapo/" target="_blank">official NuGet page</a> for the latest version before pinning a package reference.</p>
+        </div>
+    </div>
+</div>
