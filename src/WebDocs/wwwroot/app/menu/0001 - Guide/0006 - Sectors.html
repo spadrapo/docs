@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Sectors</h2>
+    <p>A sector is a named region of the page managed by Drapo. Sectors are the building blocks of Drapo's Single Page Application model: they allow parts of the page to be loaded, cleared, and replaced independently without a full page reload. Sectors are defined with the <a href="#" d-on-click="ApplyRoute(/doc/dsector)"><code>d-sector</code></a> attribute.</p>
+
+    <h3>Defining a Sector</h3>
+    <p>Mark any HTML element as a sector by adding the <code>d-sector</code> attribute with a unique name.</p>
+    <pre><code>&lt;div d-sector="content"&gt;&lt;/div&gt;
+&lt;div d-sector="sidebar"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Loading Content into a Sector</h3>
+    <p>The <a href="#" d-on-click="ApplyRoute(/function/UpdateSector)"><code>UpdateSector</code></a> function replaces the content of a sector with HTML loaded from a URL. It is typically called from route handlers or event handlers.</p>
+    <pre><code>&lt;!-- Load a page into the content sector --&gt;
+&lt;button d-on-click="UpdateSector(content, ~/app/pages/home.html)"&gt;Home&lt;/button&gt;
+
+&lt;!-- Clear a sector --&gt;
+&lt;button d-on-click="ClearSector(sidebar)"&gt;Close Sidebar&lt;/button&gt;</code></pre>
+
+    <h3>Nested Sectors</h3>
+    <p>Sectors can be nested. A child HTML view loaded into a parent sector may itself define further sectors, enabling hierarchical layout composition. Child sectors are initialised after the parent sector's HTML is loaded and the Drapo runtime processes the new markup.</p>
+
+    <h3>Sector Lifecycle</h3>
+    <p>When a sector is updated (<code>UpdateSector</code>), Drapo:</p>
+    <ol>
+        <li>Fetches the HTML from the specified URL (using the browser cache or middleware cache if configured).</li>
+        <li>Destroys any storage items and event bindings belonging to the current sector content.</li>
+        <li>Replaces the sector's inner HTML with the newly loaded content.</li>
+        <li>Processes Drapo attributes in the new content, initialising storage, bindings, and nested sectors.</li>
+    </ol>
+
+    <h3>Default Sector Navigation (Parent / Child)</h3>
+    <p>Drapo provides <code>d-parent</code> / <code>d-parentSector</code> and <code>d-child</code> / <code>d-childSector</code> attributes to define default relationships between views. This allows a child page to declare which sector of the parent layout it should be loaded into, enabling convention-based navigation without explicit <code>UpdateSector</code> calls.</p>
+    <pre><code>&lt;!-- In a layout (parent) view --&gt;
+&lt;div d-sector="main"&gt;&lt;/div&gt;
+
+&lt;!-- In a child view --&gt;
+&lt;div d-parent="layout.html" d-parentSector="main"&gt;
+    &lt;!-- child content --&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Sectors and SPA Routing</h3>
+    <p>Drapo's routing system (configured via <code>CreateRoute</code> in startup) maps URL patterns to <a href="#" d-on-click="ApplyRoute(/function/UpdateSector)"><code>UpdateSector</code></a> calls, so navigating to a route automatically loads the matching view into the correct sector. This is the primary mechanism for implementing navigation in a Drapo SPA without full page reloads. See <a href="#" d-on-click="ApplyRoute(/doc/Routing)">Routing</a> for full details.</p>
+</body>
+</html>

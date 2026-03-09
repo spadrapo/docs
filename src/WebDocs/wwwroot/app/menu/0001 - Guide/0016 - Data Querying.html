@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Data Querying</h2>
+    <p>Drapo supports a SQL-like client-side query engine that lets you combine, filter, sort, and project existing storage items into new derived datasets — entirely in the browser, without extra server calls. This is done using <a href="#" d-on-click="ApplyRoute(/doc/ddataType)"><code>d-dataType="query"</code></a> with a SQL expression in <a href="#" d-on-click="ApplyRoute(/doc/ddataValue)"><code>d-dataValue</code></a>.</p>
+
+    <h3>Basic Projection</h3>
+    <p>Select specific fields from an existing array storage item. The query result is itself a new array that can be iterated with <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a>:</p>
+    <pre><code>&lt;div d-dataKey="products" d-dataUrlGet="/api/products"&gt;&lt;/div&gt;
+
+&lt;!-- Derived query: only Name and Price columns --&gt;
+&lt;div d-dataKey="productNames"
+     d-dataType="query"
+     d-dataValue="SELECT Name, Price FROM products"&gt;&lt;/div&gt;
+
+&lt;div d-for="p in productNames"&gt;
+    &lt;span&gt;{{p.Name}}&lt;/span&gt; — &lt;span&gt;{{p.Price}}&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Joins</h3>
+    <p>Query supports <code>INNER JOIN</code>, <code>LEFT JOIN</code>, and <code>OUTER JOIN</code> across multiple storage items, using table aliases and an <code>ON</code> condition:</p>
+    <pre><code>&lt;!-- INNER JOIN: only rows that match in both arrays --&gt;
+&lt;div d-dataKey="ordersJoined"
+     d-dataType="query"
+     d-dataValue="SELECT O.Id, O.Qty, P.Name
+                  FROM orders AS O
+                  INNER JOIN products AS P ON O.ProductId = P.Id"&gt;&lt;/div&gt;
+
+&lt;!-- LEFT JOIN: all rows from the left + matching rows from the right --&gt;
+&lt;div d-dataKey="personsSelected"
+     d-dataType="query"
+     d-dataValue="SELECT S AS Selected, P.Code, P.Name
+                  FROM persons AS P
+                  LEFT JOIN selections AS S ON P.Code = S"&gt;&lt;/div&gt;
+
+&lt;!-- OUTER JOIN: all rows from both sides, nulls where unmatched --&gt;
+&lt;div d-dataKey="fullList"
+     d-dataType="query"
+     d-dataValue="SELECT COALESCE(O1, O2) AS Code, O1 AS Code1, O2 AS Code2
+                  FROM list1 AS O1
+                  OUTER JOIN list2 AS O2 ON O1 = O2"&gt;&lt;/div&gt;</code></pre>
+    <p><code>COALESCE(a, b)</code> returns the first non-null value — useful with <code>OUTER JOIN</code> to produce a merged key column.</p>
+
+    <h3>WHERE Clause</h3>
+    <p>Filter rows using standard comparison operators, <code>IS NULL</code> / <code>IS NOT NULL</code>, <code>LIKE</code>, and <a href="#" d-on-click="ApplyRoute(/doc/dmodel)">mustache bindings</a> for dynamic values:</p>
+    <pre><code>&lt;!-- Static filter --&gt;
+&lt;div d-dataKey="activeUsers" d-dataType="query"
+     d-dataValue="SELECT Code, Name FROM persons WHERE Code = 2"&gt;&lt;/div&gt;
+
+&lt;!-- Dynamic filter using mustache --&gt;
+&lt;div d-dataKey="filteredUsers" d-dataType="query"
+     d-dataValue="SELECT Code, Name FROM persons WHERE Code = {{selectedCode}}"&gt;&lt;/div&gt;
+
+&lt;!-- Null checks --&gt;
+&lt;div d-dataKey="noAge" d-dataType="query"
+     d-dataValue="SELECT Name FROM persons WHERE Age IS NULL"&gt;&lt;/div&gt;
+
+&lt;!-- Pattern match --&gt;
+&lt;div d-dataKey="startsWithL" d-dataType="query"
+     d-dataValue="SELECT Code FROM items WHERE Code LIKE 'L%'"&gt;&lt;/div&gt;</code></pre>
+    <p>Because the query re-evaluates whenever a referenced mustache value changes, this pattern is a natural way to build reactive filtered lists.</p>
+
+    <h3>ORDER BY</h3>
+    <p>Sort the result set by one or more columns. Both <code>ASC</code> and <code>DESC</code> are supported, and you can dynamically bind the sort column/direction with mustaches:</p>
+    <pre><code>&lt;!-- Static sort --&gt;
+&lt;div d-dataKey="sortedPersons" d-dataType="query"
+     d-dataValue="SELECT Code, Name FROM persons ORDER BY Name ASC"&gt;&lt;/div&gt;
+
+&lt;!-- Dynamic sort --&gt;
+&lt;div d-dataKey="sort" d-dataType="object"
+     d-dataProperty-column="Name"
+     d-dataProperty-direction="ASC"&gt;&lt;/div&gt;
+&lt;div d-dataKey="dynamicSort" d-dataType="query"
+     d-dataValue="SELECT Code, Name FROM persons ORDER BY {{sort.column}} {{sort.direction}}"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>DISTINCT</h3>
+    <p>Remove duplicate rows from the result. Works with single or multiple columns:</p>
+    <pre><code>&lt;div d-dataKey="uniqueGenders" d-dataType="query"
+     d-dataValue="SELECT DISTINCT Gender FROM persons"&gt;&lt;/div&gt;
+
+&lt;div d-dataKey="uniqueProducts" d-dataType="query"
+     d-dataValue="SELECT DISTINCT Product, Quantity FROM orders"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Aggregation: COUNT</h3>
+    <p>When all selected columns are aggregate functions, the result is a single object instead of an array:</p>
+    <pre><code>&lt;div d-dataKey="stats" d-dataType="query"
+     d-dataValue="SELECT Count(P.Code) AS Total FROM persons AS P"&gt;&lt;/div&gt;
+
+&lt;!-- Access as object property, not array item --&gt;
+&lt;span&gt;Total: {{stats.Total}}&lt;/span&gt;</code></pre>
+
+    <h3>Mustache Sources</h3>
+    <p>The <code>FROM</code> clause can reference nested data paths using mustache expressions, letting you query a sub-array of an object:</p>
+    <pre><code>&lt;div d-dataKey="catalog" d-dataUrlGet="/api/catalog"&gt;&lt;/div&gt;
+
+&lt;!-- Query from a nested array within catalog --&gt;
+&lt;div d-dataKey="featuredItems" d-dataType="query"
+     d-dataValue="SELECT Name, Price FROM {{catalog.featured}}"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Primitive Array Output</h3>
+    <p>By default a query always produces an array of objects. To get a primitive array (a flat list of values), add the <code>d-dataQueryArray</code> attribute and specify which column to extract:</p>
+    <pre><code>&lt;div d-dataKey="codes" d-dataType="query"
+     d-dataQueryArray="Code1"
+     d-dataValue="SELECT O1 AS Code1 FROM list1 AS O1"&gt;&lt;/div&gt;
+
+&lt;!-- Iterate as primitive: {{item}} not {{item.Code1}} --&gt;
+&lt;div d-for="code in codes"&gt;
+    &lt;span&gt;{{code}}&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Reactivity</h3>
+    <p>Query storage items are reactive. Whenever the source storage items change (e.g., after a <a href="#" d-on-click="ApplyRoute(/function/ReloadData)"><code>ReloadData</code></a> or a <a href="#" d-on-click="ApplyRoute(/doc/dmodel)">d-model</a> update), all dependent query storage items automatically re-evaluate and re-render their bound elements.</p>
+</body>
+</html>

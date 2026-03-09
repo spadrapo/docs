@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Polling</h2>
+    <p>Polling lets a storage item automatically refresh its data at a regular interval by calling a server-side endpoint. When the server reports a change (by returning a different hash), Drapo executes a configured expression — typically a <a href="#" d-on-click="ApplyRoute(/function/ReloadData)"><code>ReloadData</code></a> call — to re-fetch and re-render the data.</p>
+
+    <h3>How It Works</h3>
+    <ol>
+        <li>A "trigger" storage item is declared with <a href="#" d-on-click="ApplyRoute(/doc/ddataPollingKey)"><code>d-dataPollingKey</code></a> and <a href="#" d-on-click="ApplyRoute(/doc/ddataPollingTimepsan)"><code>d-dataPollingTimespan</code></a>.</li>
+        <li>Drapo sends the polling key to your server at the configured interval.</li>
+        <li>Your server returns a hash string representing the current state of the data.</li>
+        <li>If the hash differs from the last one, Drapo executes the storage item's <a href="#" d-on-click="ApplyRoute(/doc/ddataValue)"><code>d-dataValue</code></a> expression (e.g. <code>ReloadData(myKey)</code>).</li>
+    </ol>
+
+    <h3>Server-Side: Register the Polling Event</h3>
+    <p>Add a <code>PollingEvent</code> handler in your startup configuration. It receives the domain, connection ID, and the polling key, and must return a hash string. When the hash changes, Drapo triggers a reload:</p>
+    <pre><code>options.PollingEvent += async (domain, connectionId, key) =&gt;
+{
+    // Return a hash that changes when the data changes.
+    // Drapo will only reload when this value differs from the previous call.
+    string hash = await GetDataHashForKey(domain, key);
+    return hash;
+};</code></pre>
+    <p>A simple example using a time-bucket as the hash (changes every 5 seconds):</p>
+    <pre><code>options.PollingEvent += async (domain, connectionId, key) =&gt;
+{
+    string hash = Math.Ceiling((decimal)(DateTime.Now.Second / 5)).ToString();
+    return await Task.FromResult(hash);
+};</code></pre>
+
+    <h3>Client-Side: Configure the Storage Item</h3>
+    <p>Create a dedicated "trigger" storage item of type <code>function</code> with load type <code>startup</code>. Set its polling key and timespan, and provide the reload expression as its value:</p>
+    <pre><code>&lt;!-- The actual data storage item --&gt;
+&lt;div d-dataKey="liveData" d-dataType="value" d-dataUrlGet="/api/live"&gt;&lt;/div&gt;
+
+&lt;!-- The polling trigger — runs ReloadData(liveData) when the hash changes --&gt;
+&lt;div d-dataKey="liveDataPoller"
+     d-dataType="function"
+     d-dataLoadType="startup"
+     d-dataValue="ReloadData(liveData)"
+     d-dataPollingKey="liveData"
+     d-dataPollingTimespan="5000"&gt;&lt;/div&gt;
+
+&lt;span d-model="{{liveData}}"&gt;&lt;/span&gt;</code></pre>
+
+    <h3>Key Attributes</h3>
+    <ul>
+        <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ddataPollingKey)">d-dataPollingKey</a></strong> — A unique string key identifying this polling item. Sent to the server on each poll call.</li>
+        <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ddataPollingTimepsan)">d-dataPollingTimespan</a></strong> — Interval in milliseconds between polls. Default: <code>10000</code> (10 seconds).</li>
+        <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ddataValue)">d-dataValue</a></strong> — The Drapo function expression executed when a change is detected. Typically <code>ReloadData(dataKey)</code>.</li>
+        <li><strong><a href="#" d-on-click="ApplyRoute(/doc/ddataLoadType)">d-dataLoadType</a></strong> — Set to <code>startup</code> so the poller activates immediately when the sector is rendered.</li>
+    </ul>
+
+    <h3>Polling Multiple Items</h3>
+    <p>Each storage item you want to poll needs its own trigger item with a unique <code>d-dataPollingKey</code>:</p>
+    <pre><code>&lt;div d-dataKey="orders" d-dataType="array" d-dataUrlGet="/api/orders"&gt;&lt;/div&gt;
+&lt;div d-dataKey="ordersPoller" d-dataType="function" d-dataLoadType="startup"
+     d-dataValue="ReloadData(orders)"
+     d-dataPollingKey="orders" d-dataPollingTimespan="3000"&gt;&lt;/div&gt;
+
+&lt;div d-dataKey="alerts" d-dataType="array" d-dataUrlGet="/api/alerts"&gt;&lt;/div&gt;
+&lt;div d-dataKey="alertsPoller" d-dataType="function" d-dataLoadType="startup"
+     d-dataValue="ReloadData(alerts)"
+     d-dataPollingKey="alerts" d-dataPollingTimespan="10000"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Polling vs. Pipes</h3>
+    <p>Polling is a simple pull-based mechanism: the client asks "has anything changed?" at a regular interval. For push-based real-time communication (the server notifies clients of changes), use <a href="#" d-on-click="ApplyRoute(/doc/Pipes)">Pipes</a> (SignalR-backed). Polling is simpler to set up; Pipes are more efficient for high-frequency updates.</p>
+</body>
+</html>

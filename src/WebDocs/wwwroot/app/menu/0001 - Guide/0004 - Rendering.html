@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Rendering</h2>
+    <p>Drapo's rendering system lets you project dynamic data directly into the DOM using declarative attributes — no JavaScript required. The core tool is <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a> for iterating collections, combined with <a href="#" d-on-click="ApplyRoute(/doc/dif)"><code>d-if</code></a> for conditional rendering.</p>
+
+    <h3>Basic Array Rendering with d-for</h3>
+    <p>Place <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a> on any element to repeat it for every item in an array storage key. The syntax is <code>{alias} in {dataKey}</code>:</p>
+    <pre><code>&lt;div d-dataKey="products" d-dataUrlGet="/api/products"&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+    &lt;li d-for="product in products"&gt;
+        {{product.name}} — {{product.price}}
+    &lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+    <p>Drapo automatically re-renders the list whenever the <code>products</code> storage changes.</p>
+
+    <h3>Iterating Objects</h3>
+    <p>When the iterator target is an object (not an array), Drapo converts it into a list of <code>Key</code> / <code>Value</code> pairs:</p>
+    <pre><code>&lt;div d-dataKey="user" d-dataType="object"
+ d-dataProperty-name="Jane" d-dataProperty-role="Admin"&gt;&lt;/div&gt;
+
+&lt;ul&gt;
+    &lt;li d-for="prop in user"&gt;{{prop.Key}}: {{prop.Value}}&lt;/li&gt;
+&lt;/ul&gt;</code></pre>
+
+    <h3>Range Slicing</h3>
+    <p>Drapo supports range expressions inside <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a> to render a subset of an array. Use the <code>^</code> operator to index from the end:</p>
+    <pre><code>&lt;!-- Reverse the list --&gt;
+&lt;li d-for="item in items[^0..0]"&gt;{{item.name}}&lt;/li&gt;
+
+&lt;!-- Skip first and last --&gt;
+&lt;li d-for="item in items[1..^1]"&gt;{{item.name}}&lt;/li&gt;
+
+&lt;!-- First 5 items --&gt;
+&lt;li d-for="item in items[0..5]"&gt;{{item.name}}&lt;/li&gt;</code></pre>
+
+    <h3>Conditional Items with d-if</h3>
+    <p>Add <a href="#" d-on-click="ApplyRoute(/doc/dif)"><code>d-if</code></a> inside a <code>d-for</code> to filter which items are rendered. The element is completely removed from the DOM when the condition is false:</p>
+    <pre><code>&lt;li d-for="product in products" d-if="{{product.inStock}}"&gt;
+    {{product.name}}
+&lt;/li&gt;</code></pre>
+
+    <h3>Conditionally Activating the Loop with d-for-if</h3>
+    <p>Use <a href="#" d-on-click="ApplyRoute(/doc/dforif)"><code>d-for-if</code></a> to enable or disable the entire loop based on an expression. When false, nothing is rendered at all:</p>
+    <pre><code>&lt;li d-for="item in cart" d-for-if="{{cart.length}} &gt; 0"&gt;
+    {{item.name}}
+&lt;/li&gt;</code></pre>
+
+    <h3>Controlling Re-render with d-for-render</h3>
+    <p><a href="#" d-on-click="ApplyRoute(/doc/dforrender)"><code>d-for-render</code></a> controls the re-render strategy. By default Drapo re-renders the whole list on any change. Set it to <code>item</code> to patch individual rows, which is more efficient for large lists:</p>
+    <pre><code>&lt;tr d-for="row in tableData" d-for-render="item"&gt;
+    &lt;td&gt;{{row.id}}&lt;/td&gt;
+    &lt;td&gt;{{row.label}}&lt;/td&gt;
+&lt;/tr&gt;</code></pre>
+
+    <h3>Nested Loops</h3>
+    <p>Nest <code>d-for</code> attributes to render multi-level structures. Each loop has its own alias and they do not conflict:</p>
+    <pre><code>&lt;div d-for="category in categories"&gt;
+    &lt;h3&gt;{{category.name}}&lt;/h3&gt;
+    &lt;ul&gt;
+        &lt;li d-for="product in category.products"&gt;
+            {{product.name}}
+        &lt;/li&gt;
+    &lt;/ul&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Rendering with Server-Loaded Data</h3>
+    <p>Combine <a href="#" d-on-click="ApplyRoute(/doc/ddataUrlGet)"><code>d-dataUrlGet</code></a> with <code>d-for</code> to load and render server data in one step. The list renders as soon as the request completes:</p>
+    <pre><code>&lt;div d-dataKey="orders" d-dataUrlGet="/api/orders?status=pending"&gt;&lt;/div&gt;
+
+&lt;table&gt;
+    &lt;thead&gt;&lt;tr&gt;&lt;th&gt;Order&lt;/th&gt;&lt;th&gt;Total&lt;/th&gt;&lt;th&gt;Date&lt;/th&gt;&lt;/tr&gt;&lt;/thead&gt;
+    &lt;tbody&gt;
+        &lt;tr d-for="order in orders"&gt;
+            &lt;td&gt;{{order.id}}&lt;/td&gt;
+            &lt;td&gt;{{order.total}}&lt;/td&gt;
+            &lt;td&gt;{{order.date}}&lt;/td&gt;
+        &lt;/tr&gt;
+    &lt;/tbody&gt;
+&lt;/table&gt;</code></pre>
+
+    <h3>Editing Items In-Place</h3>
+    <p>Use <a href="#" d-on-click="ApplyRoute(/doc/dmodel)"><code>d-model</code></a> inside a <code>d-for</code> to make each row directly editable. Changes are tracked in storage and can be posted back to the server:</p>
+    <pre><code>&lt;tr d-for="item in items"&gt;
+    &lt;td&gt;&lt;input d-model="{{item.name}}" /&gt;&lt;/td&gt;
+    &lt;td&gt;&lt;input d-model="{{item.price}}" type="number" /&gt;&lt;/td&gt;
+    &lt;td&gt;
+        &lt;button d-on-click="RemoveDataItem(items,{{item}})"&gt;Delete&lt;/button&gt;
+    &lt;/td&gt;
+&lt;/tr&gt;
+&lt;button d-on-click="AddDataItem(items,{})"&gt;Add Row&lt;/button&gt;
+&lt;button d-on-click="PostData(items,/api/items)"&gt;Save All&lt;/button&gt;</code></pre>
+</body>
+</html>

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Validation</h2>
+    <p>Drapo provides a declarative, attribute-driven validation system. Validators are declared once as hidden elements and then referenced by interactive elements to block actions when invalid, and by display elements to show error messages — all without any custom JavaScript.</p>
+
+    <h3>Defining a Validator</h3>
+    <p>A validator is a <code>&lt;div&gt;</code> that carries the <code>d-validation-id</code>, <code>d-validation-type</code>, and one or more <code>d-validation-value</code> attributes:</p>
+    <pre><code>&lt;div d-validation-id="emailRequired"
+     d-validation-type="conditional"
+     d-validation-value="{{form.email}}"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Validator Attributes</h3>
+    <ul>
+        <li><code>d-validation-id</code> — unique name for the validator, referenced by actions and display elements</li>
+        <li><code>d-validation-type</code> — the validation algorithm: <code>conditional</code>, <code>regex</code>, <code>compare</code>, or <code>outside</code></li>
+        <li><code>d-validation-value</code> — the primary value to test (usually a mustache expression)</li>
+        <li><code>d-validation-expression</code> — regular expression pattern used with the <code>regex</code> type</li>
+        <li><code>d-validation-valuetocompare</code> — the value to compare against, used with the <code>compare</code> type</li>
+    </ul>
+
+    <h3>Triggering Validation on User Actions</h3>
+    <p>Add <code>d-validation-on-click</code> to any button or clickable element. Drapo runs all listed validators before executing the bound function. If any validator fails, the function is not called.</p>
+    <pre><code>&lt;button d-on-click="PostData(form,/api/register)"
+        d-validation-on-click="emailRequired"&gt;Register&lt;/button&gt;</code></pre>
+    <p>Chain multiple validators with a semicolon — all must pass for the action to proceed:</p>
+    <pre><code>d-validation-on-click="emailRequired;emailFormat;passwordMatch"</code></pre>
+
+    <h3>Displaying Validation Errors</h3>
+    <p>Wrap error content in an element with <code>d-validation</code> pointing at the validator id. The element is shown only when the validator has failed and hidden when it passes:</p>
+    <pre><code>&lt;div d-validation="emailRequired"&gt;
+    &lt;span&gt;Email address is required.&lt;/span&gt;
+&lt;/div&gt;</code></pre>
+
+    <h3>Validation Types</h3>
+    <ul>
+        <li><strong>conditional</strong> — passes when the expression evaluates to a truthy value (<code>true</code>, non-empty string, non-zero number). See the <em>conditional</em> sub-page.</li>
+        <li><strong>regex</strong> — passes when <code>d-validation-value</code> matches the pattern in <code>d-validation-expression</code>. See the <em>regex</em> sub-page.</li>
+        <li><strong>compare</strong> — passes when <code>d-validation-value</code> equals <code>d-validation-valuetocompare</code>. See the <em>compare</em> sub-page.</li>
+        <li><strong>outside</strong> — delegates validation to an external function or server call, letting you implement any custom logic. See the <em>outside</em> sub-page.</li>
+    </ul>
+
+    <h3>Complete Example: Registration Form</h3>
+    <pre><code>&lt;!-- Data --&gt;
+&lt;div d-dataKey="form" d-dataType="object"
+     d-dataProperty-email=""
+     d-dataProperty-password=""
+     d-dataProperty-confirm=""&gt;&lt;/div&gt;
+
+&lt;!-- Validators --&gt;
+&lt;div d-validation-id="emailRequired"
+     d-validation-type="conditional"
+     d-validation-value="{{form.email}}"&gt;&lt;/div&gt;
+
+&lt;div d-validation-id="emailFormat"
+     d-validation-type="regex"
+     d-validation-value="{{form.email}}"
+     d-validation-expression="^[\w.-]+@[\w.-]+\.\w{2,}$"&gt;&lt;/div&gt;
+
+&lt;div d-validation-id="passwordMatch"
+     d-validation-type="compare"
+     d-validation-value="{{form.confirm}}"
+     d-validation-valuetocompare="{{form.password}}"&gt;&lt;/div&gt;
+
+&lt;!-- Form fields --&gt;
+&lt;input type="email"    d-model="{{form.email}}"    placeholder="Email" /&gt;
+&lt;input type="password" d-model="{{form.password}}" placeholder="Password" /&gt;
+&lt;input type="password" d-model="{{form.confirm}}"  placeholder="Confirm password" /&gt;
+
+&lt;!-- Submit button — blocked until all three validators pass --&gt;
+&lt;button d-on-click="PostData(form,/api/register)"
+        d-validation-on-click="emailRequired;emailFormat;passwordMatch"&gt;
+    Register
+&lt;/button&gt;
+
+&lt;!-- Error messages --&gt;
+&lt;div d-validation="emailRequired"&gt;&lt;span&gt;Email is required.&lt;/span&gt;&lt;/div&gt;
+&lt;div d-validation="emailFormat"&gt;&lt;span&gt;Enter a valid email address.&lt;/span&gt;&lt;/div&gt;
+&lt;div d-validation="passwordMatch"&gt;&lt;span&gt;Passwords do not match.&lt;/span&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Best Practices</h3>
+    <ul>
+        <li>Place all validator <code>&lt;div&gt;</code> elements near the top of the form, after your data declarations.</li>
+        <li>Use meaningful <code>d-validation-id</code> names that describe the rule, not the field (e.g. <code>emailFormat</code> rather than <code>field1</code>).</li>
+        <li>Keep error message elements adjacent to their corresponding fields for the best user experience.</li>
+        <li>For complex server-side rules, use the <code>outside</code> type to call an API endpoint and reflect the result back into a storage field used by a <code>conditional</code> validator.</li>
+    </ul>
+</body>
+</html>

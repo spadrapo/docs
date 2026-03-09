@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Formatting</h2>
+    <p>Drapo can format numbers, dates, and timespans directly in the template using the <a href="#" d-on-click="ApplyRoute(/doc/dformat)"><code>d-format</code></a> attribute on any element that has a data binding. The formatter applies the specified pattern to the resolved value before rendering it to the DOM. Combine it with <a href="#" d-on-click="ApplyRoute(/doc/dculture)"><code>d-culture</code></a> to render locale-aware output.</p>
+
+    <h3>Numbers</h3>
+    <p>Number format codes follow a letter + optional digit precision pattern:</p>
+    <ul>
+        <li><code>N</code> / <code>N2</code> — Numeric with thousands separators. Default 2 decimal places.</li>
+        <li><code>D</code> / <code>D3</code> — Decimal integer, zero-padded to the specified number of digits.</li>
+        <li><code>P</code> / <code>P2</code> — Percentage (multiplies by 100, appends <code> %</code>).</li>
+        <li><code>T</code> — Timespan: renders a millisecond value as <code>3d2h5m10s</code>.</li>
+        <li><code>S</code> — File size: renders a byte value as <code>1.2kb</code>, <code>5mb</code>, etc.</li>
+    </ul>
+    <pre><code>&lt;div d-dataKey="price" d-dataType="value" d-dataValue="1234.5"&gt;&lt;/div&gt;
+
+&lt;span d-model="{{price}}" d-format="N2"&gt;&lt;/span&gt;   &lt;!-- 1,234.50 --&gt;
+&lt;span d-model="{{price}}" d-format="P2"&gt;&lt;/span&gt;   &lt;!-- 123,450.00 % --&gt;</code></pre>
+
+    <h3>Dates</h3>
+    <p>Date format codes map to common patterns. Short single-letter codes delegate to the active culture for their exact pattern:</p>
+    <ul>
+        <li><code>d</code> — Short date pattern (e.g. <code>06/03/1980</code>)</li>
+        <li><code>D</code> — Long date pattern (e.g. <code>Tuesday, June 3, 1980</code>)</li>
+        <li><code>t</code> — Short time pattern (e.g. <code>11:57 AM</code>)</li>
+        <li><code>T</code> — Long time pattern (e.g. <code>11:57:24 AM</code>)</li>
+        <li><code>g</code> — General date/time, short time (e.g. <code>06/03/1980 11:57 AM</code>)</li>
+        <li><code>G</code> — General date/time, long time</li>
+        <li><code>r</code> — RFC 1123 / HTTP date format</li>
+    </ul>
+    <p>Custom date patterns use the following tokens:</p>
+    <ul>
+        <li><code>YYYY</code> / <code>yy</code> — Full / 2-digit year</li>
+        <li><code>MM</code> / <code>MMM</code> / <code>MMMM</code> — Month: 2-digit / abbreviation / full name</li>
+        <li><code>DD</code> / <code>DDD</code> / <code>DDDD</code> — Day: 2-digit / abbreviation / full weekday name</li>
+        <li><code>HH</code> / <code>hh</code> — 24-hour / 12-hour, both zero-padded</li>
+        <li><code>mm</code> / <code>ss</code> — Minutes / seconds</li>
+        <li><code>tt</code> — AM/PM indicator</li>
+    </ul>
+    <pre><code>&lt;div d-dataKey="event" d-dataType="object"
+     d-dataProperty-date="1980-06-03T11:57:24Z"&gt;&lt;/div&gt;
+
+&lt;span d-model="{{event.date}}" d-format="D"&gt;&lt;/span&gt;
+&lt;!-- Tuesday, June 3, 1980 --&gt;
+
+&lt;span d-model="{{event.date}}" d-format="DD/MM/YYYY HH:mm"&gt;&lt;/span&gt;
+&lt;!-- 03/06/1980 11:57 --&gt;
+
+&lt;span d-model="{{event.date}}" d-format="h:mm tt"&gt;&lt;/span&gt;
+&lt;!-- 11:57 AM --&gt;</code></pre>
+
+    <h3>Timespans</h3>
+    <p>The <code>T</code> format code renders a raw millisecond integer as a human-readable duration:</p>
+    <pre><code>&lt;!-- 3661000 ms → 1h1m1s --&gt;
+&lt;span d-model="{{task.durationMs}}" d-format="T"&gt;&lt;/span&gt;</code></pre>
+
+    <h3>Locale-Aware Formatting with d-culture</h3>
+    <p>Add <a href="#" d-on-click="ApplyRoute(/doc/dculture)"><code>d-culture</code></a> to override the default culture for a specific element. This changes the decimal/thousands separator, month names, and AM/PM labels:</p>
+    <pre><code>&lt;!-- English: 1,234.50 --&gt;
+&lt;span d-model="{{price}}" d-format="N2" d-culture="en"&gt;&lt;/span&gt;
+
+&lt;!-- Portuguese: 1.234,50 --&gt;
+&lt;span d-model="{{price}}" d-format="N2" d-culture="pt"&gt;&lt;/span&gt;
+
+&lt;!-- Spanish long date --&gt;
+&lt;span d-model="{{event.date}}" d-format="D" d-culture="es"&gt;&lt;/span&gt;</code></pre>
+
+    <h3>Inline Formatting in d-for Loops</h3>
+    <p>Formatting works naturally inside <a href="#" d-on-click="ApplyRoute(/doc/dfor)"><code>d-for</code></a> loops, applied per-row:</p>
+    <pre><code>&lt;tr d-for="product in products"&gt;
+    &lt;td d-model="{{product.name}}"&gt;&lt;/td&gt;
+    &lt;td d-model="{{product.price}}" d-format="N2"&gt;&lt;/td&gt;
+    &lt;td d-model="{{product.releaseDate}}" d-format="d"&gt;&lt;/td&gt;
+&lt;/tr&gt;</code></pre>
+
+    <h3>Formatting and d-attr</h3>
+    <p>The <a href="#" d-on-click="ApplyRoute(/doc/dattr)"><code>d-attr</code></a> attribute supports a <code>d-attr-{name}-format</code> companion to format values before placing them into an attribute:</p>
+    <pre><code>&lt;input type="text"
+       d-attr-value="{{product.price}}"
+       d-attr-value-format="N2" /&gt;</code></pre>
+
+    <h3>Server-Side Timezone Offset</h3>
+    <p>Configure a server-side timezone offset so that UTC dates from the API are automatically shifted for the user. Set <code>options.Config.Timezone</code> in your startup and Drapo adds the offset before applying date formats.</p>
+</body>
+</html>

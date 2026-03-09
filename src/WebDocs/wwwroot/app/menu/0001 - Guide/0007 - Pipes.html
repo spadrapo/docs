@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Pipes</h2>
+    <p>Pipes are Drapo's real-time communication mechanism. They use SignalR WebSockets to push data updates from the server to connected clients without the client needing to poll. When a pipe fires, Drapo automatically refreshes the bound storage items in the browser. For a simpler interval-based alternative, see <a href="#" d-on-click="ApplyRoute(/doc/Polling)">Polling</a>.</p>
+
+    <h3>Enabling Pipes</h3>
+    <p>Pipes must be enabled in the server-side configuration and on each storage item that should receive real-time updates.</p>
+    <pre><code>// In Startup.cs / Program.cs
+app.UseDrapo(options =&gt;
+{
+    options.Config.UsePipes = true;
+});</code></pre>
+    <p>Then on the storage element, add the <a href="#" d-on-click="ApplyRoute(/doc/ddataPipes)"><code>d-dataPipes</code></a> attribute with the pipe key to listen on:</p>
+    <pre><code>&lt;div d-dataKey="notifications"
+     d-dataType="array"
+     d-dataUrlGet="~/api/notifications"
+     d-dataPipes="notificationPipe"&gt;&lt;/div&gt;</code></pre>
+
+    <h3>Sending a Pipe from the Server</h3>
+    <p>Any server-side code that has access to the <code>IDrapoPipe</code> (or <code>DrapoPlumberHub</code>) service can broadcast a pipe message. When the message is received by the client, all storage items registered on that pipe key are refreshed from their <code>d-dataUrlGet</code> endpoint.</p>
+    <pre><code>// Inject DrapoPlumber and send a pipe
+await _drapoPlumber.SendPipe("notificationPipe");</code></pre>
+
+    <h3>Pipe Hub Endpoint</h3>
+    <p>The SignalR hub used by Drapo is automatically mapped by the middleware. Its URL is controlled by <code>options.Config.PipeHubName</code> (default: <code>DrapoPlumberHub</code>). You do not need to configure this manually unless you want to change the hub path.</p>
+
+    <h3>Polling as an Alternative</h3>
+    <p>When WebSockets are not available or not desired, the Drapo middleware also supports a polling model. The <code>PollingEvent</code> delegate on <code>DrapoMiddlewareOptions</code> lets you provide a function that returns a hash value. The client periodically calls this endpoint and triggers a data refresh whenever the hash changes. See <a href="#" d-on-click="ApplyRoute(/doc/Polling)">Polling</a> for full details.</p>
+    <pre><code>options.PollingEvent += async (domain, connectionId, key) =&gt;
+{
+    // Return a value that changes when data has changed
+    string hash = await _myService.GetDataVersionHash(key);
+    return hash;
+};</code></pre>
+
+    <h3>Combining Pipes and Polling</h3>
+    <p>You can use both pipes and polling in the same application. Pipes provide low-latency push updates for scenarios like notifications and dashboards, while polling can serve as a fallback or for coarser-grained cache invalidation.</p>
+</body>
+</html>

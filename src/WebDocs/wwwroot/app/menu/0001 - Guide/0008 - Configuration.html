@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Configuration</h2>
+    <p>Drapo is configured in <code>Program.cs</code> (or <code>Startup.cs</code> for .NET Core 3.1) using the <code>AddDrapo</code> service registration method and the <code>UseDrapo</code> middleware method. The <code>DrapoMiddlewareOptions</code> object passed to the lambda contains all configurable settings.</p>
+    <p>Related guides: <a href="#" d-on-click="ApplyRoute(/doc/Pipes)">Pipes</a> · <a href="#" d-on-click="ApplyRoute(/doc/Routing)">Routing</a> · <a href="#" d-on-click="ApplyRoute(/doc/Validation)">Validation</a> · <a href="#" d-on-click="ApplyRoute(/doc/Components)">Components</a> · <a href="#" d-on-click="ApplyRoute(/doc/Polling)">Polling</a></p>
+
+    <h3>Minimal Setup</h3>
+    <pre><code>// Program.cs (.NET 6+)
+builder.Services.AddDrapo();
+
+app.UseDrapo();</code></pre>
+
+    <h3>Full Configuration Example</h3>
+    <pre><code>app.UseDrapo(options =&gt;
+{
+    // Enable real-time pipes via SignalR
+    options.Config.UsePipes = true;
+
+    // Disable the built-in router if you manage routes manually
+    options.Config.UseRouter = false;
+
+    // Cache key strategies for views, components, and styles
+    options.Config.CacheKeysView = "applicationbuild,url,view";
+    options.Config.CacheKeysComponentView = "applicationbuild,url,view";
+    options.Config.CacheKeysComponentStyle = "applicationbuild,url,theme";
+
+    // Application build stamp used in cache keys
+    options.Config.ApplicationBuild = typeof(Program).Assembly
+        .GetName().Version?.ToString();
+
+    // Themes (name, CSS suffix)
+    options.Config.CreateTheme("", "");           // default theme
+    options.Config.CreateTheme("Dark", "dark");   // dark theme
+
+    // Responsive views
+    options.Config.CreateView("Mobile", "mobile", "{{__browser.Width}} &lt; 768");
+    options.Config.CreateView("Web", "default");
+
+    // Global error storage key
+    options.Config.StorageErrors = "errors";
+
+    // Validation CSS classes
+    options.Config.ValidatorUncheckedClass = "ppValidationUnchecked";
+    options.Config.ValidatorValidClass = "ppValidatorValid";
+    options.Config.ValidatorInvalidClass = "ppValidatorInvalid";
+
+    // Load components from a folder
+    options.Config.LoadComponents(
+        Path.Combine(env.WebRootPath, "components"),
+        "~/components");
+
+    // SPA routes
+    options.Config.CreateRoute(
+        "^/page/(?&lt;id&gt;\\w+)$",
+        "UpdateSector(content,~/app/pages/{{id}}.html)");
+    options.Config.CreateRoute(
+        "^/$",
+        "UpdateSector(content,~/app/pages/home.html)");
+
+    // Polling for cache invalidation
+    options.PollingEvent += async (domain, connectionId, key) =&gt;
+    {
+        return await Task.FromResult(DateTime.UtcNow.Second / 5 + "");
+    };
+});</code></pre>
+
+    <h3>Key Configuration Properties</h3>
+    <ul>
+        <li><strong>UsePipes</strong> – Enables the SignalR hub for real-time pipe updates.</li>
+        <li><strong>UseRouter</strong> – When <code>true</code>, Drapo intercepts browser navigation and applies the configured routes.</li>
+        <li><strong>CacheKeysView / CacheKeysComponentView / CacheKeysComponentStyle / CacheKeysComponentScript</strong> – Comma-separated tokens that define the cache key strategy for views and components. Common tokens include <code>applicationbuild</code>, <code>url</code>, <code>view</code>, and <code>theme</code>.</li>
+        <li><strong>ApplicationBuild</strong> – A string that changes on each deployment, used as part of cache keys to bust caches automatically.</li>
+        <li><strong>StorageErrors</strong> – The client-side storage key name where server error information is placed.</li>
+        <li><strong>PipeHubName</strong> – The URL path suffix for the SignalR hub (default: <code>DrapoPlumberHub</code>).</li>
+        <li><strong>ValidateWebSocketOrigin</strong> – Enables cross-origin WebSocket request validation (enabled by default).</li>
+        <li><strong>AllowedWebSocketOrigins</strong> – An explicit allow-list of origins permitted to open WebSocket connections.</li>
+    </ul>
+
+    <h3>Debug Mode</h3>
+    <p>When <code>options.Debug = true</code>, the Drapo middleware serves non-minified assets and outputs additional diagnostics. This is typically enabled only in the <code>Development</code> environment.</p>
+    <pre><code>if (env.IsDevelopment())
+    options.Debug = true;</code></pre>
+</body>
+</html>

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+</head>
+<body>
+    <h2>Components</h2>
+    <p>Drapo components are reusable, self-contained UI units composed of an HTML template, an optional CSS stylesheet, and an optional TypeScript file. They are loaded by the Drapo middleware and used as custom HTML elements anywhere in a Drapo application. The element tag name matches the component's folder name, prefixed with <code>d-</code>.</p>
+
+    <h3>File Structure</h3>
+    <p>Each component lives in its own sub-folder under the configured components directory (typically <code>wwwroot/components/</code>):</p>
+    <pre><code>wwwroot/
+  components/
+    mybutton/
+      mybutton.html    &lt;!-- required: HTML template --&gt;
+      mybutton.ts      &lt;!-- optional: TypeScript logic --&gt;
+      mybutton.css     &lt;!-- optional: component styles --&gt;
+      mybutton.d.ts    &lt;!-- optional: TypeScript declarations --&gt;</code></pre>
+
+    <h3>Registering Components</h3>
+    <p>Tell the Drapo middleware where to find the components directory in your startup configuration:</p>
+    <pre><code>app.UseDrapo(options => {
+    options.Config.LoadComponents(
+        Path.Combine(env.WebRootPath, "components"),
+        "~/components");
+});</code></pre>
+
+    <h3>HTML Template</h3>
+    <p>The component template is a standard HTML file. Use <a href="#" d-on-click="ApplyRoute(/doc/dsector)"><code>d-sector="@"</code></a> on the root element to give the component its own isolated data context. Custom attributes passed at the usage site are available inside the template.</p>
+    <pre><code>&lt;!-- mybutton.html --&gt;
+&lt;div d-sector="@" class="my-button" dc-text="" dc-onclick=""&gt;
+    &lt;button type="button"&gt;
+        &lt;span d-model="{{_text}}"&gt;&lt;/span&gt;
+    &lt;/button&gt;
+&lt;/div&gt;</code></pre>
+    <p>Key points:</p>
+    <ul>
+        <li><code>d-sector="@"</code> — Creates a unique isolated data scope for each instance of the component.</li>
+        <li><code>dc-*</code> attributes — Declare custom inputs that callers pass when using the component. They are processed by the TypeScript logic and then removed.</li>
+        <li>Any Drapo attributes (<code>d-model</code>, <code>d-for</code>, <code>d-if</code>, etc.) work normally inside the template.</li>
+    </ul>
+
+    <h3>Using a Component</h3>
+    <p>Once registered, use the component in any HTML page as a custom element with the <code>d-</code> prefix:</p>
+    <pre><code>&lt;d-mybutton dc-text="Save" dc-onclick="PostData(user)"&gt;&lt;/d-mybutton&gt;
+
+&lt;d-mybutton dc-text="Cancel" dc-onclick="Navigate(/home)"&gt;&lt;/d-mybutton&gt;</code></pre>
+    <p>Drapo replaces the <code>&lt;d-mybutton&gt;</code> element with the rendered template and copies all attributes from the usage site to the template root element.</p>
+
+    <h3>TypeScript Logic</h3>
+    <p>Add a TypeScript file with the same name as the component folder. Drapo looks for a constructor function named <code>{componentname}Constructor</code> and a class named with the component name (PascalCase). The constructor is called with the rendered element and the Drapo application instance:</p>
+    <pre><code>// mybutton.ts
+async function mybuttonConstructor(el: HTMLElement, app: DrapoApplication): Promise&lt;MyButton&gt; {
+    const instance = new MyButton(el, app);
+    await instance.Initialize();
+    return instance;
+}
+
+class MyButton {
+    private _el: HTMLElement;
+    private _app: DrapoApplication;
+
+    constructor(el: HTMLElement, app: DrapoApplication) {
+        this._el = el;
+        this._app = app;
+    }
+
+    public async Initialize(): Promise&lt;void&gt; {
+        // Read custom attributes
+        const text = this._el.getAttribute('dc-text') || 'Button';
+        const onclick = this._el.getAttribute('dc-onclick') || '';
+
+        // Remove them after reading
+        this._el.removeAttribute('dc-text');
+        this._el.removeAttribute('dc-onclick');
+
+        // Push data into the component's sector storage
+        await this._app.Storage.SetDataKeyField('_text', null, text);
+
+        // Wire up the click handler on the button element
+        if (onclick) {
+            const button = this._el.querySelector('button');
+            button.setAttribute('d-on-click', onclick);
+        }
+    }
+}</code></pre>
+
+    <h3>Content Projection</h3>
+    <p>Components can receive and render content placed between their tags. Mark the insertion point in the template with <code>d-content="internal"</code>. Drapo moves the caller's inner HTML into that slot:</p>
+    <pre><code>&lt;!-- panel.html (the component template) --&gt;
+&lt;div class="panel"&gt;
+    &lt;div class="panel-header"&gt;Panel&lt;/div&gt;
+    &lt;div style="display:none" d-content="internal"&gt;&lt;/div&gt;
+    &lt;div class="panel-footer"&gt;&lt;/div&gt;
+&lt;/div&gt;</code></pre>
+    <pre><code>&lt;!-- Usage --&gt;
+&lt;d-panel&gt;
+    &lt;p&gt;This content is projected into the panel body.&lt;/p&gt;
+&lt;/d-panel&gt;</code></pre>
+    <p>The <code>style="display:none"</code> on the content element prevents a flash of unstyled content before Drapo processes it.</p>
+
+    <h3>Real Example: The d-code Component</h3>
+    <p>This documentation site uses a <code>d-code</code> component to render formatted code blocks. Its template uses content projection to capture raw HTML and display it as escaped code:</p>
+    <pre><code>&lt;!-- code.html --&gt;
+&lt;div class="code"&gt;
+    &lt;div style="display:none" d-content="internal"&gt;&lt;/div&gt;
+    &lt;pre&gt;&lt;/pre&gt;
+&lt;/div&gt;</code></pre>
+    <pre><code>// code.ts — Initialize method
+public async Initialize(): Promise&lt;void&gt; {
+    const elContent = this.GetElementContent();
+    const elCode = this.GetElementCode();
+    const content = this._app.Document.GetHTML(elContent);
+    const contentEncoded = this._app.Document.GetHTMLEncoded(content);
+    await this._app.Document.RemoveElement(elContent, false);
+    this._app.Document.SetHTML(elCode, contentEncoded);
+    elCode.setAttribute('d-pre', 'true');
+}</code></pre>
+    <p>You can see the full source at <a href="https://github.com/spadrapo/docs/tree/master/src/WebDocs/wwwroot/components/code" target="_blank">github.com/spadrapo/docs</a>.</p>
+
+    <h3>Component Packs (CSS Bundling)</h3>
+    <p>Multiple components can have their CSS bundled into a single HTTP request for better performance. Configure a pack in startup:</p>
+    <pre><code>options.Config.CreatePack("uicomponents")
+    .AddIncludePath("~/components/*")
+    .AddExcludePath("*.ts")
+    .AddExcludePath("*.map");</code></pre>
+
+    <h3>TypeScript Type Definitions</h3>
+    <p>The Drapo NuGet package ships TypeScript declaration files. To enable them, add a build target to your <code>.csproj</code> that copies the linked content files to disk:</p>
+    <pre><code>&lt;Target Name="CopyLinkedContentFiles" BeforeTargets="Build"&gt;
+    &lt;Copy SourceFiles="%(Content.Identity)"
+          DestinationFiles="%(Content.Link)"
+          SkipUnchangedFiles="false"
+          OverwriteReadOnlyFiles="true"
+          Condition="'%(Content.Link)' != ''" /&gt;
+&lt;/Target&gt;</code></pre>
+    <p>Then create a <code>tsconfig.json</code> in your project:</p>
+    <pre><code>{
+  "compilerOptions": {
+    "target": "ES2017",
+    "module": "none",
+    "lib": ["ES2017", "DOM"],
+    "outDir": "./wwwroot/components/",
+    "types": ["drapo"]
+  },
+  "include": ["wwwroot/components/**/*.ts"],
+  "exclude": ["wwwroot/components/**/*.d.ts", "wwwroot/components/**/*.js"]
+}</code></pre>
+
+    <h3>Component Lifecycle</h3>
+    <ol>
+        <li><strong>Discovery</strong> — Drapo scans the DOM for elements with the <code>d-</code> prefix tag name.</li>
+        <li><strong>Loading</strong> — The component's HTML template is fetched from the middleware (or cache).</li>
+        <li><strong>Replacement</strong> — The custom element is replaced with the rendered template. Attributes from the usage site are transferred to the template root.</li>
+        <li><strong>Content Injection</strong> — If the component has a <code>d-content="internal"</code> slot, the caller's inner HTML is moved there.</li>
+        <li><strong>Instantiation</strong> — The TypeScript constructor function is called, if present.</li>
+        <li><strong>Data Binding</strong> — All <code>d-*</code> attributes in the resolved template are processed normally.</li>
+    </ol>
+
+    <h3>Best Practices</h3>
+    <ul>
+        <li>Always use <code>d-sector="@"</code> on the template root to keep component data isolated from the page.</li>
+        <li>Use the <code>dc-*</code> attribute prefix for custom component inputs, and remove them in <code>Initialize()</code> after reading.</li>
+        <li>Use <code>style="display:none"</code> on the <code>d-content="internal"</code> element to prevent a flash before content projection.</li>
+        <li>Keep the constructor function lightweight — defer heavy work to <code>Initialize()</code>.</li>
+        <li>Provide <code>.d.ts</code> declaration files alongside your components for a better TypeScript development experience.</li>
+    </ul>
+</body>
+</html>
