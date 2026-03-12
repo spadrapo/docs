@@ -1,0 +1,27 @@
+[
+  {
+    "Name": "FrameID",
+    "Description": "The ID of the iframe element that will receive the message",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "ExternalFunction",
+    "Description": "The tag or function name that identifies the message purpose in the receiving iframe",
+    "Types": [ "text" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage item whose data will be sent to the iframe",
+    "Types": [ "datakey" ],
+    "Optional": false
+  },
+  {
+    "Name": "IsClone",
+    "Description": "Indicates whether to clone the data before sending. When true, creates a deep copy of the data",
+    "Types": [ "boolean" ],
+    "Optional": true,
+    "DefaultValue": "false"
+  }
+]
