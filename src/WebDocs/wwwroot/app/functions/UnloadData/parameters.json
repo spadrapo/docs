@@ -1,0 +1,15 @@
+[
+    {
+        "Name": "DataKey",
+        "Description": "The identification of a storage item to be unloaded from cache",
+        "Types": ["datakey"],
+        "Optional": false
+    },
+    {
+        "Name": "Notify",
+        "Description": "You can choose if you want to notify the change to the observer",
+        "Types": ["boolean"],
+        "Optional": true,
+        "DefaultValue": "true"
+    }
+]
