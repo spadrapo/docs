@@ -1,0 +1,8 @@
+<div d-dataKey="data" d-dataUrlGet="~/api/Sample/GetList"></div>
+<div>
+    <ul>
+        <li d-for="item in data" d-model="{{item.Value}}"></li>
+    </ul>
+</div>
+<br />
+<input type="button" value="Unload Data" d-on-click="UnloadData(data)" />
