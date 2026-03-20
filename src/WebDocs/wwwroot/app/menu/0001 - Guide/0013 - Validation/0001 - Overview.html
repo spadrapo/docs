@@ -82,12 +82,33 @@
 &lt;div d-validation="emailFormat"&gt;&lt;span&gt;Enter a valid email address.&lt;/span&gt;&lt;/div&gt;
 &lt;div d-validation="passwordMatch"&gt;&lt;span&gt;Passwords do not match.&lt;/span&gt;&lt;/div&gt;</code></pre>
 
+    <h3>Validators and d-if</h3>
+    <p>Validators are <strong>always evaluated</strong> when a <code>d-validation-on-click</code> action fires, regardless of whether the validator element is visible. Applying <code>d-if</code> to a validator element only controls its <em>display</em> — the validator remains registered in Drapo's validation system and will still block the action if it fails, even when its element has <code>display:none</code>.</p>
+    <p>Do <strong>not</strong> rely on <code>d-if</code> to conditionally disable a validator that is listed in <code>d-validation-on-click</code>.</p>
+
+    <h4>Correct Pattern: Conditional Buttons</h4>
+    <p>When certain validators only apply in some situations, use <strong>two separate buttons</strong> with complementary <code>d-if</code> conditions. Each button lists only the validators that are relevant to it. Because the hidden button cannot be clicked, its validators are never triggered.</p>
+    <pre><code>&lt;!-- Apply for Dimension type — requires SubType --&gt;
+&lt;input type="button"
+    d-if="{{panelIsDimension}}"
+    d-attr-value="{{word.Apply}}"
+    d-validation-on-click="{validatorName,validatorSubType}"
+    d-on-click="PostData(data);CloseWindow()" /&gt;
+
+&lt;!-- Apply for all other types — SubType not required --&gt;
+&lt;input type="button"
+    d-if="!{{panelIsDimension}}"
+    d-attr-value="{{word.Apply}}"
+    d-validation-on-click="{validatorName}"
+    d-on-click="PostData(data);CloseWindow()" /&gt;</code></pre>
+
     <h3>Best Practices</h3>
     <ul>
         <li>Place all validator <code>&lt;div&gt;</code> elements near the top of the form, after your data declarations.</li>
         <li>Use meaningful <code>d-validation-id</code> names that describe the rule, not the field (e.g. <code>emailFormat</code> rather than <code>field1</code>).</li>
         <li>Keep error message elements adjacent to their corresponding fields for the best user experience.</li>
         <li>For complex server-side rules, use the <code>outside</code> type to call an API endpoint and reflect the result back into a storage field used by a <code>conditional</code> validator.</li>
+        <li>Never rely on <code>d-if</code> to suppress a validator — use separate buttons with complementary <code>d-if</code> conditions instead (see <em>Validators and d-if</em> above).</li>
     </ul>
 </body>
 </html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Patterns</h2>
+        <p>This page collects practical patterns for common Drapo scenarios involving validation, data binding, and conditional rendering.</p>
+
+        <h3>Stable Labels During User Input (New vs Edit Mode)</h3>
+        <p>A label that switches between "New item" and "Edit item" based on whether a <code>Name</code> field is empty is naturally reactive: as soon as the user types a character, the label switches — even though they are still creating a new record.</p>
+        <p><strong>Wrong approach — label switches while the user types:</strong></p>
+        <d-code>
+            &lt;label d-model="{{text.NewItem}}"  d-if="{{data.Name.length}}=0"&gt;&lt;/label&gt;
+            &lt;label d-model="{{text.EditItem}}" d-if="{{data.Name.length}}&gt;0"&gt;&lt;/label&gt;
+        </d-code>
+        <p><strong>Correct approach — use a stable flag set once at startup:</strong></p>
+        <p>Introduce a <code>d-dataType="value"</code> flag that is set once when the panel opens and never changes while the user types:</p>
+        <d-code>
+            &lt;!-- Flag starts empty (falsy) --&gt;
+            &lt;div d-dataKey="panelIsNew" d-dataType="value" d-dataValue=""&gt;&lt;/div&gt;
+
+            &lt;!-- Startup: set to true only when creating a new record (Name is empty) --&gt;
+            &lt;div d-dataKey="panelStartup" d-dataType="function" d-dataLoadType="startup"
+                d-dataValue="IF({{data.Name.length}}=0,UpdateData(panelIsNew,true))"&gt;&lt;/div&gt;
+
+            &lt;!-- Labels use the stable flag, not the reactive Name length --&gt;
+            &lt;label d-model="{{text.NewItem}}"  d-if="{{panelIsNew}}"&gt;&lt;/label&gt;
+            &lt;label d-model="{{text.EditItem}}" d-if="!{{panelIsNew}}"&gt;&lt;/label&gt;
+        </d-code>
+        <p>The flag is evaluated once when the panel opens and remains constant while the user edits the form.</p>
+    </div>
+</div>

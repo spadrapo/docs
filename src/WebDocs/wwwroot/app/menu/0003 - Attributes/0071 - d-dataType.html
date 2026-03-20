@@ -19,5 +19,26 @@
             <div d-dataKey="obj1" d-dataType="object"></div>
         </d-code>
         <p>In this case, the storage item has the name obj1 and his type is [object](object)</p>
+
+        <h3>Choosing Between <code>value</code> and <code>object</code> for Boolean Flags</h3>
+        <p>When you need a simple boolean or scalar flag to drive a <code>d-if</code> expression, always use <code>d-dataType="value"</code> — not <code>d-dataType="object"</code>.</p>
+        <p>An empty <code>d-dataType="object"</code> element is initialised as <code>{}</code>, which is an <strong>empty object</strong>. Empty objects are <strong>truthy</strong> in Drapo, so <code>d-if="{{myFlag}}"</code> will show the element even when you intend it to be hidden.</p>
+        <d-code>
+            &lt;!-- WRONG: empty object is truthy — d-if="{{myFlag}}" will show the element --&gt;
+            &lt;div d-dataKey="myFlag" d-dataType="object" d-dataValue=""&gt;&lt;/div&gt;
+
+            &lt;!-- CORRECT: empty string is falsy — d-if="{{myFlag}}" will hide the element --&gt;
+            &lt;div d-dataKey="myFlag" d-dataType="value" d-dataValue=""&gt;&lt;/div&gt;
+        </d-code>
+        <p>Set the flag to truthy using a startup function:</p>
+        <d-code>
+            &lt;div d-dataKey="myFlagStartup" d-dataType="function" d-dataLoadType="startup"
+                d-dataValue="IF({{someCondition}},UpdateData(myFlag,true))"&gt;&lt;/div&gt;
+        </d-code>
+        <p>Clear it back to falsy with:</p>
+        <d-code>
+            UpdateData(myFlag,)
+        </d-code>
+        <p>This sets <code>myFlag</code> to an empty string, which is falsy in <code>d-if</code>.</p>
     </div>
 </div>
