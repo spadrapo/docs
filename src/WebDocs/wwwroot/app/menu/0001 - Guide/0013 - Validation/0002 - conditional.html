@@ -4,6 +4,27 @@
     <div>
         <h2>conditional</h2>
         <p>The conditional validation type can be used to validate a conditional expression.</p>
+
+        <h3>Truthiness Rules</h3>
+        <p>A <code>conditional</code> validator <strong>passes</strong> (allows the action) when the <code>d-validation-value</code> expression resolves to a truthy value, and <strong>fails</strong> (blocks the action) when it resolves to a falsy value.</p>
+        <table>
+            <thead>
+                <tr><th>Value</th><th>Result</th></tr>
+            </thead>
+            <tbody>
+                <tr><td><code>"true"</code> (string)</td><td>✅ passes</td></tr>
+                <tr><td><code>"false"</code> (string)</td><td>❌ fails</td></tr>
+                <tr><td><code>""</code> (empty string)</td><td>❌ fails</td></tr>
+                <tr><td><code>{}</code> (empty object)</td><td>✅ passes — objects are always truthy</td></tr>
+                <tr><td><code>true</code> (boolean)</td><td>✅ passes</td></tr>
+                <tr><td><code>false</code> (boolean)</td><td>❌ fails</td></tr>
+                <tr><td>non-zero number</td><td>✅ passes</td></tr>
+                <tr><td><code>0</code> (number)</td><td>❌ fails</td></tr>
+                <tr><td><code>null</code> / <code>undefined</code></td><td>❌ fails</td></tr>
+            </tbody>
+        </table>
+        <p><strong>Important:</strong> An empty object <code>{}</code> created by <code>d-dataType="object"</code> is truthy. Use <code>d-dataType="value"</code> with an empty <code>d-dataValue=""</code> when you need a falsy initial state for a flag used in conditional validation. See the <em>d-dataType</em> attribute page for details.</p>
+
         <p>Simple example where the check must be checked to add an object:</p>
         <d-sample>
             <!--Data-->
