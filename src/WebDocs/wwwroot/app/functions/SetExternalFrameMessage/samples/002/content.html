@@ -1,0 +1,14 @@
+<div d-datakey="config" d-datatype="object" d-dataproperty-theme="dark" d-dataproperty-language="en" d-dataproperty-timeout="5000"></div>
+<div>
+    <h4>Application Configuration:</h4>
+    <p>Theme: {{config.Theme}}</p>
+    <p>Language: {{config.Language}}</p>
+    <p>Timeout: {{config.Timeout}}ms</p>
+    <br />
+    <input type="button" value="Send Config to Frame (Cloned)" d-on-click="SetExternalFrameMessage(configFrame,configure,config,true)" />
+    <input type="button" value="Update Theme" d-on-click="UpdateDataField(config,Theme,light)" />
+    <br /><br />
+    <iframe id="configFrame" src="about:blank" width="400" height="150" style="border: 1px solid #999;">
+        <p>Your browser does not support iframes.</p>
+    </iframe>
+</div>
