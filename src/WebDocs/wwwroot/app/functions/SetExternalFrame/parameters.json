@@ -1,0 +1,26 @@
+[
+  {
+    "Name": "FrameID",
+    "Description": "The ID of the iframe element to communicate with",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "ExternalFunction",
+    "Description": "The name of the function to call within the iframe",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "DataKey",
+    "Description": "The data key containing the data to pass to the iframe function",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  },
+  {
+    "Name": "IsClone",
+    "Description": "Whether to clone the data before passing it to the iframe (default: false)",
+    "Types": [ "boolean", "mustache" ],
+    "Optional": true
+  }
+]
