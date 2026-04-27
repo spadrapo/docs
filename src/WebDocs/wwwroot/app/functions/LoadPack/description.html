@@ -26,4 +26,11 @@
 
 <p>Dynamic packs are created by setting the <code>IsDynamic</code> flag when defining the pack in the configuration, and configuring a delegate handler that will be called to generate the pack content each time it's requested.</p>
 
+<h3>Skipping the Local Cache</h3>
+<p>By default, <code>LoadPack</code> skips the server round-trip when the pack is already loaded or has valid local cache data. For dynamic packs that can change at runtime you may want to revalidate against the server. Setting the optional <code>SkipLocalCache</code> parameter to <code>true</code> forces a conditional HTTP request using <code>If-None-Match</code>:</p>
+<ul>
+  <li><strong>304 Not Modified</strong> - The server confirms the cached pack is still current; the local cache is used (or loaded into memory if not already present)</li>
+  <li><strong>200 OK</strong> - The server returns new content; the pack is downloaded, the cache is updated with the new ETag, and the pack is reloaded</li>
+</ul>
+
 <p>This function is particularly useful for loading component libraries, themes, or any collection of related files that should be loaded together as a unit, whether predefined or generated dynamically.</p>
