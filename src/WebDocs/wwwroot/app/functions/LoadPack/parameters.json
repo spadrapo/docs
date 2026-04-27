@@ -7,5 +7,14 @@
       "mustache"
     ],
     "Optional": false
+  },
+  {
+    "Name": "SkipLocalCache",
+    "Description": "When true, bypasses both the in-memory loaded check and the local cache, forcing a conditional request to the server using If-None-Match. On a 304 Not Modified response the cached pack is used; on a 200 the new content is downloaded and the cache is updated. Useful for reloading dynamic packs that may change at runtime.",
+    "Types": [
+      "boolean"
+    ],
+    "Optional": true,
+    "DefaultValue": "false"
   }
 ]
