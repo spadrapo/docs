@@ -1,0 +1,1986 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>drapo.train</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #fafaf7;
+  --ink: #1a1a1a;
+  --muted: #8a8a85;
+  --line: #e8e8e3;
+  --line-strong: #d4d4cf;
+  --accent: #1a1a1a;
+  --ok: #2d7a2d;
+  --ok-bg: #f0f7f0;
+  --err: #b33030;
+  --err-bg: #faf0f0;
+  --code-bg: #f3f3ee;
+  --code-ink: #3a3a35;
+  --kbd-bg: #ffffff;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  min-height: 100vh;
+}
+
+.app {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 48px 24px 80px;
+}
+
+/* ===== HEADER ===== */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+
+.brand {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+.brand .dim { color: var(--muted); font-weight: 400; }
+
+.header-meta {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  display: flex;
+  gap: 16px;
+}
+.header-meta span strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ===== HOME ===== */
+.home h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.025em;
+  margin-bottom: 16px;
+  max-width: 520px;
+}
+
+.home .lead {
+  font-size: 16px;
+  color: var(--muted);
+  max-width: 520px;
+  margin-bottom: 40px;
+}
+
+.home .stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 40px;
+}
+.home .stat {
+  background: var(--bg);
+  padding: 20px;
+}
+.home .stat .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+.home .stat .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+.home .types {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 40px;
+  line-height: 1.8;
+}
+.home .types b {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* ===== BUTTONS ===== */
+.btn {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  font-weight: 600;
+  padding: 14px 22px;
+  border: 1px solid var(--ink);
+  background: var(--ink);
+  color: var(--bg);
+  cursor: pointer;
+  transition: opacity 0.15s;
+  letter-spacing: -0.01em;
+}
+.btn:hover { opacity: 0.82; }
+.btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
+}
+
+.btn-ghost {
+  background: transparent;
+  color: var(--ink);
+  border: 1px solid var(--line-strong);
+}
+.btn-ghost:hover { background: var(--code-bg); opacity: 1; }
+
+.btn-block {
+  display: block;
+  width: 100%;
+  text-align: center;
+}
+
+.kbd {
+  display: inline-block;
+  padding: 1px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  background: var(--kbd-bg);
+  border: 1px solid var(--line-strong);
+  border-bottom-width: 2px;
+  border-radius: 3px;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+/* ===== LESSON ===== */
+.lesson-bar {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+.lesson-bar .idx {
+  color: var(--muted);
+  letter-spacing: -0.02em;
+}
+.lesson-bar .idx strong { color: var(--ink); font-weight: 600; }
+
+.progress {
+  flex: 1;
+  height: 2px;
+  background: var(--line);
+  position: relative;
+}
+.progress-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: var(--ink);
+  transition: width 0.3s ease;
+}
+
+.lesson-bar .lives {
+  color: var(--muted);
+}
+.lesson-bar .lives .heart {
+  color: var(--ink);
+  margin-right: 2px;
+}
+.lesson-bar .lives .heart.lost { color: var(--line-strong); }
+
+.lesson {
+  animation: fadeUp 0.3s ease;
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lesson-tag {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.lesson h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 28px;
+}
+
+.teach {
+  margin-bottom: 36px;
+  padding-bottom: 36px;
+  border-bottom: 1px solid var(--line);
+}
+
+.teach p {
+  margin-bottom: 14px;
+  font-size: 15px;
+  line-height: 1.65;
+  color: var(--code-ink);
+}
+.teach p:last-child { margin-bottom: 0; }
+.teach strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.teach code, code.inl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 2px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
+pre.code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  border-left: 2px solid var(--line-strong);
+  padding: 14px 18px;
+  font-size: 13px;
+  line-height: 1.7;
+  overflow-x: auto;
+  margin: 14px 0;
+  color: var(--code-ink);
+  white-space: pre;
+}
+pre.code .at { color: var(--ink); font-weight: 600; }
+pre.code .str { color: #8a6f3a; }
+pre.code .tag { color: var(--muted); }
+pre.code .com { color: var(--muted); font-style: italic; }
+pre.code .mus { color: var(--ink); font-weight: 600; }
+
+/* ===== QUESTION ===== */
+.q {
+  margin-bottom: 24px;
+}
+
+.q-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.q-prompt {
+  font-size: 17px;
+  font-weight: 500;
+  margin-bottom: 20px;
+  line-height: 1.45;
+  letter-spacing: -0.01em;
+}
+.q-prompt code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  padding: 2px 7px;
+  font-size: 0.86em;
+  border-radius: 2px;
+  font-weight: 600;
+}
+
+/* Multiple choice */
+.options {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.option {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--line);
+  background: var(--bg);
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+  text-align: left;
+  width: 100%;
+  transition: border-color 0.12s, background 0.12s;
+}
+.option:hover:not(.disabled) {
+  border-color: var(--ink);
+}
+.option .key {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--muted);
+  width: 18px;
+  flex-shrink: 0;
+}
+.option .text {
+  flex: 1;
+  font-size: 14.5px;
+}
+.option code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-size: 0.88em;
+}
+.option.disabled { cursor: default; }
+.option.correct {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+.option.correct .key { color: var(--ok); }
+.option.wrong {
+  border-color: var(--err);
+  background: var(--err-bg);
+}
+.option.wrong .key { color: var(--err); }
+
+/* Typing input */
+.type-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  border-bottom: 2px solid var(--line-strong);
+  padding-bottom: 12px;
+}
+.type-line .prompt-char {
+  color: var(--muted);
+  user-select: none;
+  font-weight: 600;
+}
+.type-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 16px;
+  color: var(--ink);
+  caret-color: var(--ink);
+  font-weight: 500;
+}
+.type-line.correct {
+  border-bottom-color: var(--ok);
+}
+.type-line.wrong {
+  border-bottom-color: var(--err);
+}
+.type-input::placeholder {
+  color: var(--muted);
+  opacity: 0.5;
+}
+
+.type-hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 8px;
+  letter-spacing: -0.01em;
+}
+
+/* Fill-in-the-blank: code with input slots */
+.fill-block {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  border-left: 2px solid var(--line-strong);
+  padding: 16px 18px;
+  font-size: 13.5px;
+  line-height: 2;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--code-ink);
+}
+.fill-block .slot {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  padding: 2px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+  min-width: 90px;
+  border-radius: 2px;
+  transition: border-color 0.12s, background 0.12s;
+}
+.fill-block .slot:focus {
+  border-color: var(--ink);
+}
+.fill-block .slot.correct {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.fill-block .slot.wrong {
+  border-color: var(--err);
+  background: var(--err-bg);
+  color: var(--err);
+}
+
+/* ===== FEEDBACK ===== */
+.fb {
+  margin-top: 28px;
+  padding: 18px 20px;
+  border-left: 2px solid var(--line-strong);
+  background: var(--code-bg);
+  display: none;
+}
+.fb.show { display: block; animation: fadeUp 0.25s ease; }
+.fb.correct {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+}
+.fb.wrong {
+  border-color: var(--err);
+  background: var(--err-bg);
+}
+.fb-status {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+.fb.correct .fb-status { color: var(--ok); }
+.fb.wrong .fb-status { color: var(--err); }
+.fb-text {
+  font-size: 14px;
+  line-height: 1.6;
+  color: var(--code-ink);
+}
+.fb-text code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  padding: 1px 5px;
+  font-size: 0.88em;
+  border-radius: 2px;
+}
+.fb-correct-answer {
+  margin-top: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  padding: 8px 12px;
+  background: var(--bg);
+  border: 1px solid var(--line);
+  color: var(--ink);
+  display: inline-block;
+}
+
+/* ===== ACTIONS BAR ===== */
+.actions {
+  margin-top: 32px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+.actions .hint {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+/* ===== END ===== */
+.end h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.15;
+  margin-bottom: 12px;
+}
+.end .end-sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 40px;
+}
+
+.scoreboard {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  margin-bottom: 32px;
+}
+@media (min-width: 500px) {
+  .scoreboard { grid-template-columns: repeat(4, 1fr); }
+}
+.score-cell {
+  background: var(--bg);
+  padding: 20px;
+}
+.score-cell .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: lowercase;
+  margin-bottom: 6px;
+}
+.score-cell .val {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 26px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+.verdict {
+  padding: 20px 24px;
+  border: 1px solid var(--line-strong);
+  margin-bottom: 28px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--code-ink);
+}
+.verdict .rank {
+  color: var(--ink);
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.end-actions {
+  display: flex;
+  gap: 10px;
+}
+.end-actions .btn { flex: 1; }
+
+/* ===== EXAM ===== */
+.exam-header {
+  padding: 14px 18px;
+  background: var(--code-bg);
+  border-left: 2px solid var(--ink);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--code-ink);
+  margin-bottom: 24px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.exam h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 28px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  margin-bottom: 18px;
+}
+
+.exam-brief {
+  font-size: 14.5px;
+  line-height: 1.65;
+  color: var(--code-ink);
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--line);
+}
+.exam-brief p { margin-bottom: 10px; }
+.exam-brief code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 0.9em;
+  color: var(--ink);
+}
+
+.exam-code {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--code-bg);
+  border-left: 2px solid var(--line-strong);
+  padding: 18px 20px;
+  font-size: 13px;
+  line-height: 2.1;
+  overflow-x: auto;
+  white-space: pre;
+  color: var(--code-ink);
+  margin-bottom: 18px;
+}
+.exam-code .com { color: var(--muted); font-style: italic; }
+.exam-code input.slot {
+  display: inline-block;
+  background: var(--bg);
+  border: 1px solid var(--line-strong);
+  padding: 2px 8px;
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink);
+  outline: none;
+  width: 170px;
+  border-radius: 2px;
+  transition: border-color 0.12s, background 0.12s;
+}
+.exam-code input.slot:focus {
+  border-color: var(--ink);
+}
+.exam-code input.slot.correct {
+  border-color: var(--ok);
+  background: var(--ok-bg);
+  color: var(--ok);
+}
+.exam-code input.slot.wrong {
+  border-color: var(--err);
+  background: var(--err-bg);
+  color: var(--err);
+}
+
+.exam-hints {
+  margin-bottom: 24px;
+  font-size: 12.5px;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  line-height: 1.8;
+}
+.exam-hints details {
+  border: 1px solid var(--line);
+  padding: 10px 14px;
+  border-radius: 2px;
+}
+.exam-hints summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--ink);
+  user-select: none;
+}
+.exam-hints summary:hover { color: var(--muted); }
+.exam-hints ol {
+  margin-top: 12px;
+  padding-left: 22px;
+  color: var(--code-ink);
+}
+.exam-hints ol li {
+  padding: 3px 0;
+}
+
+.exam-actions {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+.exam-actions .btn { flex: 1; }
+
+/* Grade screen */
+.grade-card {
+  padding: 28px 24px;
+  background: var(--code-bg);
+  border-left: 4px solid var(--ink);
+  margin-bottom: 24px;
+}
+.grade-card.pass { border-left-color: var(--ok); background: var(--ok-bg); }
+.grade-card.fail { border-left-color: var(--err); background: var(--err-bg); }
+.grade-card .lbl {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  color: var(--muted);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+.grade-card .num {
+  font-family: 'Inter', sans-serif;
+  font-size: 56px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.grade-card.pass .num { color: var(--ok); }
+.grade-card.fail .num { color: var(--err); }
+.grade-card .sub {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--code-ink);
+}
+
+.exam-review {
+  margin-bottom: 24px;
+}
+.exam-review h3 {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+.review-item {
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  margin-bottom: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+.review-item .status {
+  font-weight: 700;
+  flex-shrink: 0;
+  min-width: 22px;
+}
+.review-item.ok { border-color: var(--ok); background: var(--ok-bg); }
+.review-item.ok .status { color: var(--ok); }
+.review-item.no { border-color: var(--err); background: var(--err-bg); }
+.review-item.no .status { color: var(--err); }
+.review-item .info {
+  flex: 1;
+  line-height: 1.55;
+}
+.review-item .info .h {
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: var(--code-ink);
+  margin-bottom: 4px;
+}
+.review-item .info .got, .review-item .info .exp {
+  font-size: 12.5px;
+}
+.review-item .info .got { color: var(--muted); }
+.review-item .info .exp { color: var(--ink); font-weight: 600; }
+
+/* ===== UTILS ===== */
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+<div class="app" id="app"></div>
+
+<script>
+/* =====================================================================
+   CONTEÚDO
+   ===================================================================== */
+const LESSONS = [
+  // ============ 01 ============
+  {
+    title: "Marcando atributos do framework",
+    tag: "01",
+    teach: `
+      <p><b>Drapo</b> é um framework SPA declarativo: você escreve atributos HTML em vez de JavaScript. Foi criado em 2017 por Thiago Henrique da Silva (Sysphera) e integra com ASP.NET Core.</p>
+      <p>Como qualquer página HTML pode ter dezenas de atributos diferentes, o framework precisa reconhecer quais são <i>dele</i> e quais são do HTML padrão. Para isso, todo atributo do framework começa com um marcador consistente — uma letra seguida de hífen.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Que sequência de caracteres marca todo atributo do framework?',
+      placeholder: 'ex: x-',
+      accept: ['d-', 'd'],
+      canonical: 'd-',
+      explain: 'Todos os atributos começam com <code>d-</code>. É o marcador que diz ao framework: "esse atributo é meu, vou processar".'
+    }
+  },
+  // ============ 02 ============
+  {
+    title: "Interpolando valores no HTML",
+    tag: "02",
+    teach: `
+      <p>Para mostrar valores dinâmicos no HTML — tipo o nome do usuário dentro de um título — você precisa marcar o trecho como "interprete isso". O framework usa uma sintaxe de delimitadores duplos parecida com a do Vue, Angular ou Handlebars (chamada de "mustache" porque visualmente lembra um bigodinho).</p>
+      <p>Por exemplo, dentro do HTML você escreve algo como:</p>
+      <pre class="code"><span class="tag">&lt;h1&gt;</span>Olá, ?usuário aqui?<span class="tag">&lt;/h1&gt;</span></pre>
+      <p>O valor é resolvido em runtime antes do usuário ver.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Que sequência de caracteres abre e fecha uma interpolação? (digite os dois, separados por espaço)',
+      placeholder: 'ex: [ ]',
+      accept: ['{{ }}', '{{}}'],
+      canonical: '{{ }}',
+      explain: 'Drapo usa <code>{{ }}</code> — duas chaves para abrir, duas para fechar. Sintaxe mustache, igual ao Vue e Handlebars.'
+    }
+  },
+  // ============ 03 ============
+  {
+    title: "Criando um contexto de dados",
+    tag: "03",
+    teach: `
+      <p>Antes de exibir um valor, você precisa <i>definir</i> esse valor em algum lugar do HTML. Drapo organiza dados em "contextos" identificados por uma chave (um nome).</p>
+      <p>Para definir um contexto, você usa <b>dois atributos juntos</b> no mesmo elemento: um nomeia o contexto, outro diz se ele é objeto, array, string, etc.</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">???</span>=<span class="str">"user"</span>
+     <span class="at">???</span>=<span class="str">"object"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+    `,
+    q: {
+      type: 'fill',
+      prompt: 'Complete: primeiro slot é o atributo que dá nome ao contexto; segundo é o que define se ele é object, array, etc.',
+      template: `<div ___ ="user"
+     ___ ="object"></div>`,
+      slots: [
+        { accept: ['d-dataKey', 'd-datakey'], canonical: 'd-dataKey' },
+        { accept: ['d-dataType', 'd-datatype'], canonical: 'd-dataType' }
+      ],
+      explain: '<code>d-dataKey</code> nomeia o contexto e <code>d-dataType</code> define o tipo (<code>object</code>, <code>array</code>, <code>string</code>). Os dois andam juntos quase sempre.'
+    }
+  },
+  // ============ 04 ============
+  {
+    title: "Valores iniciais de um contexto",
+    tag: "04",
+    teach: `
+      <p>Depois de declarar um contexto, você precisa povoá-lo. Uma maneira é definir os valores iniciais diretamente no HTML, com mais atributos. Cada propriedade vira um atributo no padrão:</p>
+      <pre class="code">d-dataProperty-{nomeDaPropriedade}=<span class="str">"valor"</span></pre>
+      <p>Exemplo:</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">d-dataKey</span>=<span class="str">"user"</span>
+     <span class="at">d-dataType</span>=<span class="str">"object"</span>
+     <span class="at">d-dataProperty-name</span>=<span class="str">"Ana"</span>
+     <span class="at">d-dataProperty-age</span>=<span class="str">"30"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+      <p>Isso cria internamente <code class="inl">user = { name: "Ana", age: "30" }</code>.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Para criar uma propriedade chamada <code>email</code> com valor inicial, qual seria o nome COMPLETO do atributo? (só o nome, sem o valor)',
+      placeholder: '',
+      accept: ['d-dataProperty-email', 'd-dataproperty-email'],
+      canonical: 'd-dataProperty-email',
+      explain: 'O padrão é <code>d-dataProperty-{nome}</code>. Para a propriedade <code>email</code>: <code>d-dataProperty-email</code>.'
+    }
+  },
+  // ============ 05 ============
+  {
+    title: "Acessando propriedades aninhadas",
+    tag: "05",
+    teach: `
+      <p>Você já viu como criar um contexto e como interpolar valores. Agora junta os dois.</p>
+      <p>Dado o contexto:</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">d-dataKey</span>=<span class="str">"user"</span>
+     <span class="at">d-dataType</span>=<span class="str">"object"</span>
+     <span class="at">d-dataProperty-name</span>=<span class="str">"Ana"</span><span class="tag">&gt;&lt;/div&gt;</span>
+
+<span class="tag">&lt;h1&gt;</span>Olá, ??? <span class="tag">&lt;/h1&gt;</span></pre>
+      <p>Você precisa acessar a propriedade <code class="inl">name</code> que está dentro do contexto <code class="inl">user</code>. Use a notação ponto (igual JavaScript).</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'O que substitui o <code>???</code> para exibir o nome do usuário?',
+      placeholder: 'ex: {{...}}',
+      accept: ['{{user.name}}', '{{ user.name }}', '{{user.name }}', '{{ user.name}}'],
+      canonical: '{{user.name}}',
+      explain: 'Dentro do mustache, acessa-se com notação ponto: <code>{{user.name}}</code> — o contexto <code>user</code>, propriedade <code>name</code>.'
+    }
+  },
+  // ============ 06 ============
+  {
+    title: "Iterando uma coleção",
+    tag: "06",
+    teach: `
+      <p>Para repetir um elemento HTML para cada item de uma coleção (array ou objeto), Drapo tem um atributo dedicado. A sintaxe lembra o <code class="inl">for...in</code> do JavaScript: você declara uma variável local que vai representar cada item, e indica a coleção a iterar.</p>
+      <pre class="code"><span class="tag">&lt;ul&gt;</span>
+  <span class="tag">&lt;li</span> <span class="at">???</span>=<span class="str">"???"</span><span class="tag">&gt;</span><span class="mus">{{item}}</span><span class="tag">&lt;/li&gt;</span>
+<span class="tag">&lt;/ul&gt;</span></pre>
+      <p>Considere que o array a iterar se chama <code class="inl">items</code> e cada elemento será referenciado como <code class="inl">item</code>.</p>
+    `,
+    q: {
+      type: 'fill',
+      prompt: 'Complete: primeiro slot é o atributo de iteração; segundo é o conteúdo dele.',
+      template: `<li ___ ="___">{{item}}</li>`,
+      slots: [
+        { accept: ['d-for'], canonical: 'd-for' },
+        { accept: ['item in items'], canonical: 'item in items' }
+      ],
+      explain: '<code>d-for="item in items"</code>. O atributo é <code>d-for</code>; o valor segue o padrão <code>variavel in coleção</code>.'
+    }
+  },
+  // ============ 07 ============
+  {
+    title: "Renderização condicional",
+    tag: "07",
+    teach: `
+      <p>Às vezes você quer mostrar um elemento apenas em certas situações — só quando o usuário estiver logado, só se a lista não estiver vazia, só se um campo for verdadeiro. Drapo tem um atributo que aceita uma expressão e renderiza o elemento somente se ela for verdadeira.</p>
+      <pre class="code"><span class="tag">&lt;p</span> <span class="at">???</span>=<span class="str">"{{items.length &gt; 0}}"</span><span class="tag">&gt;</span>
+  Total: <span class="mus">{{items.length}}</span> itens
+<span class="tag">&lt;/p&gt;</span></pre>
+    `,
+    q: {
+      type: 'fill',
+      prompt: 'Complete: mostrar o parágrafo apenas se <code>user.isActive</code> for verdadeiro.',
+      template: `<p ___ ="___">Ativo!</p>`,
+      slots: [
+        { accept: ['d-if'], canonical: 'd-if' },
+        { accept: ['{{user.isActive}}', '{{ user.isActive }}', '{{user.isActive }}', '{{ user.isActive}}'], canonical: '{{user.isActive}}' }
+      ],
+      explain: 'O atributo é <code>d-if</code>. A condição vai entre aspas, em mustache: <code>{{user.isActive}}</code>.'
+    }
+  },
+  // ============ 08 ============
+  {
+    title: "Classes CSS condicionais",
+    tag: "08",
+    teach: `
+      <p>Querendo aplicar uma classe CSS apenas em certas situações (por exemplo, <code class="inl">done</code> num item de tarefa só quando ela estiver completa), Drapo tem um atributo dedicado. O valor dele é um objeto com a forma <code class="inl">{nomeDaClasse:condição}</code> — onde a condição vai entre mustaches.</p>
+      <pre class="code"><span class="tag">&lt;li</span> <span class="at">d-for</span>=<span class="str">"todo in todos"</span>
+    <span class="at">d-class</span>=<span class="str">"{done:{{todo.completed}}}"</span><span class="tag">&gt;</span>
+  <span class="mus">{{todo.text}}</span>
+<span class="tag">&lt;/li&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Digite o VALOR (sem aspas externas) que aplica a classe <code>active</code> quando <code>item.selected</code> for verdadeiro:',
+      placeholder: '',
+      accept: [
+        '{active:{{item.selected}}}',
+        '{ active:{{item.selected}}}',
+        '{active :{{item.selected}}}',
+        '{active: {{item.selected}}}',
+        '{ active : {{item.selected}} }',
+        '{ active: {{item.selected}} }'
+      ],
+      canonical: '{active:{{item.selected}}}',
+      explain: 'Formato: <code>{nomeDaClasse:{{condição}}}</code>. Tudo grudado, sem espaços, condição dentro de mustache.'
+    }
+  },
+  // ============ 09 ============
+  {
+    title: "Tratando eventos do DOM",
+    tag: "09",
+    teach: `
+      <p>Para reagir a interações do usuário (clique, mudança de input, tecla pressionada, etc), Drapo segue um padrão: você combina o marcador do framework, a palavra <code class="inl">on</code> e o nome do evento DOM, todos separados por hífen.</p>
+      <p>Por exemplo, para reagir a um evento <code class="inl">change</code>:</p>
+      <pre class="code"><span class="tag">&lt;input</span> <span class="at">d-on-change</span>=<span class="str">"UpdateTotal()"</span> <span class="tag">/&gt;</span></pre>
+      <p>O mesmo padrão se aplica a <code class="inl">keyup</code>, <code class="inl">blur</code> e outros.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual seria o atributo para reagir a um clique de mouse?',
+      placeholder: '',
+      accept: ['d-on-click'],
+      canonical: 'd-on-click',
+      explain: 'Seguindo o padrão <code>d-on-{evento}</code>: para clique é <code>d-on-click</code>.'
+    }
+  },
+  // ============ 10 ============
+  {
+    title: "Capturando uma tecla específica",
+    tag: "10",
+    teach: `
+      <p>Em formulários, é muito comum querer reagir <b>somente</b> quando o usuário aperta uma tecla específica — tipicamente <i>Enter</i> para submeter. Em vez de capturar todas as teclas e filtrar no handler, Drapo permite criar um atributo mais específico, adicionando o nome da tecla ao final.</p>
+      <p>Estende o padrão de eventos: <code class="inl">d-on-{evento}-{tecla}</code>.</p>
+      <pre class="code"><span class="tag">&lt;input</span> <span class="at">d-model</span>=<span class="str">"{{newTodo.text}}"</span>
+       <span class="at">???</span>=<span class="str">"SubmitForm()"</span> <span class="tag">/&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual atributo dispara apenas quando o usuário solta a tecla Enter?',
+      placeholder: '',
+      accept: ['d-on-keyup-enter'],
+      canonical: 'd-on-keyup-enter',
+      explain: 'O atributo é <code>d-on-keyup-enter</code>. Aplica o evento <code>keyup</code> com o filtro <code>enter</code>.'
+    }
+  },
+  // ============ 11 ============
+  {
+    title: "Encadeando ações em um handler",
+    tag: "11",
+    teach: `
+      <p>Você nem sempre quer chamar uma única função num evento. Pode querer adicionar um item à lista <b>e</b> limpar o campo de entrada, por exemplo. Drapo permite chamar várias funções em sequência dentro do mesmo handler, separadas por um único caractere.</p>
+      <pre class="code"><span class="tag">&lt;button</span> <span class="at">d-on-click</span>=<span class="str">"AddDataItem(todos,newTodo) ??? ClearDataField(newTodo,text)"</span><span class="tag">&gt;</span>
+  Add
+<span class="tag">&lt;/button&gt;</span></pre>
+      <p>Drapo executa as chamadas em ordem, como instruções de um statement.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Que caractere separa as chamadas? (digite só o caractere)',
+      placeholder: '',
+      accept: [';'],
+      canonical: ';',
+      explain: 'É o ponto-e-vírgula <code>;</code>. Drapo trata o handler como uma sequência de statements, igual JavaScript: <code>AcaoA();AcaoB();AcaoC()</code>.'
+    }
+  },
+  // ============ 12 ============
+  {
+    title: "Sincronizando input e dado",
+    tag: "12",
+    teach: `
+      <p>Quando você tem um campo de entrada e quer que o valor digitado pelo usuário <b>atualize automaticamente</b> um contexto de dados — e vice-versa, se o dado mudar por outro caminho, o input reflete — você precisa de um binding nos dois sentidos.</p>
+      <p>Drapo faz isso com um único atributo, parecido com o <code class="inl">v-model</code> do Vue ou <code class="inl">[(ngModel)]</code> do Angular:</p>
+      <pre class="code"><span class="tag">&lt;input</span> <span class="at">???</span>=<span class="str">"{{user.name}}"</span> <span class="tag">/&gt;</span>
+<span class="tag">&lt;p&gt;</span>Olá, <span class="mus">{{user.name}}</span>!<span class="tag">&lt;/p&gt;</span></pre>
+      <p>Conforme o usuário digita no input, o parágrafo abaixo se atualiza em tempo real.</p>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual atributo cria essa ligação bidirecional?',
+      placeholder: '',
+      accept: ['d-model'],
+      canonical: 'd-model',
+      explain: '<code>d-model</code>. Liga input e dado nos dois sentidos. Equivalente direto ao <code>v-model</code> do Vue.'
+    }
+  },
+  // ============ 13 ============
+  {
+    title: "Inserindo em uma coleção",
+    tag: "13",
+    teach: `
+      <p>Drapo traz um conjunto de funções "built-in" que você chama diretamente nos handlers — sem precisar escrever JavaScript próprio. Há funções para inserir, remover, atualizar campos, limpar contextos, etc.</p>
+      <p>Para inserir um novo elemento em um array existente, há uma função cuja assinatura é <code class="inl">Funcao(dataKey, item)</code> — onde o primeiro argumento é o nome do contexto (o array) e o segundo é o item a inserir.</p>
+      <pre class="code"><span class="tag">&lt;button</span> <span class="at">d-on-click</span>=<span class="str">"???(items, 'Novo')"</span><span class="tag">&gt;</span>
+  Adicionar
+<span class="tag">&lt;/button&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual o nome dessa função?',
+      placeholder: '',
+      accept: ['AddDataItem'],
+      canonical: 'AddDataItem',
+      explain: '<code>AddDataItem(dataKey, item)</code>. Convenção: PascalCase, e o nome descreve o que faz.'
+    }
+  },
+  // ============ 14 ============
+  {
+    title: "A operação inversa",
+    tag: "14",
+    teach: `
+      <p>Por simetria com a inserção, existe a operação inversa: tirar um item de uma coleção. Mesma assinatura: <code class="inl">Funcao(dataKey, item)</code>. Muito usada em loops, onde cada elemento iterado oferece um botão de exclusão.</p>
+      <pre class="code"><span class="tag">&lt;li</span> <span class="at">d-for</span>=<span class="str">"todo in todos"</span><span class="tag">&gt;</span>
+  <span class="mus">{{todo.text}}</span>
+  <span class="tag">&lt;button</span> <span class="at">d-on-click</span>=<span class="str">"???(todos, todo)"</span><span class="tag">&gt;</span>X<span class="tag">&lt;/button&gt;</span>
+<span class="tag">&lt;/li&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual o nome dessa função?',
+      placeholder: '',
+      accept: ['RemoveDataItem'],
+      canonical: 'RemoveDataItem',
+      explain: '<code>RemoveDataItem(dataKey, item)</code>. Espelha <code>AddDataItem</code>, mantendo o padrão <code>{verbo}DataItem</code>.'
+    }
+  },
+  // ============ 15 ============
+  {
+    title: "Persistindo no servidor",
+    tag: "15",
+    teach: `
+      <p>Drapo integra naturalmente com endpoints HTTP. Você declara duas URLs no próprio contexto: uma para carregar (GET) e outra para enviar (POST/PUT).</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">d-dataKey</span>=<span class="str">"user"</span>
+     <span class="at">d-dataUrlGet</span>=<span class="str">"~/api/users"</span>
+     <span class="at">d-dataUrlSet</span>=<span class="str">"~/api/users/save"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+      <p>Quando o usuário clica em "Salvar", você precisa disparar o envio usando uma função built-in. Ela usa automaticamente a URL configurada em <code class="inl">d-dataUrlSet</code> e envia o estado atual do contexto.</p>
+      <pre class="code"><span class="tag">&lt;button</span> <span class="at">d-on-click</span>=<span class="str">"???(user)"</span><span class="tag">&gt;</span>Salvar<span class="tag">&lt;/button&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual o nome dessa função?',
+      placeholder: '',
+      accept: ['PostData'],
+      canonical: 'PostData',
+      explain: '<code>PostData(dataKey)</code>. Envia o contexto via HTTP usando a URL definida em <code>d-dataUrlSet</code>.'
+    }
+  },
+  // ============ 16 ============
+  {
+    title: "Escondendo durante o carregamento",
+    tag: "16",
+    teach: `
+      <p>Há um problema visual sutil em SPAs declarativos: antes do framework terminar de processar a página, o usuário pode ver brevemente os delimitadores <code class="inl">{{ }}</code> "crus" na tela — o famoso "flash de mustaches". Vue, Angular e Drapo resolvem isso com um atributo booleano (sem valor) que esconde o elemento via CSS até o framework finalizar a renderização.</p>
+      <p>O nome lembra "cobrir", "manto" — o atributo cobre o elemento até estar pronto.</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">???</span><span class="tag">&gt;</span>
+  Olá, <span class="mus">{{user.name}}</span>!
+<span class="tag">&lt;/div&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual o atributo?',
+      placeholder: '',
+      accept: ['d-cloak'],
+      canonical: 'd-cloak',
+      explain: '<code>d-cloak</code>. "Cloak" é "manto" em inglês. Equivalente direto ao <code>v-cloak</code> do Vue.'
+    }
+  },
+  // ============ 17 ============
+  {
+    title: "Listas com milhares de itens",
+    tag: "17",
+    teach: `
+      <p>Renderizar uma lista enorme — pense numa tabela com 10.000 linhas — trava o navegador, porque ele precisa criar e manter todos esses nós no DOM. A solução padrão é <i>virtual scrolling</i>: o framework mantém no DOM só os elementos que cabem na área visível da tela, e troca a janela conforme o usuário rola.</p>
+      <p>Drapo tem essa otimização embutida. Você habilita com um atributo no container do loop. O nome do atributo é a tradução literal de "janela visível" / "área de visualização".</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">???</span>=<span class="str">"true"</span><span class="tag">&gt;</span>
+  <span class="tag">&lt;div</span> <span class="at">d-for</span>=<span class="str">"row in bigList"</span><span class="tag">&gt;</span>
+    <span class="mus">{{row.name}}</span>
+  <span class="tag">&lt;/div&gt;</span>
+<span class="tag">&lt;/div&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Qual o atributo?',
+      placeholder: '',
+      accept: ['d-viewport'],
+      canonical: 'd-viewport',
+      explain: '<code>d-viewport="true"</code>. Apenas os itens visíveis ficam no DOM — essencial para listas grandes.'
+    }
+  },
+  // ============ 18 ============
+  {
+    title: "Parâmetros de componentes",
+    tag: "18",
+    teach: `
+      <p>Drapo permite criar componentes reutilizáveis em <code class="inl">wwwroot/components/{nome}/</code>. Quando você usa o componente no HTML, normalmente precisa passar parâmetros para ele — um valor inicial, um label, callbacks, etc.</p>
+      <p>Para diferenciar atributos do framework dos parâmetros do componente, o Drapo usa um <b>prefixo distinto</b> nos parâmetros — diferente do prefixo padrão que você já conhece. São duas letras seguidas de hífen.</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">d-checkbox</span>
+     <span class="at">???value</span>=<span class="str">"{{x}}"</span>
+     <span class="at">???label</span>=<span class="str">"Aceito os termos"</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Que prefixo (com o hífen) é usado nos parâmetros de componente?',
+      placeholder: '',
+      accept: ['dc-'],
+      canonical: 'dc-',
+      explain: '<code>dc-</code> (d de drapo, c de component). Para distinguir de <code>d-</code>, que é dos atributos do framework propriamente.'
+    }
+  },
+  // ============ 19 ============
+  {
+    title: "Inicializando um componente",
+    tag: "19",
+    teach: `
+      <p>Cada componente Drapo tem dois arquivos: um <code class="inl">{nome}.html</code> com o markup e um <code class="inl">{nome}.ts</code> com a lógica TypeScript.</p>
+      <p>O framework precisa saber qual função do TypeScript chamar quando o componente é montado. Em vez de usar registro/decoradores, Drapo segue uma <b>convenção de nome</b>: a função tem que se chamar como a pasta do componente, seguida de um sufixo fixo em PascalCase. Tipo um "destinatário" que o framework sabe procurar.</p>
+      <pre class="code"><span class="com">// Pasta: components/userAvatar/</span>
+<span class="com">// Arquivo: userAvatar.ts</span>
+async function ???(
+    element: HTMLElement,
+    app: DrapoApplication
+) {
+    <span class="com">// inicialização</span>
+}</pre>
+    `,
+    q: {
+      type: 'type',
+      prompt: 'Para a pasta <code>userAvatar</code>, qual o nome EXATO da função?',
+      placeholder: '',
+      accept: ['userAvatarConstructor'],
+      canonical: 'userAvatarConstructor',
+      explain: 'Padrão: <code>{nomeDaPasta}Constructor</code>, camelCase. Aqui: <code>userAvatarConstructor</code>.'
+    }
+  },
+  // ============ 20 ============
+  {
+    title: "Tudo junto: Todo App",
+    tag: "20",
+    teach: `
+      <p>Hora de aplicar tudo. Esta é uma mini Todo App. Os dois contextos já estão declarados — um array de <code class="inl">todos</code> e um <code class="inl">newTodo</code> com o texto sendo digitado:</p>
+      <pre class="code"><span class="tag">&lt;div</span> <span class="at">d-dataKey</span>=<span class="str">"todos"</span> <span class="at">d-dataType</span>=<span class="str">"array"</span><span class="tag">&gt;&lt;/div&gt;</span>
+<span class="tag">&lt;div</span> <span class="at">d-dataKey</span>=<span class="str">"newTodo"</span> <span class="at">d-dataType</span>=<span class="str">"object"</span>
+     <span class="at">d-dataProperty-text</span>=<span class="str">""</span><span class="tag">&gt;&lt;/div&gt;</span></pre>
+      <p>Faltam 4 slots no markup principal: dois atributos no input e dois nos elementos da lista. Você já viu todos eles nas lições anteriores.</p>
+    `,
+    q: {
+      type: 'fill',
+      prompt: 'Complete os 4 slots:',
+      template: `<input ___ ="{{newTodo.text}}"
+       ___ ="AddDataItem(todos,newTodo)"/>
+
+<ul>
+  <li ___ ="todo in todos">
+    {{todo.text}}
+    <button d-on-click="___ (todos,todo)">X</button>
+  </li>
+</ul>`,
+      slots: [
+        { accept: ['d-model'], canonical: 'd-model' },
+        { accept: ['d-on-keyup-enter'], canonical: 'd-on-keyup-enter' },
+        { accept: ['d-for'], canonical: 'd-for' },
+        { accept: ['RemoveDataItem'], canonical: 'RemoveDataItem' }
+      ],
+      explain: 'Ordem: <code>d-model</code> (binding), <code>d-on-keyup-enter</code> (Enter envia), <code>d-for</code> (loop), <code>RemoveDataItem</code> (remover). Zero linhas de JS escritas — tudo declarativo.'
+    }
+  }
+];
+
+/* =====================================================================
+   PROVA FINAL — mini gerenciador de contatos
+   ===================================================================== */
+const EXAM = {
+  title: "Mini gerenciador de contatos",
+  briefing: `
+    <p>Para fechar, monte um <b>gerenciador de contatos</b>. O markup já está quase pronto — faltam 11 atributos/funções espalhados pelo código, todos cobrindo conceitos que você viu nas 20 lições.</p>
+    <p><b>O que esse app faz:</b></p>
+    <ul style="margin: 10px 0 14px 22px; line-height: 1.75;">
+      <li>Mostra uma lista de contatos (nome + telefone)</li>
+      <li>Tem um input para digitar o nome de um novo contato</li>
+      <li>Botão "Adicionar" insere o contato na lista</li>
+      <li>Cada item tem botão "X" que remove</li>
+      <li>Contato marcado como favorito recebe a classe <code>star</code></li>
+      <li>Mostra "Lista vazia" quando não há contatos</li>
+      <li>Carrega e envia dados para <code>~/api/contacts</code></li>
+    </ul>
+    <p><b>Como funciona a nota:</b> cada slot vale o mesmo. No fim você vê quais acertou, quais errou, a resposta esperada de cada um, e a nota de 0 a 100.</p>
+  `,
+  template: `<!-- Contexto da lista de contatos -->
+<div ___ ="contatos"
+     ___ ="array"
+     ___ ="~/api/contacts"
+     ___ ="~/api/contacts"></div>
+
+<!-- Contexto do novo contato sendo digitado -->
+<div d-dataKey="novoContato"
+     d-dataType="object"
+     ___ =""></div>
+
+<!-- Input do nome + botão adicionar -->
+<input ___ ="{{novoContato.name}}" />
+
+<button ___ ="AddDataItem(contatos,novoContato)">
+  Adicionar
+</button>
+
+<!-- Mensagem quando lista está vazia -->
+<p ___ ="{{contatos.length == 0}}">Lista vazia</p>
+
+<!-- A lista de contatos -->
+<ul>
+  <li ___ ="contato in contatos"
+      ___ ="{star:{{contato.favorito}}}">
+    {{contato.name}} - {{contato.phone}}
+    <button d-on-click="___ (contatos,contato)">X</button>
+  </li>
+</ul>`,
+  slots: [
+    { hint: 'nomeia o contexto da lista', accept: ['d-dataKey', 'd-datakey'], canonical: 'd-dataKey' },
+    { hint: 'define o tipo (array)', accept: ['d-dataType', 'd-datatype'], canonical: 'd-dataType' },
+    { hint: 'URL de leitura (GET)', accept: ['d-dataUrlGet', 'd-dataurlget'], canonical: 'd-dataUrlGet' },
+    { hint: 'URL de gravação (POST)', accept: ['d-dataUrlSet', 'd-dataurlset'], canonical: 'd-dataUrlSet' },
+    { hint: 'propriedade inicial "name"', accept: ['d-dataProperty-name', 'd-dataproperty-name'], canonical: 'd-dataProperty-name' },
+    { hint: 'binding bidirecional do input', accept: ['d-model'], canonical: 'd-model' },
+    { hint: 'evento de clique no botão Adicionar', accept: ['d-on-click'], canonical: 'd-on-click' },
+    { hint: 'mostrar parágrafo só se lista vazia', accept: ['d-if'], canonical: 'd-if' },
+    { hint: 'iterar sobre contatos', accept: ['d-for'], canonical: 'd-for' },
+    { hint: 'classe condicional "star"', accept: ['d-class'], canonical: 'd-class' },
+    { hint: 'função built-in que remove o item', accept: ['RemoveDataItem'], canonical: 'RemoveDataItem' }
+  ]
+};
+
+/* =====================================================================
+   ESTADO
+   ===================================================================== */
+const STORAGE_KEY = 'drapo-train-v2';
+
+const state = {
+  screen: 'home',
+  idx: 0,
+  score: 0,
+  lives: 5,
+  correct: 0,
+  wrong: 0,
+  streak: 0,
+  maxStreak: 0,
+  answered: false,
+  bestScore: 0,
+  bestStreak: 0,
+  completedRuns: 0,
+  examGraded: false,
+  examResults: null,
+  examScore: 0,
+  bestExamScore: 0
+};
+
+async function loadState() {
+  try {
+    const r = await window.storage.get(STORAGE_KEY);
+    if (r && r.value) {
+      const s = JSON.parse(r.value);
+      state.bestScore = s.bestScore || 0;
+      state.bestStreak = s.bestStreak || 0;
+      state.completedRuns = s.completedRuns || 0;
+      state.bestExamScore = s.bestExamScore || 0;
+    }
+  } catch (e) {}
+}
+
+async function saveState() {
+  try {
+    await window.storage.set(STORAGE_KEY, JSON.stringify({
+      bestScore: state.bestScore,
+      bestStreak: state.bestStreak,
+      completedRuns: state.completedRuns,
+      bestExamScore: state.bestExamScore
+    }));
+  } catch (e) {}
+}
+
+/* =====================================================================
+   NORMALIZAÇÃO E COMPARAÇÃO
+   ===================================================================== */
+function normalize(s) {
+  if (s === null || s === undefined) return '';
+  return String(s).trim().replace(/\s+/g, ' ');
+}
+
+function matches(input, accept) {
+  const norm = normalize(input);
+  if (!accept || !accept.length) return false;
+  return accept.some(a => {
+    if (normalize(a) === norm) return true;
+    if (normalize(a).toLowerCase() === norm.toLowerCase()) return true;
+    return false;
+  });
+}
+
+/* =====================================================================
+   RENDER
+   ===================================================================== */
+const app = document.getElementById('app');
+
+function render() {
+  if (state.screen === 'home') renderHome();
+  else if (state.screen === 'lesson') renderLesson();
+  else if (state.screen === 'exam') renderExam();
+  else if (state.screen === 'end') renderEnd();
+}
+
+function renderHeader() {
+  return `
+    <div class="header">
+      <div class="brand">drapo<span class="dim">.train</span></div>
+      <div class="header-meta">
+        <span><strong>${LESSONS.length}</strong> lições</span>
+        <span>melhor: <strong>${state.bestScore}</strong></span>
+      </div>
+    </div>
+  `;
+}
+
+function renderHome() {
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="home">
+      <h1>Treine Drapo digitando.</h1>
+      <p class="lead">20 mini-lições de digitação, do básico ao avançado. No fim, uma prova final que junta tudo num único exercício. Sem múltipla escolha barata.</p>
+
+      <div class="stats">
+        <div class="stat">
+          <div class="num">${state.bestScore}</div>
+          <div class="lbl">melhor pontuação</div>
+        </div>
+        <div class="stat">
+          <div class="num">${state.bestStreak}</div>
+          <div class="lbl">maior sequência</div>
+        </div>
+        <div class="stat">
+          <div class="num">${state.bestExamScore}</div>
+          <div class="lbl">nota da prova</div>
+        </div>
+      </div>
+
+      <div class="types">
+        <b>Tipos de questão:</b><br>
+        <code>type</code> — digite o atributo, função ou snippet<br>
+        <code>fill</code> — complete os slots em um bloco de código<br>
+        <code>prova</code> — escreve um app completo, 11 slots, recebe nota
+      </div>
+
+      <button class="btn btn-block" id="start">Começar &nbsp;↵</button>
+    </div>
+  `;
+  document.getElementById('start').onclick = startQuiz;
+  document.removeEventListener('keydown', homeKey);
+  document.addEventListener('keydown', homeKey);
+}
+
+function homeKey(e) {
+  if (e.key === 'Enter') {
+    document.removeEventListener('keydown', homeKey);
+    startQuiz();
+  }
+}
+
+function startQuiz() {
+  document.removeEventListener('keydown', homeKey);
+  document.removeEventListener('keydown', endKey);
+  Object.assign(state, {
+    screen: 'lesson', idx: 0, score: 0, lives: 5,
+    correct: 0, wrong: 0, streak: 0, maxStreak: 0,
+    answered: false,
+    examGraded: false, examResults: null, examScore: 0
+  });
+  render();
+}
+
+function renderLesson() {
+  const lesson = LESSONS[state.idx];
+  const progress = (state.idx / LESSONS.length) * 100;
+  const heartsHTML = Array.from({length: 5}, (_, i) =>
+    `<span class="heart${i < state.lives ? '' : ' lost'}">●</span>`
+  ).join('');
+
+  let questionHTML = '';
+  if (lesson.q.type === 'type') {
+    questionHTML = renderTypeQuestion(lesson.q);
+  } else if (lesson.q.type === 'fill') {
+    questionHTML = renderFillQuestion(lesson.q);
+  } else if (lesson.q.type === 'choice') {
+    questionHTML = renderChoiceQuestion(lesson.q);
+  }
+
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="lesson-bar">
+      <span class="idx"><strong>${state.idx + 1}</strong>/${LESSONS.length}</span>
+      <div class="progress"><div class="progress-fill" style="width:${progress}%"></div></div>
+      <span class="lives">${heartsHTML}</span>
+    </div>
+
+    <div class="lesson">
+      <div class="lesson-tag">// ${lesson.tag}</div>
+      <h2>${lesson.title}</h2>
+
+      <div class="teach">${lesson.teach}</div>
+
+      <div class="q">
+        <div class="q-label">// questão</div>
+        <div class="q-prompt">${lesson.q.prompt}</div>
+        ${questionHTML}
+      </div>
+
+      <div class="fb" id="fb">
+        <div class="fb-status" id="fb-status"></div>
+        <div class="fb-text" id="fb-text"></div>
+      </div>
+
+      <div class="actions">
+        <span class="hint" id="hint"><span class="kbd">Enter</span> verificar</span>
+        <div style="display:flex;gap:10px">
+          <button class="btn btn-ghost" id="quit">sair</button>
+          <button class="btn" id="action">verificar</button>
+        </div>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('quit').onclick = () => {
+    if (confirm('Sair e voltar ao início?')) {
+      document.removeEventListener('keydown', choiceKeyHandler);
+      state.screen = 'home';
+      state.answered = false;
+      render();
+    }
+  };
+
+  setupQuestionInteraction(lesson);
+}
+
+function renderTypeQuestion(q) {
+  return `
+    <div class="type-line" id="type-line">
+      <span class="prompt-char">›</span>
+      <input type="text" class="type-input" id="type-input"
+             placeholder="${q.placeholder || ''}"
+             autocomplete="off" autocorrect="off" autocapitalize="off"
+             spellcheck="false">
+    </div>
+    <div class="type-hint">digite a resposta, depois <span class="kbd">Enter</span></div>
+  `;
+}
+
+function renderFillQuestion(q) {
+  // Primeiro escapa o HTML, depois substitui os marcadores ___
+  let html = escapeHTML(q.template);
+  let slotIdx = 0;
+  html = html.replace(/___/g, () => {
+    const idx = slotIdx++;
+    return `<input class="slot" data-slot="${idx}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">`;
+  });
+  return `
+    <div class="fill-block">${html}</div>
+    <div class="type-hint" style="margin-top:10px"><span class="kbd">Tab</span> próximo campo · <span class="kbd">Enter</span> verificar</div>
+  `;
+}
+
+function renderChoiceQuestion(q) {
+  return `
+    <div class="options" id="options">
+      ${q.options.map((opt, i) => `
+        <button class="option" data-idx="${i}">
+          <span class="key">${String.fromCharCode(65+i)}</span>
+          <span class="text">${opt.text}</span>
+        </button>
+      `).join('')}
+    </div>
+  `;
+}
+
+function setupQuestionInteraction(lesson) {
+  const actionBtn = document.getElementById('action');
+
+  if (lesson.q.type === 'type') {
+    const input = document.getElementById('type-input');
+    input.focus();
+    input.onkeydown = (e) => {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        handleAction(lesson);
+      }
+    };
+    actionBtn.onclick = () => handleAction(lesson);
+  } else if (lesson.q.type === 'fill') {
+    const slots = document.querySelectorAll('.slot');
+    if (slots[0]) slots[0].focus();
+    slots.forEach((slot, i) => {
+      slot.onkeydown = (e) => {
+        if (e.key === 'Enter') {
+          e.preventDefault();
+          handleAction(lesson);
+        } else if (e.key === 'Tab' && !e.shiftKey && i === slots.length - 1) {
+          // último: deixa o tab natural
+        }
+      };
+    });
+    actionBtn.onclick = () => handleAction(lesson);
+  } else if (lesson.q.type === 'choice') {
+    document.querySelectorAll('.option').forEach(btn => {
+      btn.onclick = () => {
+        if (state.answered) return;
+        const idx = parseInt(btn.dataset.idx);
+        selectChoice(lesson, idx);
+      };
+    });
+    // Action button avança ou seleciona via teclado
+    actionBtn.onclick = () => {
+      if (state.answered) handleNext();
+    };
+    // Atalhos 1-9, A-Z
+    document.addEventListener('keydown', choiceKeyHandler);
+  }
+}
+
+function choiceKeyHandler(e) {
+  if (state.answered && e.key === 'Enter') {
+    document.removeEventListener('keydown', choiceKeyHandler);
+    handleNext();
+    return;
+  }
+  if (state.answered) return;
+  const lesson = LESSONS[state.idx];
+  if (lesson.q.type !== 'choice') return;
+  // letras A-D / 1-4
+  let idx = -1;
+  if (/^[a-d]$/i.test(e.key)) idx = e.key.toUpperCase().charCodeAt(0) - 65;
+  if (/^[1-4]$/.test(e.key)) idx = parseInt(e.key) - 1;
+  if (idx >= 0 && idx < lesson.q.options.length) {
+    e.preventDefault();
+    selectChoice(lesson, idx);
+  }
+}
+
+function selectChoice(lesson, idx) {
+  state.answered = true;
+  const buttons = document.querySelectorAll('.option');
+  const isCorrect = lesson.q.options[idx].correct;
+  buttons.forEach((btn, i) => {
+    btn.classList.add('disabled');
+    if (lesson.q.options[i].correct) btn.classList.add('correct');
+    if (i === idx && !isCorrect) btn.classList.add('wrong');
+  });
+  showFeedback(isCorrect, lesson);
+}
+
+function handleAction(lesson) {
+  if (state.answered) {
+    handleNext();
+    return;
+  }
+
+  if (lesson.q.type === 'type') {
+    const input = document.getElementById('type-input');
+    const line = document.getElementById('type-line');
+    const val = input.value;
+    const isCorrect = matches(val, lesson.q.accept);
+    state.answered = true;
+    input.disabled = true;
+    line.classList.add(isCorrect ? 'correct' : 'wrong');
+    showFeedback(isCorrect, lesson);
+  } else if (lesson.q.type === 'fill') {
+    const slots = document.querySelectorAll('.slot');
+    let allCorrect = true;
+    slots.forEach((slot, i) => {
+      slot.disabled = true;
+      const slotData = lesson.q.slots[i];
+      const isOK = matches(slot.value, slotData.accept);
+      slot.classList.add(isOK ? 'correct' : 'wrong');
+      if (!isOK) allCorrect = false;
+    });
+    state.answered = true;
+    showFeedback(allCorrect, lesson);
+  }
+}
+
+function showFeedback(isCorrect, lesson) {
+  const fb = document.getElementById('fb');
+  const status = document.getElementById('fb-status');
+  const text = document.getElementById('fb-text');
+  const actionBtn = document.getElementById('action');
+  const hint = document.getElementById('hint');
+
+  if (isCorrect) {
+    state.score += 10;
+    state.correct++;
+    state.streak++;
+    if (state.streak > state.maxStreak) state.maxStreak = state.streak;
+    fb.className = 'fb show correct';
+    status.textContent = '// correto · +10';
+    text.innerHTML = lesson.q.explain;
+
+    actionBtn.textContent = state.idx + 1 >= LESSONS.length || state.lives <= 0
+      ? 'ver resultado →'
+      : 'continuar →';
+    actionBtn.focus();
+    hint.innerHTML = '<span class="kbd">Enter</span> continuar';
+  } else {
+    state.lives--;
+    state.wrong++;
+    state.streak = 0;
+    fb.className = 'fb show wrong';
+    status.textContent = '// errou · perdeu 1 vida';
+    let html = lesson.q.explain;
+    if (lesson.q.canonical) {
+      html += `<div class="fb-correct-answer">${escapeHTML(lesson.q.canonical)}</div>`;
+    } else if (lesson.q.slots) {
+      const expected = lesson.q.slots.map(s => s.canonical).join(' · ');
+      html += `<div class="fb-correct-answer">${escapeHTML(expected)}</div>`;
+    }
+    text.innerHTML = html;
+
+    actionBtn.textContent = state.idx + 1 >= LESSONS.length || state.lives <= 0
+      ? 'ver resultado →'
+      : 'continuar →';
+    actionBtn.focus();
+    hint.innerHTML = '<span class="kbd">Enter</span> continuar';
+  }
+}
+
+function escapeHTML(s) {
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+function handleNext() {
+  state.answered = false;
+  document.removeEventListener('keydown', choiceKeyHandler);
+
+  if (state.lives <= 0) {
+    endQuiz(false);
+    return;
+  }
+  if (state.idx + 1 >= LESSONS.length) {
+    // Concluiu as 20 lições com vidas restantes — vai pra prova final
+    state.screen = 'exam';
+    state.examGraded = false;
+    state.examResults = null;
+    render();
+    return;
+  }
+  state.idx++;
+  render();
+}
+
+async function endQuiz(completed) {
+  state.screen = 'end';
+  if (state.score > state.bestScore) state.bestScore = state.score;
+  if (state.maxStreak > state.bestStreak) state.bestStreak = state.maxStreak;
+  if (state.examScore > state.bestExamScore) state.bestExamScore = state.examScore;
+  if (completed) state.completedRuns++;
+  await saveState();
+  render();
+}
+
+/* =====================================================================
+   PROVA FINAL
+   ===================================================================== */
+function renderExam() {
+  // Se já foi corrigida, mostra a tela de resultado
+  if (state.examGraded) {
+    renderExamResult();
+    return;
+  }
+
+  // Substitui ___ por inputs numerados
+  let templateHTML = escapeHTML(EXAM.template);
+  let slotIdx = 0;
+  templateHTML = templateHTML.replace(/___/g, () => {
+    const idx = slotIdx++;
+    return `<input class="slot" data-slot="${idx}" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">`;
+  });
+  // Realça comentários (já estão escapados, então procuramos &lt;!-- ... --&gt;)
+  templateHTML = templateHTML.replace(/(&lt;!--.*?--&gt;)/g, '<span class="com">$1</span>');
+
+  const hintsHTML = EXAM.slots.map((s, i) =>
+    `<li><b>slot ${i + 1}:</b> ${s.hint}</li>`
+  ).join('');
+
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="exam-header">// prova final · você passou nas 20 lições</div>
+    <div class="exam">
+      <h2>${EXAM.title}</h2>
+      <div class="exam-brief">${EXAM.briefing}</div>
+
+      <div class="exam-code">${templateHTML}</div>
+
+      <div class="type-hint" style="margin-bottom:16px"><span class="kbd">Tab</span> próximo campo · <span class="kbd">Ctrl+Enter</span> corrigir</div>
+
+      <div class="exam-hints">
+        <details>
+          <summary>ver dicas de cada slot</summary>
+          <ol>${hintsHTML}</ol>
+        </details>
+      </div>
+
+      <div class="exam-actions">
+        <button class="btn btn-ghost" id="skip">pular prova</button>
+        <button class="btn" id="grade">corrigir</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('grade').onclick = gradeExam;
+  document.getElementById('skip').onclick = () => {
+    if (confirm('Pular a prova final? Você vai direto para o resultado das 20 lições.')) {
+      endQuiz(true);
+    }
+  };
+
+  // Enter em qualquer slot corrige a prova; Ctrl+Enter funciona como atalho global
+  document.querySelectorAll('.exam-code .slot').forEach(slot => {
+    slot.onkeydown = (e) => {
+      if (e.key === 'Enter' && e.ctrlKey) {
+        e.preventDefault();
+        gradeExam();
+      }
+    };
+  });
+
+  // Foco no primeiro slot
+  const firstSlot = document.querySelector('.exam-code .slot');
+  if (firstSlot) firstSlot.focus();
+}
+
+function gradeExam() {
+  const slots = document.querySelectorAll('.exam-code .slot');
+  const results = [];
+  let correctCount = 0;
+
+  slots.forEach((slot, i) => {
+    const slotDef = EXAM.slots[i];
+    const value = slot.value;
+    const isCorrect = matches(value, slotDef.accept);
+    if (isCorrect) correctCount++;
+    results.push({
+      n: i + 1,
+      hint: slotDef.hint,
+      got: value,
+      expected: slotDef.canonical,
+      correct: isCorrect
+    });
+    slot.disabled = true;
+    slot.classList.add(isCorrect ? 'correct' : 'wrong');
+  });
+
+  const total = EXAM.slots.length;
+  const grade = Math.round((correctCount / total) * 100);
+
+  state.examGraded = true;
+  state.examScore = grade;
+  state.examResults = {
+    correctCount,
+    total,
+    grade,
+    results
+  };
+
+  if (grade > state.bestExamScore) {
+    state.bestExamScore = grade;
+  }
+
+  // Re-render para mostrar resultado
+  renderExamResult();
+}
+
+function renderExamResult() {
+  const r = state.examResults;
+  const passed = r.grade >= 70;
+  let verdict;
+  if (r.grade === 100) verdict = 'Gabaritou. Sério, parabéns.';
+  else if (r.grade >= 90) verdict = 'Quase perfeito. Domínio sólido.';
+  else if (r.grade >= 70) verdict = 'Passou. Revise os erros e está pronto.';
+  else if (r.grade >= 50) verdict = 'Acertou metade. Vale rever os tópicos errados.';
+  else verdict = 'Hora de revisar as lições do começo.';
+
+  const reviewHTML = r.results.map(item => `
+    <div class="review-item ${item.correct ? 'ok' : 'no'}">
+      <div class="status">${item.correct ? '✓' : '✗'}</div>
+      <div class="info">
+        <div class="h">slot ${item.n} · ${item.hint}</div>
+        ${item.correct
+          ? `<div class="exp">${escapeHTML(item.expected)}</div>`
+          : `<div class="got">você escreveu: ${item.got ? escapeHTML(item.got) : '(vazio)'}</div>
+             <div class="exp">esperado: ${escapeHTML(item.expected)}</div>`
+        }
+      </div>
+    </div>
+  `).join('');
+
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="exam-header">// resultado da prova final</div>
+    <div class="exam">
+      <h2>${EXAM.title}</h2>
+
+      <div class="grade-card ${passed ? 'pass' : 'fail'}">
+        <div class="lbl">nota</div>
+        <div class="num">${r.grade}</div>
+        <div class="sub">${r.correctCount} de ${r.total} corretas · ${verdict}</div>
+      </div>
+
+      <div class="exam-review">
+        <h3>revisão por slot</h3>
+        ${reviewHTML}
+      </div>
+
+      <div class="exam-actions">
+        <button class="btn btn-ghost" id="retry-exam">refazer prova</button>
+        <button class="btn" id="finish">ver resultado geral &nbsp;→</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('retry-exam').onclick = () => {
+    state.examGraded = false;
+    state.examResults = null;
+    state.examScore = 0;
+    render();
+  };
+  document.getElementById('finish').onclick = () => endQuiz(true);
+}
+
+function renderEnd() {
+  const pct = Math.round((state.correct / LESSONS.length) * 100);
+  let rank, verdict;
+  if (state.lives <= 0) {
+    rank = 'incompleto';
+    verdict = 'Você ficou sem vidas. Cada erro queima uma vida — revise as lições que tropeçaram e tente de novo.';
+  } else if (pct === 100) {
+    rank = 'perfeito';
+    verdict = 'Cem por cento. Você sabe Drapo de cor. Sério.';
+  } else if (pct >= 85) {
+    rank = 'mestre';
+    verdict = 'Domínio sólido. Erros marginais. Está pronto pra trabalhar com o framework.';
+  } else if (pct >= 70) {
+    rank = 'avançado';
+    verdict = 'Boa base, ainda há lacunas. Olhe quais lições erraram e revisite.';
+  } else if (pct >= 50) {
+    rank = 'em progresso';
+    verdict = 'Metade do caminho. A próxima passada vai render mais.';
+  } else {
+    rank = 'iniciante';
+    verdict = 'Começou. Releia a documentação base, depois volte — vai render muito mais.';
+  }
+
+  app.innerHTML = `
+    ${renderHeader()}
+    <div class="end">
+      <h1>${state.lives <= 0 ? 'fim de vidas.' : 'concluído.'}</h1>
+      <div class="end-sub">${state.correct}/${LESSONS.length} corretas · ${pct}% de acerto</div>
+
+      <div class="scoreboard">
+        <div class="score-cell">
+          <div class="lbl">pontos</div>
+          <div class="val">${state.score}</div>
+        </div>
+        <div class="score-cell">
+          <div class="lbl">acertos</div>
+          <div class="val">${state.correct}</div>
+        </div>
+        <div class="score-cell">
+          <div class="lbl">max streak</div>
+          <div class="val">${state.maxStreak}</div>
+        </div>
+        <div class="score-cell">
+          <div class="lbl">${state.examGraded ? 'prova' : 'vidas'}</div>
+          <div class="val">${state.examGraded ? state.examScore : state.lives}</div>
+        </div>
+      </div>
+
+      <div class="verdict">
+        <div class="rank">// rank: ${rank}</div>
+        <div style="margin-top:8px">${verdict}</div>
+      </div>
+
+      <div class="end-actions">
+        <button class="btn btn-ghost" id="home">início</button>
+        <button class="btn" id="again">jogar de novo &nbsp;↵</button>
+      </div>
+    </div>
+  `;
+
+  document.getElementById('again').onclick = startQuiz;
+  document.getElementById('home').onclick = () => {
+    document.removeEventListener('keydown', endKey);
+    state.screen = 'home';
+    render();
+  };
+  document.removeEventListener('keydown', endKey);
+  document.addEventListener('keydown', endKey);
+}
+
+function endKey(e) {
+  if (e.key === 'Enter' && state.screen === 'end') {
+    document.removeEventListener('keydown', endKey);
+    startQuiz();
+  }
+}
+
+/* =====================================================================
+   INIT
+   ===================================================================== */
+(async () => {
+  await loadState();
+  render();
+})();
+</script>
+</body>
+</html>
