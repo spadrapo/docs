@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using WebDocs.Helpers;
 using WebDocs.Models;
 
 namespace WebDocs.Services
@@ -83,8 +84,8 @@ namespace WebDocs.Services
                 list.Add(new DataTypeVM
                 {
                     Name = displayName,
-                    Description = description,
-                    Details = withDetails ? string.Join("\n", lines) : null
+                    Description = DrapoDocContent.ToMarkdown(description),
+                    Details = withDetails ? DrapoDocContent.ToMarkdown(string.Join("\n", lines)) : null
                 });
             }
             return list;
