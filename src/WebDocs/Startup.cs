@@ -43,6 +43,8 @@ namespace WebDocs
             services.AddScoped<IAttributeService, AttributeService>();
             services.AddScoped<IDataTypeService, DataTypeService>();
             services.AddScoped<IConceptService, ConceptService>();
+            services.AddSingleton<IDrapoEngineCatalog, DrapoEngineCatalog>();
+            services.AddScoped<IDrapoValidatorService, DrapoValidatorService>();
             services.AddScoped<INuGetService, NuGetService>();
             services.AddScoped<MenuController, MenuController>();
             services.AddScoped<SearchController, SearchController>();
