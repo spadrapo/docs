@@ -43,6 +43,7 @@ namespace WebDocs
             services.AddScoped<IAttributeService, AttributeService>();
             services.AddScoped<IDataTypeService, DataTypeService>();
             services.AddScoped<IConceptService, ConceptService>();
+            services.AddScoped<ICatalogDriftService, CatalogDriftService>();
             services.AddScoped<INuGetService, NuGetService>();
             services.AddScoped<MenuController, MenuController>();
             services.AddScoped<SearchController, SearchController>();

@@ -1,0 +1,13 @@
+{
+  "_comment": "Allow-list for the verify_catalog MCP drift tool. Entries here are intentionally NOT reported as drift. Functions/attributes map a name (lowercase) to the reason it is excluded. attributePrefixes are dynamic prefixes the engine expands at runtime (e.g. d-on-{event}), so the literal prefix is never a standalone documented attribute.",
+  "functions": {},
+  "attributes": {},
+  "attributePrefixes": [
+    "d-attr-",
+    "d-on-",
+    "d-propagation-",
+    "d-validation-on-",
+    "d-sector-container-",
+    "d-dataproperty-"
+  ]
+}
