@@ -7,6 +7,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using WebDocs.Helpers;
 using WebDocs.Models;
 
 namespace WebDocs.Services
@@ -199,11 +200,13 @@ namespace WebDocs.Services
                 return (null);
             FunctionVM function = new FunctionVM();
             function.Name = name;
-            function.Description = await File.ReadAllTextAsync(descriptionPath);
+            function.Description = DrapoDocContent.ToMarkdown(await File.ReadAllTextAsync(descriptionPath));
             if (loadDetails)
             {
                 // Load parameters
                 function.Parameters = await GetParameters(name);
+                // Synthesize a one-line signature from the parameters
+                function.Signature = DrapoDocContent.BuildFunctionSignature(name, function.Parameters);
                 // Load samples
                 string samplesPath = Path.Combine(path, "samples");
                 var samples = new List<FunctionSampleVM>();
@@ -216,8 +219,8 @@ namespace WebDocs.Services
                         sample.Name = Path.GetFileName(sampleDir);
                         string descFile = Path.Combine(sampleDir, "description.html");
                         string contentFile = Path.Combine(sampleDir, "content.html");
-                        sample.Description = System.IO.File.Exists(descFile) ? await File.ReadAllTextAsync(descFile) : null;
-                        sample.Content = System.IO.File.Exists(contentFile) ? await File.ReadAllTextAsync(contentFile) : null;
+                        sample.Description = System.IO.File.Exists(descFile) ? DrapoDocContent.ToMarkdown(await File.ReadAllTextAsync(descFile)) : null;
+                        sample.Content = System.IO.File.Exists(contentFile) ? DrapoDocContent.CleanCode(await File.ReadAllTextAsync(contentFile)) : null;
                         samples.Add(sample);
                     }
                 }

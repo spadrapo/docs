@@ -16,6 +16,12 @@ namespace WebDocs.Models
         /// </summary>
         public string Description { set; get; }
         /// <summary>
+        /// A one-line, human-readable signature synthesized from the parameters,
+        /// e.g. "UpdateSector(SectorName: text, Url: url, [Title: text = null])".
+        /// Populated only when details are requested.
+        /// </summary>
+        public string Signature { set; get; }
+        /// <summary>
         /// The list of parameters for the Drapo function.
         /// </summary>
         public List<FunctionParameterVM> Parameters { get; set; }

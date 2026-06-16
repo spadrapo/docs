@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using WebDocs.Helpers;
 using WebDocs.Models;
 
 namespace WebDocs.Services
@@ -128,7 +129,7 @@ namespace WebDocs.Services
                         details = string.Join("\n", lines);
                 }
 
-                list.Add(new ConceptVM { Name = displayName, Description = description, Details = details });
+                list.Add(new ConceptVM { Name = displayName, Description = DrapoDocContent.ToMarkdown(description), Details = DrapoDocContent.ToMarkdown(details) });
             }
             return list;
         }
