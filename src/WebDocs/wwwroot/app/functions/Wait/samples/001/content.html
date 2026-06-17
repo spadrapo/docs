@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - Wait</title>
+</head>
+<body>
+    <br>
+    <span>Wait</span>
+    <div d-dataKey="data" d-dataType="object" d-dataProperty-status=""></div>
+    <div>
+        <input type="button" value="Run with delay"
+               d-on-click="UpdateDataField(data,status,working...);Wait(1000);UpdateDataField(data,status,done)">
+        <p>Status: {{data.status}}</p>
+    </div>
+</body>
+</html>

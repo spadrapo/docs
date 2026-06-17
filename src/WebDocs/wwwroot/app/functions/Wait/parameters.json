@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Time",
+    "Description": "The number of milliseconds to wait before continuing. Parsed as a number; invalid values are treated as 0.",
+    "Types": [ "number", "mustache" ],
+    "Optional": false
+  }
+]
