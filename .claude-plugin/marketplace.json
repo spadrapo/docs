@@ -1,0 +1,16 @@
+{
+  "name": "drapo",
+  "owner": {
+    "name": "Drapo"
+  },
+  "description": "Drapo skills and tooling for AI agents (Claude Code / Copilot CLI).",
+  "plugins": [
+    {
+      "name": "drapo-resolver",
+      "source": "./plugins/drapo-resolver",
+      "description": "Project-aware Drapo symbol resolver: resolve data keys / components / sectors, find references, and scan for dangling references in any Drapo app.",
+      "category": "drapo",
+      "keywords": ["drapo", "resolver", "frontend", "go-to-definition"]
+    }
+  ]
+}
