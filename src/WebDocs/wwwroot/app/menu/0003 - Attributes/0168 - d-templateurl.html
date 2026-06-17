@@ -3,10 +3,10 @@
 <div>
     <div>
         <h2>d-templateurl</h2>
-        <p>You can use d-templateurl to load a template from a URL, used when rendering a sector or element.</p>
+        <p>You can use d-templateurl on a sector to wrap its content in a layout/template loaded from a URL. Drapo loads the template, then injects the sector's content into the slot inside it identified by <code>d-template</code> (default <code>template</code>).</p>
         <h4>Example</h4>
         <d-code>
-            &lt;div d-sector="list" d-templateurl="~/app/parts/row.html"&gt;&lt;/div&gt;
+            &lt;div d-sector="content" d-templateurl="~/app/parts/layout.html" d-template="body"&gt;...&lt;/div&gt;
         </d-code>
     </div>
 </div>

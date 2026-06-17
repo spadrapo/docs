@@ -3,10 +3,14 @@
 <div>
     <div>
         <h2>d-template</h2>
-        <p>You can use d-template to provide an inline template used when rendering a sector or element.</p>
+        <p>You can use d-template together with d-templateurl to inject a sector's content into a named slot of a loaded layout. The sector sets d-template to a slot name; inside the layout loaded by <code>d-templateurl</code>, the element marked with the same d-template name receives the sector's content. The default name is <code>template</code>.</p>
         <h4>Example</h4>
         <d-code>
-            &lt;div d-sector="list" d-template="~/app/parts/row.html"&gt;&lt;/div&gt;
+            &lt;!-- the sector picks a layout and the slot to fill --&gt;
+            &lt;div d-sector="content" d-templateurl="~/app/parts/layout.html" d-template="body"&gt;...&lt;/div&gt;
+
+            &lt;!-- inside layout.html, the slot element carries the matching name --&gt;
+            &lt;div class="page"&gt;&lt;div d-template="body"&gt;&lt;/div&gt;&lt;/div&gt;
         </d-code>
     </div>
 </div>

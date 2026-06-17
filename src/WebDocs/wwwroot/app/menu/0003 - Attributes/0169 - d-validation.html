@@ -3,10 +3,10 @@
 <div>
     <div>
         <h2>d-validation</h2>
-        <p>You can use d-validation to declare a validator. Declare it once (typically on a hidden element) and reference it from interactive elements (to block actions when invalid) and from display elements (to show error messages). See the Validation guide for full details and runnable examples.</p>
+        <p>You can use d-validation to attach a validator to an element by its name. Validators are defined once (with their rules) and then referenced by name from interactive elements (to block actions when invalid) and from display elements (to show error messages). See the Validation guide for how to define validators.</p>
         <h4>Example</h4>
         <d-code>
-            &lt;div d-validation="required" style="display:none"&gt;&lt;/div&gt;
+            &lt;input type="email" d-model="{{user.email}}" d-validation="emailRequired"&gt;
         </d-code>
         <p><strong>See:</strong> [Validation guide](Validation) for complete, runnable examples.</p>
     </div>
