@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Runtime Introspection</h2>
+        <p>Runtime introspection lets external tooling inspect a <strong>running</strong> Drapo application — which sectors are mounted, which data keys are in storage, the browser/runtime state, and recent client diagnostics. It is intended for automated tooling such as test harnesses, LLM/agent drivers (Playwright/Selenium), and the built-in debugger that need to reason about the <em>actually loaded</em> page rather than the source markup.</p>
+
+        <h3>Stable entry point</h3>
+        <p>When the application loads, the Drapo instance is published on the global object. <code>window.drapo</code> is a string-keyed global and the public member names are preserved by the production minifier, so these accessors are safe to use against both <code>drapo.js</code> and <code>drapo.min.js</code>.</p>
+        <pre><code>window.drapo                 // the DrapoApplication instance
+window.drapo.Introspection   // query the running app (sectors, data keys, runtime state, snapshot)
+window.drapo.Diagnostics     // client diagnostics buffer and sector images</code></pre>
+
+        <h3>Introspection API</h3>
+        <p>The <code>window.drapo.Introspection</code> object exposes:</p>
+        <ul>
+            <li><code>GetSectors()</code> — names of the sectors currently mounted in the document (<code>string[]</code>).</li>
+            <li><code>GetDataKeys(sector?)</code> — data keys in storage, optionally scoped to a sector (<code>string[]</code>).</li>
+            <li><code>IsDataKey(key, sector?)</code> — whether <code>key</code> is a (non-hidden) data key (<code>boolean</code>).</li>
+            <li><code>GetRuntimeState()</code> — <code>{ isLoaded, browser: { width, height } }</code>.</li>
+            <li><code>GetSnapshot(diagnosticsCount?, diagnosticsLevelFilter?)</code> — one call returning state + sectors + data keys by sector + diagnostics.</li>
+        </ul>
+
+        <h3>GetSnapshot</h3>
+        <p><code>GetSnapshot()</code> is the recommended entry point for tooling: a single round-trip returns everything needed to validate bindings against the live application. It composes the introspection primitives above with the diagnostics buffer.</p>
+        <pre><code>const snapshot = window.drapo.Introspection.GetSnapshot();
+// {
+//   state: { isLoaded: boolean, browser: { width: number, height: number } },
+//   sectors: string[],
+//   dataKeysBySector: { [sector: string]: string[] },
+//   diagnostics: DrapoDiagnosticEntry[]
+// }</code></pre>
+
+        <h3>Diagnostics API</h3>
+        <p>The <code>window.drapo.Diagnostics</code> object exposes the client diagnostics buffer and image capture:</p>
+        <ul>
+            <li><code>GetErrorBuffer(count?, levelFilter?)</code> — recent client diagnostics, errors and warnings (<code>DrapoDiagnosticEntry[]</code>).</li>
+            <li><code>GetSectorImage(sector?)</code> — best-effort base64 PNG of a sector, or the document body when <code>null</code> (<code>Promise&lt;string&gt;</code>).</li>
+        </ul>
+
+        <h3>Example: reading the snapshot with Playwright</h3>
+        <p>Drive a running app and assert against the live runtime state. The same pattern works with Selenium via <code>execute_script</code>.</p>
+        <pre><code>import { test, expect } from '@playwright/test';
+
+test('drapo runtime snapshot', async ({ page }) =&gt; {
+    await page.goto('http://localhost:5000/');
+
+    // Wait until Drapo has finished loading.
+    await page.waitForFunction(() =&gt; {
+        const drapo = window.drapo;
+        return (drapo != null) &amp;&amp; (drapo.Introspection.GetRuntimeState().isLoaded === true);
+    });
+
+    const snapshot = await page.evaluate(() =&gt; window.drapo.Introspection.GetSnapshot());
+
+    expect(Array.isArray(snapshot.sectors)).toBeTruthy();
+    // No client-side errors should have been captured while loading.
+    expect(snapshot.diagnostics.filter(d =&gt; d.level === 'error')).toHaveLength(0);
+});</code></pre>
+    </div>
+</div>
