@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-resize-location</h2>
+        <p>You can use d-resize-location to enable drag-to-resize behavior on an element and identify the location/dimension being resized. When this attribute is present the element becomes a resize handle: pressing and dragging it resizes the target container. This is the attribute that activates the behavior; the others configure it.</p>
+        <p>Configure the behavior with:</p>
+        <ul>
+            <li><code>d-resize-model</code> — storage path bound to the resulting size</li>
+            <li><code>d-resize-type</code> — resize mode (default <code>normal</code>)</li>
+            <li><code>d-resize-class</code> — CSS class applied while resizing</li>
+            <li><code>d-resize-container</code> — which ancestor is resized (levels up; default 2)</li>
+            <li><code>d-resize-preview</code> — live preview while dragging (default false)</li>
+        </ul>
+        <p>Syntax:</p>
+        <d-code>
+            &lt;div d-resize-location="..." d-resize-model="{{layout.width}}" d-resize-container="1" d-resize-preview="true"&gt;&lt;/div&gt;
+        </d-code>
+    </div>
+</div>
