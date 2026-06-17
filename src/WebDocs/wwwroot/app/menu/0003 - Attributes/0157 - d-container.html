@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-container</h2>
+        <p>You can use d-container on a sector to set the container code used when switching between containers of that sector (see UpdateSector / SwitchSector). Use <code>@</code> to have Drapo generate a unique container code automatically.</p>
+        <h4>Example</h4>
+        <d-code>
+            &lt;div d-sector="content" d-container="@"&gt;&lt;/div&gt;
+            &lt;input type="button" value="Open A" d-on-click="UpdateSector(content,~/app/pages/a.html,,true,false,boxA)"&gt;
+            &lt;input type="button" value="Open B" d-on-click="UpdateSector(content,~/app/pages/b.html,,true,false,boxB)"&gt;
+        </d-code>
+    </div>
+</div>
