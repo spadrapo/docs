@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - SetExternalFrameMessage</title>
+</head>
+<body>
+    <br>
+    <span>SetExternalFrameMessage</span>
+    <iframe id="childFrame" src="https://example.com/child" style="width:1px;height:1px;border:0;"></iframe>
+    <div d-dataKey="payload" d-dataType="object" d-dataProperty-message="hello frame"></div>
+    <div>
+        <input type="button" value="Send to frame (message)" d-on-click="SetExternalFrameMessage(childFrame,payload,payload)">
+    </div>
+</body>
+</html>

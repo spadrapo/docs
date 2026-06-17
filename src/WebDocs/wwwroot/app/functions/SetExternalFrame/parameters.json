@@ -1,0 +1,6 @@
+[
+  { "Name": "FrameID", "Description": "The id of the iframe element to send data to.", "Types": [ "text", "mustache" ], "Optional": false },
+  { "Name": "ExternalFunction", "Description": "The name of a JavaScript function defined inside the frame's window; it is called with the storage data as its argument.", "Types": [ "text", "mustache" ], "Optional": false },
+  { "Name": "DataKey", "Description": "The storage item whose data is sent into the frame.", "Types": [ "datakey" ], "Optional": false },
+  { "Name": "IsClone", "Description": "When true, the data is cloned before being sent instead of referenced.", "Types": [ "boolean" ], "Optional": true, "DefaultValue": "false" }
+]
