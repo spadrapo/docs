@@ -8,7 +8,9 @@ license: MIT
 
 A **generic** Drapo skill: it indexes any Drapo app's frontend (`wwwroot/app` + `wwwroot/components`) and answers structured questions the shared Drapo docs MCP cannot — *which* `d-dataKey`s / components / sectors **this app** actually defined, and where they are used.
 
-> Distributed as a Claude Code plugin from the **`drapo` marketplace** (`spadrapo/docs`). Install with `/plugin marketplace add spadrapo/docs` then `/plugin install drapo-resolver@drapo`.
+> **Install** (hosted in `spadrapo/docs`):
+> - **Any agent** (Copilot CLI / Claude Code / Cursor), via the cross-agent installer: `gh skill install spadrapo/docs drapo-resolver --agent github-copilot` (swap `--agent` for `claude-code` or `cursor`).
+> - **Claude Code**, as a marketplace plugin: `/plugin marketplace add spadrapo/docs` then `/plugin install drapo-resolver@drapo`.
 
 ## Drapo know-how bundled with this skill
 
@@ -50,13 +52,14 @@ Pair `validate_drapo` (*is the syntax legal?*) with `resolve-*` (*do the names I
 
 ## Usage
 
-Run the bundled script with PowerShell. When installed as a plugin, it lives at `${CLAUDE_PLUGIN_ROOT}`:
+The resolver is a PowerShell script (`drapo-resolver.ps1`) that ships **in this skill's own folder**. Invoke it with `pwsh`, pointing at wherever this skill was installed:
 
 ```
-pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" <command> [name] [-Root <wwwroot>]
+pwsh "<this-skill-dir>/drapo-resolver.ps1" <command> [name] [-Root <wwwroot>]
 ```
 
-(If you're running a local copy instead, point `pwsh` at wherever `drapo-resolver.ps1` lives.)
+- Installed as a Claude Code **plugin**: `pwsh "${CLAUDE_PLUGIN_ROOT}/skills/drapo-resolver/drapo-resolver.ps1" ...`
+- Installed via **`gh skill install`** (Copilot/Cursor/Claude): the script sits next to `SKILL.md` in the agent's skills directory (e.g. `.github/skills/drapo-resolver/` or `~/.copilot/skills/drapo-resolver/`).
 
 `-Root` is optional: if omitted, the script auto-detects the Drapo `wwwroot` (a `wwwroot` folder containing `app/`) under the current directory. Pass it explicitly if the repo has more than one. All output is JSON.
 
@@ -73,17 +76,19 @@ pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" <command> [name] [-Root <wwwroot
 ### Examples
 
 ```bash
+# (paths below use the skill's own folder — see Usage above)
+
 # Does this data key exist, and what is it?
-pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" resolve-datakey myDataKey
+pwsh ./drapo-resolver.ps1 resolve-datakey myDataKey
 
 # Where is a component defined?
-pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" resolve-component d-mycomponent
+pwsh ./drapo-resolver.ps1 resolve-component d-mycomponent
 
 # Find everything that binds a key before renaming it.
-pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" find-references myDataKey
+pwsh ./drapo-resolver.ps1 find-references myDataKey
 
 # Catch component tags that point at no component.
-pwsh "${CLAUDE_PLUGIN_ROOT}/drapo-resolver.ps1" scan-unresolved
+pwsh ./drapo-resolver.ps1 scan-unresolved
 ```
 
 ## Notes & limitations
