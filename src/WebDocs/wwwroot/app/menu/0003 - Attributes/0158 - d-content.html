@@ -3,10 +3,14 @@
 <div>
     <div>
         <h2>d-content</h2>
-        <p>You can use d-content on a component element to provide its content inline, as an alternative to loading it from a URL with d-contenturl.</p>
+        <p>You can use d-content with the value <code>internal</code> inside a component's template to mark the element that receives the content placed between the component's tags (the component's content slot).</p>
         <h4>Example</h4>
         <d-code>
-            &lt;d-panel d-content="Hello from the host"&gt;&lt;/d-panel&gt;
+            &lt;!-- inside the component template: mark the content slot --&gt;
+            &lt;div class="card"&gt;&lt;div d-content="internal"&gt;&lt;/div&gt;&lt;/div&gt;
+
+            &lt;!-- usage: the inner markup is projected into the slot --&gt;
+            &lt;d-card&gt;&lt;span&gt;Projected content&lt;/span&gt;&lt;/d-card&gt;
         </d-code>
     </div>
 </div>
