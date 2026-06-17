@@ -4,5 +4,15 @@
     <div>
         <h2>d-model-event-cancel</h2>
         <p>You can use d-model-event-cancel to list the DOM event(s) that cancel a pending d-model edit, reverting the control to the stored value. It is the counterpart of d-model-event, which commits the edit.</p>
+        <h4>Example</h4>
+        <p>Syntax:</p>
+        <d-code>
+            &lt;input d-model="{{form.name}}" d-model-event-cancel="blur" /&gt;
+        </d-code>
+        <d-sample>
+            <div d-dataKey="form" d-dataType="object" d-dataProperty-name="Alice"></div>
+            <input type="text" d-model="{{form.name}}" d-model-event-cancel="blur" />
+            <span>Stored value: {{form.name}}</span>
+        </d-sample>
     </div>
 </div>
