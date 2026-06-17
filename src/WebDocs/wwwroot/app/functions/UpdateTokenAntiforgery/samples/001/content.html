@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - UpdateTokenAntiforgery</title>
+</head>
+<body>
+    <br>
+    <span>UpdateTokenAntiforgery</span>
+    <div d-dataKey="auth" d-dataType="object" d-dataProperty-antiforgery=""></div>
+    <div>
+        <input type="text" d-model="{{auth.antiforgery}}" placeholder="new anti-forgery token">
+        <input type="button" value="Update token" d-on-click="UpdateTokenAntiforgery({{auth.antiforgery}})">
+    </div>
+</body>
+</html>
