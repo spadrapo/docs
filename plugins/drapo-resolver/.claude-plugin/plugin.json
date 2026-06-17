@@ -1,0 +1,11 @@
+{
+  "name": "drapo-resolver",
+  "description": "Project-aware Drapo symbol resolver: resolve data keys / components / sectors, find references, and scan for dangling references in any Drapo app.",
+  "version": "1.0.0",
+  "author": {
+    "name": "Drapo"
+  },
+  "homepage": "https://github.com/spadrapo/docs",
+  "license": "MIT",
+  "keywords": ["drapo", "resolver", "frontend"]
+}

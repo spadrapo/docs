@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>Drapo Resolver Skill</h2>
+        <p>The Drapo Resolver is an installable AI-agent skill that makes an LLM <strong>project-aware</strong>: it indexes a Drapo application's own frontend (<code>wwwroot/app</code> + <code>wwwroot/components</code>) and answers go-to-definition / find-references questions about the symbols <em>that app</em> defined — its <code>d-dataKey</code>s, components, and sectors. The shared Drapo MCP knows the framework (every function/attribute that <em>can</em> exist); this skill knows what <em>your</em> app actually contains, so an agent can confirm a binding key, component tag, or sector name really exists instead of guessing.</p>
+
+        <h3>How to install (Claude Code)</h3>
+        <p>The skill is distributed as a plugin from the <strong>drapo</strong> plugin marketplace, hosted in the <code>spadrapo/docs</code> repository. Add the marketplace and install the plugin:</p>
+        <pre><code>/plugin marketplace add spadrapo/docs
+/plugin install drapo-resolver@drapo</code></pre>
+        <p>Update later with <code>/plugin marketplace update drapo</code>.</p>
+
+        <h3>What it provides</h3>
+        <p>Once installed, the skill auto-activates when relevant and exposes a PowerShell resolver with these commands (all output JSON):</p>
+        <ul>
+            <li><code>resolve-datakey &lt;key&gt;</code> — where a <code>d-dataKey</code> is declared (file, line, <code>d-dataType</code>, URLs, value), or <code>found:false</code>.</li>
+            <li><code>resolve-component &lt;tag&gt;</code> — the component folder and its files (accepts <code>d-foo</code> or <code>foo</code>).</li>
+            <li><code>resolve-sector &lt;name&gt;</code> — where a <code>d-sector</code> is declared.</li>
+            <li><code>find-references &lt;key&gt;</code> — every declaration and reference site (mustache or <code>d-*</code> attribute).</li>
+            <li><code>scan-unresolved</code> — <code>&lt;d-x&gt;</code> component tags with no matching component (high-confidence), plus <code>UpdateSector</code> sector targets with no static declaration (candidates).</li>
+        </ul>
+
+        <h3>When to use it</h3>
+        <ul>
+            <li>Before binding to a data key, using a <code>&lt;d-component&gt;</code>, or targeting a sector you did not just author — confirm it exists.</li>
+            <li>After editing Drapo HTML — run <code>scan-unresolved</code> to catch component tags that point at nothing.</li>
+            <li>Before renaming a data key — use <code>find-references</code> to find every binding site.</li>
+        </ul>
+
+        <p>It is a generic Drapo skill: it only relies on Drapo conventions, so it works in any Drapo application. It runs locally because it reads the app's own files, which the hosted MCP cannot.</p>
+    </div>
+</div>
