@@ -1,0 +1,8 @@
+[
+  {
+    "Name": "Token",
+    "Description": "The new anti-forgery (CSRF) token value to use for subsequent server requests.",
+    "Types": [ "text", "mustache" ],
+    "Optional": false
+  }
+]
