@@ -5,11 +5,15 @@
         <h2>Drapo Resolver Skill</h2>
         <p>The Drapo Resolver is an installable AI-agent skill that makes an LLM <strong>project-aware</strong>: it indexes a Drapo application's own frontend (<code>wwwroot/app</code> + <code>wwwroot/components</code>) and answers go-to-definition / find-references questions about the symbols <em>that app</em> defined — its <code>d-dataKey</code>s, components, and sectors. The shared Drapo MCP knows the framework (every function/attribute that <em>can</em> exist); this skill knows what <em>your</em> app actually contains, so an agent can confirm a binding key, component tag, or sector name really exists instead of guessing.</p>
 
-        <h3>How to install (Claude Code)</h3>
-        <p>The skill is distributed as a plugin from the <strong>drapo</strong> plugin marketplace, hosted in the <code>spadrapo/docs</code> repository. Add the marketplace and install the plugin:</p>
+        <h3>How to install</h3>
+        <p>The skill is hosted in the <code>spadrapo/docs</code> repository and works with any agent.</p>
+        <p><strong>Any agent (GitHub Copilot CLI, Claude Code, Cursor)</strong> — the cross-agent installer (GitHub CLI 2.90+):</p>
+        <pre><code>gh skill install spadrapo/docs drapo-resolver --agent github-copilot
+# or --agent claude-code / --agent cursor</code></pre>
+        <p><strong>Claude Code</strong> — also available as a marketplace plugin:</p>
         <pre><code>/plugin marketplace add spadrapo/docs
 /plugin install drapo-resolver@drapo</code></pre>
-        <p>Update later with <code>/plugin marketplace update drapo</code>.</p>
+        <p>Update later with <code>gh skill update</code> or <code>/plugin marketplace update drapo</code>.</p>
 
         <h3>What it provides</h3>
         <p>Once installed, the skill auto-activates when relevant and exposes a PowerShell resolver with these commands (all output JSON):</p>
