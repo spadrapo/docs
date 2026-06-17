@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - Break</title>
+</head>
+<body>
+    <br>
+    <span>Break</span>
+    <div d-dataKey="data" d-dataType="object" d-dataProperty-step=""></div>
+    <div>
+        <input type="button" value="Run with breakpoint"
+               d-on-click="UpdateDataField(data,step,before);Break();UpdateDataField(data,step,after)">
+        <p>Step: {{data.step}}</p>
+    </div>
+</body>
+</html>
