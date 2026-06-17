@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function - GetExternalFrameMessage</title>
+</head>
+<body>
+    <br>
+    <span>GetExternalFrameMessage</span>
+    <iframe id="childFrame" src="https://example.com/child" style="width:1px;height:1px;border:0;"></iframe>
+    <div d-dataKey="received" d-dataType="array"></div>
+    <div>
+        <input type="button" value="Get from frame (message)" d-on-click="GetExternalFrameMessage(childFrame,rows,received)">
+        <ul>
+            <li d-for="row in received">{{row.name}}</li>
+        </ul>
+    </div>
+</body>
+</html>

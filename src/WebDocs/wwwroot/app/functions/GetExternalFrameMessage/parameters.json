@@ -1,0 +1,6 @@
+[
+  { "Name": "FrameID", "Description": "The id of the iframe element to read from.", "Types": [ "text", "mustache" ], "Optional": false },
+  { "Name": "ExternalFunction", "Description": "A tag that identifies which data to request from the frame; sent as the message tag the frame responds to.", "Types": [ "text", "mustache" ], "Optional": false },
+  { "Name": "DataKey", "Description": "The storage item that will receive the data the frame returns.", "Types": [ "datakey" ], "Optional": false },
+  { "Name": "IsClone", "Description": "When true, the returned data is cloned before being stored instead of referenced.", "Types": [ "boolean" ], "Optional": true, "DefaultValue": "false" }
+]
