@@ -4,7 +4,7 @@
     <div>
         <h2>query</h2>
         <p>The type query can be used to join one or more storage in a single one choosing the columns that you want.</p>
-        <p>The syntax is a subset of SQL and supports SELECT, DISTINCT, JOIN (INNER, LEFT, OUTER), WHERE, ORDER BY, and aggregate functions</p>
+        <p>The syntax is a subset of SQL and supports SELECT, DISTINCT, JOIN (INNER, LEFT, OUTER), WHERE, ORDER BY, and the aggregate functions COUNT, MAX, MIN, SUM, and AVG</p>
         <p>Here a simple sample: </p>
         <d-sample>
             <p>Sample with a simple projection</p>
@@ -141,6 +141,25 @@
                 <span>{{objectsQuery.Count}}</span>
             </div>
         </d-sample>
+        <br />
+        <p>SUM, AVG, MIN and MAX work like COUNT: each query evaluates a <strong>single</strong> aggregate and returns a single object accessed by its alias (e.g. <code>{{orderTotal.Total}}</code>), not an array. Use one query storage item per aggregate</p>
+        <d-sample>
+            <span>Sum / Avg / Min / Max</span>
+            <div d-dataKey="orders" d-dataType="array" d-dataValue='[{"Id":1,"Amount":10},{"Id":2,"Amount":20},{"Id":3,"Amount":30}]'></div>
+            <div d-dataKey="orderTotal" d-dataType="query" d-dataValue="SELECT Sum(Amount) AS Total FROM orders"></div>
+            <div d-dataKey="orderAverage" d-dataType="query" d-dataValue="SELECT Avg(Amount) AS Average FROM orders"></div>
+            <div d-dataKey="orderLowest" d-dataType="query" d-dataValue="SELECT Min(Amount) AS Lowest FROM orders"></div>
+            <div d-dataKey="orderHighest" d-dataType="query" d-dataValue="SELECT Max(Amount) AS Highest FROM orders"></div>
+            <div d-dataKey="orderItems" d-dataType="query" d-dataValue="SELECT Count(Id) AS Items FROM orders"></div>
+            <div>
+                <span>Total: {{orderTotal.Total}}</span><br />
+                <span>Average: {{orderAverage.Average}}</span><br />
+                <span>Lowest: {{orderLowest.Lowest}}</span><br />
+                <span>Highest: {{orderHighest.Highest}}</span><br />
+                <span>Items: {{orderItems.Items}}</span><br />
+            </div>
+        </d-sample>
+        <p><code>SUM(column)</code> totals the numeric values (skipping null/non-numeric, returning null when none); <code>AVG(column)</code> divides that total by the count of numeric values. <strong>SUM and AVG require the Drapo engine 2026.6.30.2 or later</strong> — on older builds they parse but return an empty result. COUNT, MAX and MIN are available on earlier builds too.</p>
         <br />
         <p>You can use OUTER JOIN too as you can see here</p>
         <d-sample>

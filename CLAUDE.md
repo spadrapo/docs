@@ -95,5 +95,7 @@ Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan
+shell commands, and other important information, read the current plan:
+`specs/001-query-aggregates/plan.md` (Feature: document the full query
+aggregate set COUNT/MAX/MIN/SUM/AVG; bumps Drapo `2025.12.9.6` → `2026.6.30.2`).
 <!-- SPECKIT END -->

@@ -85,13 +85,28 @@
 &lt;div d-dataKey="uniqueProducts" d-dataType="query"
      d-dataValue="SELECT DISTINCT Product, Quantity FROM orders"&gt;&lt;/div&gt;</code></pre>
 
-    <h3>Aggregation: COUNT</h3>
-    <p>When all selected columns are aggregate functions, the result is a single object instead of an array:</p>
-    <pre><code>&lt;div d-dataKey="stats" d-dataType="query"
-     d-dataValue="SELECT Count(P.Code) AS Total FROM persons AS P"&gt;&lt;/div&gt;
+    <h3>Aggregation</h3>
+    <p>Query supports the aggregate functions <code>COUNT</code>, <code>MAX</code>, <code>MIN</code>, <code>SUM</code>, and <code>AVG</code>. An aggregate query computes a <strong>single</strong> aggregate over one column: the result is a single object (not an array), accessed by its alias as <code>{{key.Alias}}</code>:</p>
+    <pre><code>&lt;div d-dataKey="orders" d-dataType="array"
+     d-dataValue='[{"Id":1,"Amount":10},{"Id":2,"Amount":20},{"Id":3,"Amount":30}]'&gt;&lt;/div&gt;
+
+&lt;!-- aggregate query → single object result --&gt;
+&lt;div d-dataKey="orderTotal" d-dataType="query"
+     d-dataValue="SELECT Sum(Amount) AS Total FROM orders"&gt;&lt;/div&gt;
 
 &lt;!-- Access as object property, not array item --&gt;
-&lt;span&gt;Total: {{stats.Total}}&lt;/span&gt;</code></pre>
+&lt;span&gt;Total: {{orderTotal.Total}}&lt;/span&gt;</code></pre>
+
+    <p>Each query evaluates <strong>one</strong> aggregate function. To show several totals from the same source, use a separate query storage item per aggregate:</p>
+    <pre><code>&lt;div d-dataKey="orderTotal"   d-dataType="query" d-dataValue="SELECT Sum(Amount) AS Total   FROM orders"&gt;&lt;/div&gt;
+&lt;div d-dataKey="orderAverage" d-dataType="query" d-dataValue="SELECT Avg(Amount) AS Average FROM orders"&gt;&lt;/div&gt;
+&lt;div d-dataKey="orderItems"   d-dataType="query" d-dataValue="SELECT Count(Id)   AS Items   FROM orders"&gt;&lt;/div&gt;</code></pre>
+
+    <p><code>SUM(column)</code> returns the numeric total of the column's values; <code>null</code> and non-numeric values are skipped, and it returns <code>null</code> when there are no numeric values. <code>AVG(column)</code> returns the sum divided by the count of the numeric values (skipping the same way), or <code>null</code> when there are none. <code>COUNT</code>, <code>MAX</code>, and <code>MIN</code> behave as their SQL equivalents.</p>
+
+    <p>Aggregate queries are reactive (see <a href="#" d-on-click="ApplyRoute(/doc/DataQuerying)">Reactivity</a> below): when the source storage changes, the aggregate re-evaluates automatically — convenient for live totals.</p>
+
+    <p><strong>Engine version:</strong> <code>SUM</code> and <code>AVG</code> require the Drapo engine shipped in <code>2026.6.30.2</code> or later. On earlier builds <code>Sum(...)</code>/<code>Avg(...)</code> parse and validate but return an <em>empty</em> result (the engine falls back to a normal projection) — a missing total is the tell-tale sign the engine needs upgrading. <code>COUNT</code>, <code>MAX</code>, and <code>MIN</code> are available on earlier builds.</p>
 
     <h3>Mustache Sources</h3>
     <p>The <code>FROM</code> clause can reference nested data paths using mustache expressions, letting you query a sub-array of an object:</p>
