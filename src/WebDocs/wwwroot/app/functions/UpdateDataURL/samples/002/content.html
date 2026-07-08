@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="/drapo.js"></script>
+    <title>Function Update Data URL - Dynamic Reload</title>
+</head>
+<body>
+    <!-- An array storage item. The initial GET URL loads a default set.
+         d-dataAllowCache is false so every reload fetches fresh data. -->
+    <div d-dataKey="products" d-dataType="array" d-dataUrlGet="~/api/Products/ByCategory/all" d-dataAllowCache="false"></div>
+
+    <div>
+        <!-- Put the dynamic value in the URL PATH, update the GET URL, then reload.
+             UpdateDataURL sets the GET endpoint that ReloadData uses. -->
+        <button d-on-click="UpdateDataURL(products,~/api/Products/ByCategory/books);ReloadData(products)">Books</button>
+        <button d-on-click="UpdateDataURL(products,~/api/Products/ByCategory/music);ReloadData(products)">Music</button>
+
+        <!-- Render with d-for so the list refreshes after every reload. -->
+        <ul>
+            <li d-for="p in products">{{p.name}} - {{p.price}}</li>
+        </ul>
+    </div>
+</body>
+</html>

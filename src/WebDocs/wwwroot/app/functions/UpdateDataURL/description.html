@@ -1,1 +1,3 @@
-<p>You can use UpdateDataURL to update the URL endpoint associated with a data storage item.</p>
+<p>You can use UpdateDataURL to update the <b>GET</b> URL endpoint associated with a data storage item &mdash; the endpoint used to load, and reload, the item's data.</p>
+<p>This is the counterpart of <b>UpdateDataUrlSet</b>, which updates the <i>SET</i> (POST) endpoint used by functions such as <b>PostDataItem</b>. To re-fetch a storage item from a different endpoint at runtime, change its GET URL with UpdateDataURL and then call <b>ReloadData</b>. Changing only the SET URL does not affect ReloadData.</p>
+<p>When the dynamic part of the URL is a value (for example a filter or an identifier), place it in the URL <b>path</b> and render the loaded data with an array storage item and <b>d-for</b>, so the displayed values refresh after every reload.</p>
