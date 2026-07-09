@@ -4,8 +4,8 @@
    ============================================================================= */
 
 .dMenu {
-    font-size: var(--font-size-base);
-    line-height: 1.2;
+    font-size: var(--font-size-md);
+    line-height: 1.3;
 }
 
 .dMenu > div {
@@ -22,26 +22,41 @@
     height: 1px;
 }
 
-/* Expand / collapse / leaf markers. Expandable rows get a bold accent caret;
-   leaf rows get no glyph (just an aligned gutter). */
-.dMenuGroupExpanded::before { content: "\25BE"; }  /* ▾ open */
-.dMenuGroupCollapsed::before { content: "\25B8"; } /* ▸ closed */
-.dMenuGroupNone::before { content: ""; }
-
+/* Expand / collapse / leaf markers. Expandable rows get a clear boxed +/-
+   toggle; leaf rows get an equal-width invisible spacer so labels line up. */
 .dMenuGroupExpanded,
 .dMenuGroupCollapsed,
 .dMenuGroupNone {
-    display: inline-block;
-    width: 1.3em;
-    text-align: center;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5em;
+    height: 1.5em;
+    margin-right: var(--space-2);
     vertical-align: middle;
+    flex: none;
 }
 
 .dMenuGroupExpanded,
 .dMenuGroupCollapsed {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-raised);
     color: var(--color-accent);
-    font-size: 0.9em;
+    font-size: 0.95em;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
     cursor: pointer;
+    transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.dMenuGroupCollapsed::before { content: "+"; }
+.dMenuGroupExpanded::before { content: "\2212"; } /* − minus */
+
+.dMenuGroupExpanded:hover,
+.dMenuGroupCollapsed:hover {
+    background-color: var(--color-accent-soft);
+    border-color: var(--color-accent);
 }
 
 /* Clickable label — the interactive pill. */

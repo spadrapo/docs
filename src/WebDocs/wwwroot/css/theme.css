@@ -39,20 +39,20 @@
   --font-family-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
   --font-size-xs: 0.8125rem;
   /* 13 */
-  --font-size-sm: 0.875rem;
-  /* 14 */
-  --font-size-base: 1rem;
-  /* 16 */
-  --font-size-md: 1.0625rem;
+  --font-size-sm: 0.9375rem;
+  /* 15 */
+  --font-size-base: 1.0625rem;
   /* 17 */
-  --font-size-lg: 1.25rem;
-  /* 20 */
-  --font-size-xl: 1.5rem;
-  /* 24 */
-  --font-size-2xl: 1.875rem;
-  /* 30 */
-  --font-size-3xl: 2.375rem;
-  /* 38 */
+  --font-size-md: 1.125rem;
+  /* 18 */
+  --font-size-lg: 1.3125rem;
+  /* 21 */
+  --font-size-xl: 1.5625rem;
+  /* 25 */
+  --font-size-2xl: 1.9375rem;
+  /* 31 */
+  --font-size-3xl: 2.5rem;
+  /* 40 */
   --line-height-tight: 1.25;
   --line-height-normal: 1.55;
   --line-height-loose: 1.75;
@@ -581,8 +581,8 @@ select:focus {
    ============================================================================= */
 
 .dMenu {
-  font-size: var(--font-size-base);
-  line-height: 1.2;
+  font-size: var(--font-size-md);
+  line-height: 1.3;
 }
 .dMenu > div {
   padding: 0;
@@ -597,35 +597,45 @@ select:focus {
   width: var(--space-5);
   height: 1px;
 }
-/* Expand / collapse / leaf markers. Expandable rows get a bold accent caret;
-   leaf rows get no glyph (just an aligned gutter). */
+/* Expand / collapse / leaf markers. Expandable rows get a clear boxed +/-
+   toggle; leaf rows get an equal-width invisible spacer so labels line up. */
 
-.dMenuGroupExpanded::before {
-  content: "\25BE";
-}
-/* ▾ open */
-
-.dMenuGroupCollapsed::before {
-  content: "\25B8";
-}
-/* ▸ closed */
-
-.dMenuGroupNone::before {
-  content: "";
-}
 .dMenuGroupExpanded,
 .dMenuGroupCollapsed,
 .dMenuGroupNone {
-  display: inline-block;
-  width: 1.3em;
-  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5em;
+  height: 1.5em;
+  margin-right: var(--space-2);
   vertical-align: middle;
+  flex: none;
 }
 .dMenuGroupExpanded,
 .dMenuGroupCollapsed {
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-raised);
   color: var(--color-accent);
-  font-size: 0.9em;
+  font-size: 0.95em;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
   cursor: pointer;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+.dMenuGroupCollapsed::before {
+  content: "+";
+}
+.dMenuGroupExpanded::before {
+  content: "\2212";
+}
+/* − minus */
+
+.dMenuGroupExpanded:hover,
+.dMenuGroupCollapsed:hover {
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
 }
 /* Clickable label — the interactive pill. */
 
