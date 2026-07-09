@@ -20,7 +20,7 @@
                 <div class="search-results" d-if="{{searchResults.length}} > 0">
                     <div class="search-item"
                          d-for="result in searchResults"
-                         d-on-mousedown="{{result.Action}};UpdateData(searchQuery,'');ClearData(searchResults)">
+                         d-on-mousedown="UpdateData(selectedMenu,{{result.Name}});Notify(menuItems);{{result.Action}};UpdateData(searchQuery,'');ClearData(searchResults)">
                         <div class="search-item-name">{{result.Name}}</div>
                         <div class="search-item-type">{{result.Type}}</div>
                     </div>
