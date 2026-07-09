@@ -1,71 +1,508 @@
+/* =============================================================================
+   Design Tokens — single source of truth for the Drapo Docs design system.
+   Authored as CSS custom properties so themes switch at runtime (no recompile).
+   Tier 1: primitives (raw palette + scales).  Tier 2: semantic tokens.
+   Light values live in :root; dark overrides live in html.dark-theme.
+   Feature stylesheets MUST reference SEMANTIC tokens only (never primitives,
+   never literals). See specs/002-docs-design-system/contracts/design-system.md
+   ============================================================================= */
+
 :root {
-  --body-bg: white;
-  --body-color: black;
-  --header-bg: #f8f9fa;
-  --header-border: #dee2e6;
-  --header-title-color: #333;
-  --input-bg: white;
-  --input-color: #333;
-  --input-border: #ccc;
-  --search-bg: white;
-  --search-border: #ccc;
-  --search-item-hover: #f8f9fa;
-  --search-item-border: #f1f1f1;
-  --search-item-name: #333;
-  --search-item-type: #666;
-  --table-header-bg: #DFDFDF;
-  --table-cell-bg: #FAFAFA;
-  --table-cell-even: #F1F1F1;
-  --table-cell-odd: #FEFEFE;
-  --table-text: #333;
-  --toggle-btn-color: #333;
-  --toggle-btn-border: #ccc;
+  /* ---- Tier 1: primitive palette ------------------------------------- */
+  --white: #ffffff;
+  --black: #0b0d10;
+  --gray-25: #fbfcfd;
+  --gray-50: #f7f8fa;
+  --gray-100: #eef1f5;
+  --gray-200: #e4e7ec;
+  --gray-300: #d0d5dd;
+  --gray-400: #98a2b3;
+  --gray-500: #667085;
+  --gray-600: #4b5563;
+  --gray-700: #344054;
+  --gray-800: #1c2530;
+  --gray-900: #101828;
+  --indigo-50: #eef2ff;
+  --indigo-100: #e0e7ff;
+  --indigo-300: #a5b4fc;
+  --indigo-400: #818cf8;
+  --indigo-500: #6366f1;
+  --indigo-600: #4f46e5;
+  --indigo-700: #4338ca;
+  --green-500: #12a150;
+  --green-600: #0f8a45;
+  --red-500: #e5484d;
+  --red-600: #cc3b40;
+  --amber-500: #f59e0b;
+  /* ---- Tier 1: type / space / radius / shadow / motion scales --------- */
+  --font-family-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-family-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  --font-size-xs: 0.75rem;
+  /* 12 */
+  --font-size-sm: 0.875rem;
+  /* 14 */
+  --font-size-base: 1rem;
+  /* 16 — MS Learn body size */
+  --font-size-md: 1.125rem;
+  /* 18 */
+  --font-size-lg: 1.25rem;
+  /* 20 */
+  --font-size-xl: 1.5rem;
+  /* 24 */
+  --font-size-2xl: 1.75rem;
+  /* 28 */
+  --font-size-3xl: 2.5rem;
+  /* 40 */
+  --line-height-tight: 1.25;
+  --line-height-normal: 1.55;
+  --line-height-loose: 1.75;
+  --font-weight-normal: 400;
+  --font-weight-medium: 550;
+  --font-weight-bold: 700;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-pill: 999px;
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+  --shadow-md: 0 4px 8px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06);
+  --shadow-lg: 0 12px 28px rgba(16, 24, 40, 0.14), 0 4px 8px rgba(16, 24, 40, 0.08);
+  --transition-base: 0.2s ease;
+  --transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+  /* ---- Tier 2: semantic tokens (LIGHT) ------------------------------- */
+  --color-bg: var(--white);
+  --color-canvas: var(--gray-25);
+  --color-surface: var(--gray-50);
+  --color-surface-raised: var(--white);
+  --color-border: var(--gray-200);
+  --color-border-strong: var(--gray-300);
+  --color-text: var(--gray-900);
+  --color-text-muted: var(--gray-500);
+  --color-text-inverse: var(--white);
+  --color-accent: var(--indigo-600);
+  --color-accent-hover: var(--indigo-700);
+  --color-accent-soft: var(--indigo-50);
+  --color-on-accent: var(--white);
+  --color-focus-ring: rgba(79, 70, 229, 0.35);
+  --color-code-bg: var(--gray-100);
+  --color-code-text: var(--gray-900);
+  --color-code-border: var(--gray-200);
+  --color-success: var(--green-600);
+  --color-success-bg: #e7f6ec;
+  --color-warning: var(--amber-500);
+  --color-warning-bg: #fdf3e2;
+  --color-error: var(--red-600);
+  --color-error-bg: #fdecec;
+  --color-info: var(--indigo-600);
+  --color-info-bg: var(--indigo-50);
+  /* Elevated surfaces cast shadows in light mode; suppressed in dark. */
+  --elevation-sm: var(--shadow-sm);
+  --elevation-md: var(--shadow-md);
+  --elevation-lg: var(--shadow-lg);
+  /* ---- Legacy aliases (kept so pre-existing selectors keep resolving) - */
+  --body-bg: var(--color-bg);
+  --body-color: var(--color-text);
+  --header-bg: var(--color-surface);
+  --header-border: var(--color-border);
+  --header-title-color: var(--color-text);
+  --input-bg: var(--color-surface-raised);
+  --input-color: var(--color-text);
+  --input-border: var(--color-border-strong);
+  --search-bg: var(--color-surface-raised);
+  --search-border: var(--color-border);
+  --search-item-hover: var(--color-accent-soft);
+  --search-item-border: var(--color-border);
+  --search-item-name: var(--color-text);
+  --search-item-type: var(--color-text-muted);
+  --table-header-bg: var(--color-surface);
+  --table-cell-bg: var(--color-surface-raised);
+  --table-cell-even: var(--color-surface);
+  --table-cell-odd: var(--color-surface-raised);
+  --table-text: var(--color-text);
+  --toggle-btn-color: var(--color-text);
+  --toggle-btn-border: var(--color-border-strong);
 }
 html.dark-theme {
-  --body-bg: #1a1a2e;
-  --body-color: #e0e0e0;
-  --header-bg: #16213e;
-  --header-border: #2d3748;
-  --header-title-color: #e0e0e0;
-  --input-bg: #2d2d3e;
-  --input-color: #e0e0e0;
-  --input-border: #4a4a5e;
-  --search-bg: #2d2d3e;
-  --search-border: #4a4a5e;
-  --search-item-hover: #3a3a5e;
-  --search-item-border: #3a3a4e;
-  --search-item-name: #e0e0e0;
-  --search-item-type: #aaaacc;
-  --table-header-bg: #2d2d3e;
-  --table-cell-bg: #252535;
-  --table-cell-even: #2a2a3e;
-  --table-cell-odd: #1e1e2e;
-  --table-text: #e0e0e0;
-  --toggle-btn-color: #e0e0e0;
-  --toggle-btn-border: #4a4a5e;
+  /* ---- Tier 2: semantic tokens (DARK) — names identical, values differ */
+  --color-bg: #0d1117;
+  --color-canvas: #0a0e14;
+  --color-surface: #161b22;
+  --color-surface-raised: #1c2230;
+  --color-border: #262d38;
+  --color-border-strong: #30373f;
+  --color-text: #e6edf3;
+  --color-text-muted: #9aa4b2;
+  --color-text-inverse: #0d1117;
+  --color-accent: var(--indigo-400);
+  --color-accent-hover: var(--indigo-300);
+  --color-accent-soft: rgba(129, 140, 248, 0.14);
+  --color-on-accent: #0d1117;
+  --color-focus-ring: rgba(129, 140, 248, 0.45);
+  --color-code-bg: #11161f;
+  --color-code-text: #e6edf3;
+  --color-code-border: #262d38;
+  --color-success: #3fb950;
+  --color-success-bg: rgba(63, 185, 80, 0.14);
+  --color-warning: #d29922;
+  --color-warning-bg: rgba(210, 153, 34, 0.14);
+  --color-error: #f85149;
+  --color-error-bg: rgba(248, 81, 73, 0.14);
+  --color-info: var(--indigo-400);
+  --color-info-bg: rgba(129, 140, 248, 0.14);
+  /* Shadows read poorly on dark surfaces — flatten elevation. */
+  --elevation-sm: none;
+  --elevation-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+  --elevation-lg: 0 16px 32px rgba(0, 0, 0, 0.5);
+}
+/* =============================================================================
+   Base — element defaults & typographic rhythm built entirely on tokens.
+   Loaded after tokens.less, before components + feature stylesheets.
+   ============================================================================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+html {
+  /* Normalize the root to 16px. A base stylesheet (Bootstrap) sets it to
+       10px, which silently shrank every rem-based size by ~37%. */
+  font-size: 100%;
+  background-color: var(--color-canvas);
 }
 body {
-  color: var(--body-color);
-  background-color: var(--body-bg);
-  font: 14px 'Open Sans', sans-serif;
+  margin: 0;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-base);
+  line-height: var(--line-height-normal);
   text-rendering: optimizeLegibility;
-  text-rendering: geometricPrecision;
-  font-smooth: always;
   -moz-osx-font-smoothing: grayscale;
-  font-smoothing: antialiased;
-  -moz-font-smoothing: antialiased;
   -webkit-font-smoothing: antialiased;
-  -webkit-font-smoothing: subpixel-antialiased;
-  transition: background-color 0.3s ease, color 0.3s ease;
+  transition: var(--transition-theme);
 }
+/* Headings ----------------------------------------------------------------- */
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-text);
+  font-weight: var(--font-weight-bold);
+  line-height: var(--line-height-tight);
+  margin: 0 0 var(--space-4);
+}
+h1 {
+  font-size: var(--font-size-3xl);
+  letter-spacing: -0.02em;
+}
+h2 {
+  font-size: var(--font-size-2xl);
+  letter-spacing: -0.01em;
+  margin-top: var(--space-10);
+}
+h3 {
+  font-size: var(--font-size-xl);
+  margin-top: var(--space-8);
+}
+h4 {
+  font-size: var(--font-size-lg);
+}
+h5,
+h6 {
+  font-size: var(--font-size-md);
+}
+p {
+  margin: 0 0 var(--space-4);
+}
+/* Links -------------------------------------------------------------------- */
+
+a {
+  color: var(--color-accent);
+  text-decoration: none;
+  transition: color var(--transition-base);
+}
+a:hover {
+  color: var(--color-accent-hover);
+  text-decoration: underline;
+}
+/* Inline code + preformatted ---------------------------------------------- */
+
+code,
+kbd,
+samp,
+pre {
+  font-family: var(--font-family-mono);
+  font-size: 0.9em;
+}
+:not(pre) > code {
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-sm);
+  padding: 0.1em 0.4em;
+}
+pre {
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  overflow-x: auto;
+  line-height: var(--line-height-normal);
+}
+hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+  margin: var(--space-8) 0;
+}
+/* Selection + focus -------------------------------------------------------- */
+
+::selection {
+  background-color: var(--color-accent-soft);
+}
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+/* Scrollbars (subtle, themed) --------------------------------------------- */
+
+* {
+  scrollbar-color: var(--color-border-strong) transparent;
+}
+*::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+*::-webkit-scrollbar-thumb {
+  background-color: var(--color-border-strong);
+  border-radius: var(--radius-pill);
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+/* =============================================================================
+   Components — reusable, token-driven UI patterns.
+   Every value references a SEMANTIC token. No literals, no primitives.
+   Loaded after base.less; these override Bootstrap's look where they overlap.
+   ============================================================================= */
+
+/* ---- Buttons ------------------------------------------------------------- */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  padding: var(--space-2) var(--space-4);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+}
+.btn:hover {
+  background-color: var(--color-accent-hover);
+  color: var(--color-on-accent);
+  text-decoration: none;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+.btn:active {
+  transform: translateY(1px);
+}
+.btn:disabled,
+.btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+.btn-secondary {
+  background-color: var(--color-surface);
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+.btn-secondary:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-accent);
+  border-color: transparent;
+}
+.btn-ghost:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent-hover);
+}
+.btn-danger {
+  background-color: var(--color-error);
+  color: var(--color-text-inverse);
+}
+.btn-small {
+  padding: var(--space-1) var(--space-3);
+  font-size: var(--font-size-sm);
+}
+.btn-block {
+  display: flex;
+  width: 100%;
+}
+/* ---- Cards / panels ------------------------------------------------------ */
+
+.ds-card,
+.card {
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  box-shadow: var(--elevation-sm);
+}
+.ds-card--raised {
+  box-shadow: var(--elevation-md);
+}
+/* ---- Callouts / notes ---------------------------------------------------- */
+
+.ds-callout {
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-info);
+  border-radius: var(--radius-md);
+  background-color: var(--color-info-bg);
+  color: var(--color-text);
+  padding: var(--space-4) var(--space-5);
+  margin: var(--space-5) 0;
+}
+.ds-callout--info {
+  border-left-color: var(--color-info);
+  background-color: var(--color-info-bg);
+}
+.ds-callout--success {
+  border-left-color: var(--color-success);
+  background-color: var(--color-success-bg);
+}
+.ds-callout--warn {
+  border-left-color: var(--color-warning);
+  background-color: var(--color-warning-bg);
+}
+.ds-callout--error {
+  border-left-color: var(--color-error);
+  background-color: var(--color-error-bg);
+}
+/* ---- Shared table pattern ------------------------------------------------ */
+
+.ds-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+}
+.ds-table th,
+.ds-table td {
+  text-align: left;
+  padding: var(--space-3) var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+.ds-table th {
+  background-color: var(--color-surface);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
+}
+.ds-table tr:last-child td {
+  border-bottom: none;
+}
+.ds-table tbody tr:nth-child(even) td {
+  background-color: var(--color-surface);
+}
+.ds-table tbody tr:hover td {
+  background-color: var(--color-accent-soft);
+}
+/* ---- Code block surface -------------------------------------------------- */
+
+.ds-code {
+  background-color: var(--color-code-bg);
+  color: var(--color-code-text);
+  border: 1px solid var(--color-code-border);
+  border-radius: var(--radius-md);
+  font-family: var(--font-family-mono);
+  padding: var(--space-4);
+  overflow-x: auto;
+}
+/* ---- Form controls ------------------------------------------------------- */
+
+.form-group {
+  margin-bottom: var(--space-4);
+}
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+  font-family: var(--font-family-ui);
+  font-size: var(--font-size-base);
+  color: var(--color-text);
+  background-color: var(--color-surface-raised);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), var(--transition-theme);
+}
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+/* ---- Status badge -------------------------------------------------------- */
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: var(--font-size-xs);
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-1) var(--space-2);
+  border-radius: var(--radius-pill);
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+}
+/* =============================================================================
+   Layout — app shell + responsive documentation grid.
+   Design tokens now live in tokens.less; this file only consumes them.
+   ============================================================================= */
+
 .dSectorWindows {
   position: absolute;
   z-index: 9999;
 }
 .dSectorHeader {
-  position: relative;
-  z-index: 1;
-  min-height: 50px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  min-height: 56px;
 }
 .dSectorMenu {
   position: relative;
@@ -79,16 +516,78 @@ body {
 .dCloak {
   display: none;
 }
+/* Documentation shell: sidebar + fluid content --------------------------- */
+
 .doc {
   position: relative;
   display: flex;
+  align-items: flex-start;
+  background-color: var(--color-canvas);
+  min-height: calc(100vh - 56px);
 }
 .docLeft {
-  width: 15%;
-  padding-left: 15px;
+  flex: 0 0 335px;
+  width: 335px;
+  align-self: stretch;
+  padding: var(--space-4) var(--space-3);
+  background-color: var(--color-surface);
+  border-right: 1px solid var(--color-border);
+  position: sticky;
+  top: 56px;
+  max-height: calc(100vh - 56px);
+  overflow-y: auto;
+  transition: var(--transition-theme);
 }
 .docRight {
-  width: 80%;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 1280px;
+  padding: var(--space-8) var(--space-12);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+  /* 16px — MS Learn reading size */
+  line-height: 1.6;
+}
+/* Tables / preformatted inside content never blow out the layout. */
+
+.docRight table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
+}
+.docRight pre {
+  max-width: 100%;
+}
+/* Responsive: collapse the sidebar into a disclosure on narrow viewports. */
+
+@media (max-width: 1024px) {
+  .doc {
+    flex-direction: column;
+  }
+  .docLeft {
+    flex-basis: auto;
+    width: 100%;
+    position: static;
+    max-height: none;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+    padding: var(--space-2) var(--space-4);
+  }
+  .docRight {
+    width: 100%;
+    max-width: 100%;
+    padding: var(--space-6) var(--space-5);
+  }
+}
+/* =============================================================================
+   Menu — sidebar navigation tree. Token-driven.
+   Works with the existing sector markup (floated indent tab + arrow + label).
+   ============================================================================= */
+
+.dMenu {
+  font-size: 0.9375rem;
+  /* 15px */
+  line-height: 1.35;
 }
 .dMenu > div {
   padding: 0;
@@ -96,20 +595,109 @@ body {
   border: none;
   cursor: pointer;
 }
-.dMenuTab > span {
-  padding-left: 30px;
-  padding-top: 8px;
-  padding-bottom: 8px;
+/* One label line: indent + toggle + label, laid out so the label can
+   truncate with an ellipsis when it does not fit. */
+
+.dMenuRow {
+  display: flex;
+  align-items: center;
+  min-width: 0;
 }
-.dMenuGroupExpanded::before {
-  content: "▼";
+/* Indentation tab (one span per depth level). */
+
+.dMenuTab {
+  flex: none;
+  display: inline-flex;
+}
+.dMenuTab > span {
+  display: inline-block;
+  width: var(--space-4);
+  height: 1px;
+}
+/* Expand / collapse / leaf markers. Expandable rows get a clear boxed +/-
+   toggle; leaf rows get an equal-width invisible spacer so labels line up. */
+
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed,
+.dMenuGroupNone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.4em;
+  height: 1.4em;
+  margin-right: var(--space-1);
+  vertical-align: middle;
+  flex: none;
+}
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed {
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-sm);
+  background-color: var(--color-surface-raised);
+  color: var(--color-accent);
+  font-size: 0.95em;
+  font-weight: var(--font-weight-bold);
+  line-height: 1;
+  cursor: pointer;
+  transition: background-color var(--transition-base), border-color var(--transition-base);
 }
 .dMenuGroupCollapsed::before {
-  content: "▶";
+  content: "+";
 }
-.dMenuGroupNone::before {
-  content: "•";
+.dMenuGroupExpanded::before {
+  content: "\2212";
 }
+/* − minus */
+
+.dMenuGroupExpanded:hover,
+.dMenuGroupCollapsed:hover {
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+/* Clickable label — the interactive pill. Truncates with an ellipsis when the
+   name is too long; the full name is available via the title tooltip. */
+
+.dMenuLabel {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding: var(--space-1) var(--space-2);
+  margin: 1px 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: background-color var(--transition-base), color var(--transition-base);
+}
+.dMenuLabel:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-text);
+}
+/* Currently-open page. */
+
+.dMenuActive,
+.dMenuActive:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
+/* Expandable sections (rows with a caret) read as headings: darker + heavier
+   than leaf items, so what can open is obvious at a glance. */
+
+.dMenuGroupExpanded + .dMenuLabel,
+.dMenuGroupCollapsed + .dMenuLabel {
+  color: var(--color-text);
+  font-weight: var(--font-weight-medium);
+}
+.dMenuGroupCollapsed + .dMenuLabel:hover,
+.dMenuGroupExpanded + .dMenuLabel:hover {
+  color: var(--color-accent);
+}
+/* =============================================================================
+   Header — top bar, brand, search, theme toggle. Token-driven.
+   ============================================================================= */
+
 .dHeaderImage {
   width: 30px;
   height: 30px;
@@ -118,25 +706,28 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 20px;
-  background-color: var(--header-bg);
-  border-bottom: 1px solid var(--header-border);
-  transition: background-color 0.3s ease, border-color 0.3s ease;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-6);
+  background-color: var(--color-surface);
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--elevation-sm);
+  transition: var(--transition-theme);
 }
 .header-left {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: var(--space-3);
 }
 .header-left span {
-  font-size: 1.2em;
-  font-weight: bold;
-  color: var(--header-title-color);
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  letter-spacing: -0.01em;
+  color: var(--color-text);
 }
 .header-right {
   flex: 1;
-  max-width: 400px;
-  margin-left: 20px;
+  max-width: 440px;
+  margin-left: var(--space-5);
 }
 .search-container {
   position: relative;
@@ -144,73 +735,77 @@ body {
 }
 .search-input {
   width: 100%;
-  padding: 8px 12px;
-  border: 1px solid var(--input-border);
-  border-radius: 4px;
-  font-size: 14px;
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  font-size: var(--font-size-base);
   outline: none;
-  transition: border-color 0.2s, background-color 0.3s ease, color 0.3s ease;
-  background-color: var(--input-bg);
-  color: var(--input-color);
+  background-color: var(--color-surface-raised);
+  color: var(--color-text);
+  transition: border-color var(--transition-base), box-shadow var(--transition-base), var(--transition-theme);
 }
 .search-input::placeholder {
-  color: var(--search-item-type);
+  color: var(--color-text-muted);
 }
 .search-input:focus {
-  border-color: #007bff;
-  box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+  border-color: var(--color-accent);
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 .search-results {
   position: absolute;
-  top: 100%;
+  top: calc(100% + var(--space-1));
   left: 0;
   right: 0;
-  background: var(--search-bg);
-  border: 1px solid var(--search-border);
-  border-top: none;
-  border-radius: 0 0 4px 4px;
-  max-height: 300px;
+  background: var(--color-surface-raised);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  max-height: 320px;
   overflow-y: auto;
   z-index: 1000;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: var(--elevation-lg);
 }
 .search-item {
-  padding: 10px 12px;
+  padding: var(--space-3) var(--space-4);
   cursor: pointer;
-  border-bottom: 1px solid var(--search-item-border);
-  transition: background-color 0.1s;
+  border-bottom: 1px solid var(--color-border);
+  transition: background-color var(--transition-base);
 }
 .search-item:hover {
-  background-color: var(--search-item-hover);
+  background-color: var(--color-accent-soft);
 }
 .search-item:last-child {
   border-bottom: none;
 }
 .search-item-name {
-  font-weight: 500;
-  color: var(--search-item-name);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
   margin-bottom: 2px;
 }
 .search-item-type {
-  font-size: 12px;
-  color: var(--search-item-type);
+  font-size: var(--font-size-xs);
+  color: var(--color-text-muted);
   text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 .theme-toggle {
   background: transparent;
-  border: 1px solid var(--toggle-btn-border);
-  border-radius: 4px;
-  color: var(--toggle-btn-color);
+  border: 1px solid var(--color-border-strong);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
   cursor: pointer;
   font-size: 18px;
   line-height: 1;
-  padding: 5px 8px;
-  margin-left: 12px;
-  transition: border-color 0.3s ease, color 0.3s ease;
+  padding: var(--space-2);
   flex-shrink: 0;
+  transition: border-color var(--transition-base), background-color var(--transition-base);
 }
 .theme-toggle:hover {
-  opacity: 0.8;
+  background-color: var(--color-accent-soft);
+  border-color: var(--color-accent);
+}
+.theme-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px var(--color-focus-ring);
 }
 .theme-toggle-icon-dark {
   display: none;
@@ -223,56 +818,104 @@ html.dark-theme .theme-toggle-icon-dark {
 }
 @media (max-width: 768px) {
   .header-container {
-    flex-direction: column;
-    gap: 10px;
-    align-items: stretch;
+    flex-wrap: wrap;
+    gap: var(--space-3);
   }
   .header-right {
+    order: 3;
+    flex-basis: 100%;
     margin-left: 0;
     max-width: none;
   }
 }
+/* =============================================================================
+   Samples — demonstration color swatches used inside doc examples.
+   These are intentional literal demo colors (they teach color usage) but are
+   given accessible on-color text and consistent shape via tokens.
+   ============================================================================= */
+
+.dSampleGreen,
+.dSampleRed {
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-sm);
+  padding: var(--space-1) var(--space-2);
+}
 .dSampleGreen {
-  background-color: green;
+  background-color: var(--color-success);
 }
 .dSampleRed {
-  background-color: red;
+  background-color: var(--color-error);
 }
+/* =============================================================================
+   Content — documentation prose links & rhythm. Token-driven.
+   ============================================================================= */
+
 .dContentLink {
-  text-decoration: underline;
+  color: var(--color-accent);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-base);
 }
 .dContentLink:hover {
-  cursor: pointer;
-  font-weight: bold;
+  color: var(--color-accent-hover);
+  text-decoration: underline;
 }
+/* Readable spacing for lists inside documentation content. */
+
+.docRight ul,
+.docRight ol {
+  padding-left: var(--space-6);
+  margin: 0 0 var(--space-4);
+}
+.docRight li {
+  margin-bottom: var(--space-1);
+}
+/* =============================================================================
+   Functions — parameter/reference tables. Uses the shared table pattern's tokens.
+   ============================================================================= */
+
 .dFunctionParametersTable {
-  color: var(--table-text);
-  font-family: Helvetica, Arial, sans-serif;
+  color: var(--color-text);
+  font-family: var(--font-family-ui);
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
   border-spacing: 0;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  margin: var(--space-4) 0;
 }
 .dFunctionParametersTable td,
 .dFunctionParametersTable th {
-  border: 1px solid transparent;
-  height: 30px;
-  transition: all 0.3s;
+  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-3) var(--space-4);
+  text-align: left;
+  transition: var(--transition-theme);
 }
 .dFunctionParametersTable th {
-  background: var(--table-header-bg);
-  font-weight: bold;
+  background: var(--color-surface);
+  font-weight: var(--font-weight-medium);
+  color: var(--color-text);
 }
 .dFunctionParametersTable td {
-  background: var(--table-cell-bg);
+  background: var(--color-surface-raised);
 }
-.dFunctionParametersTable tr:nth-child(even) td {
-  background: var(--table-cell-even);
+.dFunctionParametersTable tr:last-child td {
+  border-bottom: none;
 }
-.dFunctionParametersTable tr:nth-child(odd) td {
-  background: var(--table-cell-odd);
+.dFunctionParametersTable tbody tr:nth-child(even) td {
+  background: var(--color-surface);
 }
+.dFunctionParametersTable tbody tr:hover td {
+  background: var(--color-accent-soft);
+}
+/* =============================================================================
+   Validator — form validation message states. Token-driven.
+   ============================================================================= */
+
 .ppValidationMessage {
-  color: red;
+  color: var(--color-error);
+  font-size: var(--font-size-sm);
 }
 .ppValidatorValid {
   display: none;

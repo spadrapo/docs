@@ -18,9 +18,9 @@
                        d-on-keyup-debounce="true"
                        d-on-blur="UpdateData(searchQuery,'')" />
                 <div class="search-results" d-if="{{searchResults.length}} > 0">
-                    <div class="search-item" 
-                         d-for="result in searchResults" 
-                         d-on-click="UpdateData(searchQuery,'');ClearData(searchResults);{{result.Action}}">
+                    <div class="search-item"
+                         d-for="result in searchResults"
+                         d-on-mousedown="UpdateData(selectedMenu,{{result.Name}});Notify(menuItems);{{result.Action}};UpdateData(searchQuery,'');ClearData(searchResults)">
                         <div class="search-item-name">{{result.Name}}</div>
                         <div class="search-item-type">{{result.Type}}</div>
                     </div>

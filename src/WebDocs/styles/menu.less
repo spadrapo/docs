@@ -1,4 +1,11 @@
-﻿.dMenu {
+/* =============================================================================
+   Menu — sidebar navigation tree. Token-driven.
+   Works with the existing sector markup (floated indent tab + arrow + label).
+   ============================================================================= */
+
+.dMenu {
+    font-size: 0.9375rem; /* 15px */
+    line-height: 1.35;
 }
 
 .dMenu > div {
@@ -8,21 +15,101 @@
     cursor: pointer;
 }
 
-.dMenuTab > span
-{
-    padding-left: 30px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+/* One label line: indent + toggle + label, laid out so the label can
+   truncate with an ellipsis when it does not fit. */
+.dMenuRow {
+    display: flex;
+    align-items: center;
+    min-width: 0;
 }
 
-.dMenuGroupExpanded::before {
-    content: "▼";
+/* Indentation tab (one span per depth level). */
+.dMenuTab {
+    flex: none;
+    display: inline-flex;
 }
 
-.dMenuGroupCollapsed::before {
-    content: "▶";
+.dMenuTab > span {
+    display: inline-block;
+    width: var(--space-4);
+    height: 1px;
 }
 
-.dMenuGroupNone::before {
-    content: "•";
+/* Expand / collapse / leaf markers. Expandable rows get a clear boxed +/-
+   toggle; leaf rows get an equal-width invisible spacer so labels line up. */
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed,
+.dMenuGroupNone {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.4em;
+    height: 1.4em;
+    margin-right: var(--space-1);
+    vertical-align: middle;
+    flex: none;
+}
+
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed {
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-sm);
+    background-color: var(--color-surface-raised);
+    color: var(--color-accent);
+    font-size: 0.95em;
+    font-weight: var(--font-weight-bold);
+    line-height: 1;
+    cursor: pointer;
+    transition: background-color var(--transition-base), border-color var(--transition-base);
+}
+
+.dMenuGroupCollapsed::before { content: "+"; }
+.dMenuGroupExpanded::before { content: "\2212"; } /* − minus */
+
+.dMenuGroupExpanded:hover,
+.dMenuGroupCollapsed:hover {
+    background-color: var(--color-accent-soft);
+    border-color: var(--color-accent);
+}
+
+/* Clickable label — the interactive pill. Truncates with an ellipsis when the
+   name is too long; the full name is available via the title tooltip. */
+.dMenuLabel {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: var(--space-1) var(--space-2);
+    margin: 1px 0;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: background-color var(--transition-base), color var(--transition-base);
+}
+
+.dMenuLabel:hover {
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
+}
+
+/* Currently-open page. */
+.dMenuActive,
+.dMenuActive:hover {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+    font-weight: var(--font-weight-medium);
+}
+
+/* Expandable sections (rows with a caret) read as headings: darker + heavier
+   than leaf items, so what can open is obvious at a glance. */
+.dMenuGroupExpanded + .dMenuLabel,
+.dMenuGroupCollapsed + .dMenuLabel {
+    color: var(--color-text);
+    font-weight: var(--font-weight-medium);
+}
+
+.dMenuGroupCollapsed + .dMenuLabel:hover,
+.dMenuGroupExpanded + .dMenuLabel:hover {
+    color: var(--color-accent);
 }

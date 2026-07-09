@@ -1,9 +1,33 @@
-﻿.sample {
+.sample {
+    margin: var(--space-5) 0;
 }
 
-    .sample > div {
-        width: 100%;
-        border: 1px solid #ccc;
-        background-color: #f5f5f5;
-        padding: 20px;
-    }
+.sample > span {
+    display: block;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    color: var(--color-text-muted);
+    margin: var(--space-3) 0 var(--space-1);
+}
+
+.sample > pre {
+    background-color: var(--color-code-bg);
+    color: var(--color-code-text);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    padding: var(--space-4);
+    margin: 0;
+    overflow-x: auto;
+}
+
+.sample > div {
+    width: 100%;
+    border: 1px solid var(--color-border);
+    background-color: var(--color-surface);
+    border-radius: var(--radius-md);
+    padding: var(--space-5);
+}

@@ -1,0 +1,177 @@
+/* =============================================================================
+   Components — reusable, token-driven UI patterns.
+   Every value references a SEMANTIC token. No literals, no primitives.
+   Loaded after base.less; these override Bootstrap's look where they overlap.
+   ============================================================================= */
+
+/* ---- Buttons ------------------------------------------------------------- */
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-base);
+    font-weight: var(--font-weight-medium);
+    line-height: 1;
+    padding: var(--space-2) var(--space-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-md);
+    background-color: var(--color-accent);
+    color: var(--color-on-accent);
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color var(--transition-base), border-color var(--transition-base), box-shadow var(--transition-base), opacity var(--transition-base);
+}
+
+.btn:hover {
+    background-color: var(--color-accent-hover);
+    color: var(--color-on-accent);
+    text-decoration: none;
+}
+
+.btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+.btn:active { transform: translateY(1px); }
+
+.btn:disabled,
+.btn[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    background-color: var(--color-surface);
+    color: var(--color-text);
+    border-color: var(--color-border-strong);
+}
+.btn-secondary:hover {
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
+    border-color: var(--color-accent);
+}
+
+.btn-ghost {
+    background-color: transparent;
+    color: var(--color-accent);
+    border-color: transparent;
+}
+.btn-ghost:hover {
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent-hover);
+}
+
+.btn-danger {
+    background-color: var(--color-error);
+    color: var(--color-text-inverse);
+}
+
+.btn-small { padding: var(--space-1) var(--space-3); font-size: var(--font-size-sm); }
+.btn-block { display: flex; width: 100%; }
+
+/* ---- Cards / panels ------------------------------------------------------ */
+.ds-card,
+.card {
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--space-6);
+    box-shadow: var(--elevation-sm);
+}
+
+.ds-card--raised { box-shadow: var(--elevation-md); }
+
+/* ---- Callouts / notes ---------------------------------------------------- */
+.ds-callout {
+    border: 1px solid var(--color-border);
+    border-left: 4px solid var(--color-info);
+    border-radius: var(--radius-md);
+    background-color: var(--color-info-bg);
+    color: var(--color-text);
+    padding: var(--space-4) var(--space-5);
+    margin: var(--space-5) 0;
+}
+.ds-callout--info    { border-left-color: var(--color-info);    background-color: var(--color-info-bg); }
+.ds-callout--success { border-left-color: var(--color-success); background-color: var(--color-success-bg); }
+.ds-callout--warn    { border-left-color: var(--color-warning); background-color: var(--color-warning-bg); }
+.ds-callout--error   { border-left-color: var(--color-error);   background-color: var(--color-error-bg); }
+
+/* ---- Shared table pattern ------------------------------------------------ */
+.ds-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+}
+.ds-table th,
+.ds-table td {
+    text-align: left;
+    padding: var(--space-3) var(--space-4);
+    border-bottom: 1px solid var(--color-border);
+}
+.ds-table th {
+    background-color: var(--color-surface);
+    font-weight: var(--font-weight-medium);
+    color: var(--color-text);
+}
+.ds-table tr:last-child td { border-bottom: none; }
+.ds-table tbody tr:nth-child(even) td { background-color: var(--color-surface); }
+.ds-table tbody tr:hover td { background-color: var(--color-accent-soft); }
+
+/* ---- Code block surface -------------------------------------------------- */
+.ds-code {
+    background-color: var(--color-code-bg);
+    color: var(--color-code-text);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-mono);
+    padding: var(--space-4);
+    overflow-x: auto;
+}
+
+/* ---- Form controls ------------------------------------------------------- */
+.form-group { margin-bottom: var(--space-4); }
+
+input[type="text"],
+input[type="search"],
+input[type="email"],
+input[type="password"],
+input[type="number"],
+textarea,
+select {
+    font-family: var(--font-family-ui);
+    font-size: var(--font-size-base);
+    color: var(--color-text);
+    background-color: var(--color-surface-raised);
+    border: 1px solid var(--color-border-strong);
+    border-radius: var(--radius-md);
+    padding: var(--space-2) var(--space-3);
+    transition: border-color var(--transition-base), box-shadow var(--transition-base), var(--transition-theme);
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px var(--color-focus-ring);
+}
+
+/* ---- Status badge -------------------------------------------------------- */
+.badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    padding: var(--space-1) var(--space-2);
+    border-radius: var(--radius-pill);
+    background-color: var(--color-accent-soft);
+    color: var(--color-accent);
+}

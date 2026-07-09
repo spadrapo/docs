@@ -1,28 +1,44 @@
-﻿.dFunctionParametersTable {
-    color: var(--table-text);
-    font-family: Helvetica, Arial, sans-serif;
+/* =============================================================================
+   Functions — parameter/reference tables. Uses the shared table pattern's tokens.
+   ============================================================================= */
+
+.dFunctionParametersTable {
+    color: var(--color-text);
+    font-family: var(--font-family-ui);
     width: 100%;
-    border-collapse: collapse;
+    border-collapse: separate;
     border-spacing: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: var(--space-4) 0;
 
     td, th {
-        border: 1px solid transparent; 
-        height: 30px;
-        transition: all 0.3s; 
+        border-bottom: 1px solid var(--color-border);
+        padding: var(--space-3) var(--space-4);
+        text-align: left;
+        transition: var(--transition-theme);
     }
 
     th {
-        background: var(--table-header-bg); 
-        font-weight: bold;
+        background: var(--color-surface);
+        font-weight: var(--font-weight-medium);
+        color: var(--color-text);
     }
 
     td {
-        background: var(--table-cell-bg);
+        background: var(--color-surface-raised);
     }
-    tr:nth-child(even) td {
-        background: var(--table-cell-even);
+
+    tr:last-child td {
+        border-bottom: none;
     }
-    tr:nth-child(odd) td {
-        background: var(--table-cell-odd);
+
+    tbody tr:nth-child(even) td {
+        background: var(--color-surface);
+    }
+
+    tbody tr:hover td {
+        background: var(--color-accent-soft);
     }
 }

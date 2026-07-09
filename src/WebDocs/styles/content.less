@@ -1,8 +1,26 @@
-﻿.dContentLink {
-    text-decoration: underline;
+/* =============================================================================
+   Content — documentation prose links & rhythm. Token-driven.
+   ============================================================================= */
+
+.dContentLink {
+    color: var(--color-accent);
+    text-decoration: none;
+    cursor: pointer;
+    transition: color var(--transition-base);
 }
 
 .dContentLink:hover {
-    cursor: pointer;
-    font-weight: bold;
+    color: var(--color-accent-hover);
+    text-decoration: underline;
+}
+
+/* Readable spacing for lists inside documentation content. */
+.docRight ul,
+.docRight ol {
+    padding-left: var(--space-6);
+    margin: 0 0 var(--space-4);
+}
+
+.docRight li {
+    margin-bottom: var(--space-1);
 }
