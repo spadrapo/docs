@@ -4,7 +4,7 @@
    ============================================================================= */
 
 .dMenu {
-    font-size: 0.9375rem; /* 15px — fits long function names on one line */
+    font-size: 0.9375rem; /* 15px */
     line-height: 1.35;
 }
 
@@ -15,7 +15,20 @@
     cursor: pointer;
 }
 
+/* One label line: indent + toggle + label, laid out so the label can
+   truncate with an ellipsis when it does not fit. */
+.dMenuRow {
+    display: flex;
+    align-items: center;
+    min-width: 0;
+}
+
 /* Indentation tab (one span per depth level). */
+.dMenuTab {
+    flex: none;
+    display: inline-flex;
+}
+
 .dMenuTab > span {
     display: inline-block;
     width: var(--space-4);
@@ -59,15 +72,19 @@
     border-color: var(--color-accent);
 }
 
-/* Clickable label — the interactive pill. */
+/* Clickable label — the interactive pill. Truncates with an ellipsis when the
+   name is too long; the full name is available via the title tooltip. */
 .dMenuLabel {
-    display: inline-block;
+    flex: 1 1 auto;
+    min-width: 0;
     padding: var(--space-1) var(--space-2);
     margin: 1px 0;
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
     cursor: pointer;
-    vertical-align: middle;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     transition: background-color var(--transition-base), color var(--transition-base);
 }
 
