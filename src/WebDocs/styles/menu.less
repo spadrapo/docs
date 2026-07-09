@@ -4,8 +4,8 @@
    ============================================================================= */
 
 .dMenu {
-    font-size: var(--font-size-md);
-    line-height: 1.3;
+    font-size: 0.9375rem; /* 15px — fits long function names on one line */
+    line-height: 1.35;
 }
 
 .dMenu > div {
@@ -18,7 +18,7 @@
 /* Indentation tab (one span per depth level). */
 .dMenuTab > span {
     display: inline-block;
-    width: var(--space-5);
+    width: var(--space-4);
     height: 1px;
 }
 
@@ -30,9 +30,9 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 1.5em;
-    height: 1.5em;
-    margin-right: var(--space-2);
+    width: 1.4em;
+    height: 1.4em;
+    margin-right: var(--space-1);
     vertical-align: middle;
     flex: none;
 }
@@ -62,7 +62,7 @@
 /* Clickable label — the interactive pill. */
 .dMenuLabel {
     display: inline-block;
-    padding: var(--space-2) var(--space-3);
+    padding: var(--space-1) var(--space-2);
     margin: 1px 0;
     border-radius: var(--radius-sm);
     color: var(--color-text-muted);
