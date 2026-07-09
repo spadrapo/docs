@@ -10,6 +10,9 @@
 }
 
 html {
+    /* Normalize the root to 16px. A base stylesheet (Bootstrap) sets it to
+       10px, which silently shrank every rem-based size by ~37%. */
+    font-size: 100%;
     background-color: var(--color-canvas);
 }
 

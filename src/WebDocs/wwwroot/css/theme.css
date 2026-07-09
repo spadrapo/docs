@@ -43,8 +43,8 @@
   /* 15 */
   --font-size-base: 1.0625rem;
   /* 17 */
-  --font-size-md: 1.125rem;
-  /* 18 */
+  --font-size-md: 1.1875rem;
+  /* 19 */
   --font-size-lg: 1.3125rem;
   /* 21 */
   --font-size-xl: 1.5625rem;
@@ -173,6 +173,9 @@ html.dark-theme {
   box-sizing: border-box;
 }
 html {
+  /* Normalize the root to 16px. A base stylesheet (Bootstrap) sets it to
+       10px, which silently shrank every rem-based size by ~37%. */
+  font-size: 100%;
   background-color: var(--color-canvas);
 }
 body {
@@ -541,8 +544,9 @@ select:focus {
   max-width: 1280px;
   padding: var(--space-8) var(--space-12);
   color: var(--color-text);
-  font-size: var(--font-size-md);
-  line-height: var(--line-height-loose);
+  font-size: 1.25rem;
+  /* 20px — comfortable documentation reading size */
+  line-height: 1.7;
 }
 /* Tables / preformatted inside content never blow out the layout. */
 
