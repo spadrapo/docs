@@ -2,6 +2,8 @@
 <script src="/drapo.js"></script>
 <div>
     <div>
+        <!--Active-item highlight (set on click of a leaf item)-->
+        <div d-dataKey="selectedMenu" d-dataType="value" d-dataValue="_none_"></div>
         <!--Layout-->
         <div class="dMenu">
             <div d-for="item in menuItems">
@@ -10,7 +12,7 @@
                         <span d-for="level in (1..{{item._Level}})"></span>
                     </div>
                     <span d-class="{dMenuGroupNone:!{{item.IsExpandable}},dMenuGroupExpanded:{{item.IsExpandable}}&&{{item.IsExpanded}},dMenuGroupCollapsed:{{item.IsExpandable}}&&!{{item.IsExpanded}}}" d-on-click="{{item.Action}}" d-propagation-click="false"></span>
-                    <span class="dMenuLabel" d-attr-title="{{item.Name}}" d-model="{{item.Name}}" d-on-click="{{item.Action}}" d-propagation-click="false"></span>
+                    <span class="dMenuLabel" d-class="{dMenuActive:'{{item.Name}}' = '{{selectedMenu}}'}" d-attr-title="{{item.Name}}" d-model="{{item.Name}}" d-on-click="IF(!{{item.IsExpandable}},UpdateData(selectedMenu,{{item.Name}});{{item.Action}};Notify(menuItems),{{item.Action}})" d-propagation-click="false"></span>
                 </div>
                 <div d-for="item in item.Items" d-if="{{item.IsExpanded}}"></div>
             </div>

@@ -674,6 +674,14 @@ select:focus {
   background-color: var(--color-accent-soft);
   color: var(--color-text);
 }
+/* Currently-open page. */
+
+.dMenuActive,
+.dMenuActive:hover {
+  background-color: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-weight: var(--font-weight-medium);
+}
 /* Expandable sections (rows with a caret) read as headings: darker + heavier
    than leaf items, so what can open is obvious at a glance. */
 
