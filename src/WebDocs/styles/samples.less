@@ -1,8 +1,20 @@
-﻿.dSampleGreen {
-    background-color: green;
+/* =============================================================================
+   Samples — demonstration color swatches used inside doc examples.
+   These are intentional literal demo colors (they teach color usage) but are
+   given accessible on-color text and consistent shape via tokens.
+   ============================================================================= */
+
+.dSampleGreen,
+.dSampleRed {
+    color: var(--color-text-inverse);
+    border-radius: var(--radius-sm);
+    padding: var(--space-1) var(--space-2);
+}
+
+.dSampleGreen {
+    background-color: var(--color-success);
 }
 
 .dSampleRed {
-    background-color: red;
+    background-color: var(--color-error);
 }
-

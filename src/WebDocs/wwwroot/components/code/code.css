@@ -1,2 +1,16 @@
-﻿.code {
+.code {
+    margin: var(--space-5) 0;
+}
+
+.code > pre {
+    background-color: var(--color-code-bg);
+    color: var(--color-code-text);
+    border: 1px solid var(--color-code-border);
+    border-radius: var(--radius-md);
+    font-family: var(--font-family-mono);
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-normal);
+    padding: var(--space-4);
+    margin: 0;
+    overflow-x: auto;
 }

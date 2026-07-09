@@ -1,4 +1,11 @@
-﻿.dMenu {
+/* =============================================================================
+   Menu — sidebar navigation tree. Token-driven.
+   Works with the existing sector markup (floated indent tab + arrow + label).
+   ============================================================================= */
+
+.dMenu {
+    font-size: var(--font-size-base);
+    line-height: 1.2;
 }
 
 .dMenu > div {
@@ -8,21 +15,42 @@
     cursor: pointer;
 }
 
-.dMenuTab > span
-{
-    padding-left: 30px;
-    padding-top: 8px;
-    padding-bottom: 8px;
+/* Indentation tab (one span per depth level). */
+.dMenuTab > span {
+    display: inline-block;
+    width: var(--space-5);
+    height: 1px;
 }
 
-.dMenuGroupExpanded::before {
-    content: "▼";
+/* Expand / collapse / leaf markers. */
+.dMenuGroupExpanded::before { content: "\25BE"; }  /* ▾ */
+.dMenuGroupCollapsed::before { content: "\25B8"; } /* ▸ */
+.dMenuGroupNone::before { content: "\2022"; }      /* • */
+
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed,
+.dMenuGroupNone {
+    display: inline-block;
+    width: 1.1em;
+    text-align: center;
+    color: var(--color-text-muted);
+    font-size: 0.72em;
+    vertical-align: middle;
 }
 
-.dMenuGroupCollapsed::before {
-    content: "▶";
+/* Clickable label — the interactive pill. */
+.dMenuLabel {
+    display: inline-block;
+    padding: var(--space-2) var(--space-3);
+    margin: 1px 0;
+    border-radius: var(--radius-sm);
+    color: var(--color-text-muted);
+    cursor: pointer;
+    vertical-align: middle;
+    transition: background-color var(--transition-base), color var(--transition-base);
 }
 
-.dMenuGroupNone::before {
-    content: "•";
+.dMenuLabel:hover {
+    background-color: var(--color-accent-soft);
+    color: var(--color-text);
 }

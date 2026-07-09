@@ -1,4 +1,9 @@
-﻿@import "layout.less";
+// Design system foundation — order matters: tokens first, then base + patterns.
+@import "tokens.less";
+@import "base.less";
+@import "components.less";
+// Feature stylesheets (consume tokens/patterns above).
+@import "layout.less";
 @import "menu.less";
 @import "header.less";
 @import "samples.less";

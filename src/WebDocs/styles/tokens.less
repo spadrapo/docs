@@ -1,0 +1,180 @@
+/* =============================================================================
+   Design Tokens — single source of truth for the Drapo Docs design system.
+   Authored as CSS custom properties so themes switch at runtime (no recompile).
+   Tier 1: primitives (raw palette + scales).  Tier 2: semantic tokens.
+   Light values live in :root; dark overrides live in html.dark-theme.
+   Feature stylesheets MUST reference SEMANTIC tokens only (never primitives,
+   never literals). See specs/002-docs-design-system/contracts/design-system.md
+   ============================================================================= */
+
+:root {
+    /* ---- Tier 1: primitive palette ------------------------------------- */
+    --white: #ffffff;
+    --black: #0b0d10;
+
+    --gray-25:  #fbfcfd;
+    --gray-50:  #f7f8fa;
+    --gray-100: #eef1f5;
+    --gray-200: #e4e7ec;
+    --gray-300: #d0d5dd;
+    --gray-400: #98a2b3;
+    --gray-500: #667085;
+    --gray-600: #4b5563;
+    --gray-700: #344054;
+    --gray-800: #1c2530;
+    --gray-900: #101828;
+
+    --indigo-50:  #eef2ff;
+    --indigo-100: #e0e7ff;
+    --indigo-300: #a5b4fc;
+    --indigo-400: #818cf8;
+    --indigo-500: #6366f1;
+    --indigo-600: #4f46e5;
+    --indigo-700: #4338ca;
+
+    --green-500: #12a150;
+    --green-600: #0f8a45;
+    --red-500:   #e5484d;
+    --red-600:   #cc3b40;
+    --amber-500: #f59e0b;
+
+    /* ---- Tier 1: type / space / radius / shadow / motion scales --------- */
+    --font-family-ui: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    --font-family-mono: ui-monospace, "SF Mono", SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+
+    --font-size-xs: 0.75rem;    /* 12 */
+    --font-size-sm: 0.8125rem;  /* 13 */
+    --font-size-base: 0.9375rem;/* 15 */
+    --font-size-md: 1rem;       /* 16 */
+    --font-size-lg: 1.125rem;   /* 18 */
+    --font-size-xl: 1.375rem;   /* 22 */
+    --font-size-2xl: 1.75rem;   /* 28 */
+    --font-size-3xl: 2.125rem;  /* 34 */
+
+    --line-height-tight: 1.25;
+    --line-height-normal: 1.55;
+    --line-height-loose: 1.75;
+
+    --font-weight-normal: 400;
+    --font-weight-medium: 550;
+    --font-weight-bold: 700;
+
+    --space-1: 4px;
+    --space-2: 8px;
+    --space-3: 12px;
+    --space-4: 16px;
+    --space-5: 20px;
+    --space-6: 24px;
+    --space-8: 32px;
+    --space-10: 40px;
+    --space-12: 48px;
+
+    --radius-sm: 6px;
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --radius-pill: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(16, 24, 40, 0.06), 0 1px 3px rgba(16, 24, 40, 0.08);
+    --shadow-md: 0 4px 8px rgba(16, 24, 40, 0.08), 0 2px 4px rgba(16, 24, 40, 0.06);
+    --shadow-lg: 0 12px 28px rgba(16, 24, 40, 0.14), 0 4px 8px rgba(16, 24, 40, 0.08);
+
+    --transition-base: 0.2s ease;
+    --transition-theme: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+
+    /* ---- Tier 2: semantic tokens (LIGHT) ------------------------------- */
+    --color-bg: var(--white);
+    --color-canvas: var(--gray-25);
+    --color-surface: var(--gray-50);
+    --color-surface-raised: var(--white);
+    --color-border: var(--gray-200);
+    --color-border-strong: var(--gray-300);
+
+    --color-text: var(--gray-900);
+    --color-text-muted: var(--gray-500);
+    --color-text-inverse: var(--white);
+
+    --color-accent: var(--indigo-600);
+    --color-accent-hover: var(--indigo-700);
+    --color-accent-soft: var(--indigo-50);
+    --color-on-accent: var(--white);
+    --color-focus-ring: rgba(79, 70, 229, 0.35);
+
+    --color-code-bg: var(--gray-100);
+    --color-code-text: var(--gray-900);
+    --color-code-border: var(--gray-200);
+
+    --color-success: var(--green-600);
+    --color-success-bg: #e7f6ec;
+    --color-warning: var(--amber-500);
+    --color-warning-bg: #fdf3e2;
+    --color-error: var(--red-600);
+    --color-error-bg: #fdecec;
+    --color-info: var(--indigo-600);
+    --color-info-bg: var(--indigo-50);
+
+    /* Elevated surfaces cast shadows in light mode; suppressed in dark. */
+    --elevation-sm: var(--shadow-sm);
+    --elevation-md: var(--shadow-md);
+    --elevation-lg: var(--shadow-lg);
+
+    /* ---- Legacy aliases (kept so pre-existing selectors keep resolving) - */
+    --body-bg: var(--color-bg);
+    --body-color: var(--color-text);
+    --header-bg: var(--color-surface);
+    --header-border: var(--color-border);
+    --header-title-color: var(--color-text);
+    --input-bg: var(--color-surface-raised);
+    --input-color: var(--color-text);
+    --input-border: var(--color-border-strong);
+    --search-bg: var(--color-surface-raised);
+    --search-border: var(--color-border);
+    --search-item-hover: var(--color-accent-soft);
+    --search-item-border: var(--color-border);
+    --search-item-name: var(--color-text);
+    --search-item-type: var(--color-text-muted);
+    --table-header-bg: var(--color-surface);
+    --table-cell-bg: var(--color-surface-raised);
+    --table-cell-even: var(--color-surface);
+    --table-cell-odd: var(--color-surface-raised);
+    --table-text: var(--color-text);
+    --toggle-btn-color: var(--color-text);
+    --toggle-btn-border: var(--color-border-strong);
+}
+
+html.dark-theme {
+    /* ---- Tier 2: semantic tokens (DARK) — names identical, values differ */
+    --color-bg: #0d1117;
+    --color-canvas: #0a0e14;
+    --color-surface: #161b22;
+    --color-surface-raised: #1c2230;
+    --color-border: #262d38;
+    --color-border-strong: #30373f;
+
+    --color-text: #e6edf3;
+    --color-text-muted: #9aa4b2;
+    --color-text-inverse: #0d1117;
+
+    --color-accent: var(--indigo-400);
+    --color-accent-hover: var(--indigo-300);
+    --color-accent-soft: rgba(129, 140, 248, 0.14);
+    --color-on-accent: #0d1117;
+    --color-focus-ring: rgba(129, 140, 248, 0.45);
+
+    --color-code-bg: #11161f;
+    --color-code-text: #e6edf3;
+    --color-code-border: #262d38;
+
+    --color-success: #3fb950;
+    --color-success-bg: rgba(63, 185, 80, 0.14);
+    --color-warning: #d29922;
+    --color-warning-bg: rgba(210, 153, 34, 0.14);
+    --color-error: #f85149;
+    --color-error-bg: rgba(248, 81, 73, 0.14);
+    --color-info: var(--indigo-400);
+    --color-info-bg: rgba(129, 140, 248, 0.14);
+
+    /* Shadows read poorly on dark surfaces — flatten elevation. */
+    --elevation-sm: none;
+    --elevation-md: 0 4px 12px rgba(0, 0, 0, 0.4);
+    --elevation-lg: 0 16px 32px rgba(0, 0, 0, 0.5);
+}
