@@ -22,20 +22,26 @@
     height: 1px;
 }
 
-/* Expand / collapse / leaf markers. */
-.dMenuGroupExpanded::before { content: "\25BE"; }  /* ▾ */
-.dMenuGroupCollapsed::before { content: "\25B8"; } /* ▸ */
-.dMenuGroupNone::before { content: "\2022"; }      /* • */
+/* Expand / collapse / leaf markers. Expandable rows get a bold accent caret;
+   leaf rows get no glyph (just an aligned gutter). */
+.dMenuGroupExpanded::before { content: "\25BE"; }  /* ▾ open */
+.dMenuGroupCollapsed::before { content: "\25B8"; } /* ▸ closed */
+.dMenuGroupNone::before { content: ""; }
 
 .dMenuGroupExpanded,
 .dMenuGroupCollapsed,
 .dMenuGroupNone {
     display: inline-block;
-    width: 1.1em;
+    width: 1.3em;
     text-align: center;
-    color: var(--color-text-muted);
-    font-size: 0.72em;
     vertical-align: middle;
+}
+
+.dMenuGroupExpanded,
+.dMenuGroupCollapsed {
+    color: var(--color-accent);
+    font-size: 0.9em;
+    cursor: pointer;
 }
 
 /* Clickable label — the interactive pill. */
@@ -53,4 +59,17 @@
 .dMenuLabel:hover {
     background-color: var(--color-accent-soft);
     color: var(--color-text);
+}
+
+/* Expandable sections (rows with a caret) read as headings: darker + heavier
+   than leaf items, so what can open is obvious at a glance. */
+.dMenuGroupExpanded + .dMenuLabel,
+.dMenuGroupCollapsed + .dMenuLabel {
+    color: var(--color-text);
+    font-weight: var(--font-weight-medium);
+}
+
+.dMenuGroupCollapsed + .dMenuLabel:hover,
+.dMenuGroupExpanded + .dMenuLabel:hover {
+    color: var(--color-accent);
 }
