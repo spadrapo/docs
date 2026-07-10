@@ -20,6 +20,17 @@ namespace WebDocs.Services
         // Attributes appear only as string literals (no central dispatch).
         private static readonly Regex AttributeRegex = new Regex(@"['""](d-[a-z][a-z-]*)['""]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
+        // Prefix families the literal-scraper below cannot discover: the engine reads these via
+        // fully-generic attribute.nodeName inspection (parsing the DOM attribute name at runtime,
+        // e.g. DrapoValidator.ExtractValidations -> ExtractValidationProperty, and
+        // DrapoStorage.RetrieveDataProperty), never via a literal 'd-prefix-' string concatenation
+        // the way d-attr-/d-on- are (those work today because 'd-attr-'/'d-on-' DO appear as
+        // isolated quoted literals in DrapoAttributeHandler.ts/DrapoEventHandler.ts). Confirmed by
+        // reading the TS source directly - these two produced false "unknown-attribute" errors on
+        // genuinely valid, shipped markup (d-validation-id/-type/-value/-expression/-group,
+        // d-dataproperty-<name>-name/-value) until this list was added.
+        private static readonly string[] KnownDynamicPrefixes = { "d-validation-", "d-dataproperty-" };
+
         private static readonly object Lock = new object();
         private static HashSet<string> _functions;
         private static HashSet<string> _attributes;
@@ -69,7 +80,9 @@ namespace WebDocs.Services
                 string js = ReadEngineJs(engine);
                 _functions = new HashSet<string>(FunctionRegex.Matches(js).Select(m => m.Groups[1].Value.ToLowerInvariant()));
                 _attributes = new HashSet<string>(AttributeRegex.Matches(js).Select(m => m.Groups[1].Value.ToLowerInvariant()));
-                _attributePrefixes = _attributes.Where(a => a.EndsWith("-", StringComparison.Ordinal)).ToList();
+                _attributePrefixes = _attributes.Where(a => a.EndsWith("-", StringComparison.Ordinal))
+                    .Union(KnownDynamicPrefixes)
+                    .ToList();
                 _version = ResolveVersion(engine);
             }
         }
