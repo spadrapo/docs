@@ -1,0 +1,12 @@
+<div d-datakey="object" d-datatype="object" d-dataproperty-value="2.567" d-dataproperty-digits="2"></div>
+<div>
+    <span>Value: </span><input type="text" d-model="{{object.value}}" /><br />
+    <span>Digits: </span><input type="text" d-model="{{object.digits}}" /><br />
+    <br />
+    <span>Round (nearest): </span><span d-model="Round({{object.value}},{{object.digits}})"></span><br />
+    <span>Round floor: </span><span d-model="Round({{object.value}},{{object.digits}},floor)"></span><br />
+    <span>Round ceiling: </span><span d-model="Round({{object.value}},{{object.digits}},ceiling)"></span><br />
+    <br />
+    <span>Round to whole (nearest): </span><span d-model="Round({{object.value}})"></span><br />
+    <span>Round with Cast: </span><span d-model="Round(Cast({{object.value}} * 2,number),0,ceiling)"></span><br />
+</div>
