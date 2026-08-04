@@ -1,1 +1,2 @@
 <p>The Cast can be used to resolve a expression into a specific type. By now we only support to cast to a number.</p>
+<p>When casting to <code>number</code>, empty or non-numeric operands in an arithmetic expression are treated as <code>0</code>. This means you can sum several fields where some may be blank &mdash; for example <code>Cast({{jan}}+{{feb}}+{{mar}}+{{apr}},number)</code> &mdash; and the unfilled fields simply count as zero instead of turning the whole result into <code>NaN</code>. No per-field default handling is required.</p>
