@@ -1,0 +1,10 @@
+<div d-datakey="months" d-datatype="object" d-dataproperty-jan="100" d-dataproperty-feb="" d-dataproperty-mar="50" d-dataproperty-apr=""></div>
+<div>
+    <span>Jan: </span><input type="number" d-model="{{months.jan}}" /><br />
+    <span>Feb: </span><input type="number" d-model="{{months.feb}}" /><br />
+    <span>Mar: </span><input type="number" d-model="{{months.mar}}" /><br />
+    <span>Apr: </span><input type="number" d-model="{{months.apr}}" /><br />
+    <br />
+    <span>Total (blank months count as 0): </span>
+    <span d-model="Cast({{months.jan}}+{{months.feb}}+{{months.mar}}+{{months.apr}},number)"></span>
+</div>
