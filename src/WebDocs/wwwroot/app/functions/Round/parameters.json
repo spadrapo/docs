@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "value",
+    "Description": "The numeric expression to round. Mustache and arithmetic expressions are resolved before rounding.",
+    "Types": [ "expression" ],
+    "Optional": false
+  },
+  {
+    "Name": "digits",
+    "Description": "The number of decimal places to round to. Defaults to 0.",
+    "Types": [ "number" ],
+    "Optional": true
+  },
+  {
+    "Name": "mode",
+    "Description": "The rounding direction: round (nearest, ties away from zero), floor (toward negative infinity) or ceiling (toward positive infinity). Defaults to round.",
+    "Types": [ "type" ],
+    "Optional": true
+  }
+]

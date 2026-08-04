@@ -1,0 +1,14 @@
+<p>The Round function rounds a numeric expression to a given number of decimal places, using the rounding direction you choose. It mirrors the rounding functions found in mainstream programming languages and adds explicit <strong>floor</strong> and <strong>ceiling</strong> directions.</p>
+<p>The signature is <code>Round(value, digits, mode)</code>:</p>
+<ul>
+    <li><strong>value</strong> (required) &mdash; the numeric expression to round. Mustache and arithmetic expressions are resolved before rounding, so Round composes with <code>Cast</code> and any other expression.</li>
+    <li><strong>digits</strong> (optional, default <code>0</code>) &mdash; the number of decimal places to round to.</li>
+    <li><strong>mode</strong> (optional, default <code>round</code>) &mdash; the rounding direction:
+        <ul>
+            <li><code>round</code> &mdash; nearest value; exact halves are rounded <em>away from zero</em> (<code>2.5</code> &rarr; <code>3</code>, <code>-2.5</code> &rarr; <code>-3</code>).</li>
+            <li><code>floor</code> &mdash; toward negative infinity (<code>2.9</code> &rarr; <code>2</code>, <code>-2.1</code> &rarr; <code>-3</code>).</li>
+            <li><code>ceiling</code> &mdash; toward positive infinity (<code>2.1</code> &rarr; <code>3</code>, <code>-2.9</code> &rarr; <code>-2</code>).</li>
+        </ul>
+    </li>
+</ul>
+<p>An unrecognized <code>mode</code> falls back to the default <code>round</code> behavior. Because Round returns a number, it can be displayed with <code>d-model</code>, stored with <code>UpdateItemField</code>, or nested inside other functions.</p>
