@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>TicTacToe</h2>
+        <p>A two-player (pass-and-play) TicTacToe built entirely with Drapo attributes and functions — no JavaScript. The <code>board</code> data key holds the nine squares (<code>0</code> empty, <code>1</code> = X, <code>2</code> = O); the <code>game</code> data key tracks whose turn it is, the move count and the winner. Each square is a clickable button only while it is empty and the game is unfinished (<code>d-if</code>). After a move the handler checks all eight winning lines with <code>IF</code>, updates the running <b>score</b>, detects a draw when the board fills, and switches turns. <b>New Game</b> clears the board while keeping the score; <b>Reset Score</b> clears the tallies.</p>
+        <br />
+        <d-sample>
+            <div d-dataKey="game" d-dataType="object" d-dataValue='{"Turn":1,"Winner":0,"Moves":0}'></div>
+            <div d-dataKey="board" d-dataType="array" d-dataValue='[{"V":0},{"V":0},{"V":0},{"V":0},{"V":0},{"V":0},{"V":0},{"V":0},{"V":0}]'></div>
+            <div d-dataKey="score" d-dataType="object" d-dataValue='{"X":0,"O":0,"Draws":0}'></div>
+
+            <div class="tictactoe" style="max-width:360px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;text-align:center">
+                <div class="score" style="display:flex;justify-content:center;gap:24px;margin-bottom:16px;font-size:15px;color:#666">
+                    <span>X: <span style="color:#3498db;font-weight:bold" d-model="{{score.X}}"></span></span>
+                    <span>O: <span style="color:#e74c3c;font-weight:bold" d-model="{{score.O}}"></span></span>
+                    <span>Draws: <span d-model="{{score.Draws}}"></span></span>
+                </div>
+
+                <div class="status" style="font-size:16px;color:#666;margin-bottom:20px" d-if="{{game.Winner}}=0">
+                    Turn:
+                    <span style="color:#3498db;font-weight:bold" d-if="{{game.Turn}}=1">X</span>
+                    <span style="color:#e74c3c;font-weight:bold" d-if="{{game.Turn}}=2">O</span>
+                </div>
+                <div style="font-size:22px;font-weight:bold;margin:20px 0;color:#27ae60" d-if="{{game.Winner}}=1">X wins!</div>
+                <div style="font-size:22px;font-weight:bold;margin:20px 0;color:#27ae60" d-if="{{game.Winner}}=2">O wins!</div>
+                <div style="font-size:22px;font-weight:bold;margin:20px 0;color:#f39c12" d-if="{{game.Winner}}=3">It's a draw!</div>
+
+                <div class="board" style="display:grid;grid-template-columns:repeat(3,90px);grid-template-rows:repeat(3,90px);gap:8px;justify-content:center;margin:20px auto">
+                    <div d-for="cell in board" class="cell" style="position:relative;width:90px;height:90px;border:1px solid #ccc;border-radius:4px;background:#fff;font-size:44px;font-weight:bold;line-height:90px">
+                        <button d-if="({{cell.V}}=0)&amp;&amp;({{game.Winner}}=0)" class="play" style="position:absolute;top:0;left:0;width:100%;height:100%;border:none;background:transparent;border-radius:4px;cursor:pointer" d-on-click="UpdateItemField({{cell.V}},{{game.Turn}});UpdateDataField(game,Moves,Cast({{game.Moves}}+1,number));IF(({{board.[0].V}}={{game.Turn}})&amp;&amp;({{board.[1].V}}={{game.Turn}})&amp;&amp;({{board.[2].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[3].V}}={{game.Turn}})&amp;&amp;({{board.[4].V}}={{game.Turn}})&amp;&amp;({{board.[5].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[6].V}}={{game.Turn}})&amp;&amp;({{board.[7].V}}={{game.Turn}})&amp;&amp;({{board.[8].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[0].V}}={{game.Turn}})&amp;&amp;({{board.[3].V}}={{game.Turn}})&amp;&amp;({{board.[6].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[1].V}}={{game.Turn}})&amp;&amp;({{board.[4].V}}={{game.Turn}})&amp;&amp;({{board.[7].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[2].V}}={{game.Turn}})&amp;&amp;({{board.[5].V}}={{game.Turn}})&amp;&amp;({{board.[8].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[0].V}}={{game.Turn}})&amp;&amp;({{board.[4].V}}={{game.Turn}})&amp;&amp;({{board.[8].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF(({{board.[2].V}}={{game.Turn}})&amp;&amp;({{board.[4].V}}={{game.Turn}})&amp;&amp;({{board.[6].V}}={{game.Turn}}),UpdateDataField(game,Winner,{{game.Turn}}));IF({{game.Winner}}=1,UpdateDataField(score,X,Cast({{score.X}}+1,number)));IF({{game.Winner}}=2,UpdateDataField(score,O,Cast({{score.O}}+1,number)));IF(({{game.Moves}}=9)&amp;&amp;({{game.Winner}}=0),UpdateDataField(game,Winner,3));IF({{game.Winner}}=3,UpdateDataField(score,Draws,Cast({{score.Draws}}+1,number)));IF({{game.Winner}}=0,UpdateDataField(game,Turn,Cast(3-{{game.Turn}},number)))"></button>
+                        <span style="color:#3498db" d-if="{{cell.V}}=1">X</span>
+                        <span style="color:#e74c3c" d-if="{{cell.V}}=2">O</span>
+                    </div>
+                </div>
+
+                <button class="btn" style="margin:20px 6px 0;background:#3498db;color:#fff;border:none;border-radius:4px;padding:10px 24px;font-size:15px;cursor:pointer" d-on-click="UpdateDataFieldLookup(board,V,1,V,0);UpdateDataFieldLookup(board,V,2,V,0);UpdateDataField(game,Winner,0);UpdateDataField(game,Moves,0);UpdateDataField(game,Turn,1)">New Game</button>
+                <button class="btn" style="margin:20px 6px 0;background:#3498db;color:#fff;border:none;border-radius:4px;padding:10px 24px;font-size:15px;cursor:pointer" d-on-click="UpdateDataField(score,X,0);UpdateDataField(score,O,0);UpdateDataField(score,Draws,0)">Reset Score</button>
+            </div>
+        </d-sample>
+        <br />
+        <br />
+        <br />
+        <br />
+    </div>
+</div>
