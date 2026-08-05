@@ -62,6 +62,25 @@
     cursor: default;
 }
 
+.hangman .score {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    color: #666;
+}
+
+.hangman .score .win {
+    color: #27ae60;
+    font-weight: bold;
+}
+
+.hangman .score .lose {
+    color: #e74c3c;
+    font-weight: bold;
+}
+
 .hangman .banner {
     font-size: 22px;
     font-weight: bold;
@@ -94,13 +113,19 @@
 <div>
     <div>
         <h2>Hangman</h2>
-        <p>A very basic hangman game built entirely with Drapo attributes and functions — no JavaScript. The word is fetched from the backend (<code>~/api/Hangman/GetWord</code>) into the <code>game</code> data key; guess it one letter at a time — you lose after 6 wrong guesses. <b>New Game</b> calls <code>ReloadData(game)</code> to pull a fresh word from the server.</p>
+        <p>A very basic hangman game built entirely with Drapo attributes and functions — no JavaScript. The word is fetched from the backend (<code>~/api/Hangman/GetWord</code>) into the <code>game</code> data key; guess it one letter at a time — you lose after 6 wrong guesses. <b>New Game</b> calls <code>ReloadData(game)</code> to pull a fresh word from the server. A running <b>score</b> (kept in the <code>score</code> data key) tallies how many rounds you win and lose — it survives across games and is cleared by <b>Reset Score</b>.</p>
         <br />
         <d-sample>
             <div d-dataKey="game" d-dataUrlGet="~/api/Hangman/GetWord"></div>
+            <div d-dataKey="score" d-dataType="object" d-dataProperty-Wins="0" d-dataProperty-Losses="0"></div>
             <div d-dataKey="keys" d-dataType="array" d-dataValue='[{"K":"A","Used":false},{"K":"B","Used":false},{"K":"C","Used":false},{"K":"D","Used":false},{"K":"E","Used":false},{"K":"F","Used":false},{"K":"G","Used":false},{"K":"H","Used":false},{"K":"I","Used":false},{"K":"J","Used":false},{"K":"K","Used":false},{"K":"L","Used":false},{"K":"M","Used":false},{"K":"N","Used":false},{"K":"O","Used":false},{"K":"P","Used":false},{"K":"Q","Used":false},{"K":"R","Used":false},{"K":"S","Used":false},{"K":"T","Used":false},{"K":"U","Used":false},{"K":"V","Used":false},{"K":"W","Used":false},{"K":"X","Used":false},{"K":"Y","Used":false},{"K":"Z","Used":false}]'></div>
 
             <div class="hangman">
+                <div class="score">
+                    <span>Wins: <span class="win">{{score.Wins}}</span></span>
+                    <span>Losses: <span class="lose">{{score.Losses}}</span></span>
+                </div>
+
                 <div class="status">Wrong guesses: {{game.Wrong}} / 6</div>
 
                 <div class="word">
@@ -114,10 +139,11 @@
                 <div d-if="{{game.Wrong}}&gt;=6" class="banner lose">You lost! The word was {{game.Word}}.</div>
 
                 <div class="keyboard" d-if="({{game.Left}}&gt;0)&amp;&amp;({{game.Wrong}}&lt;6)">
-                    <button d-for="key in keys" class="key" d-class="{key,used:{{key.Used}}}" d-attr-disabled="{{key.Used}}" d-on-click="UpdateItemField({{key.Used}},true);UpdateDataFieldLookup(game.Letters,Char,{{key.K}},Shown,true);IF(ContainsDataItem({{game.Answer}},{{key.K}}),UpdateDataField(game,Left,Cast({{game.Left}}-1,number)),UpdateDataField(game,Wrong,Cast({{game.Wrong}}+1,number)))">{{key.K}}</button>
+                    <button d-for="key in keys" class="key" d-class="{key,used:{{key.Used}}}" d-attr-disabled="{{key.Used}}" d-on-click="UpdateItemField({{key.Used}},true);UpdateDataFieldLookup(game.Letters,Char,{{key.K}},Shown,true);IF(ContainsDataItem({{game.Answer}},{{key.K}}),UpdateDataField(game,Left,Cast({{game.Left}}-1,number)),UpdateDataField(game,Wrong,Cast({{game.Wrong}}+1,number)));IF({{game.Left}}=0,UpdateDataField(score,Wins,Cast({{score.Wins}}+1,number)));IF({{game.Wrong}}&gt;=6,UpdateDataField(score,Losses,Cast({{score.Losses}}+1,number)))">{{key.K}}</button>
                 </div>
 
                 <button class="btn" d-on-click="ReloadData(game);UpdateDataFieldLookup(keys,Used,true,Used,false)">New Game</button>
+                <button class="btn" d-on-click="UpdateDataField(score,Wins,0);UpdateDataField(score,Losses,0)">Reset Score</button>
             </div>
         </d-sample>
         <br />
