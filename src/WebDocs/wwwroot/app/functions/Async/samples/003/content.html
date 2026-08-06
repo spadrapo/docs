@@ -1,0 +1,12 @@
+<div d-dataKey="total" d-dataType="value" d-dataValue="1000"></div>
+<div d-dataKey="months" d-dataType="array" d-dataValue="[{&quot;Month&quot;:&quot;Jan&quot;,&quot;Perc&quot;:&quot;&quot;,&quot;Value&quot;:&quot;0&quot;},{&quot;Month&quot;:&quot;Feb&quot;,&quot;Perc&quot;:&quot;&quot;,&quot;Value&quot;:&quot;0&quot;},{&quot;Month&quot;:&quot;Mar&quot;,&quot;Perc&quot;:&quot;&quot;,&quot;Value&quot;:&quot;0&quot;}]"></div>
+
+<div>
+    <p>Type a percentage and press Tab. The financial value updates and focus stays on the next field.</p>
+    <div d-for="month in months">
+        <span>{{month.Month}}: </span>
+        <input type="text" d-model="{{month.Perc}}" d-model-event="blur" d-modelNotify="false"
+               d-on-model-change="UpdateItemField({{month.Value}},Cast({{total}}*{{month.Perc}},number),false);Async(Notify(months),0)">
+        <span>{{month.Value}}</span>
+    </div>
+</div>

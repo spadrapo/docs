@@ -54,6 +54,15 @@
     &lt;!-- dashboard content --&gt;
 &lt;/div&gt;</code></pre>
 
+    <h3>Focus During Blur and Re-render Timing</h3>
+    <p>When focus moves between fields — for example when the user presses <strong>Tab</strong> — the browser fires the blur on the field being left <em>before</em> it settles focus on the next field. During the blur handler the browser has not yet moved focus to the target, so <code>document.activeElement</code> is typically the page body, not the next field.</p>
+    <p>This matters when a blur triggers a re-render — for example a model change that updates a data key and notifies it. If that re-render rebuilds the field the user is tabbing into, it recreates the element while focus is still in transit and focus is lost. To avoid this, update the data synchronously but defer only the re-render to the next task with <a href="#" d-on-click="ApplyRoute(/function/Async)"><code>Async</code></a>. By the time the deferred <a href="#" d-on-click="ApplyRoute(/function/Notify)"><code>Notify</code></a> rebuilds the rows the browser has settled focus on the target field, which Notify then preserves.</p>
+    <pre><code>&lt;input type="text"
+       d-model="{{cell.Perc}}"
+       d-model-event="blur"
+       d-modelNotify="false"
+       d-on-model-change="UpdateItemField({{cell.Value}},Cast({{total}}*{{cell.Perc}},number),false);Async(Notify(cells),0)" /&gt;</code></pre>
+
     <h3>Conditional Event Actions</h3>
     <p>You can use <a href="#" d-on-click="ApplyRoute(/doc/dif)"><code>d-if</code></a> together with event attributes to conditionally render elements that trigger events, or use the <a href="#" d-on-click="ApplyRoute(/function/ToggleItemField)"><code>ToggleItemField</code></a> / <a href="#" d-on-click="ApplyRoute(/function/CheckDataField)"><code>CheckDataField</code></a> / <a href="#" d-on-click="ApplyRoute(/function/UncheckDataField)"><code>UncheckDataField</code></a> functions inside event handlers to implement toggle behaviour.</p>
     <pre><code>&lt;button d-on-click="ToggleItemField({{item}},selected)"&gt;

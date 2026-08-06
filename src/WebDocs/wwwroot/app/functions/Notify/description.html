@@ -1,1 +1,2 @@
 <p>The Notify is used to notify the observer that a datakey needs an update.</p>
+<p>When the re-render rebuilds an element that currently holds the focus, Notify snapshots the focused element (by its <code>d-id</code>, including the caret position) before the update and restores it afterwards, so focus is not lost. If the re-render is triggered while focus is moving (for example on the blur that fires when tabbing to the next field), defer the notify with <code>Async(Notify(...),0)</code> so it runs after the browser has settled focus on the target field.</p>
