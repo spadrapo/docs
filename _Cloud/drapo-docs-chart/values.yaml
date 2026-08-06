@@ -1,0 +1,23 @@
+replicaCount: 1
+requestsCPU: "0.1"
+requestsMemory: "100Mi"
+limitsCPU: "1"
+limitsMemory: "500Mi"
+image: ghcr.io/spadrapo/docs:latest
+deployment:
+  name: drapo-docs
+  port: 8080
+service:
+  name: drapo-docs
+ingress:
+  url: "drapo.tech6cloud.com"
+
+# Sensitive material — DO NOT put real values here (this repo is public).
+# These are injected at deploy time by the GitHub Actions `deploy` job via
+# `helm --set-file`, sourced from encrypted GitHub Actions secrets. They must be
+# base64-encoded exactly as they appear in a Kubernetes Secret `data:` field.
+tls:
+  crt: ""   # DRAPO_DOCS_TLS_CRT_B64  -> tech6cloud-cert / tls.crt
+  key: ""   # DRAPO_DOCS_TLS_KEY_B64  -> tech6cloud-cert / tls.key
+acr:
+  dockerconfigjson: ""   # DRAPO_DOCS_ACR_DOCKERCONFIGJSON_B64 -> aks-acr-contributor / .dockerconfigjson
