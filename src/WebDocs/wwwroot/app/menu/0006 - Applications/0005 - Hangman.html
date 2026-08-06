@@ -1,150 +1,44 @@
 <!DOCTYPE html>
 <script src="/drapo.js"></script>
-<style>
-.hangman {
-    max-width: 640px;
-    margin: 0 auto;
-    padding: 20px;
-    font-family: Arial, sans-serif;
-    text-align: center;
-}
-
-.hangman .word {
-    display: flex;
-    justify-content: center;
-    gap: 12px;
-    margin: 30px 0;
-}
-
-.hangman .tile {
-    width: 34px;
-    font-size: 32px;
-    font-weight: bold;
-    border-bottom: 3px solid #333;
-    color: #333;
-    line-height: 40px;
-}
-
-.hangman .status {
-    font-size: 16px;
-    color: #666;
-    margin-bottom: 20px;
-}
-
-.hangman .keyboard {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 8px;
-    max-width: 480px;
-    margin: 0 auto;
-}
-
-.hangman .key {
-    width: 40px;
-    height: 40px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    background: #fff;
-    font-size: 16px;
-    font-weight: bold;
-    cursor: pointer;
-    color: #333;
-}
-
-.hangman .key:hover {
-    background: #f0f0f0;
-}
-
-.hangman .key.used {
-    background: #e0e0e0;
-    color: #aaa;
-    cursor: default;
-    pointer-events: none;
-}
-
-.hangman .score {
-    display: flex;
-    justify-content: center;
-    gap: 24px;
-    margin-bottom: 16px;
-    font-size: 15px;
-    color: #666;
-}
-
-.hangman .score .win {
-    color: #27ae60;
-    font-weight: bold;
-}
-
-.hangman .score .lose {
-    color: #e74c3c;
-    font-weight: bold;
-}
-
-.hangman .banner {
-    font-size: 22px;
-    font-weight: bold;
-    margin: 20px 0;
-}
-
-.hangman .banner.win {
-    color: #27ae60;
-}
-
-.hangman .banner.lose {
-    color: #e74c3c;
-}
-
-.hangman .btn {
-    margin-top: 20px;
-    background: #3498db;
-    color: #fff;
-    border: none;
-    border-radius: 4px;
-    padding: 10px 24px;
-    font-size: 15px;
-    cursor: pointer;
-}
-
-.hangman .btn:hover {
-    background: #2980b9;
-}
-</style>
 <div>
     <div>
         <h2>Hangman</h2>
-        <p>A very basic hangman game built entirely with Drapo attributes and functions — no JavaScript. The word is fetched from the backend (<code>~/api/Hangman/GetWord</code>) into the <code>game</code> data key; guess it one letter at a time — you lose after 6 wrong guesses. <b>New Game</b> calls <code>ReloadData(game)</code> to pull a fresh word from the server. A running <b>score</b> (kept in the <code>score</code> data key) tallies how many rounds you win and lose — it survives across games and is cleared by <b>Reset Score</b>.</p>
+        <p>A very basic hangman game built entirely with Drapo attributes and functions — no JavaScript. The word is fetched from the backend (<code>~/api/Hangman/GetWord</code>) into the <code>game</code> data key; guess it one letter at a time — you lose after 6 wrong guesses. Each key is a clickable button only until it is used (<code>d-if</code>); used keys become greyed out. <b>New Game</b> calls <code>ReloadData(game)</code> to pull a fresh word from the server. A running <b>score</b> (kept in the <code>score</code> data key) tallies how many rounds you win and lose — it survives across games and is cleared by <b>Reset Score</b>.</p>
         <br />
         <d-sample>
             <div d-dataKey="game" d-dataUrlGet="~/api/Hangman/GetWord"></div>
-            <div d-dataKey="score" d-dataType="object" d-dataProperty-Wins="0" d-dataProperty-Losses="0"></div>
+            <div d-dataKey="letters" d-dataType="pointer" d-dataValue="{{game.Letters}}"></div>
+            <div d-dataKey="answer" d-dataType="pointer" d-dataValue="{{game.Answer}}"></div>
+            <div d-dataKey="score" d-dataType="object" d-dataValue='{"Wins":0,"Losses":0}'></div>
             <div d-dataKey="keys" d-dataType="array" d-dataValue='[{"K":"A","Used":false},{"K":"B","Used":false},{"K":"C","Used":false},{"K":"D","Used":false},{"K":"E","Used":false},{"K":"F","Used":false},{"K":"G","Used":false},{"K":"H","Used":false},{"K":"I","Used":false},{"K":"J","Used":false},{"K":"K","Used":false},{"K":"L","Used":false},{"K":"M","Used":false},{"K":"N","Used":false},{"K":"O","Used":false},{"K":"P","Used":false},{"K":"Q","Used":false},{"K":"R","Used":false},{"K":"S","Used":false},{"K":"T","Used":false},{"K":"U","Used":false},{"K":"V","Used":false},{"K":"W","Used":false},{"K":"X","Used":false},{"K":"Y","Used":false},{"K":"Z","Used":false}]'></div>
 
-            <div class="hangman">
-                <div class="score">
-                    <span>Wins: <span class="win">{{score.Wins}}</span></span>
-                    <span>Losses: <span class="lose">{{score.Losses}}</span></span>
+            <div class="hangman" style="max-width:640px;margin:0 auto;padding:20px;font-family:Arial,sans-serif;text-align:center">
+                <div class="score" style="display:flex;justify-content:center;gap:24px;margin-bottom:16px;font-size:15px;color:#666">
+                    <span>Wins: <span style="color:#27ae60;font-weight:bold" d-model="{{score.Wins}}"></span></span>
+                    <span>Losses: <span style="color:#e74c3c;font-weight:bold" d-model="{{score.Losses}}"></span></span>
                 </div>
 
-                <div class="status">Wrong guesses: {{game.Wrong}} / 6</div>
+                <div class="status" style="font-size:16px;color:#666;margin-bottom:20px">Wrong guesses: <span d-model="{{game.Wrong}}"></span> / 6</div>
 
-                <div class="word">
-                    <span d-for="letter in game.Letters" class="tile">
+                <div class="word" style="display:flex;justify-content:center;gap:12px;margin:30px 0">
+                    <span d-for="letter in letters" class="tile" style="width:34px;font-size:32px;font-weight:bold;border-bottom:3px solid #333;color:#333;line-height:40px;display:inline-block;text-align:center">
                         <span d-if="{{letter.Shown}}">{{letter.Char}}</span>
-                        <span d-if="!{{letter.Shown}}">_</span>
+                        <span d-if="!{{letter.Shown}}">&nbsp;</span>
                     </span>
                 </div>
 
-                <div d-if="{{game.Left}}=0" class="banner win">You won!</div>
-                <div d-if="{{game.Wrong}}&gt;=6" class="banner lose">You lost! The word was {{game.Word}}.</div>
+                <div d-if="{{game.Left}}=0" style="font-size:22px;font-weight:bold;margin:20px 0;color:#27ae60">You won!</div>
+                <div d-if="{{game.Wrong}}&gt;=6" style="font-size:22px;font-weight:bold;margin:20px 0;color:#e74c3c">You lost! The word was <span d-model="{{game.Word}}"></span>.</div>
 
-                <div class="keyboard" d-if="({{game.Left}}&gt;0)&amp;&amp;({{game.Wrong}}&lt;6)">
-                    <button d-for="key in keys" class="key" d-class="{key,used:{{key.Used}}}" d-attr-disabled="{{key.Used}}" d-on-click="UpdateItemField({{key.Used}},true);UpdateDataFieldLookup(game.Letters,Char,{{key.K}},Shown,true);IF(ContainsDataItem({{game.Answer}},{{key.K}}),UpdateDataField(game,Left,Cast({{game.Left}}-1,number)),UpdateDataField(game,Wrong,Cast({{game.Wrong}}+1,number)));IF({{game.Left}}=0,UpdateDataField(score,Wins,Cast({{score.Wins}}+1,number)));IF({{game.Wrong}}&gt;=6,UpdateDataField(score,Losses,Cast({{score.Losses}}+1,number)))">{{key.K}}</button>
+                <div class="keyboard" style="display:flex;flex-wrap:wrap;justify-content:center;gap:8px;max-width:480px;margin:0 auto" d-if="({{game.Left}}&gt;0)&amp;&amp;({{game.Wrong}}&lt;6)">
+                    <span d-for="key in keys" style="display:inline-flex">
+                        <button d-if="!{{key.Used}}" style="width:40px;height:40px;border:1px solid #ccc;border-radius:4px;background:#fff;font-size:16px;font-weight:bold;color:#333;cursor:pointer" d-on-click="UpdateItemField({{key.Used}},true);UpdateDataFieldLookup(letters,Char,{{key.K}},Shown,true);IF(ContainsDataItem({{answer}},{{key.K}}),UpdateDataField(game,Left,Cast({{game.Left}}-1,number)),UpdateDataField(game,Wrong,Cast({{game.Wrong}}+1,number)));IF({{game.Left}}=0,UpdateDataField(score,Wins,Cast({{score.Wins}}+1,number)));IF({{game.Wrong}}&gt;=6,UpdateDataField(score,Losses,Cast({{score.Losses}}+1,number)))">{{key.K}}</button>
+                        <span d-if="{{key.Used}}" style="width:40px;height:40px;border:1px solid #ccc;border-radius:4px;background:#e0e0e0;color:#aaa;font-size:16px;font-weight:bold;display:inline-flex;align-items:center;justify-content:center">{{key.K}}</span>
+                    </span>
                 </div>
 
-                <button class="btn" d-on-click="ReloadData(game);UpdateDataFieldLookup(keys,Used,true,Used,false)">New Game</button>
-                <button class="btn" d-on-click="UpdateDataField(score,Wins,0);UpdateDataField(score,Losses,0)">Reset Score</button>
+                <button class="btn" style="margin:20px 6px 0;background:#3498db;color:#fff;border:none;border-radius:4px;padding:10px 24px;font-size:15px;cursor:pointer" d-on-click="ReloadData(game);UpdateDataFieldLookup(keys,Used,true,Used,false)">New Game</button>
+                <button class="btn" style="margin:20px 6px 0;background:#3498db;color:#fff;border:none;border-radius:4px;padding:10px 24px;font-size:15px;cursor:pointer" d-on-click="UpdateDataField(score,Wins,0);UpdateDataField(score,Losses,0)">Reset Score</button>
             </div>
         </d-sample>
         <br />
