@@ -4,5 +4,11 @@
     "Description": "The function or expression to execute asynchronously",
     "Types": [ "mustache", "expression" ],
     "Optional": false
+  },
+  {
+    "Name": "Timespan",
+    "Description": "Optional delay in milliseconds. When provided, the content is deferred with a timer (a macrotask) instead of the default asynchronous continuation (a microtask), so it runs after the current task completes - for example after the browser settles a Tab focus change. Use 0 to defer to the next task.",
+    "Types": [ "number", "mustache" ],
+    "Optional": true
   }
 ]

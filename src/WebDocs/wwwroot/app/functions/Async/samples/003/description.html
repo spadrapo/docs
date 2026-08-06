@@ -1,0 +1,1 @@
+<p>Preserving focus while tabbing between fields that trigger a re-render. The data is updated synchronously with UpdateItemField (notify set to false) and only the re-render is deferred with Async(Notify(...),0). Because the notify runs after the current task, the browser has already moved focus to the next field by the time the rows rebuild, so that focus is kept.</p>
