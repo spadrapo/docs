@@ -290,6 +290,6 @@ __pycache__/
 
 # Deploy secret material — never commit (this repo is public).
 # The real TLS key / ACR pull secret live in GitHub Actions secrets, not here.
-_Cloud/**/secret*.local.y*ml
-_Cloud/**/*secrets*/
+deploy/**/secret*.local.y*ml
+deploy/**/*secrets*/
 *.b64

@@ -71,17 +71,17 @@ jobs:
       # Port of the Azure DevOps HelmDeploy@0 task:
       #   command: upgrade            -> helm upgrade --install
       #   releaseName: drapo-docs-chart, namespace: drapo-docs
-      #   chartPath / valueFile       -> ./_Cloud/drapo-docs-chart (committed here)
+      #   chartPath / valueFile       -> ./deploy/drapo-docs-chart (committed here)
       #   resetValues: true           -> --reset-values
       #   arguments: --create-namespace
       # Auth: the runner already has a working kube context (no az login needed).
       - name: Helm upgrade
         shell: pwsh
         run: |
-          helm upgrade --install drapo-docs-chart .\_Cloud\drapo-docs-chart `
+          helm upgrade --install drapo-docs-chart .\deploy\drapo-docs-chart `
             --namespace drapo-docs `
             --create-namespace `
-            --values .\_Cloud\drapo-docs-chart\values.yaml `
+            --values .\deploy\drapo-docs-chart\values.yaml `
             --set-file tls.crt="$env:SECRET_DIR\tls.crt.b64" `
             --set-file tls.key="$env:SECRET_DIR\tls.key.b64" `
             --set-file acr.dockerconfigjson="$env:SECRET_DIR\dockerconfig.b64" `
