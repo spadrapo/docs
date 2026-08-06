@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.name }}
+      tier: frontend
+  replicas: {{ .Values.replicaCount }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.name }}
+        tier: frontend
+    spec:
+      topologySpreadConstraints:
+        - maxSkew: 1
+          topologyKey: kubernetes.io/hostname
+          whenUnsatisfiable: ScheduleAnyway
+          labelSelector:
+            matchLabels:
+              app: {{ .Values.deployment.name }}
+      containers:
+      - name: {{ .Values.deployment.name }}
+        image: {{ .Values.image }}
+        env:
+          - name: ASPNETCORE_URLS
+            value: "http://0.0.0.0:{{ .Values.deployment.port }}"
+        resources:
+          requests:
+            cpu: {{ .Values.requestsCPU }}
+            memory: {{ .Values.requestsMemory }}
+          limits:
+            cpu: {{ .Values.limitsCPU }}
+            memory: {{ .Values.limitsMemory }}
+        ports:
+        - containerPort: {{ .Values.deployment.port }}
+        imagePullPolicy: Always
+      serviceAccountName: aks-acr-contributor
+

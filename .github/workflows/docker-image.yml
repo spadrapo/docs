@@ -35,5 +35,75 @@ jobs:
       uses: jasongitmail/fast-webhook@v1.1.4
       continue-on-error: true
       with:
-        # The webhook URL to send the request to.
-        url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
+        # The webhook URL (contains a credential) is stored as a repo secret,
+        # not committed. NOTE: the previously committed value is public in git
+        # history and MUST be rotated in Azure App Service.
+        url: ${{ secrets.FAST_WEBHOOK_URL }}
+
+  deploy:
+    name: Deploy to AKS
+    # Runs only if `build` succeeded (that is what `needs` guarantees). Same
+    # triggers as `build` (push to master), so this is the continuous deploy.
+    needs: build
+    # Self-hosted Windows runner — only it has network/credential access to AKS.
+    # Adjust the labels to match your runner's registration.
+    runs-on: [self-hosted, Windows]
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Write the base64 secret values (from encrypted GitHub secrets) to temp
+      # files so helm --set-file can inject them. Nothing sensitive is committed.
+      - name: Stage deploy secrets
+        shell: pwsh
+        env:
+          TLS_CRT_B64: ${{ secrets.DRAPO_DOCS_TLS_CRT_B64 }}
+          TLS_KEY_B64: ${{ secrets.DRAPO_DOCS_TLS_KEY_B64 }}
+          ACR_DOCKERCONFIGJSON_B64: ${{ secrets.DRAPO_DOCS_ACR_DOCKERCONFIGJSON_B64 }}
+        run: |
+          $dir = Join-Path $env:RUNNER_TEMP 'drapo-docs-secrets'
+          New-Item -ItemType Directory -Force -Path $dir | Out-Null
+          # -NoNewline: the value must stay valid base64 (no trailing newline).
+          Set-Content -Path (Join-Path $dir 'tls.crt.b64')       -Value $env:TLS_CRT_B64              -NoNewline
+          Set-Content -Path (Join-Path $dir 'tls.key.b64')       -Value $env:TLS_KEY_B64              -NoNewline
+          Set-Content -Path (Join-Path $dir 'dockerconfig.b64')  -Value $env:ACR_DOCKERCONFIGJSON_B64 -NoNewline
+          "SECRET_DIR=$dir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+
+      # Port of the Azure DevOps HelmDeploy@0 task:
+      #   command: upgrade            -> helm upgrade --install
+      #   releaseName: drapo-docs-chart, namespace: drapo-docs
+      #   chartPath / valueFile       -> ./deploy/drapo-docs-chart (committed here)
+      #   resetValues: true           -> --reset-values
+      #   arguments: --create-namespace
+      # Auth: the runner already has a working kube context (no az login needed).
+      - name: Helm upgrade
+        shell: pwsh
+        run: |
+          helm upgrade --install drapo-docs-chart .\deploy\drapo-docs-chart `
+            --namespace drapo-docs `
+            --create-namespace `
+            --values .\deploy\drapo-docs-chart\values.yaml `
+            --set-file tls.crt="$env:SECRET_DIR\tls.crt.b64" `
+            --set-file tls.key="$env:SECRET_DIR\tls.key.b64" `
+            --set-file acr.dockerconfigjson="$env:SECRET_DIR\dockerconfig.b64" `
+            --reset-values `
+            --wait `
+            --timeout 5m
+
+      # The image tag is a fixed ':latest', so helm sees no manifest change and
+      # would not restart pods. This forces a fresh pull (imagePullPolicy: Always),
+      # replacing the Azure task's recreate/force flags with a reliable rollout.
+      - name: Restart deployment to pull latest image
+        shell: pwsh
+        run: |
+          kubectl rollout restart deployment/drapo-docs --namespace drapo-docs
+          kubectl rollout status  deployment/drapo-docs --namespace drapo-docs --timeout=180s
+
+      - name: Remove staged secrets
+        if: always()
+        shell: pwsh
+        run: |
+          if ($env:SECRET_DIR -and (Test-Path $env:SECRET_DIR)) {
+            Remove-Item -Recurse -Force $env:SECRET_DIR
+          }
