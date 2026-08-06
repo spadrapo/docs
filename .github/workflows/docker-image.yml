@@ -13,14 +13,14 @@ jobs:
     steps:
     - name: Checkout Code
       uses: actions/checkout@v3
-      
+
     - name: Login to GitHub Packages
       uses: docker/login-action@v1
       with:
         registry: ghcr.io
         username: ${{ github.repository_owner  }}
         password: ${{ secrets.GITHUB_TOKEN }}
-      
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
@@ -30,80 +30,42 @@ jobs:
         tags: ghcr.io/spadrapo/docs:latest
 
     - name: Fast Webhook
-      # You may pin to the exact commit or the version.
       # uses: jasongitmail/fast-webhook@6deed6ce6c4f3b7044a27fc272b7a019a6e4c41a
       uses: jasongitmail/fast-webhook@v1.1.4
       continue-on-error: true
       with:
-        # The webhook URL (contains a credential) is stored as a repo secret,
-        # not committed. NOTE: the previously committed value is public in git
-        # history and MUST be rotated in Azure App Service.
+        # URL (contains a credential) stored as a repo secret, not committed.
         url: ${{ secrets.FAST_WEBHOOK_URL }}
 
-  deploy:
-    name: Deploy to AKS
-    # Runs only if `build` succeeded (that is what `needs` guarantees). Same
-    # triggers as `build` (push to master), so this is the continuous deploy.
+  # After a successful image build, trigger the AKS deploy. The deploy itself
+  # lives in the t6-enterprise/drapo repo, because only that org's self-hosted
+  # runners have access to AKS — this (spadrapo) repo cannot reach the cluster.
+  # We hand off via repository_dispatch; the drapo workflow checks this chart
+  # back out from this (public) repo and runs `helm upgrade`.
+  #
+  # Requires a repo secret DRAPO_DEPLOY_DISPATCH_TOKEN: a PAT with permission to
+  # POST dispatches to t6-enterprise/drapo (fine-grained: Contents read/write on
+  # that repo, or a classic PAT with `repo` scope).
+  trigger-deploy:
+    name: Trigger AKS deploy
     needs: build
-    # Self-hosted Windows runner — only it has network/credential access to AKS.
-    # Adjust the labels to match your runner's registration.
-    runs-on: [self-hosted, Windows]
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
-        uses: actions/checkout@v4
-
-      # Write the base64 secret values (from encrypted GitHub secrets) to temp
-      # files so helm --set-file can inject them. Nothing sensitive is committed.
-      - name: Stage deploy secrets
-        shell: pwsh
+      - name: Fire repository_dispatch to t6-enterprise/drapo
         env:
-          TLS_CRT_B64: ${{ secrets.DRAPO_DOCS_TLS_CRT_B64 }}
-          TLS_KEY_B64: ${{ secrets.DRAPO_DOCS_TLS_KEY_B64 }}
-          ACR_DOCKERCONFIGJSON_B64: ${{ secrets.DRAPO_DOCS_ACR_DOCKERCONFIGJSON_B64 }}
+          DISPATCH_TOKEN: ${{ secrets.DRAPO_DEPLOY_DISPATCH_TOKEN }}
         run: |
-          $dir = Join-Path $env:RUNNER_TEMP 'drapo-docs-secrets'
-          New-Item -ItemType Directory -Force -Path $dir | Out-Null
-          # -NoNewline: the value must stay valid base64 (no trailing newline).
-          Set-Content -Path (Join-Path $dir 'tls.crt.b64')       -Value $env:TLS_CRT_B64              -NoNewline
-          Set-Content -Path (Join-Path $dir 'tls.key.b64')       -Value $env:TLS_KEY_B64              -NoNewline
-          Set-Content -Path (Join-Path $dir 'dockerconfig.b64')  -Value $env:ACR_DOCKERCONFIGJSON_B64 -NoNewline
-          "SECRET_DIR=$dir" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
-
-      # Port of the Azure DevOps HelmDeploy@0 task:
-      #   command: upgrade            -> helm upgrade --install
-      #   releaseName: drapo-docs-chart, namespace: drapo-docs
-      #   chartPath / valueFile       -> ./deploy/drapo-docs-chart (committed here)
-      #   resetValues: true           -> --reset-values
-      #   arguments: --create-namespace
-      # Auth: the runner already has a working kube context (no az login needed).
-      - name: Helm upgrade
-        shell: pwsh
-        run: |
-          helm upgrade --install drapo-docs-chart .\deploy\drapo-docs-chart `
-            --namespace drapo-docs `
-            --create-namespace `
-            --values .\deploy\drapo-docs-chart\values.yaml `
-            --set-file tls.crt="$env:SECRET_DIR\tls.crt.b64" `
-            --set-file tls.key="$env:SECRET_DIR\tls.key.b64" `
-            --set-file acr.dockerconfigjson="$env:SECRET_DIR\dockerconfig.b64" `
-            --reset-values `
-            --wait `
-            --timeout 5m
-
-      # The image tag is a fixed ':latest', so helm sees no manifest change and
-      # would not restart pods. This forces a fresh pull (imagePullPolicy: Always),
-      # replacing the Azure task's recreate/force flags with a reliable rollout.
-      - name: Restart deployment to pull latest image
-        shell: pwsh
-        run: |
-          kubectl rollout restart deployment/drapo-docs --namespace drapo-docs
-          kubectl rollout status  deployment/drapo-docs --namespace drapo-docs --timeout=180s
-
-      - name: Remove staged secrets
-        if: always()
-        shell: pwsh
-        run: |
-          if ($env:SECRET_DIR -and (Test-Path $env:SECRET_DIR)) {
-            Remove-Item -Recurse -Force $env:SECRET_DIR
-          }
+          set -euo pipefail
+          if [ -z "${DISPATCH_TOKEN:-}" ]; then
+            echo "::error::DRAPO_DEPLOY_DISPATCH_TOKEN is not set — cannot trigger the AKS deploy."
+            exit 1
+          fi
+          # target_env=dev for now (prod needs its own federated credential set up
+          # in Azure first; flip to prd once prod is validated).
+          curl -sSf -X POST \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $DISPATCH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2022-11-28" \
+            https://api.github.com/repos/t6-enterprise/drapo/dispatches \
+            -d '{"event_type":"deploy-drapo-docs","client_payload":{"target_env":"dev"}}'
+          echo "Triggered deploy-drapo-docs (target_env=dev) on t6-enterprise/drapo."
