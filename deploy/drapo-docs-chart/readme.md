@@ -9,8 +9,8 @@ Source Image: https://github.com/spadrapo/docs/pkgs/container/docs
 ## Run locally
 
 ```sh
-docker run --rm -p 5000:5000 --network host ghcr.io/spadrapo/docs:latest
-# Access at http://localhost:5000
+docker run --rm -p 8080:8080 ghcr.io/spadrapo/docs:latest
+# Access at http://localhost:8080
 ```
 
 ## Chart Installation

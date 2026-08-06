@@ -35,8 +35,10 @@ jobs:
       uses: jasongitmail/fast-webhook@v1.1.4
       continue-on-error: true
       with:
-        # The webhook URL to send the request to.
-        url: https://$drapo:gmWy6LNRxiKCYnBquToAZrobCTGbfb36snZ8G89iiuFLwtRusQrTxA6pJ8yz@drapo.scm.azurewebsites.net/api/registry/webhook
+        # The webhook URL (contains a credential) is stored as a repo secret,
+        # not committed. NOTE: the previously committed value is public in git
+        # history and MUST be rotated in Azure App Service.
+        url: ${{ secrets.FAST_WEBHOOK_URL }}
 
   deploy:
     name: Deploy to AKS
