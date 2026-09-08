@@ -95,8 +95,6 @@ Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan:
-`specs/002-docs-design-system/plan.md` (Feature: presentation-only redesign —
-a CSS design-token system + visual/theming refresh across the site, with NO
-change to documentation content or the MCP/serving layer).
+shell commands, and other important information, read the current plan
+at specs/003-drapo-language-server/plan.md
 <!-- SPECKIT END -->
