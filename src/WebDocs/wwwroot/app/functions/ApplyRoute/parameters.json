@@ -8,7 +8,7 @@
   {
     "Name": "IsLoad",
     "Description": "When true, also executes the route's BeforeLoadExpression and AfterLoadExpression, as happens when the route is applied at startup",
-    "Types": [ "boolean", "expression" ],
+    "Types": [ "conditional" ],
     "Optional": true,
     "DefaultValue": "false"
   }
