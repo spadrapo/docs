@@ -134,7 +134,8 @@ Access the documentation at `http://localhost:8080`.
 
 The `src/vscode-drapo` extension gives VS Code diagnostics, completion, hover and signature help for
 Drapo `d-*` markup. It runs the same engine catalog and validator that power this site's MCP
-`validate_drapo` tool, so the editor and the documentation always agree. See
+`validate_drapo` tool, so the editor and the documentation always agree. Install it from the
+`.vsix` for your platform on the [Releases](https://github.com/spadrapo/docs/releases) page. See
 [`src/vscode-drapo/README.md`](src/vscode-drapo/README.md) for installation, development and
 packaging, and `dotnet test src/docs.sln` for the test suite.
 

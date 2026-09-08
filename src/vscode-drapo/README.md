@@ -24,6 +24,15 @@ Applies to `html`, `razor` and `aspnetcorerazor` documents.
 
 Command: **Drapo: Restart Language Server**.
 
+## Install
+
+Download the `.vsix` for your platform from the
+[GitHub Releases](https://github.com/spadrapo/docs/releases) page (tags `lsp-v*`) and run:
+
+```powershell
+code --install-extension vscode-drapo-<platform>-<version>.vsix
+```
+
 ## Packages
 
 The extension ships one package per platform, each bundling a self-contained server, so no .NET

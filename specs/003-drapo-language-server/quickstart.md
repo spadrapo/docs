@@ -120,7 +120,8 @@ install to first diagnostic must be under 2 minutes with no configuration (SC-00
 ## 7. CI
 
 `.github/workflows/ci.yml` runs steps 1–2 and the extension integration test (`npm test` under xvfb) on every PR/push. On a tag matching `lsp-v*` it also runs
-step 6 for all four targets and uploads the VSIX files as artifacts.
+step 6 for all four targets, uploads the VSIX files as artifacts and attaches them to a GitHub
+Release named after the tag (created if missing, assets replaced if it exists).
 
 ## Verified on 2026-09-08 (Windows 11, .NET SDK 8.0.424, Node 22, VS Code 1.136)
 
