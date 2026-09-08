@@ -13,9 +13,15 @@ The site is built **with Drapo itself**; the engine is served at `/drapo.js` fro
 
 ## Project layout
 
+- `src/Drapo.Tooling/` — ASP.NET-free class library: `DrapoEngineCatalog`, `DrapoValidatorService`,
+  `FunctionService`, `AttributeService`, their `*VM` models and helpers. Shared by WebDocs (site + MCP)
+  and the language server, so `validate_drapo` and editor diagnostics are the same code.
+- `src/Drapo.LanguageServer/` — LSP over stdio (diagnostics, completion, hover, signature help).
+- `src/Drapo.Tests/` — xunit tests (`dotnet test src/docs.sln`): parity corpus, providers, stdio smoke.
+- `src/vscode-drapo/` — VS Code extension that bundles the server (see its README).
 - `src/WebDocs/` — the app: `Program.cs`/`Startup.cs` (host, DI, MCP), `Controllers/`, `Services/`
-  (`FunctionService`, `AttributeService`, `ConceptService`, `DataTypeService`, `DrapoEngineCatalog`,
-  `DrapoValidatorService`, `NuGetService` + `I*` interfaces), `Models/` (`*VM` ViewModels),
+  (`ConceptService`, `DataTypeService`, `NuGetService` + `I*` interfaces; the catalog, validator,
+  function and attribute services come from `Drapo.Tooling`), `Models/` (WebDocs-only `*VM`s),
   `styles/` (Less → CSS via Cake).
 - `src/WebDocs/wwwroot/app/menu/NNNN - <Section>/` — doc pages (Guide, Data, Attributes, Functions,
   Debugging, Applications); numeric prefixes drive ordering.
@@ -52,6 +58,7 @@ Files that ignore these conventions are invisible to the serving layer and the M
 cd src/WebDocs
 dotnet restore && dotnet run     # https://localhost:5001 / http://localhost:5000
 dotnet build                     # before claiming a serving-layer change is done
+dotnet test ../docs.sln          # tooling + language server tests
 ```
 
 ## How to add a Drapo function

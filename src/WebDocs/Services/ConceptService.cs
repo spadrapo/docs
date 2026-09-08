@@ -5,8 +5,10 @@ using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WebDocs.Helpers;
 using WebDocs.Models;
+using Drapo.Tooling.Helpers;
+using Drapo.Tooling.Models;
+using Drapo.Tooling.Services;
 
 namespace WebDocs.Services
 {

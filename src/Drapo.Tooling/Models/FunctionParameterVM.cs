@@ -1,0 +1,16 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+
+namespace Drapo.Tooling.Models
+{
+    public class FunctionParameterVM
+    {
+        public string Name { set; get; }
+        public string Description { set; get; }
+        public List<string> Types { set; get; }
+        public bool Optional { set; get; }
+        public string DefaultValue { set; get; }
+    }
+}

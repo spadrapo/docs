@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>VS Code Extension</h2>
+        <p>The <strong>Drapo</strong> extension gives Visual Studio Code first-class support for <code>d-*</code> markup: problems are underlined as you type, attribute names complete, hovering shows the documentation, and function calls inside <code>d-on-*</code> handlers get signature help. It is powered by a <strong>language server</strong> that runs the very same engine catalog and validator that power this documentation site and its MCP <code>validate_drapo</code> tool, so what the editor flags is exactly what the documentation would flag. There is one validator, not two.</p>
+
+        <h3>Install</h3>
+        <p>Download the <code>.vsix</code> package for your platform from the <a href="https://github.com/spadrapo/docs/releases" target="_blank">GitHub Releases</a> page of the <code>spadrapo/docs</code> repository (releases are tagged <code>lsp-v&lt;version&gt;</code>) and install it from a terminal:</p>
+        <pre><code>code --install-extension vscode-drapo-win32-x64-0.1.0.vsix</code></pre>
+        <p>Or inside VS Code: <em>Extensions</em> view → <em>…</em> menu → <em>Install from VSIX…</em>. Each package bundles a self-contained language server, so <strong>no .NET runtime or SDK is required</strong> on the machine.</p>
+        <table class="dFunctionParametersTable">
+            <tr><th>Platform</th><th>Package</th></tr>
+            <tr><td>Windows x64</td><td><code>vscode-drapo-win32-x64-&lt;version&gt;.vsix</code></td></tr>
+            <tr><td>Linux x64</td><td><code>vscode-drapo-linux-x64-&lt;version&gt;.vsix</code></td></tr>
+            <tr><td>macOS Intel</td><td><code>vscode-drapo-darwin-x64-&lt;version&gt;.vsix</code></td></tr>
+            <tr><td>macOS Apple Silicon</td><td><code>vscode-drapo-darwin-arm64-&lt;version&gt;.vsix</code></td></tr>
+        </table>
+        <p>The extension activates for <code>html</code>, <code>razor</code> and <code>aspnetcorerazor</code> (<code>.cshtml</code>) files. Open one and the features are available immediately; nothing needs to be configured.</p>
+
+        <h3>What you get</h3>
+        <ul>
+            <li><strong>Diagnostics</strong> in the editor and the Problems panel (source <code>drapo</code>), updated within a moment of each edit:
+                <ul>
+                    <li><code>unknown-attribute</code> — a <code>d-*</code> attribute the engine does not define.</li>
+                    <li><code>unknown-function</code> — a function used in a <code>d-on-*</code> handler the engine does not dispatch.</li>
+                    <li><code>wrong-arity</code> — a documented function called with fewer arguments than it requires (warning).</li>
+                    <li><code>malformed-dfor</code> — a <code>d-for</code> value that is not <code>{item} in {iterator}</code>.</li>
+                    <li><code>unbalanced-mustache</code> — an unmatched <code>{{</code> or <code>}}</code>.</li>
+                </ul>
+            </li>
+            <li><strong>Completion</strong> — type <code>d-</code> inside a tag to list every attribute the engine recognises, with its documentation. Prefix families such as <code>d-on-</code>, <code>d-attr-</code>, <code>d-validation-</code> and <code>d-dataproperty-</code> are offered as prefixes so you can continue with the suffix.</li>
+            <li><strong>Hover</strong> — hover a <code>d-*</code> attribute for its description, or a function name inside a <code>d-on-*</code> value for its signature, description and parameter table.</li>
+            <li><strong>Signature help</strong> — inside the parentheses of a handler call (for example after typing <code>UpdateSector(</code>) the parameter list appears with the current parameter highlighted; a comma advances it.</li>
+        </ul>
+        <p>Example: the line below produces an <code>unknown-attribute</code> error on <code>d-nope</code> and a <code>wrong-arity</code> warning on the call, because <code>UpdateSector</code> requires at least two arguments.</p>
+        <pre><code>&lt;div d-nope=&quot;x&quot;&gt;&lt;/div&gt;
+&lt;button d-on-click=&quot;UpdateSector()&quot;&gt;Go&lt;/button&gt;</code></pre>
+
+        <h3>Settings and commands</h3>
+        <table class="dFunctionParametersTable">
+            <tr><th>Setting</th><th>Default</th><th>Description</th></tr>
+            <tr><td><code>drapo.server.path</code></td><td><em>empty</em></td><td>Absolute path to a <code>Drapo.LanguageServer</code> executable. Leave empty to use the server bundled with the extension. Useful for development or for a platform without a bundled build.</td></tr>
+            <tr><td><code>drapo.trace.server</code></td><td><code>off</code></td><td><code>messages</code> or <code>verbose</code> writes the client/server protocol to the <em>Drapo Language Server</em> output channel.</td></tr>
+        </table>
+        <p>Command palette: <strong>Drapo: Restart Language Server</strong>. If the server cannot be found or fails to start, the extension shows an error notification naming the cause instead of failing silently.</p>
+
+        <h3>How it works</h3>
+        <p>The docs repository contains a class library, <code>Drapo.Tooling</code>, that reads the attribute and function sets from the bundled <code>drapo.js</code> engine and the function signatures from this documentation. The website, the MCP server and the language server all use that one library, so the three can never disagree. Documentation content is copied into the extension at build time; the extension works offline and does not contact this site. When the documentation or the engine version changes, a new release of the extension picks it up.</p>
+        <p>AI coding assistants benefit as well. Agents such as GitHub Copilot agent mode and the Claude Code IDE extension read the editor's diagnostics, so a bad <code>d-*</code> edit is fed back to them without calling the MCP.</p>
+
+        <h3>Other editors</h3>
+        <p>The server speaks the standard <a href="https://microsoft.github.io/language-server-protocol/" target="_blank">Language Server Protocol</a> over stdin/stdout, so any LSP-capable editor (Neovim, Sublime Text, Emacs, Visual Studio's LSP client, and others) can use it. Take the <code>Drapo.LanguageServer</code> executable from a VSIX package (it is a zip; the binary sits under <code>extension/server/&lt;platform&gt;/</code>) or build it from source, and point your editor's LSP client at it for <code>html</code>, <code>razor</code> and <code>aspnetcorerazor</code> documents.</p>
+        <pre><code># from a clone of spadrapo/docs, run against the live documentation content
+dotnet run --project src/Drapo.LanguageServer -- --content src/WebDocs/wwwroot/app
+
+# print the server and engine version
+Drapo.LanguageServer --version</code></pre>
+
+        <h3>Building from source</h3>
+        <p>Prerequisites: .NET SDK 8 and Node.js 20+. From a clone of the repository:</p>
+        <pre><code>cd src/Drapo.LanguageServer
+./publish.ps1 -Rid win-x64            # self-contained server (also linux-x64, osx-x64, osx-arm64)
+cd ../vscode-drapo
+npm ci
+./scripts/copy-server.ps1 -Rid win-x64
+npm run package:win32-x64             # produces vscode-drapo-win32-x64-&lt;version&gt;.vsix
+code --install-extension vscode-drapo-win32-x64-0.1.0.vsix</code></pre>
+        <p>To debug the extension, open <code>src/vscode-drapo</code> in VS Code, press <kbd>F5</kbd>, and in the development host set <code>drapo.server.path</code> to the Debug build of the server. <code>npm test</code> runs an integration test in a real VS Code instance; <code>dotnet test src/docs.sln</code> runs the tooling and server tests, including a parity corpus that checks every documented function sample.</p>
+
+        <h3>Releasing (maintainers)</h3>
+        <p>Bump <code>version</code> in <code>src/vscode-drapo/package.json</code>, then push a tag. The CI workflow builds and tests everything, packages the four platform VSIX files and attaches them to a GitHub Release named after the tag.</p>
+        <pre><code>git tag lsp-v0.2.0
+git push origin lsp-v0.2.0</code></pre>
+
+        <h3>Current limits</h3>
+        <ul>
+            <li>Knowledge is framework-level: the engine's attributes and functions and their documented signatures. Symbols your application defines (<code>d-dataKey</code> names, sectors, components) are not resolved yet; use the <a href="#" d-on-click="ApplyRoute(/doc/DrapoResolverSkill)">Drapo Resolver Skill</a> for that.</li>
+            <li>Validation is the same text-based check the documentation validator performs; it does not parse expressions.</li>
+            <li>Packages are distributed through GitHub Releases; the extension is not on the Marketplace yet.</li>
+        </ul>
+    </div>
+</div>

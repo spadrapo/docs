@@ -1,0 +1,1 @@
+[{"Level":"error","Rule":"malformed-dfor","Line":2,"Column":14,"Message":"Malformed d-for: 'items'. Expected the form '{item} in {iterator}'."}]

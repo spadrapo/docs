@@ -6,8 +6,8 @@
 </head>
 <body>
     <!-- An array storage item. The initial GET URL loads a default set.
-         d-dataAllowCache is false so every reload fetches fresh data. -->
-    <div d-dataKey="products" d-dataType="array" d-dataUrlGet="~/api/Products/ByCategory/all" d-dataAllowCache="false"></div>
+         d-dataCache is false so every reload fetches fresh data. -->
+    <div d-dataKey="products" d-dataType="array" d-dataUrlGet="~/api/Products/ByCategory/all" d-dataCache="false"></div>
 
     <div>
         <!-- Put the dynamic value in the URL PATH, update the GET URL, then reload.

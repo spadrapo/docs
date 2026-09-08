@@ -106,6 +106,10 @@ Access the documentation at `http://localhost:8080`.
 
 ```
 ├── src/
+│   ├── Drapo.Tooling/              # Engine catalog, validator, function/attribute services (no ASP.NET)
+│   ├── Drapo.LanguageServer/       # Language Server Protocol server (stdio) built on Drapo.Tooling
+│   ├── Drapo.Tests/                # xunit tests: parity corpus, providers, stdio smoke
+│   ├── vscode-drapo/               # VS Code extension bundling the language server
 │   ├── WebDocs/                    # Main ASP.NET Core application
 │   │   ├── Controllers/            # API controllers for documentation data
 │   │   ├── Models/                 # ViewModels for documentation content
@@ -125,6 +129,15 @@ Access the documentation at `http://localhost:8080`.
 ├── LICENSE                         # MIT License
 └── README.md                       # This file
 ```
+
+## Editor Support (VS Code)
+
+The `src/vscode-drapo` extension gives VS Code diagnostics, completion, hover and signature help for
+Drapo `d-*` markup. It runs the same engine catalog and validator that power this site's MCP
+`validate_drapo` tool, so the editor and the documentation always agree. Install it from the
+`.vsix` for your platform on the [Releases](https://github.com/spadrapo/docs/releases) page. See
+[`src/vscode-drapo/README.md`](src/vscode-drapo/README.md) for installation, development and
+packaging, and `dotnet test src/docs.sln` for the test suite.
 
 ## Key Components
 

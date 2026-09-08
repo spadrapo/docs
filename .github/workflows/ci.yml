@@ -1,0 +1,130 @@
+name: CI
+
+on:
+  push:
+    branches: ["**"]
+    tags: ["lsp-v*"]
+  pull_request:
+
+jobs:
+  build-and-test:
+    name: Build & test (.NET)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: src/global.json
+      - name: Build solution
+        run: dotnet build src/docs.sln -c Release
+      - name: Test (tooling, language server, parity corpus, stdio smoke)
+        run: dotnet test src/docs.sln -c Release --no-build --logger "trx;LogFileName=results.trx"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-results
+          path: "**/TestResults/*.trx"
+
+  extension-test:
+    name: VS Code integration test
+    runs-on: ubuntu-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: src/global.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: src/vscode-drapo/package-lock.json
+      - name: Build language server (Debug, used via drapo.server.path)
+        run: dotnet build src/Drapo.LanguageServer
+      - name: Install extension dependencies
+        working-directory: src/vscode-drapo
+        run: npm ci
+      - name: Run extension tests in a headless VS Code
+        working-directory: src/vscode-drapo
+        run: xvfb-run -a npm test
+
+  package-extension:
+    name: Package VSIX (${{ matrix.target }})
+    if: startsWith(github.ref, 'refs/tags/lsp-v')
+    needs: [build-and-test, extension-test]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - rid: win-x64
+            target: win32-x64
+          - rid: linux-x64
+            target: linux-x64
+          - rid: osx-x64
+            target: darwin-x64
+          - rid: osx-arm64
+            target: darwin-arm64
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: src/global.json
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: src/vscode-drapo/package-lock.json
+      - name: Publish self-contained server
+        shell: pwsh
+        run: ./src/Drapo.LanguageServer/publish.ps1 -Rid ${{ matrix.rid }}
+      - name: Bundle server into the extension
+        shell: pwsh
+        run: ./src/vscode-drapo/scripts/copy-server.ps1 -Rid ${{ matrix.rid }}
+      - name: Package
+        working-directory: src/vscode-drapo
+        run: |
+          npm ci
+          npm run package:${{ matrix.target }}
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vscode-drapo-${{ matrix.target }}
+          path: src/vscode-drapo/*.vsix
+
+  release:
+    name: GitHub Release (attach VSIX files)
+    if: startsWith(github.ref, 'refs/tags/lsp-v')
+    needs: package-extension
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: vscode-drapo-*
+          path: vsix
+          merge-multiple: true
+      - name: List assets
+        run: ls -la vsix
+      - name: Create or update the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref_name }}
+        run: |
+          set -euo pipefail
+          NOTES="Drapo language server + VS Code extension ${TAG#lsp-v}.
+
+          Install: download the .vsix for your platform and run
+          \`code --install-extension <file>\` (no .NET runtime required).
+
+          | Platform | File |
+          |---|---|
+          | Windows x64 | vscode-drapo-win32-x64-*.vsix |
+          | Linux x64 | vscode-drapo-linux-x64-*.vsix |
+          | macOS Intel | vscode-drapo-darwin-x64-*.vsix |
+          | macOS Apple Silicon | vscode-drapo-darwin-arm64-*.vsix |"
+          if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            gh release upload "$TAG" vsix/*.vsix --clobber --repo "$GITHUB_REPOSITORY"
+          else
+            gh release create "$TAG" vsix/*.vsix --repo "$GITHUB_REPOSITORY" \
+              --title "Drapo VS Code extension ${TAG#lsp-v}" --notes "$NOTES"
+          fi

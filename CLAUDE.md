@@ -18,13 +18,21 @@ The site is built **with Drapo itself** (dogfooding); the engine is served at `/
 ## Layout
 
 ```
+src/docs.sln                     # WebDocs + Drapo.Tooling + Drapo.LanguageServer + Drapo.Tests
+src/Drapo.Tooling/               # class library, NO ASP.NET: DrapoEngineCatalog, DrapoValidatorService,
+                                 #   FunctionService, AttributeService, their *VM models,
+                                 #   DrapoDocContent/DrapoHandlerSyntax helpers, IDrapoContentRoot
+src/Drapo.LanguageServer/        # LSP over stdio (OmniSharp) on top of Drapo.Tooling: diagnostics,
+                                 #   completion, hover, signature help; content copied to bin/content/app
+src/Drapo.Tests/                 # xunit: parity corpus (fixtures + every function sample), providers,
+                                 #   stdio smoke test, "no ASP.NET reference" guard
+src/vscode-drapo/                # VS Code extension (TypeScript) that launches the bundled server
 src/WebDocs/                     # the ASP.NET Core app
-  Program.cs / Startup.cs        # host + DI + MCP wiring
+  Program.cs / Startup.cs        # host + DI + MCP wiring (registers IDrapoContentRoot = wwwroot/app)
   Controllers/                   # Attribute, Function, Menu, Sample, Search, Chat, NuGet, Todo
-  Services/                      # FunctionService, AttributeService, ConceptService,
-                                 #   DataTypeService, DrapoEngineCatalog, DrapoValidatorService,
-                                 #   NuGetService (+ I* interfaces)
-  Models/                        # *VM ViewModels (FunctionVM, AttributeVM, ConceptVM, ...)
+  Services/                      # ConceptService, DataTypeService, NuGetService (+ I* interfaces);
+                                 #   catalog/validator/function/attribute services live in Drapo.Tooling
+  Models/                        # WebDocs-only *VM ViewModels (ConceptVM, DataTypeVM, MenuItemVM, ...)
   styles/                        # Less sources → compiled to wwwroot/css via Cake
   wwwroot/
     app/menu/NNNN - <Section>/   # doc pages, numbered: Guide, Data, Attributes, Functions,
@@ -82,7 +90,14 @@ dotnet restore
 dotnet run                    # https://localhost:5001  /  http://localhost:5000
 dotnet build                  # before claiming a serving-layer change is done
 # CSS (optional): dotnet cake build.cake --target=less
+
+cd src
+dotnet test docs.sln          # tooling + language server tests (parity corpus, stdio smoke)
+dotnet run --project Drapo.LanguageServer -- --content WebDocs/wwwroot/app   # LSP on stdio
 ```
+
+Editor support: `src/vscode-drapo/README.md` (F5 to debug, `npm test` for the VS Code integration
+test, `publish.ps1` + `copy-server.ps1` + `npm run package:<target>` to build a VSIX).
 
 Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 8080:80 drapo-docs`.
 
@@ -95,8 +110,6 @@ Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 
 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
-shell commands, and other important information, read the current plan:
-`specs/002-docs-design-system/plan.md` (Feature: presentation-only redesign —
-a CSS design-token system + visual/theming refresh across the site, with NO
-change to documentation content or the MCP/serving layer).
+shell commands, and other important information, read the current plan
+at specs/003-drapo-language-server/plan.md
 <!-- SPECKIT END -->
