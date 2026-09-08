@@ -1,4 +1,4 @@
-namespace WebDocs.Models
+namespace Drapo.Tooling.Models
 {
     /// <summary>
     /// A single problem found by validate_drapo in a Drapo template.

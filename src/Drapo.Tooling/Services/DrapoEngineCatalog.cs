@@ -6,7 +6,7 @@ using System.Reflection;
 using System.Text.RegularExpressions;
 using Sysphera.Middleware.Drapo;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// Reads the engine bundled in the Sysphera.Middleware.Drapo assembly (the embedded drapo.js,
@@ -35,11 +35,28 @@ namespace WebDocs.Services
         private static HashSet<string> _functions;
         private static HashSet<string> _attributes;
         private static List<string> _attributePrefixes;
+        private static List<string> _functionList;
+        private static List<string> _attributeList;
         private static string _version;
 
         public string EngineVersion
         {
             get { EnsureParsed(); return _version; }
+        }
+
+        public IReadOnlyCollection<string> Functions
+        {
+            get { EnsureParsed(); return _functionList; }
+        }
+
+        public IReadOnlyCollection<string> Attributes
+        {
+            get { EnsureParsed(); return _attributeList; }
+        }
+
+        public IReadOnlyCollection<string> AttributePrefixes
+        {
+            get { EnsureParsed(); return _attributePrefixes; }
         }
 
         public bool IsValidFunction(string name)
@@ -84,6 +101,9 @@ namespace WebDocs.Services
                     .Union(KnownDynamicPrefixes)
                     .ToList();
                 _version = ResolveVersion(engine);
+                _functionList = _functions.OrderBy(f => f, StringComparer.Ordinal).ToList();
+                _attributeList = _attributes.Where(a => !a.EndsWith("-", StringComparison.Ordinal))
+                    .OrderBy(a => a, StringComparer.Ordinal).ToList();
             }
         }
 

@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<Nullable>disable</Nullable>
+		<ImplicitUsings>disable</ImplicitUsings>
+		<RootNamespace>Drapo.LanguageServer</RootNamespace>
+		<AssemblyName>Drapo.LanguageServer</AssemblyName>
+		<Version>0.1.0</Version>
+		<InvariantGlobalization>true</InvariantGlobalization>
+		<Description>Drapo language server (LSP over stdio): diagnostics, completion, hover and signature help for d-* markup.</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Drapo.Tooling\Drapo.Tooling.csproj" />
+		<PackageReference Include="OmniSharp.Extensions.LanguageServer" Version="0.19.9" />
+	</ItemGroup>
+	<!--
+	  Documentation content the tooling services read by convention (see constitution Principle II).
+	  Copied next to the binary so the server runs offline with the identical relative layout the
+	  website uses: content/app/functions/<Name>/... and content/app/menu/0003 - Attributes/*.html
+	-->
+	<ItemGroup>
+		<Content Include="..\WebDocs\wwwroot\app\functions\**\*" Link="content\app\functions\%(RecursiveDir)%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+		<Content Include="..\WebDocs\wwwroot\app\menu\0003 - Attributes\*.html" Link="content\app\menu\0003 - Attributes\%(Filename)%(Extension)" CopyToOutputDirectory="PreserveNewest" CopyToPublishDirectory="PreserveNewest" />
+	</ItemGroup>
+</Project>

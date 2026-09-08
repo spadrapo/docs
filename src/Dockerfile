@@ -6,6 +6,7 @@ EXPOSE 443
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 COPY ["WebDocs/WebDocs.csproj", "WebDocs/"]
+COPY ["Drapo.Tooling/Drapo.Tooling.csproj", "Drapo.Tooling/"]
 RUN dotnet restore "WebDocs/WebDocs.csproj"
 COPY . .
 WORKDIR "/src/WebDocs"

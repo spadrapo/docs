@@ -1,4 +1,3 @@
-﻿using Microsoft.AspNetCore.Hosting;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -7,10 +6,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using WebDocs.Helpers;
-using WebDocs.Models;
+using Drapo.Tooling.Content;
+using Drapo.Tooling.Helpers;
+using Drapo.Tooling.Models;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// Service for retrieving Drapo function metadata, including listing, details, parameters, and samples.
@@ -18,10 +18,10 @@ namespace WebDocs.Services
     /// </summary>
     public class FunctionService : IFunctionService
     {
-        private readonly IWebHostEnvironment _env;
-        public FunctionService(IWebHostEnvironment env)
+        private readonly IDrapoContentRoot _root;
+        public FunctionService(IDrapoContentRoot root)
         {
-            _env = env;
+            _root = root;
         }
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace WebDocs.Services
         public async Task<List<string>> GetNames()
         {
             List<string> functions = new List<string>();
-            string path = Path.Combine(_env.WebRootPath, "app", "functions");
+            string path = Path.Combine(_root.AppPath, "functions");
             IEnumerable<string> entries = Directory.EnumerateFileSystemEntries(path);
             List<string> entriesSorted = this.Sort(entries);
             for (int i = 0; i < entriesSorted.Count; i++)
@@ -59,7 +59,7 @@ namespace WebDocs.Services
         private async Task<string> CreateContent(string functionName)
         {
             StringBuilder content = new StringBuilder();
-            string path = Path.Combine(_env.WebRootPath, "app", "functions", functionName);
+            string path = Path.Combine(_root.AppPath, "functions", functionName);
             if (!Directory.Exists(path))
                 return await Task.FromResult<string>(null);
             //Title
@@ -146,7 +146,7 @@ namespace WebDocs.Services
         /// </summary>
         private async Task<List<FunctionParameterVM>> GetParameters(string functionName)
         {
-            string path = Path.Combine(_env.WebRootPath, "app", "functions", functionName, "parameters.json");
+            string path = Path.Combine(_root.AppPath, "functions", functionName, "parameters.json");
             if (!System.IO.File.Exists(path))
                 return await Task.FromResult(new List<FunctionParameterVM>());
             string fileContent = await System.IO.File.ReadAllTextAsync(path);
@@ -194,7 +194,7 @@ namespace WebDocs.Services
 
         private async Task<FunctionVM> GetFunctionInternal(string name, bool loadDetails)
         {
-            string path = Path.Combine(_env.WebRootPath, "app", "functions", name);
+            string path = Path.Combine(_root.AppPath, "functions", name);
             string descriptionPath = Path.Combine(path, "description.html");
             if (!System.IO.File.Exists(descriptionPath))
                 return (null);

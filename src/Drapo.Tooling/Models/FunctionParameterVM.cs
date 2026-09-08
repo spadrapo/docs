@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace WebDocs.Models
+namespace Drapo.Tooling.Models
 {
     public class FunctionParameterVM
     {

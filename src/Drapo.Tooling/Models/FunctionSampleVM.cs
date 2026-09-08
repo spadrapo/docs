@@ -1,4 +1,4 @@
-namespace WebDocs.Models
+namespace Drapo.Tooling.Models
 {
     /// <summary>
     /// ViewModel representing a sample for a Drapo function, including its name, description, and content.

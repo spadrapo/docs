@@ -1,14 +1,14 @@
-﻿using Microsoft.AspNetCore.Hosting;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WebDocs.Helpers;
-using WebDocs.Models;
+using Drapo.Tooling.Content;
+using Drapo.Tooling.Helpers;
+using Drapo.Tooling.Models;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// Service for retrieving Drapo attribute metadata from the Attributes folder.
@@ -16,14 +16,14 @@ namespace WebDocs.Services
     /// </summary>
     public class AttributeService : IAttributeService
     {
-        private readonly IWebHostEnvironment _env;
+        private readonly IDrapoContentRoot _root;
         /// <summary>
         /// Initializes a new instance of the <see cref="AttributeService"/> class.
         /// </summary>
-        /// <param name="env">The web hosting environment.</param>
-        public AttributeService(IWebHostEnvironment env)
+        /// <param name="root">Where the documentation content lives.</param>
+        public AttributeService(IDrapoContentRoot root)
         {
-            _env = env;
+            _root = root;
         }
 
         /// <summary>
@@ -44,7 +44,7 @@ namespace WebDocs.Services
         /// <returns>List of <see cref="AttributeVM"/> objects.</returns>
         private async Task<List<AttributeVM>> GetAttributesInternal(bool withDetails, string matchName = null)
         {
-            string attributesFolder = Directory.GetDirectories(Path.Combine(_env.WebRootPath, "app", "menu"))
+            string attributesFolder = Directory.GetDirectories(Path.Combine(_root.AppPath, "menu"))
                 .FirstOrDefault(d => d.EndsWith("Attributes", StringComparison.OrdinalIgnoreCase));
             if (attributesFolder == null)
                 return new List<AttributeVM>();

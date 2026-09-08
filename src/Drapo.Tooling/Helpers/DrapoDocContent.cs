@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
-using WebDocs.Models;
+using Drapo.Tooling.Models;
 
-namespace WebDocs.Helpers
+namespace Drapo.Tooling.Helpers
 {
     /// <summary>
     /// Converts the raw HTML documentation stored on disk into clean Markdown/plain text

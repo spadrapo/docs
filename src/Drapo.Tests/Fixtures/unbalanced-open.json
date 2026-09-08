@@ -1,0 +1,1 @@
+[{"Level":"error","Rule":"unbalanced-mustache","Line":1,"Column":7,"Message":"Unclosed '{{' without a matching '}}'."}]

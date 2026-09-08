@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace WebDocs.Models
+namespace Drapo.Tooling.Models
 {
     /// <summary>
     /// Result of validate_drapo: whether the template is valid and the diagnostics found.

@@ -1,7 +1,7 @@
 using System.Threading.Tasks;
-using WebDocs.Models;
+using Drapo.Tooling.Models;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// Validates a Drapo template (HTML snippet or full file) and reports diagnostics:

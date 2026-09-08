@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace WebDocs.Models
+namespace Drapo.Tooling.Models
 {
     /// <summary>
     /// ViewModel representing a Drapo function, including its name, description, parameters, and samples.

@@ -1,4 +1,6 @@
-namespace WebDocs.Services
+using System.Collections.Generic;
+
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// The authoritative set of functions and attributes supported by the Drapo engine that is
@@ -18,5 +20,20 @@ namespace WebDocs.Services
 
         /// <summary>Version identifier of the bundled engine.</summary>
         string EngineVersion { get; }
+
+        /// <summary>All function names dispatched by the engine, lower-case.</summary>
+        IReadOnlyCollection<string> Functions { get; }
+
+        /// <summary>
+        /// Fixed attribute names known to the engine, lower-case (prefix families excluded; see
+        /// <see cref="AttributePrefixes"/>).
+        /// </summary>
+        IReadOnlyCollection<string> Attributes { get; }
+
+        /// <summary>
+        /// Dynamic attribute prefixes, lower-case, each ending with '-' (e.g. d-on-, d-attr-,
+        /// d-validation-, d-dataproperty-). Any name that extends a prefix is a valid attribute.
+        /// </summary>
+        IReadOnlyCollection<string> AttributePrefixes { get; }
     }
 }

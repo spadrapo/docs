@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using WebDocs.Models;
+using Drapo.Tooling.Helpers;
+using Drapo.Tooling.Models;
+using static Drapo.Tooling.Helpers.DrapoHandlerSyntax;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     /// <summary>
     /// Validates Drapo templates against the bundled engine (for attribute/function existence)
@@ -22,7 +24,6 @@ namespace WebDocs.Services
             @"(?<=\s)(d-[A-Za-z][\w-]*)\s*=\s*(?:""([^""]*)""|'([^']*)')",
             RegexOptions.Compiled);
         private static readonly Regex DForRegex = new Regex(@"^\s*[A-Za-z_]\w*\s+in\s+\S+\s*$", RegexOptions.Compiled);
-        private static readonly Regex FunctionCallRegex = new Regex(@"([A-Za-z_]\w*)\s*\(", RegexOptions.Compiled);
 
         public DrapoValidatorService(IDrapoEngineCatalog engine, IFunctionService functions)
         {
@@ -123,58 +124,6 @@ namespace WebDocs.Services
             }
         }
 
-        // Scans a handler expression for function calls, returning each name, its position, and
-        // its raw argument text. Nested calls are returned too (each is validated independently).
-        private static IEnumerable<FunctionCall> ScanFunctionCalls(string value)
-        {
-            foreach (Match m in FunctionCallRegex.Matches(value))
-            {
-                int parenIndex = m.Index + m.Length - 1;
-                int depth = 0;
-                int close = -1;
-                for (int i = parenIndex; i < value.Length; i++)
-                {
-                    if (value[i] == '(') depth++;
-                    else if (value[i] == ')') { depth--; if (depth == 0) { close = i; break; } }
-                }
-                string args = close > parenIndex ? value.Substring(parenIndex + 1, close - parenIndex - 1) : value.Substring(parenIndex + 1);
-                yield return new FunctionCall
-                {
-                    Name = m.Groups[1].Value,
-                    NameIndex = m.Groups[1].Index,
-                    Arguments = args
-                };
-            }
-        }
-
-        // Splits a function argument string at top-level commas, ignoring commas nested inside
-        // parentheses or mustache expressions.
-        private static List<string> SplitArguments(string args)
-        {
-            var result = new List<string>();
-            if (string.IsNullOrWhiteSpace(args))
-                return result;
-            int depth = 0;
-            int mustache = 0;
-            int start = 0;
-            for (int i = 0; i < args.Length; i++)
-            {
-                if (i + 1 < args.Length && args[i] == '{' && args[i + 1] == '{') { mustache++; i++; continue; }
-                if (i + 1 < args.Length && args[i] == '}' && args[i + 1] == '}') { if (mustache > 0) mustache--; i++; continue; }
-                if (mustache > 0) continue;
-                char c = args[i];
-                if (c == '(') depth++;
-                else if (c == ')') { if (depth > 0) depth--; }
-                else if (c == ',' && depth == 0)
-                {
-                    result.Add(args.Substring(start, i - start));
-                    start = i + 1;
-                }
-            }
-            result.Add(args.Substring(start));
-            return result;
-        }
-
         private static void CheckMustaches(string html, List<DrapoDiagnosticVM> diagnostics)
         {
             var openStack = new Stack<int>();
@@ -214,13 +163,6 @@ namespace WebDocs.Services
                 else column++;
             }
             return (line, column);
-        }
-
-        private class FunctionCall
-        {
-            public string Name { get; set; }
-            public int NameIndex { get; set; }
-            public string Arguments { get; set; }
         }
     }
 }

@@ -18,6 +18,9 @@ using Microsoft.OpenApi.Models;
 using Microsoft.Extensions.Hosting;
 using Sysphera.Middleware.Drapo.Pipe;
 using WebDocs.Services;
+using Drapo.Tooling.Content;
+using Drapo.Tooling.Models;
+using Drapo.Tooling.Services;
 using ModelContextProtocol.AspNetCore;
 
 namespace WebDocs
@@ -39,6 +42,9 @@ namespace WebDocs
                   {
                       options.JsonSerializerOptions.PropertyNamingPolicy = null;
                   });
+            // Drapo.Tooling services read documentation content by convention from wwwroot/app.
+            services.AddSingleton<IDrapoContentRoot>(sp =>
+                new DrapoContentRoot(Path.Combine(sp.GetRequiredService<IWebHostEnvironment>().WebRootPath, "app")));
             services.AddScoped<IFunctionService, FunctionService>();
             services.AddScoped<IAttributeService, AttributeService>();
             services.AddScoped<IDataTypeService, DataTypeService>();

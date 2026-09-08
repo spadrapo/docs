@@ -1,0 +1,7 @@
+<div>
+  <ul d-for="item in {{items}}">
+    <li d-on-click="Notify({{item.Key}}, extra)">{{item.Name}}</li>
+  </ul>
+  <p d-if="{{count}} > 0" d-bad="1">{{count}}</p>
+  <b d-on-click="Foo(UpdateSector(1))"></b>
+</div>

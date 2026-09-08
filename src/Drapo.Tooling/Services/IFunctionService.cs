@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
-using WebDocs.Models;
+using Drapo.Tooling.Models;
 
-namespace WebDocs.Services
+namespace Drapo.Tooling.Services
 {
     public interface IFunctionService
     {

@@ -1,4 +1,4 @@
-﻿namespace WebDocs.Models
+﻿namespace Drapo.Tooling.Models
 {
     /// <summary>
     /// View model representing a Drapo attribute, including its name, description, and details.
