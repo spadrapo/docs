@@ -36,8 +36,9 @@ namespace Drapo.Tooling.Services
             var diagnostics = new List<DrapoDiagnosticVM>();
             if (!string.IsNullOrEmpty(html))
             {
-                CheckMustaches(html, diagnostics);
-                await CheckAttributesAndFunctions(html, diagnostics);
+                var lines = new LineMap(html);
+                CheckMustaches(html, lines, diagnostics);
+                await CheckAttributesAndFunctions(html, lines, diagnostics);
             }
 
             var ordered = diagnostics.OrderBy(d => d.Line).ThenBy(d => d.Column).ToList();
@@ -51,7 +52,7 @@ namespace Drapo.Tooling.Services
             };
         }
 
-        private async Task CheckAttributesAndFunctions(string html, List<DrapoDiagnosticVM> diagnostics)
+        private async Task CheckAttributesAndFunctions(string html, LineMap lines, List<DrapoDiagnosticVM> diagnostics)
         {
             // Resolve documented function names once for case-insensitive arity lookup.
             var docFunctionNames = (await _functions.GetNames())
@@ -67,7 +68,7 @@ namespace Drapo.Tooling.Services
 
                 if (!_engine.IsValidAttribute(attribute))
                 {
-                    Add(diagnostics, html, match.Groups[1].Index, "error", "unknown-attribute",
+                    Add(diagnostics, lines, match.Groups[1].Index, "error", "unknown-attribute",
                         $"Unknown Drapo attribute '{attribute}'. It is not defined in the engine.");
                     // Even if the attribute is unknown, still inspect its value below where useful.
                 }
@@ -75,7 +76,7 @@ namespace Drapo.Tooling.Services
                 if (lower == "d-for")
                 {
                     if (!DForRegex.IsMatch(value))
-                        Add(diagnostics, html, valueGroup.Index, "error", "malformed-dfor",
+                        Add(diagnostics, lines, valueGroup.Index, "error", "malformed-dfor",
                             $"Malformed d-for: '{value.Trim()}'. Expected the form '{{item}} in {{iterator}}'.");
                 }
 
@@ -86,11 +87,11 @@ namespace Drapo.Tooling.Services
                         int index = valueGroup.Index + call.NameIndex;
                         if (!_engine.IsValidFunction(call.Name))
                         {
-                            Add(diagnostics, html, index, "error", "unknown-function",
+                            Add(diagnostics, lines, index, "error", "unknown-function",
                                 $"Unknown Drapo function '{call.Name}'. It is not dispatched by the engine.");
                             continue;
                         }
-                        await CheckArity(call, index, docFunctionNames, parameterCache, html, diagnostics);
+                        await CheckArity(call, index, docFunctionNames, parameterCache, lines, diagnostics);
                     }
                 }
             }
@@ -100,7 +101,7 @@ namespace Drapo.Tooling.Services
             FunctionCall call, int index,
             Dictionary<string, string> docFunctionNames,
             Dictionary<string, List<FunctionParameterVM>> parameterCache,
-            string html, List<DrapoDiagnosticVM> diagnostics)
+            LineMap lines, List<DrapoDiagnosticVM> diagnostics)
         {
             string key = call.Name.ToLowerInvariant();
             if (!docFunctionNames.TryGetValue(key, out string docName))
@@ -119,12 +120,12 @@ namespace Drapo.Tooling.Services
             // so an upper bound would produce false positives.
             if (provided < required)
             {
-                Add(diagnostics, html, index, "warning", "wrong-arity",
+                Add(diagnostics, lines, index, "warning", "wrong-arity",
                     $"Function '{docName}' expects at least {required} argument(s) but got {provided}.");
             }
         }
 
-        private static void CheckMustaches(string html, List<DrapoDiagnosticVM> diagnostics)
+        private static void CheckMustaches(string html, LineMap lines, List<DrapoDiagnosticVM> diagnostics)
         {
             var openStack = new Stack<int>();
             for (int i = 0; i + 1 < html.Length; i++)
@@ -137,32 +138,52 @@ namespace Drapo.Tooling.Services
                 else if (html[i] == '}' && html[i + 1] == '}')
                 {
                     if (openStack.Count == 0)
-                        Add(diagnostics, html, i, "error", "unbalanced-mustache", "Unexpected '}}' without a matching '{{'.");
+                        Add(diagnostics, lines, i, "error", "unbalanced-mustache", "Unexpected '}}' without a matching '{{'.");
                     else
                         openStack.Pop();
                     i++;
                 }
             }
             foreach (int index in openStack)
-                Add(diagnostics, html, index, "error", "unbalanced-mustache", "Unclosed '{{' without a matching '}}'.");
+                Add(diagnostics, lines, index, "error", "unbalanced-mustache", "Unclosed '{{' without a matching '}}'.");
         }
 
-        private static void Add(List<DrapoDiagnosticVM> diagnostics, string html, int index, string level, string rule, string message)
+        private static void Add(List<DrapoDiagnosticVM> diagnostics, LineMap lines, int index, string level, string rule, string message)
         {
-            (int line, int column) = Position(html, index);
+            (int line, int column) = lines.Position(index);
             diagnostics.Add(new DrapoDiagnosticVM { Level = level, Rule = rule, Message = message, Line = line, Column = column });
         }
 
-        private static (int line, int column) Position(string text, int index)
+        /// <summary>
+        /// Offset → 1-based (line, column) in O(log n): lines are split on LF only, so a CR
+        /// counts as an ordinary column character (it sits at the line end, never before a token).
+        /// </summary>
+        private sealed class LineMap
         {
-            int line = 1, column = 1;
-            int max = Math.Min(index, text.Length);
-            for (int i = 0; i < max; i++)
+            private readonly int[] _lineStarts;
+            private readonly int _length;
+
+            public LineMap(string text)
             {
-                if (text[i] == '\n') { line++; column = 1; }
-                else column++;
+                _length = text.Length;
+                var starts = new List<int> { 0 };
+                for (int i = 0; i < text.Length; i++)
+                    if (text[i] == '\n')
+                        starts.Add(i + 1);
+                _lineStarts = starts.ToArray();
             }
-            return (line, column);
+
+            public (int line, int column) Position(int index)
+            {
+                int offset = Math.Min(Math.Max(0, index), _length);
+                int lo = 0, hi = _lineStarts.Length - 1;
+                while (lo < hi)
+                {
+                    int mid = (lo + hi + 1) / 2;
+                    if (_lineStarts[mid] <= offset) lo = mid; else hi = mid - 1;
+                }
+                return (lo + 1, offset - _lineStarts[lo] + 1);
+            }
         }
     }
 }

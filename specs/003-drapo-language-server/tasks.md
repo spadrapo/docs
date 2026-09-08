@@ -77,15 +77,15 @@ when fixed; `ParityTests` proves mapped diagnostics equal `validate_drapo` outpu
 
 ### Implementation for User Story 1
 
-- [ ] T024 [US1] Create `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `OffsetOf(text, line, character)`, `PositionOf(text, offset)`, `IdentifierRunEnd(text, offset)` (`[A-Za-z0-9_-]+`), `LineEnd(text, offset)`
-- [ ] T025 [P] [US1] Create `src/Drapo.LanguageServer/Documents/DocumentStore.cs`: thread-safe `Set(uri, text, version)`, `TryGet(uri)`, `Remove(uri)`
-- [ ] T026 [US1] Create `src/Drapo.LanguageServer/Providers/DiagnosticMapper.cs`: `IReadOnlyList<Diagnostic> Map(IEnumerable<DrapoDiagnosticVM>, string text)` per contracts/lsp-capabilities.md (range end = identifier run, min 2 chars, clamp to line end; severity/code/source/message mapping)
-- [ ] T027 [US1] Create `src/Drapo.LanguageServer/Handlers/TextDocumentSyncHandler.cs` (`TextDocumentSyncHandlerBase`, `TextDocumentSyncKind.Full`; on open/change/save store text and schedule validation with a 250 ms per-document debounce + `CancellationTokenSource` replacement; on close remove and publish empty diagnostics; all exceptions caught → logged to stderr)
-- [ ] T028 [US1] Create `src/Drapo.LanguageServer/Program.cs`: parse `--content <dir>` (default `<AppContext.BaseDirectory>/content/app`) and `--version`; validate the content folder exists (exit 1 with stderr reason); `LanguageServer.From(o => o.WithInput(Console.OpenStandardInput()).WithOutput(Console.OpenStandardOutput()).WithServices(s => { register IDrapoContentRoot, IDrapoEngineCatalog (singleton), IFunctionService, IAttributeService, IDrapoValidatorService, DocumentStore }).WithHandler<TextDocumentSyncHandler>().OnInitialize(set serverInfo name/version))`; `await server.WaitForExit`
-- [ ] T029 [P] [US1] Create `src/Drapo.Tests/LanguageServer/ParityTests.cs`: for every fixture and every function sample, `DiagnosticMapper.Map(validator.Validate(text).Diagnostics, text)` has equal count and, element-wise, `range.start == (Line-1, Column-1)`, severity ↔ Level, `code == Rule`, `message == Message`, `source == "drapo"`
-- [ ] T030 [P] [US1] Create `src/Drapo.Tests/LanguageServer/RobustnessTests.cs` with an inline malformed corpus (unclosed tag, unbalanced quotes, truncated `d-on-click="Foo(`, empty string, `\0` noise, 3,000-line generated document) asserting `DiagnosticMapper` + validator never throw and the 3,000-line case completes under 500 ms
-- [ ] T031 [US1] Create `src/Drapo.Tests/LanguageServer/StdioSmokeTest.cs`: start the built `Drapo.LanguageServer` executable (`--content` → repo `wwwroot/app`) with redirected stdio; send `initialize`, `initialized`, `textDocument/didOpen` (`<div d-nope="x"></div>`); read framed messages until a `textDocument/publishDiagnostics` with one `unknown-attribute` arrives (10 s timeout); send `shutdown` and `exit`; assert exit code 0 and that `initialize.result.capabilities` has `textDocumentSync`
-- [ ] T032 [US1] Run `dotnet test src/docs.sln` — US1 tests green; `dotnet run --project src/Drapo.LanguageServer -- --version` prints server and engine version
+- [X] T024 [US1] Create `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `OffsetOf(text, line, character)`, `PositionOf(text, offset)`, `IdentifierRunEnd(text, offset)` (`[A-Za-z0-9_-]+`), `LineEnd(text, offset)`
+- [X] T025 [P] [US1] Create `src/Drapo.LanguageServer/Documents/DocumentStore.cs`: thread-safe `Set(uri, text, version)`, `TryGet(uri)`, `Remove(uri)`
+- [X] T026 [US1] Create `src/Drapo.LanguageServer/Providers/DiagnosticMapper.cs`: `IReadOnlyList<Diagnostic> Map(IEnumerable<DrapoDiagnosticVM>, string text)` per contracts/lsp-capabilities.md (range end = identifier run, min 2 chars, clamp to line end; severity/code/source/message mapping)
+- [X] T027 [US1] Create `src/Drapo.LanguageServer/Handlers/TextDocumentSyncHandler.cs` (`TextDocumentSyncHandlerBase`, `TextDocumentSyncKind.Full`; on open/change/save store text and schedule validation with a 250 ms per-document debounce + `CancellationTokenSource` replacement; on close remove and publish empty diagnostics; all exceptions caught → logged to stderr)
+- [X] T028 [US1] Create `src/Drapo.LanguageServer/Program.cs`: parse `--content <dir>` (default `<AppContext.BaseDirectory>/content/app`) and `--version`; validate the content folder exists (exit 1 with stderr reason); `LanguageServer.From(o => o.WithInput(Console.OpenStandardInput()).WithOutput(Console.OpenStandardOutput()).WithServices(s => { register IDrapoContentRoot, IDrapoEngineCatalog (singleton), IFunctionService, IAttributeService, IDrapoValidatorService, DocumentStore }).WithHandler<TextDocumentSyncHandler>().OnInitialize(set serverInfo name/version))`; `await server.WaitForExit`
+- [X] T029 [P] [US1] Create `src/Drapo.Tests/LanguageServer/ParityTests.cs`: for every fixture and every function sample, `DiagnosticMapper.Map(validator.Validate(text).Diagnostics, text)` has equal count and, element-wise, `range.start == (Line-1, Column-1)`, severity ↔ Level, `code == Rule`, `message == Message`, `source == "drapo"`
+- [X] T030 [P] [US1] Create `src/Drapo.Tests/LanguageServer/RobustnessTests.cs` with an inline malformed corpus (unclosed tag, unbalanced quotes, truncated `d-on-click="Foo(`, empty string, `\0` noise, 3,000-line generated document) asserting `DiagnosticMapper` + validator never throw and the 3,000-line case completes under 500 ms
+- [X] T031 [US1] Create `src/Drapo.Tests/LanguageServer/StdioSmokeTest.cs`: start the built `Drapo.LanguageServer` executable (`--content` → repo `wwwroot/app`) with redirected stdio; send `initialize`, `initialized`, `textDocument/didOpen` (`<div d-nope="x"></div>`); read framed messages until a `textDocument/publishDiagnostics` with one `unknown-attribute` arrives (10 s timeout); send `shutdown` and `exit`; assert exit code 0 and that `initialize.result.capabilities` has `textDocumentSync`
+- [X] T032 [US1] Run `dotnet test src/docs.sln` — US1 tests green; `dotnet run --project src/Drapo.LanguageServer -- --version` prints server and engine version
 
 **Checkpoint**: Diagnostics work end-to-end over stdio with proven parity (SC-001, SC-002, SC-006).
 
@@ -101,12 +101,12 @@ documented family members), with descriptions.
 
 ### Implementation for User Story 2
 
-- [ ] T033 [US2] Create `src/Drapo.LanguageServer/DrapoSymbolIndex.cs`: built once at startup from `IDrapoEngineCatalog`, `IAttributeService.GetList()` and `IFunctionService.Get(name)` for each `GetNames()`; exposes `EngineAttributes`, `Prefixes`, `Attributes` (documented + `IsValidAttribute`, keyed lower-case), `Functions` (keyed lower-case, with parameters and signature); register as singleton in `Program.cs`
-- [ ] T034 [US2] Add to `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `IsInsideTag(text, offset)` (nearest `<` after nearest `>`, not inside quotes), `WordBefore(text, offset)` (`[A-Za-z0-9_-]*` run ending at offset)
-- [ ] T035 [US2] Create `src/Drapo.LanguageServer/Providers/CompletionProvider.cs`: `CompletionList GetCompletions(string text, Position pos)` per contracts/lsp-capabilities.md (in-tag gate; word must be empty, `d` or start with `d-`; items = fixed engine attributes ∪ documented valid names ∪ prefixes, de-duplicated case-insensitively, `textEdit` replacing the typed word, `kind` Property/Keyword, `sortText` fixed-before-prefix, `documentation` markdown from the index)
-- [ ] T036 [US2] Create `src/Drapo.LanguageServer/Handlers/CompletionHandler.cs` (`CompletionHandlerBase`, trigger character `-`, `resolveProvider=false`, delegates to the provider, exceptions → empty list) and register it in `Program.cs`
-- [ ] T037 [P] [US2] Create `src/Drapo.Tests/LanguageServer/CompletionProviderTests.cs`: item labels (fixed) == `catalog.Attributes` exactly (SC-003); prefixes present; `d-on-model-change` present with documentation; `<div d-` yields items, `<div>d-` yields none, inside `d-if="d-"` yields none; `textEdit` range covers the typed `d-`
-- [ ] T038 [US2] Run `dotnet test src/docs.sln` — green
+- [X] T033 [US2] Create `src/Drapo.LanguageServer/DrapoSymbolIndex.cs`: built once at startup from `IDrapoEngineCatalog`, `IAttributeService.GetList()` and `IFunctionService.Get(name)` for each `GetNames()`; exposes `EngineAttributes`, `Prefixes`, `Attributes` (documented + `IsValidAttribute`, keyed lower-case), `Functions` (keyed lower-case, with parameters and signature); register as singleton in `Program.cs`
+- [X] T034 [US2] Add to `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `IsInsideTag(text, offset)` (nearest `<` after nearest `>`, not inside quotes), `WordBefore(text, offset)` (`[A-Za-z0-9_-]*` run ending at offset)
+- [X] T035 [US2] Create `src/Drapo.LanguageServer/Providers/CompletionProvider.cs`: `CompletionList GetCompletions(string text, Position pos)` per contracts/lsp-capabilities.md (in-tag gate; word must be empty, `d` or start with `d-`; items = fixed engine attributes ∪ documented valid names ∪ prefixes, de-duplicated case-insensitively, `textEdit` replacing the typed word, `kind` Property/Keyword, `sortText` fixed-before-prefix, `documentation` markdown from the index)
+- [X] T036 [US2] Create `src/Drapo.LanguageServer/Handlers/CompletionHandler.cs` (`CompletionHandlerBase`, trigger character `-`, `resolveProvider=false`, delegates to the provider, exceptions → empty list) and register it in `Program.cs`
+- [X] T037 [P] [US2] Create `src/Drapo.Tests/LanguageServer/CompletionProviderTests.cs`: item labels (fixed) == `catalog.Attributes` exactly (SC-003); prefixes present; `d-on-model-change` present with documentation; `<div d-` yields items, `<div>d-` yields none, inside `d-if="d-"` yields none; `textEdit` range covers the typed `d-`
+- [X] T038 [US2] Run `dotnet test src/docs.sln` — green
 
 **Checkpoint**: Completion shipped; US1 unaffected.
 
@@ -121,11 +121,11 @@ shows the documented text.
 
 ### Implementation for User Story 3
 
-- [ ] T039 [US3] Add to `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `IdentifierAt(text, offset)` (run around the cursor with start/end), `TryGetEnclosingAttributeValue(text, offset, out name, out valueStart, out valueEnd)` using the validator's attribute regex `(?<=\s)(d-[A-Za-z][\w-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')`
-- [ ] T040 [US3] Create `src/Drapo.LanguageServer/Providers/HoverProvider.cs`: `Hover GetHover(string text, Position pos)` per contracts/lsp-capabilities.md (attribute → `**name**` + description or the "recognised, undocumented" line; function inside `d-on-*` value → signature code span, description, parameter table; else null; `range` = token)
-- [ ] T041 [US3] Create `src/Drapo.LanguageServer/Handlers/HoverHandler.cs` (`HoverHandlerBase`, delegates, exceptions → null) and register in `Program.cs`
-- [ ] T042 [P] [US3] Create `src/Drapo.Tests/LanguageServer/HoverProviderTests.cs`: `d-for` hover contains its description text from `AttributeService`; `UpdateSector` hover contains `UpdateSector(SectorName: text, Url: url, ...` and a table row for `Title`; hover on plain text and on `d-nope` returns null; engine-only attribute returns the "recognised" line
-- [ ] T043 [US3] Run `dotnet test src/docs.sln` — green
+- [X] T039 [US3] Add to `src/Drapo.LanguageServer/Documents/TextPosition.cs`: `IdentifierAt(text, offset)` (run around the cursor with start/end), `TryGetEnclosingAttributeValue(text, offset, out name, out valueStart, out valueEnd)` using the validator's attribute regex `(?<=\s)(d-[A-Za-z][\w-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')`
+- [X] T040 [US3] Create `src/Drapo.LanguageServer/Providers/HoverProvider.cs`: `Hover GetHover(string text, Position pos)` per contracts/lsp-capabilities.md (attribute → `**name**` + description or the "recognised, undocumented" line; function inside `d-on-*` value → signature code span, description, parameter table; else null; `range` = token)
+- [X] T041 [US3] Create `src/Drapo.LanguageServer/Handlers/HoverHandler.cs` (`HoverHandlerBase`, delegates, exceptions → null) and register in `Program.cs`
+- [X] T042 [P] [US3] Create `src/Drapo.Tests/LanguageServer/HoverProviderTests.cs`: `d-for` hover contains its description text from `AttributeService`; `UpdateSector` hover contains `UpdateSector(SectorName: text, Url: url, ...` and a table row for `Title`; hover on plain text and on `d-nope` returns null; engine-only attribute returns the "recognised" line
+- [X] T043 [US3] Run `dotnet test src/docs.sln` — green
 
 **Checkpoint**: Hover shipped.
 
@@ -140,10 +140,10 @@ moves the highlight to the second parameter.
 
 ### Implementation for User Story 4
 
-- [ ] T044 [US4] Create `src/Drapo.LanguageServer/Providers/SignatureHelpProvider.cs`: `SignatureHelp GetSignatureHelp(string text, Position pos)` — inside a `d-on-*` value walk backwards tracking depth to the innermost unmatched `(`; callee = identifier before it; look up in `DrapoSymbolIndex.Functions`; `activeParameter = DrapoHandlerSyntax.SplitArguments(text between '(' and cursor).Count - 1` clamped to `[0, parameters.Count - 1]`; build `SignatureInformation` per contract; null otherwise
-- [ ] T045 [US4] Create `src/Drapo.LanguageServer/Handlers/SignatureHelpHandler.cs` (`SignatureHelpHandlerBase`, trigger `(` `,`, retrigger `,`, exceptions → null) and register in `Program.cs`
-- [ ] T046 [P] [US4] Create `src/Drapo.Tests/LanguageServer/SignatureHelpProviderTests.cs`: `UpdateSector(` → active 0; `UpdateSector(a, ` → active 1; `UpdateSector(a, Foo(b, c), ` → active 2 (nested ignored); `Unknown(` → null; cursor outside a `d-on-*` value → null; mustache `{{a,b}}` inside an argument does not advance the parameter
-- [ ] T047 [US4] Run `dotnet test src/docs.sln` — green; the `StdioSmokeTest` assertion on capabilities now also checks `completionProvider`, `hoverProvider`, `signatureHelpProvider`
+- [X] T044 [US4] Create `src/Drapo.LanguageServer/Providers/SignatureHelpProvider.cs`: `SignatureHelp GetSignatureHelp(string text, Position pos)` — inside a `d-on-*` value walk backwards tracking depth to the innermost unmatched `(`; callee = identifier before it; look up in `DrapoSymbolIndex.Functions`; `activeParameter = DrapoHandlerSyntax.SplitArguments(text between '(' and cursor).Count - 1` clamped to `[0, parameters.Count - 1]`; build `SignatureInformation` per contract; null otherwise
+- [X] T045 [US4] Create `src/Drapo.LanguageServer/Handlers/SignatureHelpHandler.cs` (`SignatureHelpHandlerBase`, trigger `(` `,`, retrigger `,`, exceptions → null) and register in `Program.cs`
+- [X] T046 [P] [US4] Create `src/Drapo.Tests/LanguageServer/SignatureHelpProviderTests.cs`: `UpdateSector(` → active 0; `UpdateSector(a, ` → active 1; `UpdateSector(a, Foo(b, c), ` → active 2 (nested ignored); `Unknown(` → null; cursor outside a `d-on-*` value → null; mustache `{{a,b}}` inside an argument does not advance the parameter
+- [X] T047 [US4] Run `dotnet test src/docs.sln` — green; the `StdioSmokeTest` assertion on capabilities now also checks `completionProvider`, `hoverProvider`, `signatureHelpProvider`
 
 **Checkpoint**: All language features shipped and tested.
 
