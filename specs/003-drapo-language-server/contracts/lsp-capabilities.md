@@ -24,7 +24,11 @@ engine resource not found) with a one-line reason on stderr.
 }
 ```
 
-`serverInfo`: `{ "name": "drapo-language-server", "version": "<assembly version> (engine <EngineVersion>)" }`.
+`serverInfo`: `{ "name": "drapo-language-server", "version": "<informational version>" }` (the engine
+version is printed by `--version`).
+
+Note: the framework advertises a static capability only when the client declares support for that
+feature in `initialize` (VS Code does for all four); it also reports `save.includeText` as `true`.
 
 Document selector (registered by the client; the server accepts any URI it is sent): languages
 `html`, `razor`, `aspnetcorerazor`, schemes `file` and `untitled`.

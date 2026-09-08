@@ -176,12 +176,12 @@ diagnostic (quickstart §5–6); a bad `drapo.server.path` produces an error not
 
 **Purpose**: CI, documentation and repo guidance updates.
 
-- [ ] T056 [P] Create `.github/workflows/ci.yml`: on `pull_request` and `push` (all branches) run `actions/setup-dotnet` 8.0.x, `dotnet build src/docs.sln -c Release`, `dotnet test src/docs.sln -c Release --no-build`; on tags `lsp-v*` add a matrix job (`win-x64/win32-x64`, `linux-x64/linux-x64`, `osx-x64/darwin-x64`, `osx-arm64/darwin-arm64`) that runs `publish.ps1 -Rid`, `npm ci`, `copy-server.ps1 -Rid`, `npm run package -- --target` and uploads `*.vsix` via `actions/upload-artifact`
-- [ ] T057 [P] Update `CLAUDE.md` Layout section to add `src/Drapo.Tooling/`, `src/Drapo.LanguageServer/`, `src/Drapo.Tests/`, `src/vscode-drapo/` with one-line descriptions; update the Services line to say catalog/validator/function/attribute services now live in `Drapo.Tooling`; add `dotnet test src/docs.sln` to Build & run
-- [ ] T058 [P] Mirror the same Layout/Build changes in `.github/copilot-instructions.md`
-- [ ] T059 [P] Add a "Editor support (VS Code)" subsection to the repository `README.md` pointing at `src/vscode-drapo/README.md`
-- [ ] T060 Run the full quickstart (§1–§4 automated parts) one final time: `dotnet build src/docs.sln`, `dotnet test src/docs.sln`, `dotnet run --project src/Drapo.LanguageServer -- --version`, WebDocs smoke via `dotnet run --project src/WebDocs`; record the outcome in `specs/003-drapo-language-server/quickstart.md`
-- [ ] T061 Open a PR from `003-drapo-language-server` to `master` referencing `Closes #385`, summarising the three deliverables and the parity guarantee
+- [X] T056 [P] Create `.github/workflows/ci.yml`: on `pull_request` and `push` (all branches) run `actions/setup-dotnet` 8.0.x, `dotnet build src/docs.sln -c Release`, `dotnet test src/docs.sln -c Release --no-build`; on tags `lsp-v*` add a matrix job (`win-x64/win32-x64`, `linux-x64/linux-x64`, `osx-x64/darwin-x64`, `osx-arm64/darwin-arm64`) that runs `publish.ps1 -Rid`, `npm ci`, `copy-server.ps1 -Rid`, `npm run package -- --target` and uploads `*.vsix` via `actions/upload-artifact`
+- [X] T057 [P] Update `CLAUDE.md` Layout section to add `src/Drapo.Tooling/`, `src/Drapo.LanguageServer/`, `src/Drapo.Tests/`, `src/vscode-drapo/` with one-line descriptions; update the Services line to say catalog/validator/function/attribute services now live in `Drapo.Tooling`; add `dotnet test src/docs.sln` to Build & run
+- [X] T058 [P] Mirror the same Layout/Build changes in `.github/copilot-instructions.md`
+- [X] T059 [P] Add a "Editor support (VS Code)" subsection to the repository `README.md` pointing at `src/vscode-drapo/README.md`
+- [X] T060 Run the full quickstart (§1–§4 automated parts) one final time: `dotnet build src/docs.sln`, `dotnet test src/docs.sln`, `dotnet run --project src/Drapo.LanguageServer -- --version`, WebDocs smoke via `dotnet run --project src/WebDocs`; record the outcome in `specs/003-drapo-language-server/quickstart.md`
+- [X] T061 Open a PR from `003-drapo-language-server` to `master` referencing `Closes #385`, summarising the three deliverables and the parity guarantee
 
 ---
 

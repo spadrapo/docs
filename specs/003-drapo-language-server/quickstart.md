@@ -110,7 +110,7 @@ cd src/Drapo.LanguageServer
 ./publish.ps1                       # publishes self-contained builds to bin/publish/<rid>/
 cd ../vscode-drapo
 ./scripts/copy-server.ps1 -Rid win-x64
-npm run package -- --target win32-x64   # produces vscode-drapo-<version>@win32-x64.vsix
+npm run package:win32-x64           # produces vscode-drapo-win32-x64-<version>.vsix
 ```
 
 Install the VSIX on a machine with no .NET SDK/runtime (`code --install-extension <file>`), open an
@@ -119,5 +119,26 @@ install to first diagnostic must be under 2 minutes with no configuration (SC-00
 
 ## 7. CI
 
-`.github/workflows/ci.yml` runs steps 1–2 on every PR/push. On a tag matching `lsp-v*` it also runs
+`.github/workflows/ci.yml` runs steps 1–2 and the extension integration test (`npm test` under xvfb) on every PR/push. On a tag matching `lsp-v*` it also runs
 step 6 for all four targets and uploads the VSIX files as artifacts.
+
+## Verified on 2026-09-08 (Windows 11, .NET SDK 8.0.424, Node 22, VS Code 1.136)
+
+| Step | Result |
+|------|--------|
+| §1 `dotnet build src/docs.sln` | 0 errors; only two pre-existing ASP0019 warnings in `FunctionController` |
+| §2 `dotnet test src/docs.sln` | 336 passed, 0 failed (parity corpus = 9 fixtures + 174 function samples) |
+| §3 WebDocs + MCP | site renders; `api/Function`, `api/Attribute` and MCP `validate_drapo` return the same JSON as before the extraction (`<div d-nope="1">` → `unknown-attribute` line 1, column 6) |
+| §4 `--version` | `drapo-language-server 0.1.0+… (engine 1.0.0+…)`; raw `initialize` over stdio advertises sync, completion, hover, signatureHelp |
+| §5 VS Code | replaced by the automated `npm test` (extension host, real client, real server): diagnostics, completion, hover, signature help and clear-on-fix all asserted — passes with the Debug server and with `DRAPO_TEST_BUNDLED=1` (3/3 runs) |
+| §6 packaging | `vscode-drapo-win32-x64-0.1.0.vsix` (35.5 MB) built, installed with `code --install-extension`; the extension log shows it launching the bundled `server/win-x64/Drapo.LanguageServer.exe` and completing the handshake |
+
+Notes discovered while verifying:
+
+- OmniSharp only advertises static capabilities the client declares support for; VS Code declares
+  all of them. A bare `initialize` with empty `capabilities` shows only `textDocumentSync`.
+- `save.includeText` is reported as `true` by the framework regardless of the option set; harmless.
+- npm on Windows swallows `--target`, so the extension has one `package:<target>` script per platform.
+- The sample sweep (Principle III) caught three shipped samples that were invalid against the engine;
+  they were corrected in this feature (`d-dataAllowCache` → `d-dataCache`, a non-existent
+  `d-component` attribute, a non-existent `Add()` function).
