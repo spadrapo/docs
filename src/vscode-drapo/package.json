@@ -1,0 +1,87 @@
+{
+  "name": "vscode-drapo",
+  "displayName": "Drapo",
+  "description": "Diagnostics, completion, hover and signature help for Drapo d-* markup, powered by the Drapo documentation catalog and validator.",
+  "version": "0.1.0",
+  "publisher": "spadrapo",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/spadrapo/docs.git",
+    "directory": "src/vscode-drapo"
+  },
+  "bugs": {
+    "url": "https://github.com/spadrapo/docs/issues"
+  },
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Programming Languages",
+    "Linters"
+  ],
+  "keywords": [
+    "drapo",
+    "html",
+    "razor",
+    "lsp",
+    "language server"
+  ],
+  "activationEvents": [
+    "onLanguage:html",
+    "onLanguage:razor",
+    "onLanguage:aspnetcorerazor"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "configuration": {
+      "title": "Drapo",
+      "properties": {
+        "drapo.server.path": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to a Drapo.LanguageServer executable. Leave empty to use the server bundled with the extension."
+        },
+        "drapo.trace.server": {
+          "type": "string",
+          "enum": [
+            "off",
+            "messages",
+            "verbose"
+          ],
+          "default": "off",
+          "description": "Traces the communication between VS Code and the Drapo language server."
+        }
+      }
+    },
+    "commands": [
+      {
+        "command": "drapo.restartServer",
+        "title": "Drapo: Restart Language Server"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=out/extension.js",
+    "watch": "esbuild src/extension.ts --bundle --platform=node --target=node18 --external:vscode --outfile=out/extension.js --watch",
+    "typecheck": "tsc --noEmit -p .",
+    "compile:tests": "tsc -p .",
+    "test": "npm run compile && npm run compile:tests && node out/test/runTest.js",
+    "vscode:prepublish": "npm run typecheck && npm run compile",
+    "package:win32-x64": "vsce package --no-dependencies --target win32-x64",
+    "package:linux-x64": "vsce package --no-dependencies --target linux-x64",
+    "package:darwin-x64": "vsce package --no-dependencies --target darwin-x64",
+    "package:darwin-arm64": "vsce package --no-dependencies --target darwin-arm64"
+  },
+  "dependencies": {
+    "vscode-languageclient": "^10.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.0",
+    "@types/vscode": "^1.90.0",
+    "@vscode/test-electron": "^2.4.1",
+    "@vscode/vsce": "^3.0.0",
+    "esbuild": "^0.25.0",
+    "typescript": "^5.5.0"
+  }
+}

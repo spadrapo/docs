@@ -6,6 +6,8 @@
 		<IsPackable>false</IsPackable>
 		<IsTestProject>true</IsTestProject>
 		<RootNamespace>Drapo.Tests</RootNamespace>
+		<!-- See Drapo.LanguageServer.csproj: VS threading analyzers are transitive and not applicable. -->
+		<NoWarn>$(NoWarn);VSTHRD002;VSTHRD103;VSTHRD200</NoWarn>
 	</PropertyGroup>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.11.1" />

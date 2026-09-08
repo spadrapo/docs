@@ -8,6 +8,10 @@
 		<AssemblyName>Drapo.LanguageServer</AssemblyName>
 		<Version>0.1.0</Version>
 		<InvariantGlobalization>true</InvariantGlobalization>
+		<!-- VSTHRD* come from Microsoft.VisualStudio.Threading.Analyzers (transitive via OmniSharp).
+		     They target Visual Studio's JoinableTaskFactory; a stdio console host has no
+		     synchronization context, so the blocking-wait/deadlock rules do not apply here. -->
+		<NoWarn>$(NoWarn);VSTHRD002;VSTHRD103;VSTHRD200</NoWarn>
 		<Description>Drapo language server (LSP over stdio): diagnostics, completion, hover and signature help for d-* markup.</Description>
 	</PropertyGroup>
 	<ItemGroup>

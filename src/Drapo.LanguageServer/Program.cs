@@ -46,7 +46,7 @@ namespace Drapo.LanguageServer
 
             if (!Directory.Exists(Path.Combine(contentPath, "functions")))
             {
-                Console.Error.WriteLine($"{ServerName}: documentation content not found at '{contentPath}' (expected a 'functions' folder). Use --content <dir>.");
+                await Console.Error.WriteLineAsync($"{ServerName}: documentation content not found at '{contentPath}' (expected a 'functions' folder). Use --content <dir>.");
                 return 1;
             }
 
@@ -71,7 +71,7 @@ namespace Drapo.LanguageServer
             }
             catch (Exception ex)
             {
-                Console.Error.WriteLine($"{ServerName}: fatal: {ex}");
+                await Console.Error.WriteLineAsync($"{ServerName}: fatal: {ex}");
                 return 1;
             }
         }
@@ -106,7 +106,10 @@ namespace Drapo.LanguageServer
             private readonly string _category;
             public StderrLogger(string category) { _category = category; }
             public IDisposable BeginScope<TState>(TState state) where TState : notnull => NullScope.Instance;
-            public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Warning;
+            // OmniSharp warns once that no configuration sections are registered; this server has
+            // no settings, so that warning is expected and only noise for the user.
+            public bool IsEnabled(LogLevel logLevel) =>
+                logLevel >= LogLevel.Warning && !_category.EndsWith(".DidChangeConfigurationProvider", StringComparison.Ordinal);
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
                 if (!IsEnabled(logLevel))
