@@ -69,7 +69,8 @@ code --install-extension vscode-drapo-win32-x64-0.1.0.vsix</code></pre>
         <p>To debug the extension, open <code>src/vscode-drapo</code> in VS Code, press <kbd>F5</kbd>, and in the development host set <code>drapo.server.path</code> to the Debug build of the server. <code>npm test</code> runs an integration test in a real VS Code instance; <code>dotnet test src/docs.sln</code> runs the tooling and server tests, including a parity corpus that checks every documented function sample.</p>
 
         <h3>Releasing (maintainers)</h3>
-        <p>Bump <code>version</code> in <code>src/vscode-drapo/package.json</code>, then push a tag. The CI workflow builds and tests everything, packages the four platform VSIX files and attaches them to a GitHub Release named after the tag.</p>
+        <p>In the repository go to <em>Actions</em> → <em>Release extension</em> → <em>Run workflow</em> and optionally type the version (for example <code>0.2.0</code>). The workflow bumps <code>src/vscode-drapo/package.json</code> if needed, creates the <code>lsp-v&lt;version&gt;</code> tag and starts the CI build, which tests everything, packages the four platform VSIX files and attaches them to a GitHub Release named after the tag.</p>
+        <p>The same can be done by hand: bump the version, then push the tag.</p>
         <pre><code>git tag lsp-v0.2.0
 git push origin lsp-v0.2.0</code></pre>
 

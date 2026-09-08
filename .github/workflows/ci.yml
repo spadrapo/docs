@@ -5,6 +5,9 @@ on:
     branches: ["**"]
     tags: ["lsp-v*"]
   pull_request:
+  # Dispatched on an lsp-v* tag by release-extension.yml (tags pushed with GITHUB_TOKEN do not
+  # trigger push events on their own).
+  workflow_dispatch:
 
 jobs:
   build-and-test:

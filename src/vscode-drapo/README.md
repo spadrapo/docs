@@ -82,6 +82,12 @@ code --install-extension vscode-drapo-win32-x64-0.1.0.vsix
 
 Repeat with the other runtime identifiers for the other targets.
 
+### Releasing
+
+Actions → **Release extension** → *Run workflow*, optionally with a version. It bumps
+`package.json` when needed, tags `lsp-v<version>` and starts the CI build that packages all four
+platforms and attaches them to a GitHub Release. Pushing an `lsp-v*` tag by hand does the same.
+
 ## Source
 
 The extension lives in the Drapo documentation repository:

@@ -1,0 +1,99 @@
+name: Release extension
+
+# Manual, one-click release of the VS Code extension:
+#   Actions -> "Release extension" -> Run workflow (optionally type a version).
+#
+# 1. Uses the version you type, or the one in src/vscode-drapo/package.json.
+# 2. If package.json differs, bumps it and commits to master.
+# 3. Creates and pushes the tag lsp-v<version>.
+# 4. Dispatches the CI workflow on that tag, which builds, tests, packages the four
+#    platform VSIX files and attaches them to a GitHub Release of the same name.
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, e.g. 0.2.0 (default: the version in src/vscode-drapo/package.json)"
+        required: false
+        type: string
+
+permissions:
+  contents: write
+  actions: write
+
+concurrency:
+  group: release-extension
+  cancel-in-progress: false
+
+jobs:
+  tag-and-dispatch:
+    name: Tag lsp-v* and start the release build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Resolve version
+        id: version
+        working-directory: src/vscode-drapo
+        env:
+          INPUT_VERSION: ${{ inputs.version }}
+        run: |
+          set -euo pipefail
+          current=$(node -p "require('./package.json').version")
+          version="${INPUT_VERSION:-$current}"
+          version="${version#v}"
+          if ! [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+([-.][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error::'$version' is not a valid semantic version (expected e.g. 0.2.0)."
+            exit 1
+          fi
+          if git rev-parse -q --verify "refs/tags/lsp-v$version" >/dev/null; then
+            echo "::error::Tag lsp-v$version already exists. Pick a new version."
+            exit 1
+          fi
+          echo "current=$current" >> "$GITHUB_OUTPUT"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=lsp-v$version" >> "$GITHUB_OUTPUT"
+
+      - name: Bump package.json if needed
+        if: steps.version.outputs.current != steps.version.outputs.version
+        working-directory: src/vscode-drapo
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          npm version "$VERSION" --no-git-tag-version
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add package.json package-lock.json
+          git commit -m "vscode-drapo: release $VERSION"
+          git push origin HEAD:master
+
+      - name: Create and push tag
+        env:
+          TAG: ${{ steps.version.outputs.tag }}
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          set -euo pipefail
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Drapo VS Code extension $VERSION"
+          git push origin "$TAG"
+
+      - name: Dispatch the CI release build on the tag
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ steps.version.outputs.tag }}
+        run: |
+          set -euo pipefail
+          gh workflow run ci.yml --ref "$TAG" --repo "$GITHUB_REPOSITORY"
+          echo "### Release ${TAG} started" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "The CI workflow is building and packaging on tag \`${TAG}\`. When it finishes, the VSIX files are at:" >> "$GITHUB_STEP_SUMMARY"
+          echo "https://github.com/${GITHUB_REPOSITORY}/releases/tag/${TAG}" >> "$GITHUB_STEP_SUMMARY"
