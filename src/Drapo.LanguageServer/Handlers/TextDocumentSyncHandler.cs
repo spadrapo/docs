@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Concurrent;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Drapo.LanguageServer.Documents;
@@ -45,6 +46,25 @@ namespace Drapo.LanguageServer.Handlers
             return new TextDocumentAttributes(uri, languageId);
         }
 
+        /// <summary>
+        /// The other handlers are registered for the language ids VS Code uses (see
+        /// <see cref="DrapoDocuments"/>) and OmniSharp routes requests by the id stored at didOpen.
+        /// Other clients derive the id from their own content type names (Visual Studio sends the
+        /// content type, e.g. "HTML"), so anything unknown is mapped by file extension.
+        /// </summary>
+        public static string NormalizeLanguageId(DocumentUri uri, string languageId)
+        {
+            string id = languageId?.ToLowerInvariant();
+            if (id != null && DrapoDocuments.LanguageIds.Contains(id))
+                return id;
+            string path = uri?.Path ?? string.Empty;
+            if (path.EndsWith(".cshtml", StringComparison.OrdinalIgnoreCase))
+                return "aspnetcorerazor";
+            if (path.EndsWith(".razor", StringComparison.OrdinalIgnoreCase))
+                return "razor";
+            return "html"; // .html/.htm and anything else the client chose to open with us
+        }
+
         protected override TextDocumentSyncRegistrationOptions CreateRegistrationOptions(TextSynchronizationCapability capability, ClientCapabilities clientCapabilities)
         {
             return new TextDocumentSyncRegistrationOptions
@@ -57,7 +77,8 @@ namespace Drapo.LanguageServer.Handlers
 
         public override Task<Unit> Handle(DidOpenTextDocumentParams request, CancellationToken cancellationToken)
         {
-            _documents.Set(request.TextDocument.Uri, request.TextDocument.Text, request.TextDocument.Version, request.TextDocument.LanguageId);
+            ProtocolTrace.Write($"didOpen {request.TextDocument.Uri} languageId={request.TextDocument.LanguageId}");
+            _documents.Set(request.TextDocument.Uri, request.TextDocument.Text, request.TextDocument.Version, NormalizeLanguageId(request.TextDocument.Uri, request.TextDocument.LanguageId));
             ScheduleValidation(request.TextDocument.Uri);
             return Unit.Task;
         }
@@ -134,6 +155,7 @@ namespace Drapo.LanguageServer.Handlers
     /// <summary>Document selector shared by all handlers.</summary>
     public static class DrapoDocuments
     {
-        public static readonly TextDocumentSelector Selector = TextDocumentSelector.ForLanguage("html", "razor", "aspnetcorerazor");
+        public static readonly string[] LanguageIds = { "html", "razor", "aspnetcorerazor" };
+        public static readonly TextDocumentSelector Selector = TextDocumentSelector.ForLanguage(LanguageIds);
     }
 }

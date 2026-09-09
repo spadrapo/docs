@@ -79,3 +79,24 @@ namespace Drapo.Tests.Tooling
         }
     }
 }
+
+namespace Drapo.Tests.Tooling
+{
+    public class FunctionSamplesArityTest
+    {
+        /// <summary>
+        /// SC-001 of specs/004-lsp-improvements: no documented sample is flagged for arity. Every
+        /// sample runs on the docs site, so a wrong-arity warning on one is a false positive by
+        /// definition (or a broken sample, which is also a bug).
+        /// </summary>
+        [Theory]
+        [MemberData(nameof(FunctionSamplesValidateTest.Samples), MemberType = typeof(FunctionSamplesValidateTest))]
+        public async Task EveryFunctionSampleHasNoArityWarning(string relativePath)
+        {
+            string html = await File.ReadAllTextAsync(Path.Combine(TestContentRoot.AppPath, relativePath));
+            DrapoValidationResultVM result = await TestContentRoot.Validator().Validate(html);
+            var arity = result.Diagnostics.Where(d => d.Rule == "wrong-arity").ToList();
+            Assert.True(arity.Count == 0, string.Join("\n", arity.Select(d => $"{d.Line}:{d.Column} {d.Message}")));
+        }
+    }
+}

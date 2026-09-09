@@ -1,13 +1,13 @@
 name: Release extension
 
-# Manual, one-click release of the VS Code extension:
+# Manual, one-click release of the editor extensions (VS Code + Visual Studio):
 #   Actions -> "Release extension" -> Run workflow (optionally type a version).
 #
 # 1. Uses the version you type, or the one in src/vscode-drapo/package.json.
 # 2. If package.json differs, bumps it and commits to master.
 # 3. Creates and pushes the tag lsp-v<version>.
 # 4. Dispatches the CI workflow on that tag, which builds, tests, packages the four
-#    platform VSIX files and attaches them to a GitHub Release of the same name.
+#    VS Code VSIX files plus the Visual Studio VSIX and attaches them to a GitHub Release of the same name.
 
 on:
   workflow_dispatch:

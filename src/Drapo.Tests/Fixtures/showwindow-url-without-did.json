@@ -1,0 +1,3 @@
+[{"Level":"warning","Rule":"wrong-arity","Line":1,"Column":47,"Message":"Function 'ShowWindow' opens a url, so it needs the did of the container as second argument (only a window definition name can be used alone)."},
+ {"Level":"warning","Rule":"wrong-arity","Line":2,"Column":47,"Message":"Function 'ShowWindow' opens a url, so it needs the did of the container as second argument (only a window definition name can be used alone)."},
+ {"Level":"warning","Rule":"wrong-arity","Line":3,"Column":47,"Message":"Function 'ShowWindow' expects at least 1 argument(s) but got 0."}]

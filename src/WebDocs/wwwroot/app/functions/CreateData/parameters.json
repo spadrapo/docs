@@ -2,28 +2,38 @@
   {
     "Name": "DataKey",
     "Description": "The identification of a storage location that will receive the created object",
-    "Types": [ "datakey" ],
+    "Types": [
+      "datakey"
+    ],
     "Optional": false
   },
   {
     "Name": "Notify",
     "Description": "You can choose if you want to notify the change to observers",
-    "Types": [ "boolean" ],
+    "Types": [
+      "boolean"
+    ],
     "Optional": true,
     "DefaultValue": "true"
   },
   {
     "Name": "Key",
-    "Description": "Property name for the object (alternates with Value parameters)",
-    "Types": [ "text", "mustache" ],
-    "Optional": false,
+    "Description": "Property name for the object (alternates with Value parameters). Key/Value pairs can be repeated; when no pair is given an empty object is created",
+    "Types": [
+      "text",
+      "mustache"
+    ],
+    "Optional": true,
     "Repeatable": true
   },
   {
     "Name": "Value",
-    "Description": "Property value for the object (alternates with Key parameters)",
-    "Types": [ "text", "mustache" ],
-    "Optional": false,
+    "Description": "Property value for the object (alternates with Key parameters). Always paired with the preceding Key",
+    "Types": [
+      "text",
+      "mustache"
+    ],
+    "Optional": true,
     "Repeatable": true
   }
 ]

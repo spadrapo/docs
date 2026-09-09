@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+	<!--
+	  Visual Studio 2022 (17.x) / 2026 (18.x) extension hosting Drapo.LanguageServer through the
+	  built-in LSP client. Deliberately NOT part of docs.sln: it targets net472 and needs the VSSDK
+	  build tools (MSBuild on Windows), which would break the Linux `dotnet build src/docs.sln`
+	  used by CI and the Docker image. Build with ./build.ps1 (see README.md).
+	-->
+	<PropertyGroup>
+		<TargetFramework>net472</TargetFramework>
+		<LangVersion>latest</LangVersion>
+		<Nullable>enable</Nullable>
+		<RootNamespace>Drapo.VisualStudio</RootNamespace>
+		<AssemblyName>Drapo.VisualStudio</AssemblyName>
+		<VSSDKBuildToolsAutoSetup>true</VSSDKBuildToolsAutoSetup>
+		<GeneratePkgDefFile>false</GeneratePkgDefFile>
+		<DeployExtension>false</DeployExtension>
+		<!-- One number for the whole editor-support release (FR-015): passed by build.ps1/CI as
+		     -p:VsixVersion=<vscode package.json version>.0; the manifest reads it through GetVsixVersion. -->
+		<VsixVersion Condition="'$(VsixVersion)' == ''">0.1.0.0</VsixVersion>
+		<Version>$(VsixVersion)</Version>
+		<Description>Drapo language support for Visual Studio: diagnostics, completion, hover, signature help and semantic highlighting for d-* markup in .html files.</Description>
+	</PropertyGroup>
+	<ItemGroup>
+		<ProjectCapability Include="CreateVsixContainer" />
+		<Reference Include="System.ComponentModel.Composition" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.VisualStudio.SDK" Version="17.14.40265" ExcludeAssets="runtime" />
+		<PackageReference Include="Microsoft.VSSDK.BuildTools" Version="18.5.40034" />
+	</ItemGroup>
+	<ItemGroup>
+		<Content Include="LICENSE.txt" IncludeInVSIX="true" />
+		<!-- Not project items on purpose: server\ holds a whole .NET runtime (System.dll, netstandard.dll, ...)
+		     and MSBuild's reference resolution would pick those over the framework's. See AddServerToVsix. -->
+		<Content Remove="server\**" />
+		<None Remove="server\**" />
+	</ItemGroup>
+	<!-- The self-contained win-x64 server (with its documentation content) published by build.ps1,
+	     packaged under server\ inside the VSIX with its directory structure intact. -->
+	<Target Name="AddServerToVsix" AfterTargets="GetVsixSourceItems">
+		<ItemGroup>
+			<_DrapoServerFile Include="server\**\*" />
+			<VSIXSourceItem Include="@(_DrapoServerFile)" VSIXSubPath="server\%(RecursiveDir)" />
+		</ItemGroup>
+		<Error Condition="'@(_DrapoServerFile)' == ''" Text="server\ is empty: run build.ps1 (publishes Drapo.LanguageServer for win-x64 into it) before building the VSIX." />
+	</Target>
+	<Target Name="GetVsixVersion" Outputs="$(VsixVersion)" />
+</Project>

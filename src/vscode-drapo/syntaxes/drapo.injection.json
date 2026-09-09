@@ -1,0 +1,92 @@
+{
+  "$schema": "https://raw.githubusercontent.com/martinring/tmlanguage/master/tmlanguage.json",
+  "name": "Drapo (injection)",
+  "scopeName": "text.html.drapo.injection",
+  "injectionSelector": "L:text.html -comment -source.js -source.css -source.cs -source.ts, L:text.aspnetcorerazor -comment -source.js -source.css -source.cs -source.ts",
+  "patterns": [
+    { "include": "#handler-attribute" },
+    { "include": "#drapo-attribute" },
+    { "include": "#drapo-attribute-bare" },
+    { "include": "#mustache" }
+  ],
+  "repository": {
+    "handler-attribute": {
+      "comment": "d-on-* handler: the value is a list of function calls",
+      "begin": "(?<=\\s)(d-on-[A-Za-z][\\w-]*)\\s*(=)\\s*([\"'])",
+      "beginCaptures": {
+        "1": { "name": "entity.other.attribute-name.drapo.handler keyword.other.drapo" },
+        "2": { "name": "punctuation.separator.key-value.html" },
+        "3": { "name": "string.quoted.drapo punctuation.definition.string.begin.html" }
+      },
+      "end": "(\\3)",
+      "endCaptures": {
+        "1": { "name": "string.quoted.drapo punctuation.definition.string.end.html" }
+      },
+      "contentName": "meta.attribute.drapo.handler",
+      "patterns": [
+        { "include": "#function-call" },
+        { "include": "#mustache" },
+        { "match": ";", "name": "punctuation.terminator.statement.drapo" },
+        { "match": "[^;\"'{]+", "name": "string.unquoted.drapo" }
+      ]
+    },
+    "drapo-attribute": {
+      "comment": "any other valued d-* attribute: the value may contain mustaches",
+      "begin": "(?<=\\s)(d-[A-Za-z][\\w-]*)\\s*(=)\\s*([\"'])",
+      "beginCaptures": {
+        "1": { "name": "entity.other.attribute-name.drapo keyword.other.drapo" },
+        "2": { "name": "punctuation.separator.key-value.html" },
+        "3": { "name": "string.quoted.drapo punctuation.definition.string.begin.html" }
+      },
+      "end": "(\\3)",
+      "endCaptures": {
+        "1": { "name": "string.quoted.drapo punctuation.definition.string.end.html" }
+      },
+      "contentName": "meta.attribute.drapo string.quoted.drapo",
+      "patterns": [
+        { "include": "#mustache" }
+      ]
+    },
+    "drapo-attribute-bare": {
+      "comment": "d-* attribute without a value",
+      "match": "(?<=\\s)(d-[A-Za-z][\\w-]*)(?=[\\s/>])",
+      "captures": {
+        "1": { "name": "entity.other.attribute-name.drapo keyword.other.drapo" }
+      }
+    },
+    "function-call": {
+      "comment": "Name( args ) inside a handler; arguments may nest calls and mustaches",
+      "begin": "\\s*([A-Za-z_]\\w*)\\s*(\\()",
+      "beginCaptures": {
+        "1": { "name": "entity.name.function.drapo" },
+        "2": { "name": "punctuation.section.arguments.begin.drapo" }
+      },
+      "end": "(\\))",
+      "endCaptures": {
+        "1": { "name": "punctuation.section.arguments.end.drapo" }
+      },
+      "contentName": "meta.function-call.arguments.drapo",
+      "patterns": [
+        { "include": "#function-call" },
+        { "include": "#mustache" },
+        { "match": ",", "name": "punctuation.separator.arguments.drapo" },
+        { "match": "[^,()\"'{}]+", "name": "string.unquoted.argument.drapo" }
+      ]
+    },
+    "mustache": {
+      "comment": "{{ expression }} in text or in any attribute value",
+      "begin": "\\{\\{",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.template-expression.begin.drapo" }
+      },
+      "end": "\\}\\}",
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.template-expression.end.drapo" }
+      },
+      "contentName": "meta.embedded.expression.drapo variable.other.mustache.drapo",
+      "patterns": [
+        { "include": "#mustache" }
+      ]
+    }
+  }
+}

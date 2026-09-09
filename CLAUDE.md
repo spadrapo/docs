@@ -26,7 +26,10 @@ src/Drapo.LanguageServer/        # LSP over stdio (OmniSharp) on top of Drapo.To
                                  #   completion, hover, signature help; content copied to bin/content/app
 src/Drapo.Tests/                 # xunit: parity corpus (fixtures + every function sample), providers,
                                  #   stdio smoke test, "no ASP.NET reference" guard
-src/vscode-drapo/                # VS Code extension (TypeScript) that launches the bundled server
+src/vscode-drapo/                # VS Code extension (TypeScript) that launches the bundled server;
+                                 #   syntaxes/drapo.injection.json = TextMate highlighting
+src/Drapo.VisualStudio/          # Visual Studio 2022/2026 extension (VSIX, net472, ILanguageClient) hosting
+                                 #   the same server for .html; built by build.ps1, NOT in docs.sln
 src/WebDocs/                     # the ASP.NET Core app
   Program.cs / Startup.cs        # host + DI + MCP wiring (registers IDrapoContentRoot = wwwroot/app)
   Controllers/                   # Attribute, Function, Menu, Sample, Search, Chat, NuGet, Todo
@@ -97,7 +100,9 @@ dotnet run --project Drapo.LanguageServer -- --content WebDocs/wwwroot/app   # L
 ```
 
 Editor support: `src/vscode-drapo/README.md` (F5 to debug, `npm test` for the VS Code integration
-test, `publish.ps1` + `copy-server.ps1` + `npm run package:<target>` to build a VSIX).
+test, `npm run test:grammar` for the TextMate grammar, `publish.ps1` + `copy-server.ps1` +
+`npm run package:<target>` to build a VSIX) and `src/Drapo.VisualStudio/README.md` (`build.ps1`,
+needs Visual Studio with the extension-development workload; smoke test by installing the VSIX).
 
 Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 8080:80 drapo-docs`.
 
@@ -111,5 +116,5 @@ Docker: `docker build -t drapo-docs -f src/Dockerfile src/` then `docker run -p 
 <!-- SPECKIT START -->
 For additional context about technologies to be used, project structure,
 shell commands, and other important information, read the current plan
-at specs/003-drapo-language-server/plan.md
+at specs/004-lsp-improvements/plan.md
 <!-- SPECKIT END -->

@@ -1,20 +1,22 @@
 [
   {
     "Name": "Sector",
-    "Description": "The sector that the storage belongs",
+    "Description": "Restricts the operation to one sector; = means the current sector. When omitted or empty every sector is checked",
     "Types": [
       "mustache",
       "text"
     ],
-    "Optional": false
+    "Optional": true,
+    "DefaultValue": "all sectors"
   },
   {
     "Name": "DataKey",
-    "Description": "The storage item that will be checked",
+    "Description": "The storage item or data group that will be checked. When omitted or empty every storage item of the selected sectors is checked",
     "Types": [
       "datakey",
       "dataGroup"
     ],
-    "Optional": false
+    "Optional": true,
+    "DefaultValue": "all data"
   }
 ]

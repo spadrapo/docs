@@ -115,14 +115,48 @@ namespace Drapo.Tooling.Services
             }
 
             int required = parameters.Count(p => !p.Optional);
-            int provided = SplitArguments(call.Arguments).Count;
+            List<string> arguments = SplitArguments(call.Arguments);
+            int provided = arguments.Count;
             // Only flag too-few arguments: many Drapo functions are variadic (e.g. CreateData),
             // so an upper bound would produce false positives.
             if (provided < required)
             {
                 Add(diagnostics, lines, index, "warning", "wrong-arity",
                     $"Function '{docName}' expects at least {required} argument(s) but got {provided}.");
+                return;
             }
+            CheckConditionalArity(key, docName, arguments, index, lines, diagnostics);
+        }
+
+        /// <summary>
+        /// Minimums the engine decides from the <em>value</em> of an earlier argument. The
+        /// documented minimum is the unconditional one (so no valid call is ever flagged); these
+        /// rules add the conditional case only when it is decidable from the literal text.
+        /// </summary>
+        private static void CheckConditionalArity(string key, string docName, List<string> arguments, int index, LineMap lines, List<DrapoDiagnosticVM> diagnostics)
+        {
+            // ExecuteFunctionShowWindow: `did = isUri ? Parameters[1] : null`, where the engine's
+            // Parser.IsUri is "starts with '~' or '/'". A window definition name needs no did.
+            if (key == "showwindow" && arguments.Count == 1 && IsLiteralUrl(arguments[0]))
+            {
+                Add(diagnostics, lines, index, "warning", "wrong-arity",
+                    $"Function '{docName}' opens a url, so it needs the did of the container as second argument (only a window definition name can be used alone).");
+            }
+
+            // ExecuteFunctionCreateGuid: `if (Parameters.length == 0) return (value)`, otherwise
+            // Parameters[0] and [1] are read unconditionally. Valid shapes are 0 or at least 2.
+            if (key == "createguid" && arguments.Count == 1)
+            {
+                Add(diagnostics, lines, index, "warning", "wrong-arity",
+                    $"Function '{docName}' takes either no argument (returns the guid) or a DataKey and a DataField; a DataKey alone does nothing useful.");
+            }
+        }
+
+        /// <summary>The engine's Parser.IsUri rule applied to a literal argument (mustaches and nested calls are not decidable).</summary>
+        private static bool IsLiteralUrl(string argument)
+        {
+            string value = argument?.Trim();
+            return !string.IsNullOrEmpty(value) && (value[0] == '~' || value[0] == '/');
         }
 
         private static void CheckMustaches(string html, LineMap lines, List<DrapoDiagnosticVM> diagnostics)

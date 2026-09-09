@@ -47,6 +47,9 @@ jobs:
       - name: Install extension dependencies
         working-directory: src/vscode-drapo
         run: npm ci
+      - name: Grammar test (TextMate injection over the real VS Code HTML grammar)
+        working-directory: src/vscode-drapo
+        run: npm run test:grammar
       - name: Run extension tests in a headless VS Code
         working-directory: src/vscode-drapo
         run: xvfb-run -a npm test
@@ -93,10 +96,31 @@ jobs:
           name: vscode-drapo-${{ matrix.target }}
           path: src/vscode-drapo/*.vsix
 
+  vs-extension:
+    # Visual Studio 2022/2026 extension (src/Drapo.VisualStudio): needs MSBuild + the VSSDK build
+    # tools, so it runs on Windows and outside docs.sln. Built on every push/PR so a broken build
+    # is caught early; the VSIX is attached to the release on lsp-v* tags.
+    name: Visual Studio extension (VSIX)
+    runs-on: windows-latest
+    needs: build-and-test
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: src/global.json
+      - uses: microsoft/setup-msbuild@v2
+      - name: Publish server (win-x64) and build the VSIX (version = VS Code package.json version)
+        shell: pwsh
+        run: ./src/Drapo.VisualStudio/build.ps1
+      - uses: actions/upload-artifact@v4
+        with:
+          name: vs-drapo
+          path: src/Drapo.VisualStudio/Drapo.VisualStudio-*.vsix
+
   release:
     name: GitHub Release (attach VSIX files)
     if: startsWith(github.ref, 'refs/tags/lsp-v')
-    needs: package-extension
+    needs: [package-extension, vs-extension]
     runs-on: ubuntu-latest
     permissions:
       contents: write
@@ -106,6 +130,10 @@ jobs:
           pattern: vscode-drapo-*
           path: vsix
           merge-multiple: true
+      - uses: actions/download-artifact@v4
+        with:
+          name: vs-drapo
+          path: vsix
       - name: List assets
         run: ls -la vsix
       - name: Create or update the release
@@ -114,17 +142,25 @@ jobs:
           TAG: ${{ github.ref_name }}
         run: |
           set -euo pipefail
-          NOTES="Drapo language server + VS Code extension ${TAG#lsp-v}.
+          NOTES="Drapo language server + editor extensions ${TAG#lsp-v}.
 
-          Install: download the .vsix for your platform and run
-          \`code --install-extension <file>\` (no .NET runtime required).
+          Every package bundles a self-contained server: no .NET runtime required.
+
+          **VS Code**: download the .vsix for your platform and run \`code --install-extension <file>\`.
 
           | Platform | File |
           |---|---|
           | Windows x64 | vscode-drapo-win32-x64-*.vsix |
           | Linux x64 | vscode-drapo-linux-x64-*.vsix |
           | macOS Intel | vscode-drapo-darwin-x64-*.vsix |
-          | macOS Apple Silicon | vscode-drapo-darwin-arm64-*.vsix |"
+          | macOS Apple Silicon | vscode-drapo-darwin-arm64-*.vsix |
+
+          **Visual Studio 2022 / 2026** (Windows x64, .html files): download and double-click, or run
+          \`VSIXInstaller.exe Drapo.VisualStudio-*.vsix\`.
+
+          | Editor | File |
+          |---|---|
+          | Visual Studio 2022 (17.x) and 2026 (18.x) | Drapo.VisualStudio-*.vsix |"
           if gh release view "$TAG" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
             gh release upload "$TAG" vsix/*.vsix --clobber --repo "$GITHUB_REPOSITORY"
           else
