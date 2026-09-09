@@ -7,7 +7,7 @@
 		<Description>Drapo engine catalog, documentation services and template validator shared by the docs site, its MCP server and the Drapo language server. No ASP.NET dependency.</Description>
 	</PropertyGroup>
 	<ItemGroup>
-		<PackageReference Include="Drapo" Version="2026.8.6.5">
+		<PackageReference Include="Drapo" Version="2026.9.9.9">
 			<ExcludeAssets>contentfiles</ExcludeAssets>
 		</PackageReference>
 		<PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
