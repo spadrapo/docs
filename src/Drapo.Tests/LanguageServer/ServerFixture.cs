@@ -19,6 +19,8 @@ namespace Drapo.Tests.LanguageServer
 
         public static SignatureHelpProvider SignatureHelp => new SignatureHelpProvider(Index);
 
+        public static SemanticTokensProvider SemanticTokens => new SemanticTokensProvider(Index);
+
         /// <summary>Position of the first occurrence of <paramref name="marker"/> plus <paramref name="delta"/> characters.</summary>
         public static Position At(string text, string marker, int delta = 0)
         {

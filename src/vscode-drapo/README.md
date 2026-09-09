@@ -6,6 +6,10 @@ say is valid is what the editor says is valid: there is one validator, not two.
 
 ## Features
 
+- **Syntax highlighting** the moment a file opens: `d-*` attribute names, `{{ }}` expressions
+  (in text and in attribute values) and function calls inside `d-on-*` handlers get their own
+  colours through an injection grammar. With the server running, **semantic tokens** add
+  catalog-aware colours: an attribute or function the engine does not know is painted as invalid.
 - **Diagnostics** in the Problems panel: unknown `d-*` attributes, unknown functions inside
   `d-on-*` handlers, calls with too few arguments, malformed `d-for`, unbalanced `{{ }}`.
 - **Completion** of every attribute the Drapo engine recognises, including prefix families such as
@@ -32,6 +36,9 @@ Download the `.vsix` for your platform from the
 ```powershell
 code --install-extension vscode-drapo-<platform>-<version>.vsix
 ```
+
+Using **Visual Studio 2022 or 2026** instead? The same release carries `Drapo.VisualStudio-<version>.vsix`,
+built from [`../Drapo.VisualStudio`](../Drapo.VisualStudio/README.md): the same server, for `.html` files.
 
 ## Packages
 
@@ -63,12 +70,18 @@ Open this folder in VS Code and press **F5**. In the Extension Development Host 
 `<repo>/src/Drapo.LanguageServer/bin/Debug/net8.0/Drapo.LanguageServer.exe`) and open an HTML file
 containing `<div d-nope="x"></div>`; `d-nope` is underlined.
 
+### Grammar test
+
+`npm run test:grammar` tokenizes a fixture with the real HTML grammar of the downloaded VS Code
+build plus `syntaxes/drapo.injection.json`, and asserts the scopes of `d-*` attributes, mustaches
+and handler calls (and that plain HTML keeps its scopes). Runs under Node, no editor window.
+
 ### Integration test
 
 `npm test` downloads a test build of VS Code into `.vscode-test/` (once), opens a fixture
 workspace with the extension loaded from source and asserts, through the real VS Code API, that
-diagnostics, completion, hover and signature help work and that fixing a problem clears its
-diagnostic. It uses the Debug server by default; `DRAPO_SERVER_PATH` overrides it and
+diagnostics, completion, hover, signature help and semantic tokens work and that fixing a problem
+clears its diagnostic. It uses the Debug server by default; `DRAPO_SERVER_PATH` overrides it and
 `DRAPO_TEST_BUNDLED=1` exercises the server bundled under `server/<rid>/` instead.
 
 ### Packaging

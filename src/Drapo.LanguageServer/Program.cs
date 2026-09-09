@@ -8,6 +8,8 @@ using Drapo.Tooling.Content;
 using Drapo.Tooling.Services;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using OmniSharp.Extensions.LanguageServer.Protocol;
+using OmniSharp.Extensions.LanguageServer.Protocol.Client.Capabilities;
 using OmniSharp.Extensions.LanguageServer.Protocol.Models;
 using OmniSharp.Extensions.LanguageServer.Server;
 
@@ -60,11 +62,13 @@ namespace Drapo.LanguageServer
                         .AddProvider(new StderrLoggerProvider())
                         .SetMinimumLevel(LogLevel.Warning))
                     .WithServerInfo(new ServerInfo { Name = ServerName, Version = ServerVersion })
+                    .OnInitialize((server, request, token) => { ForceStaticSemanticTokens(request.Capabilities); return Task.CompletedTask; })
                     .WithServices(services => ConfigureServices(services, contentPath))
                     .WithHandler<TextDocumentSyncHandler>()
                     .WithHandler<CompletionHandler>()
                     .WithHandler<HoverHandler>()
-                    .WithHandler<SignatureHelpHandler>());
+                    .WithHandler<SignatureHelpHandler>()
+                    .WithHandler<SemanticTokensHandler>());
 
                 await server.WaitForExit;
                 return 0;
@@ -74,6 +78,21 @@ namespace Drapo.LanguageServer
                 await Console.Error.WriteLineAsync($"{ServerName}: fatal: {ex}");
                 return 1;
             }
+        }
+
+        /// <summary>
+        /// Visual Studio advertises dynamic registration for semantic tokens, which makes OmniSharp
+        /// announce them through client/registerCapability instead of the initialize result; but
+        /// Visual Studio's semantic tokens tagger only looks at the static server capabilities and
+        /// never sends a request (verified against VS 2026 18.7). Clearing the flag keeps the
+        /// provider static for every client. VS Code handles both forms.
+        /// </summary>
+        public static void ForceStaticSemanticTokens(ClientCapabilities capabilities)
+        {
+            Supports<SemanticTokensCapability> supports = capabilities?.TextDocument?.SemanticTokens ?? default;
+            SemanticTokensCapability current = supports.IsSupported ? supports.Value : null;
+            if (current != null && current.DynamicRegistration)
+                current.DynamicRegistration = false;
         }
 
         /// <summary>Registers the tooling services (same implementations the docs site uses) and server state.</summary>
@@ -93,6 +112,30 @@ namespace Drapo.LanguageServer
     {
         public static readonly NullScope Instance = new NullScope();
         public void Dispose() { }
+    }
+
+    /// <summary>
+    /// Opt-in protocol trace for diagnosing a client: set DRAPO_LSP_LOG=&lt;file&gt; before starting the
+    /// server and the handlers append what they receive. Independent of the logging pipeline
+    /// because OmniSharp clamps log levels to the client's <c>trace</c> setting (off in Visual Studio).
+    /// </summary>
+    public static class ProtocolTrace
+    {
+        private static readonly string Path = Environment.GetEnvironmentVariable("DRAPO_LSP_LOG");
+        private static readonly object Gate = new object();
+
+        public static bool Enabled => !string.IsNullOrEmpty(Path);
+
+        public static void Write(string message)
+        {
+            if (!Enabled)
+                return;
+            lock (Gate)
+            {
+                try { File.AppendAllText(Path, $"{DateTime.Now:HH:mm:ss.fff} {message}{Environment.NewLine}"); }
+                catch { /* tracing must never break the server */ }
+            }
+        }
     }
 
     /// <summary>Minimal logger that writes to stderr (stdout is reserved for the protocol).</summary>

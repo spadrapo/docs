@@ -1,7 +1,7 @@
 {
   "name": "vscode-drapo",
   "displayName": "Drapo",
-  "description": "Diagnostics, completion, hover and signature help for Drapo d-* markup, powered by the Drapo documentation catalog and validator.",
+  "description": "Syntax highlighting, diagnostics, completion, hover and signature help for Drapo d-* markup, powered by the Drapo documentation catalog and validator.",
   "version": "0.1.0",
   "publisher": "spadrapo",
   "license": "MIT",
@@ -25,7 +25,8 @@
     "html",
     "razor",
     "lsp",
-    "language server"
+    "language server",
+    "syntax highlighting"
   ],
   "activationEvents": [
     "onLanguage:html",
@@ -59,6 +60,43 @@
         "command": "drapo.restartServer",
         "title": "Drapo: Restart Language Server"
       }
+    ],
+    "grammars": [
+      {
+        "scopeName": "text.html.drapo.injection",
+        "path": "./syntaxes/drapo.injection.json",
+        "injectTo": [
+          "text.html.basic",
+          "text.html.derivative",
+          "text.html.cshtml",
+          "text.aspnetcorerazor"
+        ]
+      }
+    ],
+    "semanticTokenModifiers": [
+      {
+        "id": "unknown",
+        "description": "A d-* attribute or handler function the Drapo engine does not recognise"
+      }
+    ],
+    "semanticTokenScopes": [
+      {
+        "scopes": {
+          "keyword.defaultLibrary": [
+            "entity.other.attribute-name.drapo",
+            "keyword.other.drapo"
+          ],
+          "keyword.unknown": [
+            "invalid.illegal.attribute-name.drapo"
+          ],
+          "function.defaultLibrary": [
+            "entity.name.function.drapo"
+          ],
+          "function.unknown": [
+            "invalid.illegal.function.drapo"
+          ]
+        }
+      }
     ]
   },
   "scripts": {
@@ -67,6 +105,7 @@
     "typecheck": "tsc --noEmit -p .",
     "compile:tests": "tsc -p .",
     "test": "npm run compile && npm run compile:tests && node out/test/runTest.js",
+    "test:grammar": "npm run compile:tests && node out/test/grammar/grammar.test.js",
     "vscode:prepublish": "npm run typecheck && npm run compile",
     "package:win32-x64": "vsce package --no-dependencies --target win32-x64",
     "package:linux-x64": "vsce package --no-dependencies --target linux-x64",
@@ -82,6 +121,8 @@
     "@vscode/test-electron": "^2.4.1",
     "@vscode/vsce": "^3.0.0",
     "esbuild": "^0.25.0",
-    "typescript": "^5.5.0"
+    "typescript": "^5.5.0",
+    "vscode-oniguruma": "^2.0.1",
+    "vscode-textmate": "^9.3.2"
   }
 }

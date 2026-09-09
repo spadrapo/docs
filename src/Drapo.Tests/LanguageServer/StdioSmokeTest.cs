@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -68,7 +69,19 @@ namespace Drapo.Tests.LanguageServer
                             ["completion"] = new JObject { ["dynamicRegistration"] = false },
                             ["hover"] = new JObject { ["dynamicRegistration"] = false },
                             ["signatureHelp"] = new JObject { ["dynamicRegistration"] = false },
-                            ["publishDiagnostics"] = new JObject()
+                            ["publishDiagnostics"] = new JObject(),
+                            // What Visual Studio's client advertises (research.md R3): dynamic registration,
+                            // standard types, no multiline. The server must still answer statically.
+                            ["semanticTokens"] = new JObject
+                            {
+                                ["dynamicRegistration"] = true,
+                                ["requests"] = new JObject { ["range"] = true, ["full"] = new JObject { ["delta"] = true } },
+                                ["tokenTypes"] = new JArray("keyword", "function", "variable", "string"),
+                                ["tokenModifiers"] = new JArray("defaultLibrary", "deprecated"),
+                                ["formats"] = new JArray("relative"),
+                                ["multilineTokenSupport"] = false,
+                                ["overlappingTokenSupport"] = false
+                            }
                         }
                     }
                 }, timeout.Token);
@@ -79,6 +92,13 @@ namespace Drapo.Tests.LanguageServer
                 Assert.NotNull(caps["hoverProvider"]);
                 Assert.NotNull(caps["signatureHelpProvider"]);
                 Assert.Equal("drapo-language-server", (string)init["result"]["serverInfo"]["name"]);
+                // Visual Studio ignores semantic tokens unless the legend is present with at least one type.
+                JObject semantic = (JObject)caps["semanticTokensProvider"];
+                Assert.NotNull(semantic);
+                Assert.Equal(new[] { "keyword", "function", "variable" }, semantic["legend"]["tokenTypes"].Values<string>());
+                Assert.Equal(new[] { "defaultLibrary", "unknown" }, semantic["legend"]["tokenModifiers"].Values<string>());
+                Assert.True((bool)semantic["range"]);
+                Assert.NotNull(semantic["full"]);
 
                 await client.Notify("initialized", new JObject(), timeout.Token);
 
@@ -90,7 +110,7 @@ namespace Drapo.Tests.LanguageServer
                         ["uri"] = uri,
                         ["languageId"] = "html",
                         ["version"] = 1,
-                        ["text"] = "<div d-nope=\"x\"></div>"
+                        ["text"] = "<div d-nope=\"x\" d-if=\"{{show}}\"></div>"
                     }
                 }, timeout.Token);
 
@@ -98,6 +118,7 @@ namespace Drapo.Tests.LanguageServer
                 Assert.Equal(uri, (string)published["params"]["uri"]);
                 JArray diagnostics = (JArray)published["params"]["diagnostics"];
                 JObject d = Assert.Single(diagnostics).Value<JObject>();
+                Assert.Equal(1, diagnostics.Count); // d-if is known, only d-nope is flagged
                 Assert.Equal("unknown-attribute", (string)d["code"]);
                 Assert.Equal(1, (int)d["severity"]);
                 Assert.Equal("drapo", (string)d["source"]);
@@ -113,6 +134,47 @@ namespace Drapo.Tests.LanguageServer
                 JToken result = completion["result"];
                 JToken items = result.Type == JTokenType.Array ? result : result["items"];
                 Assert.True(items.HasValues);
+
+                // Semantic tokens over the wire: d-nope (keyword.unknown), d-if (keyword.defaultLibrary), {{show}} (variable).
+                JObject tokens = await client.Request(4, "textDocument/semanticTokens/full", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri }
+                }, timeout.Token);
+                Assert.Null(tokens["error"]);
+                int[] data = tokens["result"]["data"].Values<int>().ToArray();
+                // Relative encoding: [deltaLine, deltaStart, length, type, modifiers] * 3
+                Assert.Equal(new[] { 0, 5, 6, 0, 2, 0, 11, 4, 0, 1, 0, 6, 8, 2, 0 }, data);
+                string resultId = (string)tokens["result"]["resultId"];
+                Assert.False(string.IsNullOrEmpty(resultId), "full response must carry a resultId for deltas");
+
+                // Delta with no change: an empty edit list. Then rename d-nope -> d-if and expect an edit.
+                JObject unchanged = await client.Request(5, "textDocument/semanticTokens/full/delta", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri },
+                    ["previousResultId"] = resultId
+                }, timeout.Token);
+                Assert.Null(unchanged["error"]);
+                Assert.Empty((JArray)unchanged["result"]["edits"]);
+
+                await client.Notify("textDocument/didChange", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri, ["version"] = 2 },
+                    ["contentChanges"] = new JArray(new JObject { ["text"] = "<div d-if=\"x\" d-if=\"{{show}}\"></div>" })
+                }, timeout.Token);
+                JObject changed = await client.Request(6, "textDocument/semanticTokens/full/delta", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri },
+                    ["previousResultId"] = (string)unchanged["result"]["resultId"]
+                }, timeout.Token);
+                Assert.Null(changed["error"]);
+                JArray edits = (JArray)changed["result"]["edits"];
+                Assert.NotEmpty(edits);
+                // The rewritten data must equal a fresh full request.
+                JObject full2 = await client.Request(7, "textDocument/semanticTokens/full", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri }
+                }, timeout.Token);
+                Assert.Equal(new[] { 0, 5, 4, 0, 1, 0, 9, 4, 0, 1, 0, 6, 8, 2, 0 }, full2["result"]["data"].Values<int>().ToArray());
 
                 JObject shutdown = await client.Request(3, "shutdown", null, timeout.Token);
                 Assert.Null(shutdown["error"]);

@@ -79,7 +79,28 @@ async function runChecks(): Promise<void> {
   assert.ok(help.signatures[0].label.startsWith("UpdateSector("), help.signatures[0].label);
   assert.strictEqual(help.activeParameter, 0);
 
-  // 5. Fixing the attribute clears its diagnostic without reopening.
+  // 5. Semantic tokens: the server's legend and one token per Drapo symbol (FR-019/FR-023).
+  const legend = await vscode.commands.executeCommand<vscode.SemanticTokensLegend>(
+    "vscode.provideDocumentSemanticTokensLegend",
+    uri
+  );
+  assert.ok(legend, "semantic tokens legend missing (server did not register the provider)");
+  assert.deepStrictEqual(legend.tokenTypes, ["keyword", "function", "variable"]);
+  assert.deepStrictEqual(legend.tokenModifiers, ["defaultLibrary", "unknown"]);
+  const semantic = await waitFor(
+    () => vscode.commands.executeCommand<vscode.SemanticTokens>("vscode.provideDocumentSemanticTokens", uri),
+    (t) => !!t,
+    10_000,
+    "semantic tokens"
+  );
+  const data = Array.from(semantic!.data);
+  // [deltaLine, deltaStart, length, type, modifiers] per token; d-nope is keyword.unknown (type 0, bit 2).
+  assert.deepStrictEqual(data.slice(0, 5), [0, 5, 6, 0, 2], JSON.stringify(data));
+  // UpdateSector (line 1) is function.defaultLibrary; {{items}} (line 2) is a variable.
+  assert.ok(chunks(data).some((t) => t[2] === 12 && t[3] === 1 && t[4] === 1), "UpdateSector token missing: " + JSON.stringify(data));
+  assert.ok(chunks(data).some((t) => t[2] === 9 && t[3] === 2), "{{items}} token missing: " + JSON.stringify(data));
+
+  // 6. Fixing the attribute clears its diagnostic without reopening.
   const editor = vscode.window.activeTextEditor!;
   await editor.edit((b) => b.replace(new vscode.Range(0, 5, 0, 11), "d-if"));
   await waitFor(
@@ -92,20 +113,28 @@ async function runChecks(): Promise<void> {
   console.log("vscode-drapo integration test: all assertions passed");
 }
 
+function chunks(data: number[]): number[][] {
+  const out: number[][] = [];
+  for (let i = 0; i + 4 < data.length; i += 5) {
+    out.push(data.slice(i, i + 5));
+  }
+  return out;
+}
+
 async function waitFor<T>(
-  probe: () => T,
+  probe: () => T | Thenable<T>,
   done: (value: T) => boolean,
   timeoutMs: number,
   what: string
 ): Promise<T> {
   const start = Date.now();
-  let last: T = probe();
+  let last: T = await probe();
   while (!done(last)) {
     if (Date.now() - start > timeoutMs) {
       throw new Error(`Timed out waiting for ${what}: ${JSON.stringify(last)}`);
     }
     await new Promise((r) => setTimeout(r, 200));
-    last = probe();
+    last = await probe();
   }
   return last;
 }
