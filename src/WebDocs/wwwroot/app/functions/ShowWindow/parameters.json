@@ -1,7 +1,7 @@
 [
   {
     "Name": "windowNameOrUri",
-    "Description": "The sector that will be cleaned",
+    "Description": "What to open: either the url of the view to load (starts with ~ or /) or the name of a window definition registered on the server with options.Config.CreateWindow(name, path, did, parameters)",
     "Types": [
       "url",
       "windowName"
@@ -10,9 +10,9 @@
   },
   {
     "Name": "did",
-    "Description": "The location where you want to open the window",
+    "Description": "The d-id of the container where the window opens. Required when the first parameter is a url; ignored when it is a window definition name, because the definition already carries its did",
     "Types": [ "did" ],
-    "Optional": false
+    "Optional": true
   },
   {
     "Name": "ParameterKey",

@@ -1,26 +1,35 @@
 [
-    {
-        "Name": "d-for",
-        "Description": "The d-for expression that wil be used",
-        "Types": ["d-for"],
-        "Optional": false
-    },
-    {
-        "Name": "d-if",
-        "Description": "The conditional that will be used to check if we will apply the expressions to the item in d-for",
-        "Types": ["conditional"],
-        "Optional": true
-    },
-    {
-        "Name": "DataKey",
-        "Description": "The identification of a storage that filtered data will be stored",
-        "Types": ["datakey"]
-    },
-    {
-        "Name": "Notify",
-        "Description": "You can choose if you want no notify the change to the observer",
-        "Types": ["boolean"],
-        "Optional": true,
-        "DefaultValue": "true"
-    }
+  {
+    "Name": "d-for",
+    "Description": "The d-for expression that wil be used",
+    "Types": [
+      "d-for"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "d-if",
+    "Description": "The conditional that will be used to check if we will apply the expressions to the item in d-for. The slot must be present but can be left empty, for example FilterData(item in data,,dataFiltered), to keep every item",
+    "Types": [
+      "conditional"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "DataKey",
+    "Description": "The identification of a storage that filtered data will be stored",
+    "Types": [
+      "datakey"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "Notify",
+    "Description": "You can choose if you want no notify the change to the observer",
+    "Types": [
+      "boolean"
+    ],
+    "Optional": true,
+    "DefaultValue": "true"
+  }
 ]

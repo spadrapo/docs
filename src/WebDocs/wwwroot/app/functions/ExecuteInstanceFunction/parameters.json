@@ -1,26 +1,35 @@
 [
   {
     "Name": "Sector",
-    "Description": "The sector that identifies the instance. If you leave if in blank it will assumes that the function is inside the instance",
-    "Types": ["mustache","text"],
-    "Optional": true
+    "Description": "The sector that identifies the instance. Leave the slot empty, for example ExecuteInstanceFunction(,fn,{{result}}), to use the sector the function runs in; the slot itself must be present",
+    "Types": [
+      "mustache",
+      "text"
+    ],
+    "Optional": false
   },
   {
     "Name": "function",
     "Description": "The function that will be called in the instance",
-    "Types": [ "text" ],
+    "Types": [
+      "text"
+    ],
     "Optional": false
   },
   {
     "Name": "Return",
-    "Description": "The mustache that will be updated with the result of the function",
-    "Types": [ "mustache" ],
-    "Optional": true
+    "Description": "The mustache that will be updated with the result of the function. Leave the slot empty to discard the result; the slot itself must be present because the engine reads it unconditionally",
+    "Types": [
+      "mustache"
+    ],
+    "Optional": false
   },
   {
     "Name": "Parameters",
     "Description": "The parameters that will be passed to the function",
-    "Types": [ "mustache" ],
+    "Types": [
+      "mustache"
+    ],
     "Optional": true
   }
 ]

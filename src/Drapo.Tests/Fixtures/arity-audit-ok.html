@@ -1,0 +1,17 @@
+<!-- Call shapes the engine executes that the docs used to flag (specs/004-lsp-improvements/research.md). -->
+<button d-on-click="UpdateData(dkDate,AddDate())">Tomorrow</button>
+<button d-on-click="UpdateData(dkDate,AddDate({{item.Date}}))">Day after</button>
+<button d-on-click="UpdateData(dkDate,AddDate({{item.Date}},month))">Month after</button>
+<button d-on-click="UpdateData(dkChanged,HasDataChanges())">Any change anywhere?</button>
+<button d-on-click="UpdateData(dkChanged,HasDataChanges(=))">Any change in this sector?</button>
+<button d-on-click="AcceptDataChanges()">Accept all</button>
+<button d-on-click="AcceptDataChanges(content)">Accept the sector</button>
+<button d-on-click="CreateData(dkEmpty)">Empty object</button>
+<button d-on-click="CreateData(dkEmpty,true)">Empty object, notify</button>
+<button d-on-click="UpdateItemField({{item.Id}},CreateGuid())">Guid as expression</button>
+<button d-on-click="CreateGuid(dkItem,Id)">Guid into a field</button>
+<button d-on-click="UpdateData(global,GetSector())">Sector</button>
+<button d-on-click="ShowWindow(center)">Window definition</button>
+<button d-on-click="FilterData(item in {{dkItems}},,dkFiltered)">Empty conditional slot</button>
+<button d-on-click="ExecuteInstanceFunction(,Increment,)">Empty sector and return slots</button>
+<button d-on-click="ExecuteInstanceFunction(,Increment,{{internal.value}},{{internal.value}})">Full</button>

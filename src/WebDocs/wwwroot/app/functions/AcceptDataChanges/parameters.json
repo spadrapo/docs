@@ -1,20 +1,22 @@
 [
   {
     "Name": "Sector",
-    "Description": "The sector that the storage belongs",
+    "Description": "Restricts the operation to one sector; = means the current sector. When omitted or empty every sector is marked as unchanged",
     "Types": [
       "mustache",
       "text"
     ],
-    "Optional": false
+    "Optional": true,
+    "DefaultValue": "all sectors"
   },
   {
     "Name": "DataKey",
-    "Description": "The storage item that will be marked as unchanged",
+    "Description": "The storage item or data group that will be marked as unchanged. When omitted or empty every storage item of the selected sectors is marked as unchanged",
     "Types": [
       "datakey",
       "dataGroup"
     ],
-    "Optional": false
+    "Optional": true,
+    "DefaultValue": "all data"
   }
 ]

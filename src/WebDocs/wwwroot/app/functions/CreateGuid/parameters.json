@@ -1,23 +1,27 @@
 [
   {
     "Name": "DataKey",
-    "Description": "The identification of a storage what will receive the object",
-    "Types": [ "datakey"],
-    "Optional": false
+    "Description": "The identification of a storage that will receive the guid. When omitted the function returns the guid as its value instead, so it can be used as an expression, for example UpdateItemField({{item.Id}},CreateGuid()). When DataKey is given, DataField is required too",
+    "Types": [
+      "datakey"
+    ],
+    "Optional": true
   },
   {
     "Name": "DataField",
-    "Description": "The data field item that will be inserted",
-    "Types": [ "datafield" ],
-    "Optional": false
+    "Description": "The data field of DataKey that will receive the guid. Required whenever DataKey is given",
+    "Types": [
+      "datafield"
+    ],
+    "Optional": true
   },
   {
     "Name": "Notify",
     "Description": "You can choose if you want no notify the change to the observer",
-    "Types": [ "boolean" ],
+    "Types": [
+      "boolean"
+    ],
     "Optional": true,
     "DefaultValue": "true"
   }
 ]
-
-

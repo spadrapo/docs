@@ -120,6 +120,9 @@ namespace WebDocs
             options.Config.OnError = "UncheckItemField({{dkLayoutMenuState.menu}});ClearItemField({{taError.Container}});ClearSector(rainbow);ClearSector(footer);UpdateSector(content,/app/error/index.html,Error,true,true,{{tabError.Container}});UncheckDataField(dkTabs,Selected,false);AddDataItem(dkTabs,{{tabError}})";
             options.Config.LoadComponents(string.Format("{0}{1}components", env.WebRootPath, Path.AltDirectorySeparatorChar), "~/components");
             options.Config.CreatePack("uicomponents").AddIncludePath("~/components/*").AddExcludePath("*.ts").AddExcludePath("*.d.ts").AddExcludePath("*.map");
+            // Window definition used by the ShowWindow samples: ShowWindow(center) needs no did.
+            options.Config.CreateWindow("center", "~/app/shared/windowCenter.html", "windows",
+                new Dictionary<string, string> { { "[Message]", "Opened from a window definition" } });
             options.Config.HandlerCustom = h => HandlerCustom(h, menu);
             options.PollingEvent += Polling;
             options.Config.CreateRoute("^/function/(?<id>\\w+)$", "ClearSector(content);UpdateSector(content,~/app/shared/function.html)");
