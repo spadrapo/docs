@@ -1,0 +1,3 @@
+<div d-dataKey="object" d-dataUrlGet="~/api/Sample/GetValue" d-dataPipes="objectPipe"></div>
+<span d-model="{{object.Value}}"></span><br /><br />
+<input type="button" value="Reload" d-on-click="ReloadPipe(objectPipe)" />

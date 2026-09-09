@@ -22,9 +22,16 @@ app.UseDrapo(options =&gt;
      d-dataPipes="notificationPipe"&gt;&lt;/div&gt;</code></pre>
 
     <h3>Sending a Pipe from the Server</h3>
-    <p>Any server-side code that has access to the <code>IDrapoPipe</code> (or <code>DrapoPlumberHub</code>) service can broadcast a pipe message. When the message is received by the client, all storage items registered on that pipe key are refreshed from their <code>d-dataUrlGet</code> endpoint.</p>
-    <pre><code>// Inject DrapoPlumber and send a pipe
-await _drapoPlumber.SendPipe("notificationPipe");</code></pre>
+    <p>Any server-side code that has access to the <code>IDrapoPlumber</code> service can broadcast a pipe message. When the message is received by the client, every storage item registered on that pipe key is refreshed from its <code>d-dataUrlGet</code> endpoint, in every sector that holds the data key.</p>
+    <pre><code>// Inject IDrapoPlumber and send a pipe to everyone
+await _drapoPlumber.Send(new DrapoPipeMessage { Type = DrapoPipeMessageType.Storage, Data = "notificationPipe" }, DrapoPipeAudienceType.Everyone);</code></pre>
+    <p>Set <code>Sector</code> on the message to refresh the data key in one sector only:</p>
+    <pre><code>await _drapoPlumber.Send(new DrapoPipeMessage { Type = DrapoPipeMessageType.Storage, Data = "notificationPipe", Sector = "panel" }, DrapoPipeAudienceType.Everyone);</code></pre>
+
+    <h3>Reloading a Pipe from the Client</h3>
+    <p>The <a href="#" d-on-click="ApplyRoute(/function/ReloadPipe)"><code>ReloadPipe</code></a> function does on the client what a storage message does from the server: it reloads every data key that declares the pipe, in every sector that holds it. A second argument names one sector to reload in.</p>
+    <pre><code>&lt;input type="button" value="Refresh" d-on-click="ReloadPipe(notificationPipe)" /&gt;
+&lt;input type="button" value="Refresh this panel" d-on-click="ReloadPipe(notificationPipe,panel)" /&gt;</code></pre>
 
     <h3>Pipe Hub Endpoint</h3>
     <p>The SignalR hub used by Drapo is automatically mapped by the middleware. Its URL is controlled by <code>options.Config.PipeHubName</code> (default: <code>DrapoPlumberHub</code>). You do not need to configure this manually unless you want to change the hub path.</p>

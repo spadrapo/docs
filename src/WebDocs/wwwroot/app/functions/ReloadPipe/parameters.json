@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "DataPipe",
+    "Description": "The pipe key declared in d-dataPipes; every storage item that declares it is reloaded",
+    "Types": [
+      "text"
+    ],
+    "Optional": false
+  },
+  {
+    "Name": "Sector",
+    "Description": "The sector to reload in; when omitted the data key is reloaded in every sector that holds it",
+    "Types": [
+      "text",
+      "mustache"
+    ],
+    "Optional": true,
+    "DefaultValue": "every sector"
+  }
+]
