@@ -293,3 +293,7 @@ __pycache__/
 deploy/**/secret*.local.y*ml
 deploy/**/*secrets*/
 *.b64
+
+# Drapo Visual Studio extension: published server bundled at build time, and the produced package
+src/Drapo.VisualStudio/server/
+src/Drapo.VisualStudio/*.vsix

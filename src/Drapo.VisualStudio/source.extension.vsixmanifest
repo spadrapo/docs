@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
+  <Metadata>
+    <Identity Id="Drapo.VisualStudio" Version="|%CurrentProject%;GetVsixVersion|" Language="en-US" Publisher="spadrapo" />
+    <DisplayName>Drapo</DisplayName>
+    <Description xml:space="preserve">Diagnostics, completion, hover, signature help and semantic highlighting for Drapo d-* markup in .html files, powered by the Drapo documentation catalog and validator (the same language server as the VS Code extension).</Description>
+    <MoreInfo>https://github.com/spadrapo/docs</MoreInfo>
+    <License>LICENSE.txt</License>
+    <Tags>drapo;html;lsp;language server</Tags>
+  </Metadata>
+  <Installation>
+    <!-- Lower bound only: VS 2026 (18.x) supports API 17.x and ignores the upper bound. -->
+    <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[17.0,)">
+      <ProductArchitecture>amd64</ProductArchitecture>
+    </InstallationTarget>
+  </Installation>
+  <Dependencies>
+    <Dependency Id="Microsoft.Framework.NDP" DisplayName="Microsoft .NET Framework" d:Source="Manual" Version="[4.7.2,)" />
+  </Dependencies>
+  <Prerequisites>
+    <Prerequisite Id="Microsoft.VisualStudio.Component.CoreEditor" Version="[17.0,)" DisplayName="Visual Studio core editor" />
+  </Prerequisites>
+  <Assets>
+    <Asset Type="Microsoft.VisualStudio.MefComponent" d:Source="Project" d:ProjectName="%CurrentProject%" Path="|%CurrentProject%|" />
+  </Assets>
+</PackageManifest>

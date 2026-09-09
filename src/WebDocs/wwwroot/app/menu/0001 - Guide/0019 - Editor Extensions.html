@@ -2,10 +2,10 @@
 <script src="/drapo.js"></script>
 <div>
     <div>
-        <h2>VS Code Extension</h2>
-        <p>The <strong>Drapo</strong> extension gives Visual Studio Code first-class support for <code>d-*</code> markup: problems are underlined as you type, attribute names complete, hovering shows the documentation, and function calls inside <code>d-on-*</code> handlers get signature help. It is powered by a <strong>language server</strong> that runs the very same engine catalog and validator that power this documentation site and its MCP <code>validate_drapo</code> tool, so what the editor flags is exactly what the documentation would flag. There is one validator, not two.</p>
+        <h2>Editor Extensions</h2>
+        <p>The <strong>Drapo</strong> extensions give <strong>Visual Studio Code</strong> and <strong>Visual Studio 2022/2026</strong> first-class support for <code>d-*</code> markup: Drapo attributes, <code>{{ }}</code> expressions and handler calls are highlighted, problems are underlined as you type, attribute names complete, hovering shows the documentation, and function calls inside <code>d-on-*</code> handlers get signature help. Both editors run the same <strong>language server</strong>, which runs the very same engine catalog and validator that power this documentation site and its MCP <code>validate_drapo</code> tool, so what the editor flags is exactly what the documentation would flag. There is one validator, not two.</p>
 
-        <h3>Install</h3>
+        <h3>Install in VS Code</h3>
         <p>Download the <code>.vsix</code> package for your platform from the <a href="https://github.com/spadrapo/docs/releases" target="_blank">GitHub Releases</a> page of the <code>spadrapo/docs</code> repository (releases are tagged <code>lsp-v&lt;version&gt;</code>) and install it from a terminal:</p>
         <pre><code>code --install-extension vscode-drapo-win32-x64-0.1.0.vsix</code></pre>
         <p>Or inside VS Code: <em>Extensions</em> view → <em>…</em> menu → <em>Install from VSIX…</em>. Each package bundles a self-contained language server, so <strong>no .NET runtime or SDK is required</strong> on the machine.</p>
@@ -18,13 +18,21 @@
         </table>
         <p>The extension activates for <code>html</code>, <code>razor</code> and <code>aspnetcorerazor</code> (<code>.cshtml</code>) files. Open one and the features are available immediately; nothing needs to be configured.</p>
 
+        <h3>Install in Visual Studio 2022 / 2026</h3>
+        <p>The same release carries <code>Drapo.VisualStudio-&lt;version&gt;.vsix</code>. Download it and double-click it (or run it with <code>VSIXInstaller.exe</code> from the Visual Studio <code>Common7\IDE</code> folder). It installs on Visual Studio 2022 (17.x) and Visual Studio 2026 (18.x), 64-bit, and bundles the same self-contained server. It applies to <code>.html</code> files; Razor files are left to Visual Studio's own Razor editor. To remove it use <em>Extensions → Manage Extensions</em>.</p>
+        <table class="dFunctionParametersTable">
+            <tr><th>Editor</th><th>Package</th><th>Files</th></tr>
+            <tr><td>Visual Studio 2022 (17.x) and 2026 (18.x)</td><td><code>Drapo.VisualStudio-&lt;version&gt;.vsix</code></td><td><code>.html</code>, <code>.htm</code></td></tr>
+        </table>
+
         <h3>What you get</h3>
         <ul>
+            <li><strong>Syntax highlighting</strong> — in VS Code, <code>d-*</code> attribute names, <code>{{ }}</code> expressions (in text and in attribute values) and function calls inside <code>d-on-*</code> handlers are coloured the moment the file opens, before the server has even started. Once the server runs, both editors receive <em>semantic tokens</em>: known attributes and functions are classified as such, and in VS Code an attribute or function the engine does not know is painted as invalid so it stands out even before the diagnostic arrives. Visual Studio maps the tokens onto its keyword/method/identifier colours.</li>
             <li><strong>Diagnostics</strong> in the editor and the Problems panel (source <code>drapo</code>), updated within a moment of each edit:
                 <ul>
                     <li><code>unknown-attribute</code> — a <code>d-*</code> attribute the engine does not define.</li>
                     <li><code>unknown-function</code> — a function used in a <code>d-on-*</code> handler the engine does not dispatch.</li>
-                    <li><code>wrong-arity</code> — a documented function called with fewer arguments than it requires (warning).</li>
+                    <li><code>wrong-arity</code> — a documented function called with fewer arguments than the engine needs (warning). The minimum is the engine's, not a guess: <code>ShowWindow(myWindow)</code> (a window definition) is fine, <code>ShowWindow(~/view.html)</code> without the container did is flagged; <code>AddDate()</code>, <code>HasDataChanges()</code>, <code>CreateGuid()</code> and <code>GetSector()</code> are valid calls.</li>
                     <li><code>malformed-dfor</code> — a <code>d-for</code> value that is not <code>{item} in {iterator}</code>.</li>
                     <li><code>unbalanced-mustache</code> — an unmatched <code>{{</code> or <code>}}</code>.</li>
                 </ul>
@@ -49,6 +57,11 @@
         <p>The docs repository contains a class library, <code>Drapo.Tooling</code>, that reads the attribute and function sets from the bundled <code>drapo.js</code> engine and the function signatures from this documentation. The website, the MCP server and the language server all use that one library, so the three can never disagree. Documentation content is copied into the extension at build time; the extension works offline and does not contact this site. When the documentation or the engine version changes, a new release of the extension picks it up.</p>
         <p>AI coding assistants benefit as well. Agents such as GitHub Copilot agent mode and the Claude Code IDE extension read the editor's diagnostics, so a bad <code>d-*</code> edit is fed back to them without calling the MCP.</p>
 
+        <h3>Building the Visual Studio extension from source</h3>
+        <p>Prerequisites: Visual Studio 2022 or 2026 with the <em>Visual Studio extension development</em> workload and .NET SDK 8. The project lives in <code>src/Drapo.VisualStudio</code> and is built by its own script (it is not part of <code>docs.sln</code>, because it targets .NET Framework and needs MSBuild):</p>
+        <pre><code>cd src/Drapo.VisualStudio
+./build.ps1                          # publishes the server for win-x64 and produces Drapo.VisualStudio-&lt;version&gt;.vsix</code></pre>
+
         <h3>Other editors</h3>
         <p>The server speaks the standard <a href="https://microsoft.github.io/language-server-protocol/" target="_blank">Language Server Protocol</a> over stdin/stdout, so any LSP-capable editor (Neovim, Sublime Text, Emacs, Visual Studio's LSP client, and others) can use it. Take the <code>Drapo.LanguageServer</code> executable from a VSIX package (it is a zip; the binary sits under <code>extension/server/&lt;platform&gt;/</code>) or build it from source, and point your editor's LSP client at it for <code>html</code>, <code>razor</code> and <code>aspnetcorerazor</code> documents.</p>
         <pre><code># from a clone of spadrapo/docs, run against the live documentation content
@@ -69,7 +82,7 @@ code --install-extension vscode-drapo-win32-x64-0.1.0.vsix</code></pre>
         <p>To debug the extension, open <code>src/vscode-drapo</code> in VS Code, press <kbd>F5</kbd>, and in the development host set <code>drapo.server.path</code> to the Debug build of the server. <code>npm test</code> runs an integration test in a real VS Code instance; <code>dotnet test src/docs.sln</code> runs the tooling and server tests, including a parity corpus that checks every documented function sample.</p>
 
         <h3>Releasing (maintainers)</h3>
-        <p>In the repository go to <em>Actions</em> → <em>Release extension</em> → <em>Run workflow</em> and optionally type the version (for example <code>0.2.0</code>). The workflow bumps <code>src/vscode-drapo/package.json</code> if needed, creates the <code>lsp-v&lt;version&gt;</code> tag and starts the CI build, which tests everything, packages the four platform VSIX files and attaches them to a GitHub Release named after the tag.</p>
+        <p>In the repository go to <em>Actions</em> → <em>Release extension</em> → <em>Run workflow</em> and optionally type the version (for example <code>0.2.0</code>). The workflow bumps <code>src/vscode-drapo/package.json</code> if needed, creates the <code>lsp-v&lt;version&gt;</code> tag and starts the CI build, which tests everything, packages the four VS Code platform VSIX files and the Visual Studio VSIX (same version number) and attaches all of them to a GitHub Release named after the tag.</p>
         <p>The same can be done by hand: bump the version, then push the tag.</p>
         <pre><code>git tag lsp-v0.2.0
 git push origin lsp-v0.2.0</code></pre>
@@ -78,7 +91,8 @@ git push origin lsp-v0.2.0</code></pre>
         <ul>
             <li>Knowledge is framework-level: the engine's attributes and functions and their documented signatures. Symbols your application defines (<code>d-dataKey</code> names, sectors, components) are not resolved yet; use the <a href="#" d-on-click="ApplyRoute(/doc/DrapoResolverSkill)">Drapo Resolver Skill</a> for that.</li>
             <li>Validation is the same text-based check the documentation validator performs; it does not parse expressions.</li>
-            <li>Packages are distributed through GitHub Releases; the extension is not on the Marketplace yet.</li>
+            <li>Packages are distributed through GitHub Releases; the extensions are not on the VS Code or Visual Studio Marketplace yet.</li>
+            <li>In Visual Studio only <code>.html</code>/<code>.htm</code> files are covered (no Razor), and colours are limited to Visual Studio's fixed mapping of semantic token types.</li>
         </ul>
     </div>
 </div>
