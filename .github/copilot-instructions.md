@@ -18,7 +18,8 @@ The site is built **with Drapo itself**; the engine is served at `/drapo.js` fro
   and the language server, so `validate_drapo` and editor diagnostics are the same code.
 - `src/Drapo.LanguageServer/` — LSP over stdio (diagnostics, completion, hover, signature help).
 - `src/Drapo.Tests/` — xunit tests (`dotnet test src/docs.sln`): parity corpus, providers, stdio smoke.
-- `src/vscode-drapo/` — VS Code extension that bundles the server (see its README).
+- `src/vscode-drapo/` — VS Code extension that bundles the server (see its README); `syntaxes/` holds the TextMate highlighting grammar.
+- `src/Drapo.VisualStudio/` — Visual Studio 2022/2026 extension hosting the same server for `.html` files; built by its `build.ps1`, not part of `docs.sln`.
 - `src/WebDocs/` — the app: `Program.cs`/`Startup.cs` (host, DI, MCP), `Controllers/`, `Services/`
   (`ConceptService`, `DataTypeService`, `NuGetService` + `I*` interfaces; the catalog, validator,
   function and attribute services come from `Drapo.Tooling`), `Models/` (WebDocs-only `*VM`s),
