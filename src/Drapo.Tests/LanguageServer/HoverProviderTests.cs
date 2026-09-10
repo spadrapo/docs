@@ -81,3 +81,57 @@ namespace Drapo.Tests.LanguageServer
         }
     }
 }
+
+namespace Drapo.Tests.LanguageServer
+{
+    /// <summary>Visual Studio only accepts plaintext hover/signature documentation (traced from VS 2026 18.7).</summary>
+    public class PlainTextRenderingTests
+    {
+        [Fact]
+        public void FunctionHoverInPlainTextHasNoMarkdownAndListsParameters()
+        {
+            string text = "<button d-on-click=\"UpdateSector('s', '~/u')\">Go</button>";
+            Hover hover = ServerFixture.Hover.GetHover(text, ServerFixture.At(text, "UpdateSector", 3), MarkupKind.PlainText);
+            Assert.NotNull(hover);
+            Assert.Equal(MarkupKind.PlainText, hover.Contents.MarkupContent.Kind);
+            string value = hover.Contents.MarkupContent.Value;
+            Assert.StartsWith("UpdateSector(", value);
+            Assert.Contains("Parameters:", value);
+            Assert.Contains("  Title (text, optional, default null)", value);
+            Assert.DoesNotContain("| Parameter |", value); // no Markdown table (the signature itself contains type alternatives such as mustache|text)
+            Assert.DoesNotContain("**", value);
+            Assert.DoesNotContain("`", value);
+        }
+
+        [Fact]
+        public void AttributeHoverInPlainTextKeepsNameAndDescription()
+        {
+            string text = "<ul d-for=\"item in {{items}}\"></ul>";
+            Hover hover = ServerFixture.Hover.GetHover(text, ServerFixture.At(text, "d-for", 2), MarkupKind.PlainText);
+            Assert.StartsWith("d-for\n\n", hover.Contents.MarkupContent.Value);
+            Assert.DoesNotContain("**", hover.Contents.MarkupContent.Value);
+        }
+
+        [Fact]
+        public void SignatureHelpInPlainTextUsesPlainDocumentation()
+        {
+            string text = "<button d-on-click=\"UpdateSector(\">Go</button>";
+            SignatureHelp help = ServerFixture.SignatureHelp.GetSignatureHelp(text, ServerFixture.After(text, "UpdateSector("), MarkupKind.PlainText);
+            Assert.NotNull(help);
+            SignatureInformation sig = help.Signatures.First();
+            Assert.Equal(MarkupKind.PlainText, sig.Documentation.MarkupContent.Kind);
+            Assert.DoesNotContain("`", sig.Documentation.MarkupContent.Value);
+        }
+
+        [Theory]
+        [InlineData("**bold** and `code`", "bold and code")]
+        [InlineData("see [the guide](https://x/y) now", "see the guide now")]
+        [InlineData("- one\n* two", "- one\n- two")]
+        [InlineData("_optional_ value", "optional value")]
+        [InlineData("snake_case_name stays", "snake_case_name stays")]
+        public void ToPlainTextStripsMarkdown(string markdown, string expected)
+        {
+            Assert.Equal(expected, Drapo.Tooling.Helpers.DrapoDocContent.ToPlainText(markdown));
+        }
+    }
+}

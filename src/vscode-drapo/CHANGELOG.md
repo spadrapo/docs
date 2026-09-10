@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+- Visual Studio: completion, hover and signature help now work. VS registers every feature
+  dynamically and only reads static server capabilities, so the server forces static registration
+  for all of them (previously only semantic tokens). Hover and signature documentation are sent as
+  plain text to clients that do not accept Markdown (VS).
+
+## Unreleased
+
 - Syntax highlighting: a TextMate injection grammar colours `d-*` attributes, `{{ }}` expressions
   and function calls inside `d-on-*` handlers as soon as a file opens; once the server is running,
   semantic tokens mark known attributes/functions (`defaultLibrary`) and unknown ones (`unknown`,

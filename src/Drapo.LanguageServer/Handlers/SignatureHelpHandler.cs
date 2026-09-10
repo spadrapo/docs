@@ -23,8 +23,11 @@ namespace Drapo.LanguageServer.Handlers
             _logger = logger;
         }
 
+        private MarkupKind _kind = MarkupKind.Markdown;
+
         protected override SignatureHelpRegistrationOptions CreateRegistrationOptions(SignatureHelpCapability capability, ClientCapabilities clientCapabilities)
         {
+            _kind = HoverHandler.PreferredKind(capability?.SignatureInformation?.DocumentationFormat);
             return new SignatureHelpRegistrationOptions
             {
                 DocumentSelector = DrapoDocuments.Selector,
@@ -40,7 +43,7 @@ namespace Drapo.LanguageServer.Handlers
                 string text = _documents.GetText(request.TextDocument.Uri);
                 if (text == null)
                     return Task.FromResult<SignatureHelp>(null);
-                return Task.FromResult(new SignatureHelpProvider(_index).GetSignatureHelp(text, request.Position));
+                return Task.FromResult(new SignatureHelpProvider(_index).GetSignatureHelp(text, request.Position, _kind));
             }
             catch (Exception ex)
             {

@@ -65,13 +65,19 @@ namespace Drapo.Tests.LanguageServer
                     {
                         ["textDocument"] = new JObject
                         {
-                            ["synchronization"] = new JObject { ["dynamicRegistration"] = false },
-                            ["completion"] = new JObject { ["dynamicRegistration"] = false },
-                            ["hover"] = new JObject { ["dynamicRegistration"] = false },
-                            ["signatureHelp"] = new JObject { ["dynamicRegistration"] = false },
+                            // Exactly what Visual Studio's client advertises (traced from VS 2026 18.7):
+                            // dynamic registration for everything, plaintext-only hover and signature
+                            // documentation. The server must answer every provider statically.
+                            ["synchronization"] = new JObject { ["dynamicRegistration"] = true, ["didSave"] = true },
+                            ["completion"] = new JObject { ["dynamicRegistration"] = true, ["completionItem"] = new JObject { ["snippetSupport"] = false } },
+                            ["hover"] = new JObject { ["dynamicRegistration"] = true, ["contentFormat"] = new JArray("plaintext") },
+                            ["signatureHelp"] = new JObject
+                            {
+                                ["dynamicRegistration"] = true,
+                                ["signatureInformation"] = new JObject { ["documentationFormat"] = new JArray("plaintext"), ["parameterInformation"] = new JObject { ["labelOffsetSupport"] = true } },
+                                ["contextSupport"] = true
+                            },
                             ["publishDiagnostics"] = new JObject(),
-                            // What Visual Studio's client advertises (research.md R3): dynamic registration,
-                            // standard types, no multiline. The server must still answer statically.
                             ["semanticTokens"] = new JObject
                             {
                                 ["dynamicRegistration"] = true,
@@ -134,6 +140,15 @@ namespace Drapo.Tests.LanguageServer
                 JToken result = completion["result"];
                 JToken items = result.Type == JTokenType.Array ? result : result["items"];
                 Assert.True(items.HasValues);
+
+                // Hover / signature help must come back as plaintext for this client.
+                JObject hover = await client.Request(8, "textDocument/hover", new JObject
+                {
+                    ["textDocument"] = new JObject { ["uri"] = uri },
+                    ["position"] = new JObject { ["line"] = 0, ["character"] = 18 } // inside d-if
+                }, timeout.Token);
+                Assert.Equal("plaintext", (string)hover["result"]["contents"]["kind"]);
+                Assert.StartsWith("d-if", (string)hover["result"]["contents"]["value"]);
 
                 // Semantic tokens over the wire: d-nope (keyword.unknown), d-if (keyword.defaultLibrary), {{show}} (variable).
                 JObject tokens = await client.Request(4, "textDocument/semanticTokens/full", new JObject

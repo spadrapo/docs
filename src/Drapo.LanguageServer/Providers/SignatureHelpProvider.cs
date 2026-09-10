@@ -19,7 +19,9 @@ namespace Drapo.LanguageServer.Providers
             _index = index;
         }
 
-        public SignatureHelp GetSignatureHelp(string text, Position position)
+        public SignatureHelp GetSignatureHelp(string text, Position position) => GetSignatureHelp(text, position, MarkupKind.Markdown);
+
+        public SignatureHelp GetSignatureHelp(string text, Position position, MarkupKind kind)
         {
             text ??= string.Empty;
             int offset = TextPosition.OffsetOf(text, position.Line, position.Character);
@@ -62,7 +64,7 @@ namespace Drapo.LanguageServer.Providers
             var parameters = function.Parameters.Select(p => new ParameterInformation
             {
                 Label = new ParameterInformationLabel(p.Name),
-                Documentation = new StringOrMarkupContent(ParameterDoc(p))
+                Documentation = new StringOrMarkupContent(kind == MarkupKind.PlainText ? DrapoDocContent.ToPlainText(ParameterDoc(p)) : ParameterDoc(p))
             }).ToList();
 
             return new SignatureHelp
@@ -70,7 +72,8 @@ namespace Drapo.LanguageServer.Providers
                 Signatures = new Container<SignatureInformation>(new SignatureInformation
                 {
                     Label = function.Signature ?? DrapoDocContent.BuildFunctionSignature(function.Name, function.Parameters),
-                    Documentation = string.IsNullOrWhiteSpace(function.Description) ? null : new StringOrMarkupContent(new MarkupContent { Kind = MarkupKind.Markdown, Value = function.Description.Trim() }),
+                    Documentation = string.IsNullOrWhiteSpace(function.Description) ? null
+                        : new StringOrMarkupContent(new MarkupContent { Kind = kind, Value = kind == MarkupKind.PlainText ? DrapoDocContent.ToPlainText(function.Description) : function.Description.Trim() }),
                     Parameters = new Container<ParameterInformation>(parameters)
                 }),
                 ActiveSignature = 0,
