@@ -35,10 +35,13 @@ bundles a self-contained server, so **no .NET runtime is required**. To remove i
 - `HtmlContentType` adds `languageserver-base` as an extra base of the `HTML` content type.
   Every LSP client part in Visual Studio is exported for `languageserver-base`; without this
   bridge the client is never activated for `.html` files.
-- The server answers semantic tokens **statically** in the `initialize` result even though the VS
-  client advertises dynamic registration (`Program.ForceStaticSemanticTokens`); the VS tagger only
-  reads static capabilities. Full/delta is supported because VS re-polls every two seconds while
-  a document is visible.
+- The server answers **every** provider (completion, hover, signature help, semantic tokens)
+  statically in the `initialize` result even though the VS client advertises dynamic registration
+  for all of them (`Program.ForceStaticRegistration`); VS's feature providers only read static
+  capabilities and stay silent otherwise. Full/delta semantic tokens are supported because VS
+  re-polls every two seconds while a document is visible.
+- VS accepts only **plaintext** hover and signature documentation, so the server renders those as
+  plain text (parameter list instead of the Markdown table VS Code gets).
 
 ## Build
 

@@ -62,7 +62,13 @@ namespace Drapo.LanguageServer
                         .AddProvider(new StderrLoggerProvider())
                         .SetMinimumLevel(LogLevel.Warning))
                     .WithServerInfo(new ServerInfo { Name = ServerName, Version = ServerVersion })
-                    .OnInitialize((server, request, token) => { ForceStaticSemanticTokens(request.Capabilities); return Task.CompletedTask; })
+                    .OnInitialize((server, request, token) =>
+                    {
+                        ProtocolTrace.Write("initialize from " + (request.ClientInfo?.Name ?? "?") + " " + (request.ClientInfo?.Version ?? "") + " trace=" + request.Trace
+                            + " capabilities=" + Newtonsoft.Json.JsonConvert.SerializeObject(request.Capabilities?.TextDocument));
+                        ForceStaticRegistration(request.Capabilities);
+                        return Task.CompletedTask;
+                    })
                     .WithServices(services => ConfigureServices(services, contentPath))
                     .WithHandler<TextDocumentSyncHandler>()
                     .WithHandler<CompletionHandler>()
@@ -81,18 +87,24 @@ namespace Drapo.LanguageServer
         }
 
         /// <summary>
-        /// Visual Studio advertises dynamic registration for semantic tokens, which makes OmniSharp
-        /// announce them through client/registerCapability instead of the initialize result; but
-        /// Visual Studio's semantic tokens tagger only looks at the static server capabilities and
-        /// never sends a request (verified against VS 2026 18.7). Clearing the flag keeps the
-        /// provider static for every client. VS Code handles both forms.
+        /// Visual Studio advertises dynamic registration for every text document feature, which
+        /// makes OmniSharp announce them through client/registerCapability instead of the initialize
+        /// result; but Visual Studio's own feature providers (completion, hover, signature help,
+        /// semantic tokens) only look at the static server capabilities and stay silent (verified
+        /// against VS 2026 18.7: diagnostics worked, everything else never sent a request).
+        /// Clearing the flag keeps every provider static. VS Code handles both forms.
         /// </summary>
-        public static void ForceStaticSemanticTokens(ClientCapabilities capabilities)
+        public static void ForceStaticRegistration(ClientCapabilities capabilities)
         {
-            Supports<SemanticTokensCapability> supports = capabilities?.TextDocument?.SemanticTokens ?? default;
-            SemanticTokensCapability current = supports.IsSupported ? supports.Value : null;
-            if (current != null && current.DynamicRegistration)
-                current.DynamicRegistration = false;
+            TextDocumentClientCapabilities textDocument = capabilities?.TextDocument;
+            if (textDocument == null)
+                return;
+            foreach (PropertyInfo property in typeof(TextDocumentClientCapabilities).GetProperties())
+            {
+                object supports = property.GetValue(textDocument);
+                if (supports is ISupports { IsSupported: true, Value: IDynamicCapability dynamic } && dynamic.DynamicRegistration)
+                    dynamic.DynamicRegistration = false;
+            }
         }
 
         /// <summary>Registers the tooling services (same implementations the docs site uses) and server state.</summary>

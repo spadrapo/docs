@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Drapo.LanguageServer.Documents;
@@ -40,7 +41,9 @@ namespace Drapo.LanguageServer.Handlers
                 string text = _documents.GetText(request.TextDocument.Uri);
                 if (text == null)
                     return Task.FromResult(new CompletionList(isIncomplete: false));
-                return Task.FromResult(new CompletionProvider(_index).GetCompletions(text, request.Position));
+                CompletionList list = new CompletionProvider(_index).GetCompletions(text, request.Position);
+                ProtocolTrace.Write($"completion {request.TextDocument.Uri} at {request.Position.Line}:{request.Position.Character} trigger={request.Context?.TriggerKind}/{request.Context?.TriggerCharacter} -> {list.Items.Count()} items");
+                return Task.FromResult(list);
             }
             catch (Exception ex)
             {

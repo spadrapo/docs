@@ -15,6 +15,7 @@ namespace Drapo.LanguageServer.Handlers
         private readonly DocumentStore _documents;
         private readonly DrapoSymbolIndex _index;
         private readonly ILogger<HoverHandler> _logger;
+        private MarkupKind _kind = MarkupKind.Markdown;
 
         public HoverHandler(DocumentStore documents, DrapoSymbolIndex index, ILogger<HoverHandler> logger)
         {
@@ -25,7 +26,23 @@ namespace Drapo.LanguageServer.Handlers
 
         protected override HoverRegistrationOptions CreateRegistrationOptions(HoverCapability capability, ClientCapabilities clientCapabilities)
         {
+            _kind = PreferredKind(capability?.ContentFormat);
             return new HoverRegistrationOptions { DocumentSelector = DrapoDocuments.Selector };
+        }
+
+        /// <summary>Markdown when the client lists it (VS Code); plain text otherwise (Visual Studio sends only "plaintext").</summary>
+        public static MarkupKind PreferredKind(Container<MarkupKind> formats)
+        {
+            if (formats == null)
+                return MarkupKind.Markdown;
+            foreach (MarkupKind format in formats)
+            {
+                if (format == MarkupKind.Markdown)
+                    return MarkupKind.Markdown;
+                if (format == MarkupKind.PlainText)
+                    return MarkupKind.PlainText;
+            }
+            return MarkupKind.Markdown;
         }
 
         public override Task<Hover> Handle(HoverParams request, CancellationToken cancellationToken)
@@ -35,7 +52,9 @@ namespace Drapo.LanguageServer.Handlers
                 string text = _documents.GetText(request.TextDocument.Uri);
                 if (text == null)
                     return Task.FromResult<Hover>(null);
-                return Task.FromResult(new HoverProvider(_index).GetHover(text, request.Position));
+                Hover hover = new HoverProvider(_index).GetHover(text, request.Position, _kind);
+                ProtocolTrace.Write($"hover {request.TextDocument.Uri} at {request.Position.Line}:{request.Position.Character} -> {(hover == null ? "null" : hover.Contents.MarkupContent?.Value?.Length + " chars")}");
+                return Task.FromResult(hover);
             }
             catch (Exception ex)
             {

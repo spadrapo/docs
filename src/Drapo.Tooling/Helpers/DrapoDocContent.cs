@@ -73,6 +73,22 @@ namespace Drapo.Tooling.Helpers
         /// Cleans a literal code sample (Drapo HTML markup) for LLM consumption: strips BOM,
         /// normalizes line endings, and trims. The markup itself is preserved verbatim.
         /// </summary>
+        /// <summary>
+        /// Strips the light Markdown <see cref="ToMarkdown"/> produces (bold, code spans, links,
+        /// list markers) for clients that only render plain text, such as Visual Studio's hover.
+        /// </summary>
+        public static string ToPlainText(string markdown)
+        {
+            if (string.IsNullOrEmpty(markdown))
+                return string.Empty;
+            string text = markdown;
+            text = Regex.Replace(text, @"\[([^\]]+)\]\([^)]*\)", "$1");   // [text](url) -> text
+            text = text.Replace("**", string.Empty).Replace("`", string.Empty);
+            text = Regex.Replace(text, @"^\s*[-*]\s+", "- ", RegexOptions.Multiline);
+            text = Regex.Replace(text, @"(?<!\w)_([^_\n]+)_(?!\w)", "$1");   // _italic_ -> italic
+            return text.Trim();
+        }
+
         public static string CleanCode(string code)
         {
             if (string.IsNullOrWhiteSpace(code))
