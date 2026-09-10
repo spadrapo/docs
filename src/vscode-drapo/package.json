@@ -2,7 +2,7 @@
   "name": "vscode-drapo",
   "displayName": "Drapo",
   "description": "Syntax highlighting, diagnostics, completion, hover and signature help for Drapo d-* markup, powered by the Drapo documentation catalog and validator.",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "publisher": "spadrapo",
   "license": "MIT",
   "repository": {
