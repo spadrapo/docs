@@ -26,6 +26,7 @@ namespace Drapo.Tests.Tooling
         [InlineData("d-validation-id")]
         [InlineData("d-dataproperty-x-name")]
         [InlineData("d-model")]
+        [InlineData("d-dragActive")]
         public void KnownAttributesAreValid(string name) => Assert.True(_catalog.IsValidAttribute(name));
 
         [Theory]

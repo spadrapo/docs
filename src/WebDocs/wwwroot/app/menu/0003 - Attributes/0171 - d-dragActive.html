@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<script src="/drapo.js"></script>
+<div>
+    <div>
+        <h2>d-dragActive</h2>
+        <p>You can use d-dragActive to turn the drag of a <code>d-dragStart</code> item on or off. It is a conditional, evaluated when the <code>d-for</code> item renders: when it is false the element gets <code>draggable="false"</code> and does not start a drag, so the mouse can select the text inside it (for example in an input that edits the item). Missing or empty means active.</p>
+        <p>The condition is evaluated again when the item re-renders, for example after a <code>Notify</code> of its data key. It applies to <code>d-dragStart</code> items rendered by <code>d-for</code>; the <code>barber</code> drag action ignores it.</p>
+        <h4>Example</h4>
+        <p>Syntax:</p>
+        <d-code>
+            &lt;div d-for="item in items" d-dragStart="row" d-dragEnd="row" d-dragActive="!{{item.editing}}"&gt;{{item.name}}&lt;/div&gt;
+        </d-code>
+        <p>Drag the rows to reorder them. The row being edited cannot be dragged, so its text can be selected with the mouse.</p>
+        <d-sample>
+            <div d-dataKey="dragActiveItems" d-dataType="array" d-dataValue='[{"Key":"A","Name":"Alpha"},{"Key":"B","Name":"Beta"},{"Key":"C","Name":"Gamma"}]'></div>
+            <div d-dataKey="dragActiveEditing" d-dataType="value" d-dataValue="B"></div>
+            <div>
+                <div d-for="item in dragActiveItems" d-dragStart="row" d-dragEnd="row" d-dragActive="{{item.Key}}!={{dragActiveEditing}}" style="width:300px">
+                    <span d-if="{{item.Key}}!={{dragActiveEditing}}">{{item.Name}}</span>
+                    <input type="text" d-if="{{item.Key}}={{dragActiveEditing}}" d-model="{{item.Name}}" />
+                </div>
+            </div>
+            <input type="button" value="Edit A" d-on-click="UpdateData(dragActiveEditing,A);Notify(dragActiveItems)" />
+            <input type="button" value="Edit none" d-on-click="UpdateData(dragActiveEditing,none);Notify(dragActiveItems)" />
+        </d-sample>
+    </div>
+</div>
